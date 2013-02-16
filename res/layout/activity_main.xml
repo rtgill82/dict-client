@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <EditText
+        android:id="@+id/search_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/search_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/search_button"
+        android:hint="@string/search_text_hint"
+        android:inputType="text|textAutoCorrect|textAutoComplete"
+        android:maxLines="@integer/search_text_max_lines" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/search_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:onClick="lookupWord"
+        android:text="@string/search_button_text" />
+
+    <LinearLayout
+        android:id="@+id/dictionary_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/search_button" >
+
+        <Spinner
+            android:id="@+id/dictionary_spinner"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/dictinfo_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="getDictionaryInfo"
+            android:text="@string/dictinfo_button_text" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/definition_scroll_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/dictionary_layout" >
+
+        <TextView
+            android:id="@+id/definition_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:freezesText="true"
+            android:paddingLeft="@dimen/definition_padding_left"
+            android:paddingRight="@dimen/definition_padding_right"
+            android:paddingTop="@dimen/definition_padding_top" />
+    </ScrollView>
+
+</RelativeLayout>
