@@ -29,28 +29,25 @@
         android:onClick="lookupWord"
         android:text="@string/search_button_text" />
 
-    <LinearLayout
-        android:id="@+id/dictionary_layout"
+    <Spinner
+        android:id="@+id/dictionary_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/dictinfo_button"
         android:layout_alignParentLeft="true"
+        android:layout_below="@+id/search_text"
+        android:layout_toLeftOf="@+id/dictinfo_button" />
+    
+    <Button
+        android:id="@+id/dictinfo_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/search_button"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/search_button" >
-
-        <Spinner
-            android:id="@+id/dictionary_spinner"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/dictinfo_button"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="getDictionaryInfo"
-            android:text="@string/dictinfo_button_text" />
-    </LinearLayout>
+        android:layout_below="@+id/search_text"
+        android:onClick="getDictionaryInfo"
+        android:text="@string/dictinfo_button_text" />
 
     <ScrollView
         android:id="@+id/definition_scroll_view"
@@ -59,7 +56,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/dictionary_layout" >
+        android:layout_below="@+id/dictinfo_button" >
 
         <TextView
             android:id="@+id/definition_view"
@@ -70,5 +67,6 @@
             android:paddingRight="@dimen/definition_padding_right"
             android:paddingTop="@dimen/definition_padding_top" />
     </ScrollView>
+
 
 </RelativeLayout>

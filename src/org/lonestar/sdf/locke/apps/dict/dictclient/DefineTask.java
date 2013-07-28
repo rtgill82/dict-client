@@ -16,6 +16,7 @@ public class DefineTask extends
 	
 	public DefineTask(FragmentActivity context) {
 		super(context);
+		progressMessage = "Looking up word...";
 	}
 	
 	@Override
@@ -24,7 +25,11 @@ public class DefineTask extends
 
 		try {
 			JDictClient dictClient = JDictClient.connect(host, port);
-			definitions = dictClient.define(words[0]);
+			if (words.length == 2) {
+				definitions = dictClient.define(words[0], words[1]);
+			} else {
+				definitions = dictClient.define(words[0]);				
+			}
 			dictClient.close();
 		} catch (Exception e) {
 			exception = e;

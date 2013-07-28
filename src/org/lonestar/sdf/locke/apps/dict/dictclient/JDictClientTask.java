@@ -1,5 +1,6 @@
 package org.lonestar.sdf.locke.apps.dict.dictclient;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,8 +15,10 @@ public abstract class JDictClientTask<Params, Progress, Result>
 	protected Exception exception = null;
 	protected String host = null;
 	protected int port = 0;
+	protected String progressMessage = null;
 	
 	private SharedPreferences prefs;
+	private ProgressDialog progDialog;
 	
 	public JDictClientTask(FragmentActivity context) {
 		super();
@@ -31,6 +34,7 @@ public abstract class JDictClientTask<Params, Progress, Result>
 		dictinfo_button.setEnabled(false);
 		host = prefs.getString("host", context.getString(R.string.pref_default_host));
 		port = Integer.parseInt(prefs.getString("port", context.getString(R.string.pref_default_port)));
+		progDialog = ProgressDialog.show(context, "Waiting", progressMessage, true);
 	}
 	
 	@Override
@@ -39,6 +43,7 @@ public abstract class JDictClientTask<Params, Progress, Result>
 		Button dictinfo_button = (Button) context.findViewById(R.id.dictinfo_button);
 		search_button.setEnabled(true);
 		dictinfo_button.setEnabled(true);
+		progDialog.dismiss();
 	
 		if (exception != null) {
 			Bundle args = new Bundle();

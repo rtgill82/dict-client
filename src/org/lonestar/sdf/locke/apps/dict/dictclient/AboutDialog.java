@@ -17,6 +17,6 @@ public class AboutDialog extends Dialog {
 		setContentView(R.layout.dialog_about);
 		
 		TextView textView = (TextView) findViewById(R.id.about_text);
-		textView.setText(Html.fromHtml("<h2>DictClient</h2> Version 1.0.0<br>Copyright &copy 2013 Robert Gill<br/><br/>"));
+		textView.setText(Html.fromHtml("<h2>DictClient</h2> Version 1.0.0<br>Copyright &copy 2013 Robert Gill<br/><br/>Icon by <a href='http://www.boomgraphics.se'>Robin Weatherall</a>"));
 	}
 }

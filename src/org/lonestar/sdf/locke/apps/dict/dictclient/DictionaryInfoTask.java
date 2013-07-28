@@ -11,6 +11,7 @@ public class DictionaryInfoTask extends
 	
 	public DictionaryInfoTask(FragmentActivity context) {
 		super(context);
+		progressMessage = "Retrieving dictionary information...";
 	}
 	
 	@Override

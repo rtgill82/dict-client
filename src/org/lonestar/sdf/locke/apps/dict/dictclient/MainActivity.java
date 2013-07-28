@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,21 +22,35 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		new ListDictionariesTask(this).execute();
+		
+		DictClientState state = DictClientState.getInstance();
+		if (state.dictAdapter == null) {
+			new ListDictionariesTask(this).execute();
+		}
 		
 		Spinner dictionary_spinner = (Spinner) findViewById(R.id.dictionary_spinner);
+		dictionary_spinner.setAdapter(state.dictAdapter);
 		dictionary_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View selectedItemView, int position, long id)
 			{
+				Button dictinfo_button = (Button) findViewById(R.id.dictinfo_button);
 				TextView definition_view = (TextView) findViewById(R.id.definition_view);
+				Dictionary currentDictionary = (Dictionary) parent.getSelectedItem();
+				if (currentDictionary.getDatabase() != null) {
+					dictinfo_button.setEnabled(true);
+				} else {
+					dictinfo_button.setEnabled(false);
+				}
 				definition_view.setText("");
 			}
 			
 			@Override
 			public void onNothingSelected(AdapterView<?> parent)
 			{
+				Button dictinfo_button = (Button) findViewById(R.id.dictinfo_button);
 				TextView definition_view = (TextView) findViewById(R.id.definition_view);
+				dictinfo_button.setEnabled(false);
 				definition_view.setText("");
 			}
 		});
@@ -71,8 +86,14 @@ public class MainActivity extends FragmentActivity {
 	
 	public void lookupWord(View view) {
 		EditText editText = (EditText) findViewById(R.id.search_text);
+		Spinner dictionary_spinner = (Spinner) findViewById(R.id.dictionary_spinner);
+		String dict = ((Dictionary) dictionary_spinner.getSelectedItem()).getDatabase();
 		String word = editText.getText().toString();
-		new DefineTask(this).execute(word);
+		if (dict != null) {
+			new DefineTask(this).execute(dict, word);
+		} else {
+			new DefineTask(this).execute(word);
+		}
 	}
 	
 	public void getDictionaryInfo(View view) {
