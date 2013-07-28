@@ -17,13 +17,4 @@
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:title="@string/pref_title_host" />
-    
-    <EditTextPreference
-        android:defaultValue="@string/pref_default_port"
-        android:inputType="number"
-        android:key="port"
-        android:maxLines="1"
-        android:selectAllOnFocus="true"
-        android:title="@string/pref_title_port" />
-
 </PreferenceScreen>

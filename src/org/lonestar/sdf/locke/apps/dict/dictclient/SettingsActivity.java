@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -194,13 +195,23 @@ public class SettingsActivity extends PreferenceActivity {
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			addPreferencesFromResource(R.xml.preferences);
-
-			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
-			// to their values. When their values change, their summaries are
-			// updated to reflect the new value, per the Android Design
-			// guidelines.
 			bindPreferenceSummaryToValue(findPreference("host"));
-			bindPreferenceSummaryToValue(findPreference("port"));
+			setPreferenceValidations();
+		}
+		
+		private void setPreferenceValidations() {
+			Preference host = findPreference("host");
+			host.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					Bundle args = new Bundle();
+					args.putString("message", "Invalid host string.");
+					ErrorDialogFragment dialog = new ErrorDialogFragment();
+					dialog.setArguments(args);
+					dialog.show(getFragmentManager(), "DefineException");
+					return false;
+				}
+			});
 		}
 	}
 }
