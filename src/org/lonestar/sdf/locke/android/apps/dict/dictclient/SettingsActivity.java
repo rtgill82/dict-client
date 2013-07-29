@@ -205,6 +205,7 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		private void setPreferenceValidations() {
 			Preference host = findPreference("host");
+
 			host.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -218,8 +219,10 @@ public class SettingsActivity extends PreferenceActivity {
 								);
 						}
 
+						// Call the old listener, which sets the Preference summaries.
+						sBindPreferenceSummaryToValueListener.onPreferenceChange(preference, newValue);
 						return true;
-						
+
 					} catch (URISyntaxException ex) {
 						ErrorDialogFragment.show(
 								getFragmentManager(),
