@@ -1,12 +1,21 @@
-package org.lonestar.sdf.locke.apps.dict.dictclient.v4;
+package org.lonestar.sdf.locke.android.support.v4.app;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 
 public class ErrorDialogFragment extends DialogFragment {
+	
+	public static void show(FragmentManager fragmentManager, String tag, String message) {
+		Bundle args = new Bundle();
+		args.putString("message", message);
+		ErrorDialogFragment dialog = new ErrorDialogFragment();
+		dialog.setArguments(args);
+		dialog.show(fragmentManager, tag);
+	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {

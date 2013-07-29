@@ -3,6 +3,6 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="org.lonestar.sdf.locke.apps.dict.dictclient.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="org.lonestar.sdf.locke.android.apps.dict.dictclient.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
 </preference-headers>

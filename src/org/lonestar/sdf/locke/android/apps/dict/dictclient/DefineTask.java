@@ -1,8 +1,9 @@
-package org.lonestar.sdf.locke.apps.dict.dictclient;
+package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import java.util.Iterator;
 import java.util.List;
 
+import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
@@ -14,7 +15,8 @@ import android.widget.TextView;
 public class DefineTask extends
 		JDictClientTask<String, Void, List<Definition>> {
 	
-	public DefineTask(FragmentActivity context) {
+	public DefineTask(FragmentActivity context)
+	{
 		super(context);
 		progressMessage = "Looking up word...";
 	}

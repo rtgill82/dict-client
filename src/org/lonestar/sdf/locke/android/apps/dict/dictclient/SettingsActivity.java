@@ -1,6 +1,10 @@
-package org.lonestar.sdf.locke.apps.dict.dictclient;
+package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
+
+import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -204,12 +208,26 @@ public class SettingsActivity extends PreferenceActivity {
 			host.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					Bundle args = new Bundle();
-					args.putString("message", "Invalid host string.");
-					ErrorDialogFragment dialog = new ErrorDialogFragment();
-					dialog.setArguments(args);
-					dialog.show(getFragmentManager(), "DefineException");
-					return false;
+					try {
+						URI uri = new URI("dict://" + (String) newValue);
+						
+						if (uri.getHost() == null) {
+							throw new URISyntaxException(
+									uri.toString(),
+									"Must specify host."
+								);
+						}
+
+						return true;
+						
+					} catch (URISyntaxException ex) {
+						ErrorDialogFragment.show(
+								getFragmentManager(),
+								"PreferenceException",
+								"Invalid host string."
+							);
+						return false;
+					}
 				}
 			});
 		}

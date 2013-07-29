@@ -1,4 +1,6 @@
-package org.lonestar.sdf.locke.apps.dict.dictclient;
+package org.lonestar.sdf.locke.android.apps.dict.dictclient;
+
+import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 
 import android.app.Dialog;
 import android.content.Context;
