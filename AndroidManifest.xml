@@ -24,14 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="org.lonestar.sdf.locke.android.apps.dict.dictclient.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName="org.lonestar.sdf.locke.android.apps.dict.dictclient.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.lonestar.sdf.locke.apps.dict.dictclient.MainActivity" />
-        </activity>
     </application>
 
 </manifest>

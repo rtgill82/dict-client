@@ -4,7 +4,6 @@ import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -67,11 +66,6 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
-		case R.id.menu_settings:
-			Intent intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
-			break;
-			
 		case R.id.menu_about:
 			AboutDialog about = new AboutDialog(this);
 			about.setTitle("About");
