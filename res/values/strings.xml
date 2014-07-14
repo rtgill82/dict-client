@@ -11,8 +11,6 @@
     <string name="pref_default_host">dict.org</string>
     <string name="pref_title_host">Host</string>
     
-    
-    
-    
+    <string name="database_name">dictclient.db</string>
 
 </resources>

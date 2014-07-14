@@ -1,5 +1,7 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
+import java.io.IOException;
+
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
@@ -23,7 +25,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		DictClientState state = DictClientState.getInstance();
 		if (state.dictAdapter == null) {
 			new ListDictionariesTask(this).execute();
