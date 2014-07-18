@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">DictClient</string><string name="about_text">About</string>
-    <string name="search_text_hint">Enter a word</string><string name="menu_settings">Settings</string>
+    <string name="app_name">DictClient</string>
+    <string name="about_text">About</string>
+    <string name="search_text_hint">Enter a word</string>
+    <string name="menu_settings">Settings</string>
     <string name="search_button_text">Lookup Word</string>
     <string name="dictinfo_button_text">Dictionary Info</string>
     
@@ -11,6 +13,7 @@
     <string name="pref_default_host">dict.org</string>
     <string name="pref_title_host">Host</string>
     
-    <string name="database_name">dictclient.db</string>
+    <string name="prefs_initialized_key">prefs_initialized</string>
+    <string name="prefs_default_host_key">default_host</string>
 
 </resources>

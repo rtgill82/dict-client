@@ -3,6 +3,7 @@
 
     <integer name="dict_port">2628</integer>
     <integer name="search_text_max_lines">1</integer>
-    <integer name="database_version">1</integer>
+    
+    <integer name="prefs_default_host_value">1</integer>
 
 </resources>
