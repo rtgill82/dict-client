@@ -19,6 +19,8 @@ public class DictionaryServer {
 	private String description;
 	@DatabaseField(defaultValue = "false")
 	private boolean readonly;
+	@DatabaseField(defaultValue = "false")
+	private boolean user_defined;
 	@DatabaseField(canBeNull = true)
 	private Date last_db_refresh;
 
@@ -70,6 +72,14 @@ public class DictionaryServer {
 
 	public void setReadonly(boolean readonly) {
 		this.readonly = readonly;
+	}
+
+	public boolean isUserDefined() {
+		return user_defined;
+	}
+
+	public void setUserDefined(boolean userDefined) {
+		this.user_defined = userDefined;
 	}
 
 	public Date getLastDBRefresh() {
