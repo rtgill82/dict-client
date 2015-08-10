@@ -1,0 +1,44 @@
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: dict.org
+  description: The standard dictd server, contains several databases related to English language and the FreeDict databases
+  readonly: true
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: www.lojban.org
+  description: To and from lojban and a number of other languages
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: dict.arabeyes.org
+  description: English-Arabic, extensible
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: dict.saugus.net
+  description: The contents of the Saugus.net computer knowledgebase, including a section on computer terms, filename extensions, and free software titles
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: dict.mova.org
+  description: Diverse databases, many Slavic/Russian dictionaries
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: dict.uni-leipzig.de
+  description: Official FreeDict server, most current, OpenSearch description
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: dict.dvo.ru
+  description: Standard databases, russian, ru-en, en-ru dictionaries
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: indica-et-buddhica.org
+  port: 2629
+  description: Sanskrit-Tibetan Buddhist Terminology, Monier-Williams Sanskrit-English Dictionary
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: dict.hewgill.com
+  description: Formatted entry pages from the Wiktionary project. Offers four databases with varying levels of detail, including a raw wikitext view
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: dict.bibleonline.ru
+  description: This DICT server Contains The Christian Material.
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: la-sorciere.de
+  description: Debian terminology dictionaries, standard databases, eng<->deu
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: nb.mblondel.org
+  description: A server focusing on free Japanese dictionaries
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: dict.seesslen.net
+  description: fd-deu-eng, fd-eng-deu, fd-eng-rus
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  host: dict.antono.info
+  description: Esperanto dictionary

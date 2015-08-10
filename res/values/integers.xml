@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="dict_port">2628</integer><integer name="search_text_max_lines">1</integer>
+
+    <integer name="dict_port">2628</integer>
+    <integer name="search_text_max_lines">1</integer>
     
+    <integer name="prefs_default_host_value">1</integer>
+
 </resources>
