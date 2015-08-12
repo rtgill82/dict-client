@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jdict-client-0.1.4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/jdict-client-0.1.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
