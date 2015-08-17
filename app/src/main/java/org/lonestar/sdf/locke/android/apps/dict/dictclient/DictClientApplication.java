@@ -3,7 +3,7 @@ package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 import android.app.Application;
 
 public class DictClientApplication extends Application {
-    private DatabaseManager databaseManager;
+    private static DatabaseManager databaseManager;
 
     @Override
     public void onCreate() {
@@ -11,7 +11,7 @@ public class DictClientApplication extends Application {
         databaseManager = new DatabaseManager(getApplicationContext());
     }
 
-    public DatabaseManager getDatabaseManager() {
+    public static DatabaseManager getDatabaseManager() {
         return databaseManager;
     }
 }

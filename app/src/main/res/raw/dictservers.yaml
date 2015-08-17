@@ -1,4 +1,5 @@
 - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
+  id: 1
   host: dict.org
   description: The standard dictd server, contains several databases related to English language and the FreeDict databases
   readonly: true

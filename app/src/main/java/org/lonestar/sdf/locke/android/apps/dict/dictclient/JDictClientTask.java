@@ -1,11 +1,5 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import org.lonestar.sdf.locke.android.support.v4.app.ErrorDialogFragment;
-import org.lonestar.sdf.locke.apps.dict.dictclient.R;
-
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -14,13 +8,19 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Button;
 
+import com.j256.ormlite.dao.Dao;
+
+import org.lonestar.sdf.locke.android.support.v4.app.ErrorDialogFragment;
+import org.lonestar.sdf.locke.apps.dict.dictclient.R;
+
+import java.sql.SQLException;
+
 public abstract class JDictClientTask<Params, Progress, Result>
                     extends AsyncTask<Params, Progress, Result>
 {
     protected FragmentActivity context = null;
     protected Exception exception = null;
-    protected String host = null;
-    protected int port = -1;
+    protected DictionaryServer server = null;
     protected String progressMessage = null;
 
     private SharedPreferences prefs;
@@ -30,17 +30,14 @@ public abstract class JDictClientTask<Params, Progress, Result>
         super();
 
         this.context = context;
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        port = context.getResources().getInteger(R.integer.dict_port);
-        String hostString = prefs.getString("host", context.getString(R.string.pref_default_host));
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        int default_host = prefs.getInt("default_host", context.getResources().getInteger(R.integer.pref_value_default_host));
 
         try {
-            URI uri = new URI("dict://" + hostString);
-            host = uri.getHost();
-            if (uri.getPort() != -1) {
-                port = uri.getPort();
-            }
-        } catch (URISyntaxException ex) {
+            Dao<DictionaryServer, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryServer.class);
+            server = dao.queryForId(default_host);
+        } catch (SQLException e) {
+            exception = e;
         }
     }
 

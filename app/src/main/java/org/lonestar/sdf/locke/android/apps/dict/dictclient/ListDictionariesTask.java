@@ -1,14 +1,14 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.support.v4.app.FragmentActivity;
+import android.widget.Spinner;
 
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-import android.support.v4.app.FragmentActivity;
-import android.widget.Spinner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListDictionariesTask extends JDictClientTask<String, Void, List<Dictionary>> {
 
@@ -26,7 +26,7 @@ public class ListDictionariesTask extends JDictClientTask<String, Void, List<Dic
         dictionaries = new ArrayList<Dictionary>();
         dictionaries.add(new Dictionary(null, "All Dictionaries"));
         try {
-            JDictClient dictClient = JDictClient.connect(host, port);
+            JDictClient dictClient = JDictClient.connect(server.getHost(), server.getPort());
             dictionaries.addAll(dictClient.getDictionaries());
             dictClient.close();
         } catch (Exception e) {
@@ -45,6 +45,5 @@ public class ListDictionariesTask extends JDictClientTask<String, Void, List<Dic
         DictClientState state = DictClientState.getInstance();
         state.dictAdapter = new DictionarySpinnerAdapter(context, dictionaries);
         dictionary_spinner.setAdapter(state.dictAdapter);
-
     }
 }

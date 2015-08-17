@@ -1,16 +1,16 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
-import java.util.Iterator;
-import java.util.List;
+import android.support.v4.app.FragmentActivity;
+import android.text.Html;
+import android.widget.TextView;
 
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-import android.support.v4.app.FragmentActivity;
-import android.text.Html;
-import android.widget.TextView;
+import java.util.Iterator;
+import java.util.List;
 
 public class DefineTask extends
         JDictClientTask<String, Void, List<Definition>> {
@@ -26,7 +26,7 @@ public class DefineTask extends
         List<Definition> definitions = null;
 
         try {
-            JDictClient dictClient = JDictClient.connect(host, port);
+            JDictClient dictClient = JDictClient.connect(server.getHost(), server.getPort());
             if (words.length == 2) {
                 definitions = dictClient.define(words[0], words[1]);
             } else {

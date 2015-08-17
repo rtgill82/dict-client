@@ -1,11 +1,11 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
+import android.support.v4.app.FragmentActivity;
+import android.widget.TextView;
+
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
-
-import android.support.v4.app.FragmentActivity;
-import android.widget.TextView;
 
 public class DictionaryInfoTask extends
         JDictClientTask<Dictionary, Void, String> {
@@ -21,7 +21,7 @@ public class DictionaryInfoTask extends
         String dictinfo = null;
 
         try {
-            JDictClient dictClient = JDictClient.connect(host, port);
+            JDictClient dictClient = JDictClient.connect(server.getHost(), server.getPort());
             dictinfo = dictClient.getDictionaryInfo(dicts[0].getDatabase());
             dictClient.close();
         } catch (Exception e) {
