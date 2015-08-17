@@ -16,7 +16,6 @@ Thumbs.db
 
 # Android Studio
 .gradle
-.idea
 app/build
 build
 local.properties
