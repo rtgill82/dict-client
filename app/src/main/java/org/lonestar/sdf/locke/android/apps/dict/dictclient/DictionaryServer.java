@@ -1,15 +1,15 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
-import java.util.Date;
-
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.Date;
 
 @DatabaseTable(tableName = "dict_servers")
 public class DictionaryServer {
     final private static int PORT = 2628;
 
-    @DatabaseField(generatedId = true)
+    @DatabaseField(generatedId = true, columnName = "_id")
     private Integer id;
     @DatabaseField(canBeNull = false, uniqueIndexName = "host_port_idx")
     private String host;
