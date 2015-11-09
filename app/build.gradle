@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 17
-    buildToolsVersion "22.0.1"
+    buildToolsVersion '23.0.2'
 
     defaultConfig {
         applicationId "org.lonestar.sdf.locke.apps.dict.dictclient"
@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    compile files('libs/jdict-client-0.1.4.jar')
+    compile files('libs/jdict-client-0.2.1.jar')
     compile files('libs/ormlite-android-4.48.jar')
     compile files('libs/ormlite-core-4.48.jar')
     compile files('libs/snakeyaml-1.10-android.jar')
