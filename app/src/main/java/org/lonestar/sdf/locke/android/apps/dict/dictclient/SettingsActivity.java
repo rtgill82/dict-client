@@ -1,8 +1,10 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import android.annotation.TargetApi;
+import android.app.ListFragment;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -11,10 +13,24 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CursorAdapter;
+import android.widget.SimpleCursorAdapter;
+
+import com.j256.ormlite.android.AndroidDatabaseResults;
+import com.j256.ormlite.dao.CloseableIterator;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -155,6 +171,50 @@ public class SettingsActivity extends PreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class HostsFragment extends ListFragment {
+
+        private static String[] FROM = { "host", "port", "description" };
+        private static int[] TO = { R.id.host, R.id.port, R.id.description };
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setHasOptionsMenu(true);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.fragment_hosts, container, false);
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.fragment_hosts, menu);
+        }
+
+        @Override
+        public void onStart() {
+            HostListCursor cursor = null;
+            CursorAdapter ca = null;
+
+            super.onStart();
+            try {
+                Dao<DictionaryServer, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryServer.class);
+                QueryBuilder<DictionaryServer, Integer> qb = dao.queryBuilder();
+                CloseableIterator<DictionaryServer> iterator = dao.iterator(qb.prepare());
+                AndroidDatabaseResults results = (AndroidDatabaseResults) iterator.getRawResults();
+                Cursor rawcursor = results.getRawCursor();
+                cursor = new HostListCursor(rawcursor);
+                ca = new SimpleCursorAdapter(getView().getContext(), R.layout.host_list_item, cursor, FROM, TO, 0);
+            } catch (SQLException e) {
+                Log.d("ListFragment", "SQLException: ", e);
+            }
+
+            setListAdapter(ca);
         }
     }
 

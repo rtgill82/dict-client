@@ -2,7 +2,7 @@
     <ListPreference
         android:key="default_host"
         android:title="@string/pref_title_default_host"
-        android:defaultValue="1"
+        android:defaultValue="@integer/pref_value_default_host"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
 </PreferenceScreen>
