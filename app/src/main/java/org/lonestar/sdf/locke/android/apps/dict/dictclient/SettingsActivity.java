@@ -31,6 +31,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -171,6 +172,30 @@ public class SettingsActivity extends PreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
+
+            ListPreference hosts = (ListPreference) findPreference("default_host");
+            List<String> entries = new ArrayList<String>();
+            List<String> entryValues = new ArrayList<String>();
+
+            try {
+                Dao<DictionaryServer, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryServer.class);
+                QueryBuilder<DictionaryServer, Integer> qb = dao.queryBuilder();
+                CloseableIterator<DictionaryServer> iterator = dao.iterator(qb.prepare());
+
+                while (iterator.hasNext()) {
+                    DictionaryServer server = iterator.next();
+                    entries.add(server.getHost());
+                    entryValues.add(server.getId().toString());
+                }
+                iterator.close();
+            } catch (SQLException e) {
+                Log.d("ListFragment", "SQLException: ", e);
+            }
+
+            CharSequence[] csEntries = entries.toArray(new CharSequence[entries.size()]);
+            CharSequence[] csEntryValues = entryValues.toArray(new CharSequence[entryValues.size()]);
+            hosts.setEntries(csEntries);
+            hosts.setEntryValues(csEntryValues);
         }
     }
 
