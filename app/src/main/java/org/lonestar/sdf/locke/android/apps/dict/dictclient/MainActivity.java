@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -23,6 +25,17 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TextView.OnEditorActionListener listener = new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_DOWN)
+                    lookupWord(v);
+
+                return true;
+            }
+        };
+        EditText search_text = (EditText) findViewById(R.id.search_text);
+        search_text.setOnEditorActionListener(listener);
 
         Spinner dictionary_spinner = (Spinner) findViewById(R.id.dictionary_spinner);
         dictionary_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
