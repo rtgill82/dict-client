@@ -1,6 +1,7 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -173,7 +174,23 @@ public class SettingsActivity extends PreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
 
-            ListPreference hosts = (ListPreference) findPreference("default_host");
+            ListPreference default_host = (ListPreference) findPreference("default_host");
+            bindPreferenceSummaryToValue(default_host);
+
+            Activity activity = this.getActivity();
+            if (activity != null) {
+                try {
+                    DictionaryServer server = DictClientApplication.getDatabaseManager().getCurrentServer(activity);
+                    default_host.setSummary(server.getHost());
+                } catch (SQLException e) {
+                    Bundle args = new Bundle();
+                    args.putString("message", e.getMessage());
+                    ErrorDialogFragment dialog = new ErrorDialogFragment();
+                    dialog.setArguments(args);
+                    dialog.show(activity.getFragmentManager(), "Database Exception");
+                }
+            }
+
             List<String> entries = new ArrayList<String>();
             List<String> entryValues = new ArrayList<String>();
 
@@ -194,8 +211,8 @@ public class SettingsActivity extends PreferenceActivity {
 
             CharSequence[] csEntries = entries.toArray(new CharSequence[entries.size()]);
             CharSequence[] csEntryValues = entryValues.toArray(new CharSequence[entryValues.size()]);
-            hosts.setEntries(csEntries);
-            hosts.setEntryValues(csEntryValues);
+            default_host.setEntries(csEntries);
+            default_host.setEntryValues(csEntryValues);
         }
     }
 

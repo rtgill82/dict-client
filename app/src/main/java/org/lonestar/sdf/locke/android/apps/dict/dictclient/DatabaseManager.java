@@ -1,16 +1,10 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
-import java.io.InputStream;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.lonestar.sdf.locke.apps.dict.dictclient.R;
-import org.yaml.snakeyaml.Yaml;
-
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
@@ -18,6 +12,14 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+
+import org.lonestar.sdf.locke.apps.dict.dictclient.R;
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class DatabaseManager extends OrmLiteSqliteOpenHelper {
     final private static String DATABASE_NAME    = "dictclient.db";
@@ -56,5 +58,14 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource cs, int oldVersion, int newVersion) {
         Log.d("DatabaseOpenHelper", "onUpgrade() called.");
+    }
+
+    public DictionaryServer getCurrentServer(Context context)
+            throws SQLException {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        int default_host = Integer.parseInt(prefs.getString("default_host", context.getResources().getString(R.string.pref_value_default_host)));
+
+        Dao<DictionaryServer, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryServer.class);
+        return dao.queryForId(default_host);
     }
 }

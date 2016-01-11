@@ -1,7 +1,5 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
-import org.lonestar.sdf.locke.apps.dict.dictclient.R;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
@@ -9,6 +7,8 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
+
+import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 
 import java.io.IOException;
 import java.io.InputStream;

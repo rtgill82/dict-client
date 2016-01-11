@@ -1,14 +1,10 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Button;
-
-import com.j256.ormlite.dao.Dao;
 
 import org.lonestar.sdf.locke.android.support.v4.app.ErrorDialogFragment;
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
@@ -23,19 +19,14 @@ public abstract class JDictClientTask<Params, Progress, Result>
     protected DictionaryServer server = null;
     protected String progressMessage = null;
 
-    private SharedPreferences prefs;
     private ProgressDialog progDialog;
 
     public JDictClientTask(FragmentActivity context) {
         super();
-
         this.context = context;
-        this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        int default_host = Integer.parseInt(prefs.getString("default_host", context.getResources().getString(R.string.pref_value_default_host)));
 
         try {
-            Dao<DictionaryServer, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryServer.class);
-            server = dao.queryForId(default_host);
+            server = DictClientApplication.getDatabaseManager().getCurrentServer(context);
         } catch (SQLException e) {
             exception = e;
         }

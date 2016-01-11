@@ -1,9 +1,5 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
-import java.util.List;
-
-import org.lonestar.sdf.locke.libs.dict.Dictionary;
-
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Color;
@@ -11,6 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+
+import org.lonestar.sdf.locke.libs.dict.Dictionary;
+
+import java.util.List;
 
 public class DictionarySpinnerAdapter implements SpinnerAdapter {
 
