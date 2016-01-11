@@ -31,7 +31,7 @@ public abstract class JDictClientTask<Params, Progress, Result>
 
         this.context = context;
         this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        int default_host = prefs.getInt("default_host", context.getResources().getInteger(R.integer.pref_value_default_host));
+        int default_host = Integer.parseInt(prefs.getString("default_host", context.getResources().getString(R.string.pref_value_default_host)));
 
         try {
             Dao<DictionaryServer, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryServer.class);
