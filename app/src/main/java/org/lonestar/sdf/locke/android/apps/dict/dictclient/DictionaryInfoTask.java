@@ -25,7 +25,11 @@ public class DictionaryInfoTask extends
             dictinfo = dictClient.getDictionaryInfo(dicts[0].getDatabase());
             dictClient.close();
         } catch (Exception e) {
-            exception = e;
+            if (!(e instanceof NullPointerException)) {
+                exception = e;
+            } else {
+                throw (NullPointerException) e;
+            }
         }
 
         return dictinfo;

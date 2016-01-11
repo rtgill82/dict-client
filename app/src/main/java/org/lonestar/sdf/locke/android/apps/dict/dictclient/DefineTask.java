@@ -34,7 +34,11 @@ public class DefineTask extends
             }
             dictClient.close();
         } catch (Exception e) {
-            exception = e;
+            if (!(e instanceof NullPointerException)) {
+                exception = e;
+            } else {
+                throw (NullPointerException) e;
+            }
         }
 
         return definitions;

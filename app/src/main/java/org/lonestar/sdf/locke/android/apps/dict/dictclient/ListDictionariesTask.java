@@ -30,7 +30,11 @@ public class ListDictionariesTask extends JDictClientTask<String, Void, List<Dic
             dictionaries.addAll(dictClient.getDictionaries());
             dictClient.close();
         } catch (Exception e) {
-            exception = e;
+            if (!(e instanceof NullPointerException)) {
+                exception = e;
+            } else {
+                throw (NullPointerException) e;
+            }
         }
 
         return dictionaries;
