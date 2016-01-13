@@ -1,6 +1,6 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
-import android.support.v4.app.FragmentActivity;
+import android.app.Activity;
 import android.widget.TextView;
 
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
@@ -10,7 +10,7 @@ import org.lonestar.sdf.locke.libs.dict.JDictClient;
 public class DictionaryInfoTask extends
         JDictClientTask<Dictionary, Void, String> {
 
-    public DictionaryInfoTask(FragmentActivity context)
+    public DictionaryInfoTask(Activity context)
     {
         super(context);
         progressMessage = "Retrieving dictionary information...";

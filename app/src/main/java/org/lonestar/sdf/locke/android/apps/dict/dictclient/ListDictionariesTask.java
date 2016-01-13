@@ -1,6 +1,6 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
-import android.support.v4.app.FragmentActivity;
+import android.app.Activity;
 import android.widget.Spinner;
 
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ListDictionariesTask extends JDictClientTask<String, Void, List<Dictionary>> {
 
-    public ListDictionariesTask(FragmentActivity context)
+    public ListDictionariesTask(Activity context)
     {
         super(context);
         progressMessage = "Retrieving available dictionaries...";

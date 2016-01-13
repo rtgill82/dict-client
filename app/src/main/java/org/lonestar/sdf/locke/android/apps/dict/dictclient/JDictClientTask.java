@@ -1,12 +1,10 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.widget.Button;
 
-import org.lonestar.sdf.locke.android.support.v4.app.ErrorDialogFragment;
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 
 import java.sql.SQLException;
@@ -14,14 +12,14 @@ import java.sql.SQLException;
 public abstract class JDictClientTask<Params, Progress, Result>
                     extends AsyncTask<Params, Progress, Result>
 {
-    protected FragmentActivity context = null;
+    protected Activity context = null;
     protected Exception exception = null;
     protected DictionaryServer server = null;
     protected String progressMessage = null;
 
     private ProgressDialog progDialog;
 
-    public JDictClientTask(FragmentActivity context) {
+    public JDictClientTask(Activity context) {
         super();
         this.context = context;
 
@@ -50,11 +48,7 @@ public abstract class JDictClientTask<Params, Progress, Result>
         progDialog.dismiss();
 
         if (exception != null) {
-            Bundle args = new Bundle();
-            args.putString("message", exception.getMessage());
-            ErrorDialogFragment dialog = new ErrorDialogFragment();
-            dialog.setArguments(args);
-            dialog.show(context.getSupportFragmentManager(), "DefineException");
+            ErrorDialogFragment.show(context, "DICT Exception", exception.getMessage());
         }
     }
 }

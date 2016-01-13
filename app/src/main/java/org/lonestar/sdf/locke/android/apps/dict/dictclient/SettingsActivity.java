@@ -183,11 +183,7 @@ public class SettingsActivity extends PreferenceActivity {
                     DictionaryServer server = DictClientApplication.getDatabaseManager().getCurrentServer(activity);
                     default_host.setSummary(server.getHost());
                 } catch (SQLException e) {
-                    Bundle args = new Bundle();
-                    args.putString("message", e.getMessage());
-                    ErrorDialogFragment dialog = new ErrorDialogFragment();
-                    dialog.setArguments(args);
-                    dialog.show(activity.getFragmentManager(), "Database Exception");
+                    ErrorDialogFragment.show(activity, "SQL Exception", e.getMessage());
                 }
             }
 
