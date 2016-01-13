@@ -174,14 +174,14 @@ public class SettingsActivity extends PreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
 
-            ListPreference default_host = (ListPreference) findPreference("default_host");
-            bindPreferenceSummaryToValue(default_host);
+            ListPreference dict_host = (ListPreference) findPreference(getString(R.string.pref_key_dict_host));
+            bindPreferenceSummaryToValue(dict_host);
 
             Activity activity = this.getActivity();
             if (activity != null) {
                 try {
                     DictionaryServer server = DictClientApplication.getDatabaseManager().getCurrentServer(activity);
-                    default_host.setSummary(server.getHost());
+                    dict_host.setSummary(server.getHost());
                 } catch (SQLException e) {
                     ErrorDialogFragment.show(activity, "SQL Exception", e.getMessage());
                 }
@@ -207,8 +207,8 @@ public class SettingsActivity extends PreferenceActivity {
 
             CharSequence[] csEntries = entries.toArray(new CharSequence[entries.size()]);
             CharSequence[] csEntryValues = entryValues.toArray(new CharSequence[entryValues.size()]);
-            default_host.setEntries(csEntries);
-            default_host.setEntryValues(csEntryValues);
+            dict_host.setEntries(csEntries);
+            dict_host.setEntryValues(csEntryValues);
         }
     }
 
