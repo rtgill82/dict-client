@@ -63,7 +63,7 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
     public DictionaryServer getCurrentServer(Context context)
             throws SQLException {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        int default_host = Integer.parseInt(prefs.getString("default_host", context.getResources().getString(R.string.pref_value_default_host)));
+        int default_host = Integer.parseInt(prefs.getString("default_host", context.getResources().getString(R.string.pref_value_dict_host)));
 
         Dao<DictionaryServer, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryServer.class);
         return dao.queryForId(default_host);

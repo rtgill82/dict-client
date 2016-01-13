@@ -3,8 +3,8 @@
 
     <!-- Strings related to Settings -->
     <string name="pref_header_general">General</string>
-    <string name="pref_title_default_host">Default Host</string>
-    <string name="pref_value_default_host">1</string>
+    <string name="pref_title_dict_host">DICT Host</string>
+    <string name="pref_value_dict_host">1</string>
 
     <string name="pref_header_hosts">Hosts</string>
 </resources>
