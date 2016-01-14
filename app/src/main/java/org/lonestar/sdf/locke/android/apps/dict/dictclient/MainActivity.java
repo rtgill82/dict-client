@@ -82,9 +82,7 @@ public class MainActivity extends Activity {
             break;
 
         case R.id.menu_about:
-            AboutDialog about = new AboutDialog(this);
-            about.setTitle("About");
-            about.show();
+            AboutDialog.show(this);
             break;
 
         default:

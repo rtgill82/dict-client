@@ -16,14 +16,20 @@ import java.io.InputStream;
 public class AboutDialog extends Dialog {
     private String html;
 
+    public static void show(Context context) {
+        new AboutDialog(context).show();
+    }
+
     public AboutDialog(Context context) {
         super(context);
     }
 
     @Override
     public void onCreate(Bundle savedInstance) {
+        Context context = this.getContext();
+        this.setTitle(context.getString(R.string.about_text));
         if (html == null) {
-            Resources resources = this.getContext().getResources();
+            Resources resources = context.getResources();
             InputStream stream = resources.openRawResource(R.raw.about);
 
             try {
