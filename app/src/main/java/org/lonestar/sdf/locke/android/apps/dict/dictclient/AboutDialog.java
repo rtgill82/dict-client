@@ -1,11 +1,15 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.widget.TextView;
 
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
@@ -13,21 +17,18 @@ import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class AboutDialog extends Dialog {
+public class AboutDialog extends DialogFragment {
     private String html;
 
-    public static void show(Context context) {
-        new AboutDialog(context).show();
-    }
-
-    public AboutDialog(Context context) {
-        super(context);
+    public static void show(FragmentActivity activity) {
+        new AboutDialog().show(activity.getSupportFragmentManager(),
+                activity.getString(R.string.about_text));
     }
 
     @Override
-    public void onCreate(Bundle savedInstance) {
-        Context context = this.getContext();
-        this.setTitle(context.getString(R.string.about_text));
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Context context = getActivity();
+
         if (html == null) {
             Resources resources = context.getResources();
             InputStream stream = resources.openRawResource(R.raw.about);
@@ -41,9 +42,14 @@ public class AboutDialog extends Dialog {
                 Log.e("AboutDialog", String.format("Unable to read file about.html: %s", e.getMessage()));
             }
         }
-        setContentView(R.layout.dialog_about);
 
-        TextView textView = (TextView) findViewById(R.id.about_text);
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        TextView textView = (TextView) inflater.inflate(R.layout.dialog_about, null);
         textView.setText(Html.fromHtml(html));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getString(R.string.about_text))
+                .setView(textView);
+        return builder.create();
     }
 }

@@ -1,9 +1,9 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +19,7 @@ import android.widget.TextView;
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
