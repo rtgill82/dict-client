@@ -1,7 +1,6 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
@@ -63,7 +62,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        new ListDictionariesTask(this).execute();
+        refreshDictionaries();
     }
 
     @Override
@@ -76,9 +75,8 @@ public class MainActivity extends FragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-        case R.id.menu_settings:
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+        case R.id.menu_host:
+            HostDialog.show(this);
             break;
 
         case R.id.menu_about:
@@ -108,5 +106,9 @@ public class MainActivity extends FragmentActivity {
         Spinner dictionary_spinner = (Spinner) findViewById(R.id.dictionary_spinner);
         Dictionary dictionary = (Dictionary) dictionary_spinner.getSelectedItem();
         new DictionaryInfoTask(this).execute(dictionary);
+    }
+
+    public void refreshDictionaries() {
+        new ListDictionariesTask(this).execute();
     }
 }

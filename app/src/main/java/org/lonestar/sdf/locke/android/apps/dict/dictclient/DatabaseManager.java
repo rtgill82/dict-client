@@ -7,9 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.j256.ormlite.android.AndroidDatabaseResults;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -63,9 +66,19 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
     public DictionaryServer getCurrentServer(Context context)
             throws SQLException {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        int default_host = Integer.parseInt(prefs.getString("default_host", context.getResources().getString(R.string.pref_value_dict_host)));
+        Resources resources = context.getResources();
+        int host = Integer.parseInt(prefs.getString(resources.getString(R.string.pref_key_dict_host), resources.getString(R.string.pref_value_dict_host)));
 
         Dao<DictionaryServer, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryServer.class);
-        return dao.queryForId(default_host);
+        return dao.queryForId(host);
+    }
+
+    public HostListCursor getHostList()
+            throws SQLException {
+        Dao<DictionaryServer, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryServer.class);
+        QueryBuilder<DictionaryServer, Integer> qb = dao.queryBuilder();
+        CloseableIterator<DictionaryServer> iterator = dao.iterator(qb.prepare());
+        AndroidDatabaseResults results = (AndroidDatabaseResults) iterator.getRawResults();
+        return new HostListCursor(results.getRawCursor());
     }
 }

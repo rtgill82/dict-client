@@ -1,9 +1,0 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListPreference
-        android:key="@string/pref_key_dict_host"
-        android:title="@string/pref_title_dict_host"
-        android:defaultValue="@string/pref_value_dict_host"
-        android:summary="%s"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null" />
-</PreferenceScreen>

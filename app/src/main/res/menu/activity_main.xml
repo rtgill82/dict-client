@@ -1,9 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
-        android:id="@+id/menu_settings"
-        android:orderInCategory="100"
+        android:id="@+id/menu_host"
+        android:orderInCategory="90"
         android:showAsAction="never"
-        android:title="@string/menu_settings" />
+        android:title="@string/menu_host" />
     <item
         android:id="@+id/menu_about"
         android:orderInCategory="110"
