@@ -6,8 +6,8 @@
 
     <EditText
         android:id="@+id/search_text"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_alignBottom="@+id/search_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -21,18 +21,18 @@
 
     <Button
         android:id="@+id/search_button"
+        android:text="@string/search_button_text"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:onClick="lookupWord"
-        android:text="@string/search_button_text" />
+        android:onClick="lookupWord" />
 
     <Spinner
         android:id="@+id/dictionary_spinner"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_alignBottom="@+id/dictinfo_button"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/search_text"
@@ -41,8 +41,8 @@
     <Button
         android:id="@+id/dictinfo_button"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_alignLeft="@+id/search_button"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/search_text"
@@ -51,8 +51,8 @@
 
     <ScrollView
         android:id="@+id/definition_scroll_view"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
@@ -60,13 +60,12 @@
 
         <TextView
             android:id="@+id/definition_view"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:freezesText="true"
             android:paddingLeft="@dimen/definition_padding_left"
             android:paddingRight="@dimen/definition_padding_right"
             android:paddingTop="@dimen/definition_padding_top" />
     </ScrollView>
-
 
 </RelativeLayout>

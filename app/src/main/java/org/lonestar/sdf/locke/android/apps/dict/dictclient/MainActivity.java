@@ -1,8 +1,12 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.text.Html;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +21,8 @@ import android.widget.TextView;
 
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
+
+import java.sql.SQLException;
 
 public class MainActivity extends FragmentActivity {
     @SuppressLint("NewApi")
@@ -109,6 +115,13 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void refreshDictionaries() {
+        DictionaryServer dictserver;
+        try {
+            dictserver = DictClientApplication.getDatabaseManager().getCurrentServer(this);
+            setTitle(getString(R.string.app_name) + " - " + dictserver.getHost());
+        } catch (SQLException e) {
+            Log.d("MainActivity", "SQLException: " + e.getMessage());
+        }
         new ListDictionariesTask(this).execute();
     }
 }
