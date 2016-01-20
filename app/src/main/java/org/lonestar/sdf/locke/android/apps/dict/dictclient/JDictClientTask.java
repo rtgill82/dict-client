@@ -3,7 +3,10 @@ package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 
@@ -41,13 +44,26 @@ public abstract class JDictClientTask<Params, Progress, Result>
 
     @Override
     protected void onPostExecute(Result result) {
+        EditText search_text = (EditText) context.findViewById(R.id.search_text);
         Button search_button = (Button) context.findViewById(R.id.search_button);
+        Spinner dict_spinner = (Spinner) context.findViewById(R.id.dictionary_spinner);
         Button dictinfo_button = (Button) context.findViewById(R.id.dictinfo_button);
         search_button.setEnabled(true);
         dictinfo_button.setEnabled(true);
         progDialog.dismiss();
 
+        if (this instanceof ListDictionariesTask) {
+            search_text.setEnabled(true);
+            dict_spinner.setEnabled(true);
+        }
+
         if (exception != null) {
+            if (this instanceof ListDictionariesTask) {
+                search_text.setEnabled(false);
+                search_button.setEnabled(false);
+                dict_spinner.setEnabled(false);
+                dictinfo_button.setEnabled(false);
+            }
             ErrorDialogFragment.show(context, "DICT Exception", exception.getMessage());
         }
     }
