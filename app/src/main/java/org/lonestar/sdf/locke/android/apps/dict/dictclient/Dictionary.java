@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Dictionary {
 
     @DatabaseField(canBeNull = false, foreign = true)
-    private DictionaryServer server;
+    private DictionaryHost server;
     @DatabaseField(canBeNull = false)
     private String database;
     @DatabaseField(canBeNull = true)
@@ -16,17 +16,17 @@ public class Dictionary {
     public Dictionary() {
     }
 
-    public Dictionary(DictionaryServer server, String database, String description) {
+    public Dictionary(DictionaryHost server, String database, String description) {
         this.server = server;
         this.database = database;
         this.description = description;
     }
 
-    public DictionaryServer getServer() {
+    public DictionaryHost getServer() {
         return server;
     }
 
-    public void setServer(DictionaryServer server) {
+    public void setServer(DictionaryHost server) {
         this.server = server;
     }
 

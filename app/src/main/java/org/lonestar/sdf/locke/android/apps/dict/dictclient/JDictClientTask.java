@@ -3,7 +3,6 @@ package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -17,7 +16,7 @@ public abstract class JDictClientTask<Params, Progress, Result>
 {
     protected Activity context = null;
     protected Exception exception = null;
-    protected DictionaryServer server = null;
+    protected DictionaryHost server = null;
     protected String progressMessage = null;
 
     private ProgressDialog progDialog;

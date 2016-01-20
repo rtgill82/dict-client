@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 @DatabaseTable(tableName = "dict_servers")
-public class DictionaryServer {
+public class DictionaryHost {
     final private static int PORT = 2628;
 
     @DatabaseField(generatedId = true, columnName = "_id")
@@ -24,16 +24,16 @@ public class DictionaryServer {
     @DatabaseField(canBeNull = true)
     private Date last_db_refresh;
 
-    public DictionaryServer() {
+    public DictionaryHost() {
         this.port = PORT;
     }
 
-    public DictionaryServer(String host) {
+    public DictionaryHost(String host) {
         this.host = host;
         this.port = PORT;
     }
 
-    public DictionaryServer(String host, int port) {
+    public DictionaryHost(String host, int port) {
         this.host = host;
         this.port = port;
     }

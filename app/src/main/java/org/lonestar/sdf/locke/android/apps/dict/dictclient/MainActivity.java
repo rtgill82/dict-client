@@ -1,11 +1,8 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -115,7 +112,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void refreshDictionaries() {
-        DictionaryServer dictserver;
+        DictionaryHost dictserver;
         try {
             dictserver = DictClientApplication.getDatabaseManager().getCurrentServer(this);
             setTitle(getString(R.string.app_name) + " - " + dictserver.getHost());

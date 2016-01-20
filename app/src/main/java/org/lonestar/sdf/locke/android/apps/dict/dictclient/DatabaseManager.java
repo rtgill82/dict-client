@@ -40,16 +40,16 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase db, ConnectionSource cs) {
         Resources resources = this.context.getResources();
         try {
-            TableUtils.createTable(cs, DictionaryServer.class);
+            TableUtils.createTable(cs, DictionaryHost.class);
             TableUtils.createTable(cs, Dictionary.class);
-            Dao<DictionaryServer, Integer> dao = DaoManager.createDao(cs, DictionaryServer.class);
+            Dao<DictionaryHost, Integer> dao = DaoManager.createDao(cs, DictionaryHost.class);
             Yaml yaml = new Yaml();
-            InputStream stream = resources.openRawResource(R.raw.dictservers);
-            ArrayList<DictionaryServer> list = (ArrayList<DictionaryServer>) yaml.load(stream);
-            Iterator<DictionaryServer> iterator = list.iterator();
+            InputStream stream = resources.openRawResource(R.raw.dicthosts);
+            ArrayList<DictionaryHost> list = (ArrayList<DictionaryHost>) yaml.load(stream);
+            Iterator<DictionaryHost> iterator = list.iterator();
 
             while (iterator.hasNext()) {
-                DictionaryServer server = iterator.next();
+                DictionaryHost server = iterator.next();
                 dao.create(server);
             }
         } catch (SQLException e) {
@@ -63,21 +63,21 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
         Log.d("DatabaseOpenHelper", "onUpgrade() called.");
     }
 
-    public DictionaryServer getCurrentServer(Context context)
+    public DictionaryHost getCurrentServer(Context context)
             throws SQLException {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Resources resources = context.getResources();
         int host = Integer.parseInt(prefs.getString(resources.getString(R.string.pref_key_dict_host), resources.getString(R.string.pref_value_dict_host)));
 
-        Dao<DictionaryServer, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryServer.class);
+        Dao<DictionaryHost, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryHost.class);
         return dao.queryForId(host);
     }
 
     public HostListCursor getHostList()
             throws SQLException {
-        Dao<DictionaryServer, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryServer.class);
-        QueryBuilder<DictionaryServer, Integer> qb = dao.queryBuilder();
-        CloseableIterator<DictionaryServer> iterator = dao.iterator(qb.prepare());
+        Dao<DictionaryHost, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryHost.class);
+        QueryBuilder<DictionaryHost, Integer> qb = dao.queryBuilder();
+        CloseableIterator<DictionaryHost> iterator = dao.iterator(qb.prepare());
         AndroidDatabaseResults results = (AndroidDatabaseResults) iterator.getRawResults();
         return new HostListCursor(results.getRawCursor());
     }
