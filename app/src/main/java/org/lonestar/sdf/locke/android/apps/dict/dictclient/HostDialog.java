@@ -15,15 +15,12 @@ import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 
 import java.sql.SQLException;
 
-/**
- * Created by locke on 1/15/16.
- */
 public class HostDialog extends DialogFragment {
     private HostListCursor cursor;
     private HostListCursorAdapter ca;
 
     public static void show(FragmentActivity activity) {
-        new HostDialog().show(activity.getSupportFragmentManager(), activity.getString(R.string.host_text));
+        new HostDialog().show(activity.getSupportFragmentManager(), HostDialog.class.getName());
     }
 
     @Override
@@ -34,8 +31,8 @@ public class HostDialog extends DialogFragment {
             cursor = DictClientApplication.getDatabaseManager().getHostList();
             ca = new HostListCursorAdapter(context, cursor, 0);
         } catch (SQLException e) {
-            Log.d("HostDialog", "SQLException: ", e);
             this.dismiss();
+            ErrorDialogFragment.show(this.getActivity(), e.getMessage());
         }
     }
 
@@ -43,7 +40,10 @@ public class HostDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Context context = getActivity();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Integer hostId = Integer.parseInt(prefs.getString(getString(R.string.pref_key_dict_host), context.getResources().getString(R.string.pref_value_dict_host)));
+        Integer hostId = Integer.parseInt(
+                prefs.getString(getString(R.string.pref_key_dict_host),
+                context.getResources().getString(R.string.pref_value_dict_host))
+            );
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getString(R.string.host_text))
@@ -51,14 +51,12 @@ public class HostDialog extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 AlertDialog alertDialog = (AlertDialog) dialog;
-                                MainActivity activity = (MainActivity) alertDialog.getOwnerActivity();
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(alertDialog.getContext());
                                 HostListCursor c = (HostListCursor) alertDialog.getListView().getItemAtPosition(which);
                                 String hostId = c.getString(c.getColumnIndex("_id"));
-                                SharedPreferences.Editor editor = prefs.edit();
+                                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(alertDialog.getContext()).edit();
                                 editor.putString(getString(R.string.pref_key_dict_host), hostId);
                                 editor.apply();
-                                activity.refreshDictionaries();
+                                ((MainActivity) alertDialog.getOwnerActivity()).refreshDictionaries();
                                 alertDialog.dismiss();
                             }
                         });
