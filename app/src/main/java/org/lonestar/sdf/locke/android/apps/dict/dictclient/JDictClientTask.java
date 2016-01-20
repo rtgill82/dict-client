@@ -64,7 +64,7 @@ public abstract class JDictClientTask<Params, Progress, Result>
                 dict_spinner.setEnabled(false);
                 dictinfo_button.setEnabled(false);
             }
-            ErrorDialogFragment.show(context, "DICT Exception", exception.getMessage());
+            ErrorDialogFragment.show(context, exception.getMessage());
         }
     }
 }

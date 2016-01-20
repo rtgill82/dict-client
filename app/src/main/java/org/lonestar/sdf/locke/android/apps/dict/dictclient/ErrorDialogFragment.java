@@ -12,12 +12,12 @@ import android.os.Bundle;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ErrorDialogFragment extends DialogFragment {
 
-    public static void show(Activity activity, String tag, String message) {
+    public static void show(Activity activity, String message) {
         Bundle args = new Bundle();
         args.putString("message", message);
         ErrorDialogFragment dialog = new ErrorDialogFragment();
         dialog.setArguments(args);
-        dialog.show(activity.getFragmentManager(), tag);
+        dialog.show(activity.getFragmentManager(), ErrorDialogFragment.class.getSimpleName());
     }
 
     @Override
@@ -26,11 +26,7 @@ public class ErrorDialogFragment extends DialogFragment {
         String message = getArguments().getString("message");
         builder.setTitle("Error")
                .setMessage(message)
-               .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                   public void onClick(DialogInterface dialog, int id) {
-                       // ok pressed
-                   }
-               });
+               .setPositiveButton("Ok", null);
         return builder.create();
     }
 
