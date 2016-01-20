@@ -26,20 +26,5 @@
   port: 2629
   description: Sanskrit-Tibetan Buddhist Terminology, Monier-Williams Sanskrit-English Dictionary
 - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
-  host: dict.hewgill.com
-  description: Formatted entry pages from the Wiktionary project. Offers four databases with varying levels of detail, including a raw wikitext view
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
   host: dict.bibleonline.ru
   description: This DICT server Contains The Christian Material.
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
-  host: la-sorciere.de
-  description: Debian terminology dictionaries, standard databases, eng<->deu
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
-  host: nb.mblondel.org
-  description: A server focusing on free Japanese dictionaries
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
-  host: dict.seesslen.net
-  description: fd-deu-eng, fd-eng-deu, fd-eng-rus
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryServer
-  host: dict.antono.info
-  description: Esperanto dictionary
