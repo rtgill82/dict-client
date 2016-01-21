@@ -63,24 +63,21 @@ public class DictionarySpinnerAdapter implements SpinnerAdapter {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return data.isEmpty();
     }
 
     @Override
     public void registerDataSetObserver(DataSetObserver observer) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void unregisterDataSetObserver(DataSetObserver observer) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         return this.getView(position, convertView, parent);
     }
-
 }
