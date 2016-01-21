@@ -45,9 +45,9 @@ public class ListDictionariesTask extends JDictClientTask<String, Void, List<Dic
     {
         super.onPostExecute(dictionaries);
 
-        Spinner dictionary_spinner = (Spinner) context.findViewById(R.id.dictionary_spinner);
-        DictClientState state = DictClientState.getInstance();
-        state.dictAdapter = new DictionarySpinnerAdapter(context, dictionaries);
-        dictionary_spinner.setAdapter(state.dictAdapter);
+        Spinner dict_spinner = (Spinner) context.findViewById(R.id.dictionary_spinner);
+        dict_spinner.setAdapter(
+                new DictionarySpinnerAdapter(context, dictionaries)
+        );
     }
 }
