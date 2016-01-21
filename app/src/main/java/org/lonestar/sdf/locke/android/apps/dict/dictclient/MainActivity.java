@@ -117,7 +117,7 @@ public class MainActivity extends FragmentActivity {
             host = DictClientApplication.getDatabaseManager().getCurrentHost(this);
             setTitle(getString(R.string.app_name) + " - " + host.getHostName());
         } catch (SQLException e) {
-            Log.d("MainActivity", "SQLException: " + e.getMessage());
+            ErrorDialogFragment.show(this, e.getMessage());
         }
         new ListDictionariesTask(this).execute();
     }
