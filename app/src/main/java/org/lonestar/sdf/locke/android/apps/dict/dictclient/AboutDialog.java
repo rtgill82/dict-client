@@ -38,8 +38,8 @@ public class AboutDialog extends DialogFragment {
                 stream.read(buffer);
                 html = new String(buffer);
             } catch (IOException e) {
-                // FIXME: Display dialog error?
-                Log.e("AboutDialog", String.format("Unable to read file about.html: %s", e.getMessage()));
+                this.dismiss();
+                ErrorDialogFragment.show(this.getActivity(), "Unable to read file about.html: " + e.getMessage());
             }
         }
 
