@@ -4,6 +4,9 @@
   description: The standard dictd server, contains several databases related to English language and the FreeDict databases
   readonly: true
 - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
+  host_name: dict.tu-chemnitz.de
+  description: Standard databases
+- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
   host_name: www.lojban.org
   description: To and from lojban and a number of other languages
 - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
