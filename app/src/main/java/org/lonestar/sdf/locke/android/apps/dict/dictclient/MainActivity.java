@@ -99,10 +99,12 @@ public class MainActivity extends FragmentActivity {
         Spinner dictionary_spinner = (Spinner) findViewById(R.id.dictionary_spinner);
         String dict = ((Dictionary) dictionary_spinner.getSelectedItem()).getDatabase();
         String word = editText.getText().toString();
-        if (dict != null) {
-            new DefineTask(this).execute(dict, word);
-        } else {
-            new DefineTask(this).execute(word);
+        if (!(word.isEmpty())) {
+            if (dict != null) {
+                new DefineTask(this).execute(dict, word);
+            } else {
+                new DefineTask(this).execute(word);
+            }
         }
     }
 
