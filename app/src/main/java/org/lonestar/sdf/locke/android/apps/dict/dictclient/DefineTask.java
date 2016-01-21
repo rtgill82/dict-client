@@ -26,7 +26,7 @@ public class DefineTask extends
         List<Definition> definitions = null;
 
         try {
-            JDictClient dictClient = JDictClient.connect(server.getHost(), server.getPort());
+            JDictClient dictClient = JDictClient.connect(host.getHostName(), host.getPort());
             if (words.length == 2) {
                 definitions = dictClient.define(words[0], words[1]);
             } else {

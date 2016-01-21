@@ -21,7 +21,7 @@ public class DictionaryInfoTask extends
         String dictinfo = null;
 
         try {
-            JDictClient dictClient = JDictClient.connect(server.getHost(), server.getPort());
+            JDictClient dictClient = JDictClient.connect(host.getHostName(), host.getPort());
             dictinfo = dictClient.getDictionaryInfo(dicts[0].getDatabase());
             dictClient.close();
         } catch (Exception e) {

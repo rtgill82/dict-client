@@ -16,7 +16,7 @@ public abstract class JDictClientTask<Params, Progress, Result>
 {
     protected Activity context = null;
     protected Exception exception = null;
-    protected DictionaryHost server = null;
+    protected DictionaryHost host = null;
     protected String progressMessage = null;
 
     private ProgressDialog progDialog;
@@ -26,7 +26,7 @@ public abstract class JDictClientTask<Params, Progress, Result>
         this.context = context;
 
         try {
-            server = DictClientApplication.getDatabaseManager().getCurrentServer(context);
+            host = DictClientApplication.getDatabaseManager().getCurrentHost(context);
         } catch (SQLException e) {
             exception = e;
         }

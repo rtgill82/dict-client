@@ -26,7 +26,7 @@ public class ListDictionariesTask extends JDictClientTask<String, Void, List<Dic
         dictionaries = new ArrayList<Dictionary>();
         dictionaries.add(new Dictionary(null, "All Dictionaries"));
         try {
-            JDictClient dictClient = JDictClient.connect(server.getHost(), server.getPort());
+            JDictClient dictClient = JDictClient.connect(host.getHostName(), host.getPort());
             dictionaries.addAll(dictClient.getDictionaries());
             dictClient.close();
         } catch (Exception e) {

@@ -112,10 +112,10 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void refreshDictionaries() {
-        DictionaryHost dictserver;
+        DictionaryHost host;
         try {
-            dictserver = DictClientApplication.getDatabaseManager().getCurrentServer(this);
-            setTitle(getString(R.string.app_name) + " - " + dictserver.getHost());
+            host = DictClientApplication.getDatabaseManager().getCurrentHost(this);
+            setTitle(getString(R.string.app_name) + " - " + host.getHostName());
         } catch (SQLException e) {
             Log.d("MainActivity", "SQLException: " + e.getMessage());
         }

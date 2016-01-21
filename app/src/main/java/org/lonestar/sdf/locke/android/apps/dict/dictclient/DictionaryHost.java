@@ -12,7 +12,7 @@ public class DictionaryHost {
     @DatabaseField(generatedId = true, columnName = "_id")
     private Integer id;
     @DatabaseField(canBeNull = false, uniqueIndexName = "host_port_idx")
-    private String host;
+    private String host_name;
     @DatabaseField(canBeNull = false, uniqueIndexName = "host_port_idx", defaultValue = "2628")
     private Integer port;
     @DatabaseField(canBeNull = true)
@@ -28,13 +28,13 @@ public class DictionaryHost {
         this.port = PORT;
     }
 
-    public DictionaryHost(String host) {
-        this.host = host;
+    public DictionaryHost(String host_name) {
+        this.host_name = host_name;
         this.port = PORT;
     }
 
-    public DictionaryHost(String host, int port) {
-        this.host = host;
+    public DictionaryHost(String host_name, int port) {
+        this.host_name = host_name;
         this.port = port;
     }
 
@@ -42,12 +42,12 @@ public class DictionaryHost {
         return id;
     }
 
-    public String getHost() {
-        return host;
+    public String getHostName() {
+        return host_name;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setHostName(String host_name) {
+        this.host_name = host_name;
     }
 
     public Integer getPort() {

@@ -49,8 +49,8 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
             Iterator<DictionaryHost> iterator = list.iterator();
 
             while (iterator.hasNext()) {
-                DictionaryHost server = iterator.next();
-                dao.create(server);
+                DictionaryHost host = iterator.next();
+                dao.create(host);
             }
         } catch (SQLException e) {
             Log.d("DatabaseManager", "SQLException caught: " + e.toString());
@@ -63,19 +63,23 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
         Log.d("DatabaseOpenHelper", "onUpgrade() called.");
     }
 
-    public DictionaryHost getCurrentServer(Context context)
+    public DictionaryHost getCurrentHost(Context context)
             throws SQLException {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Resources resources = context.getResources();
         int host = Integer.parseInt(prefs.getString(resources.getString(R.string.pref_key_dict_host), resources.getString(R.string.pref_value_dict_host)));
 
-        Dao<DictionaryHost, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryHost.class);
+        Dao<DictionaryHost, Integer> dao = DictClientApplication.getDatabaseManager()
+                .getDao(DictionaryHost.class);
+
         return dao.queryForId(host);
     }
 
     public HostListCursor getHostList()
             throws SQLException {
-        Dao<DictionaryHost, Integer> dao = DictClientApplication.getDatabaseManager().getDao(DictionaryHost.class);
+        Dao<DictionaryHost, Integer> dao = DictClientApplication.getDatabaseManager()
+                .getDao(DictionaryHost.class);
+
         QueryBuilder<DictionaryHost, Integer> qb = dao.queryBuilder();
         CloseableIterator<DictionaryHost> iterator = dao.iterator(qb.prepare());
         AndroidDatabaseResults results = (AndroidDatabaseResults) iterator.getRawResults();

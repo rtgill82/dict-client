@@ -38,7 +38,7 @@ public class HostListCursorAdapter extends CursorAdapter {
     }
 
     private String createItem(Cursor cursor) {
-        String host = cursor.getString(cursor.getColumnIndex("host"));
+        String host = cursor.getString(cursor.getColumnIndex("host_name"));
         Integer port = cursor.getInt(cursor.getColumnIndex("port"));
         String description = cursor.getString(cursor.getColumnIndex("description"));
 
