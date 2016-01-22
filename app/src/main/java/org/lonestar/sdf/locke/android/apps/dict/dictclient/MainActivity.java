@@ -97,13 +97,13 @@ public class MainActivity extends FragmentActivity {
     public void lookupWord(View view) {
         EditText editText = (EditText) findViewById(R.id.search_text);
         Spinner dictionary_spinner = (Spinner) findViewById(R.id.dictionary_spinner);
-        String dict = ((Dictionary) dictionary_spinner.getSelectedItem()).getDatabase();
+        Dictionary dict = (Dictionary) dictionary_spinner.getSelectedItem();
         String word = editText.getText().toString();
         if (!(word.isEmpty())) {
             if (dict != null) {
-                new DefineTask(this).execute(dict, word);
+                new JDictClientTask(this, JDictClientRequest.DEFINE(dict, word)).execute();
             } else {
-                new DefineTask(this).execute(word);
+                new JDictClientTask(this, JDictClientRequest.DEFINE(word)).execute();
             }
         }
     }
@@ -111,7 +111,7 @@ public class MainActivity extends FragmentActivity {
     public void getDictionaryInfo(View view) {
         Spinner dictionary_spinner = (Spinner) findViewById(R.id.dictionary_spinner);
         Dictionary dictionary = (Dictionary) dictionary_spinner.getSelectedItem();
-        new DictionaryInfoTask(this).execute(dictionary);
+        new JDictClientTask(this, JDictClientRequest.DICT_INFO(dictionary)).execute();
     }
 
     public void refreshDictionaries() {
@@ -122,6 +122,6 @@ public class MainActivity extends FragmentActivity {
         } catch (SQLException e) {
             ErrorDialogFragment.show(this, e.getMessage());
         }
-        new ListDictionariesTask(this).execute();
+        new JDictClientTask(this, JDictClientRequest.DICT_LIST()).execute();
     }
 }
