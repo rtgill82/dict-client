@@ -3,6 +3,12 @@ package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
 public class JDictClientRequest {
+    public enum JDictClientCommand {
+        DEFINE,
+        DICT_INFO,
+        DICT_LIST
+    }
+
     private final JDictClientCommand command;
     private final Dictionary dictionary;
     private final String word;

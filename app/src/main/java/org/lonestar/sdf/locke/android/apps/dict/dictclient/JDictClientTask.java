@@ -7,6 +7,7 @@ import android.text.Html;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.lonestar.sdf.locke.android.apps.dict.dictclient.JDictClientRequest.JDictClientCommand;
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
@@ -145,7 +146,7 @@ public class JDictClientTask
         } else {
             Iterator<Definition> itr = definitions.iterator();
             while (itr.hasNext()) {
-                Definition definition = (Definition) itr.next();
+                Definition definition = itr.next();
                 Dictionary dictionary = definition.getDictionary();
 
                 textView.append(Html.fromHtml("<b>" + dictionary.getDescription() + "</b><br>"));
