@@ -13,9 +13,6 @@ import android.widget.TextView;
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-/**
- * Created by locke on 1/17/16.
- */
 public class HostListCursorAdapter extends CursorAdapter {
 
     public HostListCursorAdapter(Context context, Cursor c, int flags) {

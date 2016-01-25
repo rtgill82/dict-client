@@ -5,9 +5,6 @@ import android.database.CursorWrapper;
 
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-/**
- * Created by locke on 11/8/15.
- */
 public class HostListCursor extends CursorWrapper {
     private Cursor cursor;
 

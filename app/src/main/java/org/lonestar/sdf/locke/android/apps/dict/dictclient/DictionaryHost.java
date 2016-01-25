@@ -5,6 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
+@SuppressWarnings("unused")
 @DatabaseTable(tableName = "dict_servers")
 public class DictionaryHost {
     final private static int PORT = 2628;

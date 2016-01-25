@@ -3,6 +3,7 @@ package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+@SuppressWarnings("unused")
 @DatabaseTable(tableName = "dictionaries")
 public class Dictionary {
 
