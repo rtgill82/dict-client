@@ -20,7 +20,7 @@ public class JDictClientRequest {
     }
 
     public static JDictClientRequest DEFINE(String word) {
-        return new JDictClientRequest(JDictClientCommand.DEFINE, null, word);
+        return new JDictClientRequest(JDictClientCommand.DEFINE, new Dictionary(null, "All Dictionaries"), word);
     }
 
     public static JDictClientRequest DEFINE(Dictionary dictionary, String word) {

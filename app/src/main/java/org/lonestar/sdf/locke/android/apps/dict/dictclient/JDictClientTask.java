@@ -2,8 +2,10 @@ package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -150,7 +152,10 @@ public class JDictClientTask
                 Dictionary dictionary = definition.getDictionary();
 
                 textView.append(Html.fromHtml("<b>" + dictionary.getDescription() + "</b><br>"));
-                textView.append(definition.getDefinition() + "\n");
+                textView.append(DefinitionParser.parse(definition));
+                textView.append("\n");
+                textView.setMovementMethod(LinkMovementMethod.getInstance());
+                textView.setHighlightColor(Color.BLUE);
             }
         }
     }
