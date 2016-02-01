@@ -103,7 +103,7 @@ public class JDictClientTask
 
         if (exception != null) {
             if (request.getCommand() == JDictClientCommand.DICT_LIST) disableInput();
-            ErrorDialogFragment.show(context, exception.getMessage());
+            ErrorDialog.show(context, exception.getMessage());
         }
     }
 

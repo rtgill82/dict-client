@@ -38,7 +38,7 @@ public class AboutDialog extends DialogFragment {
                 html = new String(buffer);
             } catch (IOException e) {
                 this.dismiss();
-                ErrorDialogFragment.show(this.getActivity(), "Unable to read file about.html: " + e.getMessage());
+                ErrorDialog.show(this.getActivity(), "Unable to read file about.html: " + e.getMessage());
             }
         }
 

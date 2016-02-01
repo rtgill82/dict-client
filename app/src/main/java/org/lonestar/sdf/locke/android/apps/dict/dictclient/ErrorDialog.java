@@ -9,14 +9,14 @@ import android.os.Build;
 import android.os.Bundle;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class ErrorDialogFragment extends DialogFragment {
+public class ErrorDialog extends DialogFragment {
 
     public static void show(Activity activity, String message) {
         Bundle args = new Bundle();
         args.putString("message", message);
-        ErrorDialogFragment dialog = new ErrorDialogFragment();
+        ErrorDialog dialog = new ErrorDialog();
         dialog.setArguments(args);
-        dialog.show(activity.getFragmentManager(), ErrorDialogFragment.class.getSimpleName());
+        dialog.show(activity.getFragmentManager(), ErrorDialog.class.getSimpleName());
     }
 
     @Override
@@ -28,5 +28,4 @@ public class ErrorDialogFragment extends DialogFragment {
                .setPositiveButton("Ok", null);
         return builder.create();
     }
-
 }

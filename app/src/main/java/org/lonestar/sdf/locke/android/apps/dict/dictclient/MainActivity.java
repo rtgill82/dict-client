@@ -120,7 +120,7 @@ public class MainActivity extends FragmentActivity {
             host = DictClientApplication.getDatabaseManager().getCurrentHost(this);
             setTitle(getString(R.string.app_name) + " - " + host.getHostName());
         } catch (SQLException e) {
-            ErrorDialogFragment.show(this, e.getMessage());
+            ErrorDialog.show(this, e.getMessage());
         }
         new JDictClientTask(this, JDictClientRequest.DICT_LIST()).execute();
     }

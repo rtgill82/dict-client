@@ -31,7 +31,7 @@ public class HostDialog extends DialogFragment {
             ca = new HostListCursorAdapter(context, cursor, 0);
         } catch (SQLException e) {
             this.dismiss();
-            ErrorDialogFragment.show(this.getActivity(), e.getMessage());
+            ErrorDialog.show(this.getActivity(), e.getMessage());
         }
     }
 

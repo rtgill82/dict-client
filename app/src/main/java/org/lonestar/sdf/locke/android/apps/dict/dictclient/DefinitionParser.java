@@ -27,9 +27,9 @@ public final class DefinitionParser {
 
             while (context instanceof ContextWrapper) {
                 if (context instanceof Activity) {
-                    activity = (Activity)context;
+                    activity = (Activity) context;
                 }
-                context = ((ContextWrapper)context).getBaseContext();
+                context = ((ContextWrapper) context).getBaseContext();
             }
 
             if (activity != null)
@@ -55,25 +55,23 @@ public final class DefinitionParser {
 
             if (c == '{') {
                 if (in_braces != true) {
-                    String ss = def_string.substring(brace_pos, i);
                     spanned_string.append(def_string.substring(brace_pos, i));
                     brace_pos = i;
                 }
-
                 in_braces = true;
             }
 
             if (c == '}') {
                 if (in_braces == true) {
-                    String word = def_string.substring(brace_pos+1, i);
+                    String word = def_string.substring(brace_pos + 1, i);
                     spanned_string.append(word);
                     spanned_string.setSpan(
                             new WordSpan(word),
-                            spanned_string.length()-word.length(),
+                            spanned_string.length() - word.length(),
                             spanned_string.length(),
                             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                     );
-                    brace_pos = i+1;
+                    brace_pos = i + 1;
                 }
 
                 in_braces = false;
