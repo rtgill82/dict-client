@@ -1,33 +1,37 @@
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
-  id: 1
-  host_name: dict.org
-  description: The standard dictd server, contains several databases related to English language and the FreeDict databases
-  readonly: true
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
-  host_name: dict.tu-chemnitz.de
-  description: Standard databases
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
-  host_name: www.lojban.org
-  description: To and from lojban and a number of other languages
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
-  host_name: dict.arabeyes.org
-  description: English-Arabic, extensible
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
-  host_name: dict.saugus.net
-  description: The contents of the Saugus.net computer knowledgebase, including a section on computer terms, filename extensions, and free software titles
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
-  host_name: dict.mova.org
-  description: Diverse databases, many Slavic/Russian dictionaries
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
-  host_name: dict.uni-leipzig.de
-  description: Official FreeDict server, most current, OpenSearch description
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
-  host_name: dict.dvo.ru
-  description: Standard databases, russian, ru-en, en-ru dictionaries
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
-  host_name: indica-et-buddhica.org
-  port: 2629
-  description: Sanskrit-Tibetan Buddhist Terminology, Monier-Williams Sanskrit-English Dictionary
-- !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
-  host_name: dict.bibleonline.ru
-  description: This DICT server Contains The Christian Material.
+---
+!!org.lonestar.sdf.locke.android.apps.dict.dictclient.DatabaseRevision
+version: 1
+add_hosts:
+  - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
+    id: 1
+    host_name: dict.org
+    description: The standard dictd server, contains several databases related to English language and the FreeDict databases
+    readonly: true
+  - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
+    host_name: dict.tu-chemnitz.de
+    description: Standard databases
+  - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
+    host_name: www.lojban.org
+    description: To and from lojban and a number of other languages
+  - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
+    host_name: dict.arabeyes.org
+    description: English-Arabic, extensible
+  - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
+    host_name: dict.saugus.net
+    description: The contents of the Saugus.net computer knowledgebase, including a section on computer terms, filename extensions, and free software titles
+  - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
+    host_name: dict.mova.org
+    description: Diverse databases, many Slavic/Russian dictionaries
+  - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
+    host_name: dict.uni-leipzig.de
+    description: Official FreeDict server, most current, OpenSearch description
+  - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
+    host_name: dict.dvo.ru
+    description: Standard databases, russian, ru-en, en-ru dictionaries
+  - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
+    host_name: indica-et-buddhica.org
+    port: 2629
+    description: Sanskrit-Tibetan Buddhist Terminology, Monier-Williams Sanskrit-English Dictionary
+  - !!org.lonestar.sdf.locke.android.apps.dict.dictclient.DictionaryHost
+    host_name: dict.bibleonline.ru
+    description: This DICT server Contains The Christian Material.

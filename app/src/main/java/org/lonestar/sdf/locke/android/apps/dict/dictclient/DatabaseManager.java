@@ -11,7 +11,6 @@ import com.j256.ormlite.android.AndroidDatabaseResults;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
@@ -21,8 +20,6 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class DatabaseManager extends OrmLiteSqliteOpenHelper {
     final private static String DATABASE_NAME    = "dictclient.db";
@@ -42,25 +39,22 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(cs, DictionaryHost.class);
             TableUtils.createTable(cs, Dictionary.class);
-            Dao<DictionaryHost, Integer> dao = DaoManager.createDao(cs, DictionaryHost.class);
-            Yaml yaml = new Yaml();
-            InputStream stream = resources.openRawResource(R.raw.dicthosts);
-            ArrayList<DictionaryHost> list = (ArrayList<DictionaryHost>) yaml.load(stream);
-            Iterator<DictionaryHost> iterator = list.iterator();
-
-            while (iterator.hasNext()) {
-                DictionaryHost host = iterator.next();
-                dao.create(host);
-            }
+            loadData(resources, db, cs, 0, DATABASE_VERSION);
         } catch (SQLException e) {
-            Log.d("DatabaseManager", "SQLException caught: " + e.toString());
+            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource cs, int oldVersion, int newVersion) {
-        Log.d("DatabaseOpenHelper", "onUpgrade() called.");
+        Resources resources = this.context.getResources();
+        try {
+            loadData(resources, db, cs, oldVersion, newVersion);
+        } catch (SQLException e) {
+            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
+            throw new RuntimeException(e);
+        }
     }
 
     public DictionaryHost getCurrentHost(Context context)
@@ -84,5 +78,18 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
         CloseableIterator<DictionaryHost> iterator = dao.iterator(qb.prepare());
         AndroidDatabaseResults results = (AndroidDatabaseResults) iterator.getRawResults();
         return new HostListCursor(results.getRawCursor());
+    }
+
+    private void loadData(Resources resources, SQLiteDatabase db, ConnectionSource cs,
+                          int oldVersion, int newVersion)
+            throws SQLException {
+        Yaml yaml = new Yaml();
+        InputStream stream = resources.openRawResource(R.raw.dicthosts);
+        for (Object data : yaml.loadAll(stream)) {
+            DatabaseRevision rev = (DatabaseRevision) data;
+            if (rev.getVersion() > oldVersion && rev.getVersion() <= newVersion)
+                rev.commit(db, cs);
+        }
+
     }
 }
