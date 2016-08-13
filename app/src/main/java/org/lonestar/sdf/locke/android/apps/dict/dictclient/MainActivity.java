@@ -100,6 +100,7 @@ public class MainActivity extends FragmentActivity {
         Dictionary dict = (Dictionary) dictionary_spinner.getSelectedItem();
         String word = editText.getText().toString();
         if (!(word.isEmpty())) {
+            editText.selectAll();
             if (dict != null) {
                 new JDictClientTask(this, JDictClientRequest.DEFINE(dict, word)).execute();
             } else {
