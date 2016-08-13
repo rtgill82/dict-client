@@ -8,7 +8,9 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.EditText;
 
+import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.Definition;
 
 public final class DefinitionParser {
@@ -32,8 +34,12 @@ public final class DefinitionParser {
                 context = ((ContextWrapper) context).getBaseContext();
             }
 
-            if (activity != null)
+            if (activity != null) {
+                EditText search_text = (EditText) activity.findViewById(R.id.search_text);
+                search_text.setText(word);
+                search_text.selectAll();
                 new JDictClientTask(activity, JDictClientRequest.DEFINE(word)).execute();
+            }
         }
 
         @Override
