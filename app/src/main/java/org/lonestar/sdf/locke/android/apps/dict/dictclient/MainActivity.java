@@ -118,7 +118,7 @@ public class MainActivity extends FragmentActivity {
     public void refreshDictionaries() {
         DictionaryHost host;
         try {
-            host = DictClientApplication.getDatabaseManager().getCurrentHost(this);
+            host = DatabaseManager.getInstance().getCurrentHost(this);
             setTitle(getString(R.string.app_name) + " - " + host.getHostName());
         } catch (SQLException e) {
             ErrorDialog.show(this, e.getMessage());

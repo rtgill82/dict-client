@@ -27,7 +27,7 @@ public class HostDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
         Context context = getActivity();
         try {
-            cursor = DictClientApplication.getDatabaseManager().getHostList();
+            cursor = DatabaseManager.getInstance().getHostList();
             ca = new HostListCursorAdapter(context, cursor, 0);
         } catch (SQLException e) {
             this.dismiss();

@@ -25,11 +25,21 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
     final private static String DATABASE_NAME    = "dictclient.db";
     final private static int    DATABASE_VERSION = 1;
 
+    private static DatabaseManager instance = null;
     private Context context;
 
-    public DatabaseManager(Context context) {
+    private DatabaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
+    }
+
+    static public void initialize(Context context) {
+        if (instance == null)
+            instance = new DatabaseManager(context);
+    }
+
+    static public DatabaseManager getInstance() {
+        return instance;
     }
 
     @Override
@@ -63,16 +73,14 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
         Resources resources = context.getResources();
         int host = Integer.parseInt(prefs.getString(resources.getString(R.string.pref_key_dict_host), resources.getString(R.string.pref_value_dict_host)));
 
-        Dao<DictionaryHost, Integer> dao = DictClientApplication.getDatabaseManager()
-                .getDao(DictionaryHost.class);
+        Dao<DictionaryHost, Integer> dao = instance.getDao(DictionaryHost.class);
 
         return dao.queryForId(host);
     }
 
     public HostListCursor getHostList()
             throws SQLException {
-        Dao<DictionaryHost, Integer> dao = DictClientApplication.getDatabaseManager()
-                .getDao(DictionaryHost.class);
+        Dao<DictionaryHost, Integer> dao = instance.getDao(DictionaryHost.class);
 
         QueryBuilder<DictionaryHost, Integer> qb = dao.queryBuilder();
         CloseableIterator<DictionaryHost> iterator = dao.iterator(qb.prepare());

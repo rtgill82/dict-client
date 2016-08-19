@@ -45,7 +45,7 @@ public class JDictClientTask
         this.request = request;
 
         try {
-            host = DictClientApplication.getDatabaseManager().getCurrentHost(this.context);
+            host = DatabaseManager.getInstance().getCurrentHost(this.context);
         } catch (SQLException e) {
             exception = e;
         }
