@@ -56,6 +56,7 @@ public class HostDialog extends DialogFragment {
                                 editor.putString(getString(R.string.pref_key_dict_host), hostId);
                                 editor.apply();
                                 ((MainActivity) alertDialog.getOwnerActivity()).refreshDictionaries();
+                                ((MainActivity) alertDialog.getOwnerActivity()).reset();
                                 alertDialog.dismiss();
                             }
                         });

@@ -20,6 +20,8 @@ import org.lonestar.sdf.locke.libs.dict.Dictionary;
 import java.sql.SQLException;
 
 public class MainActivity extends FragmentActivity {
+    private DefinitionHistory history = DefinitionHistory.getInstance();
+
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +79,41 @@ public class MainActivity extends FragmentActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem backButton = menu.findItem(R.id.menu_back);
+        MenuItem forwardButton = menu.findItem(R.id.menu_forward);
+
+        if (history.isEmpty()) {
+            backButton.setEnabled(false);
+            forwardButton.setEnabled(false);
+        } else {
+            if (history.canGoBack()) {
+                backButton.setEnabled(true);
+            } else {
+                backButton.setEnabled(false);
+            }
+
+            if (history.canGoForward()) {
+                forwardButton.setEnabled(true);
+            } else {
+                forwardButton.setEnabled(false);
+            }
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
+        case R.id.menu_back:
+            traverseHistory(DefinitionHistory.Direction.BACK);
+            break;
+
+        case R.id.menu_forward:
+            traverseHistory(DefinitionHistory.Direction.FORWARD);
+            break;
+
         case R.id.menu_host:
             HostDialog.show(this);
             break;
@@ -115,6 +150,20 @@ public class MainActivity extends FragmentActivity {
         new JDictClientTask(this, JDictClientRequest.DICT_INFO(dictionary)).execute();
     }
 
+    public void traverseHistory(DefinitionHistory.Direction direction) {
+        HistoryEntry entry;
+
+        if (DefinitionHistory.Direction.BACK == direction)
+            entry = history.back();
+        else
+            entry = history.forward();
+
+        if (entry != null)
+            displayHistoryEntry(entry);
+
+        supportInvalidateOptionsMenu();
+    }
+
     public void refreshDictionaries() {
         DictionaryHost host;
         try {
@@ -124,5 +173,19 @@ public class MainActivity extends FragmentActivity {
             ErrorDialog.show(this, e.getMessage());
         }
         new JDictClientTask(this, JDictClientRequest.DICT_LIST()).execute();
+    }
+
+    public void reset() {
+        EditText search_text = (EditText) findViewById(R.id.search_text);
+        search_text.setText("");
+        history.clear();
+        supportInvalidateOptionsMenu();
+    }
+
+    private void displayHistoryEntry(HistoryEntry entry) {
+        EditText search_text = (EditText) findViewById(R.id.search_text);
+        TextView definition_view = (TextView) findViewById(R.id.definition_view);
+        search_text.setText(entry.getWord());
+        definition_view.setText(entry.getDefinitionText());
     }
 }

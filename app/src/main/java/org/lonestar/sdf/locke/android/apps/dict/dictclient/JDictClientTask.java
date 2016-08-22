@@ -82,28 +82,38 @@ public class JDictClientTask
 
     @Override
     protected void onPostExecute(JDictClientResult result) {
+        DefinitionHistory history = DefinitionHistory.getInstance();
+
         enableInput();
         progressDialog.dismiss();
 
+        if (exception != null) {
+            if (request.getCommand() == JDictClientCommand.DICT_LIST) disableInput();
+            ErrorDialog.show(context, exception.getMessage());
+            return;
+        }
+
         switch(result.getRequest().getCommand()) {
             case DEFINE:
-                displayDefinitions(result.getDefinitions());
+                CharSequence text = displayDefinitions(result.getDefinitions());
+                HistoryEntry entry = new HistoryEntry(request.getWord(), text);
+                history.add(entry);
+                ((MainActivity) context).supportInvalidateOptionsMenu();;
                 break;
+
             case DICT_INFO:
                 displayDictionaryInfo(result.getDictionaryInfo());
+                ((MainActivity) context).reset();
                 break;
+
             case DICT_LIST:
                 ((Spinner) context.findViewById(R.id.dictionary_spinner)).setAdapter(
                         new DictionarySpinnerAdapter(context, result.getDictionaries())
                 );
                 break;
+
             default:
                 break;
-        }
-
-        if (exception != null) {
-            if (request.getCommand() == JDictClientCommand.DICT_LIST) disableInput();
-            ErrorDialog.show(context, exception.getMessage());
         }
     }
 
@@ -139,7 +149,7 @@ public class JDictClientTask
         return dictInfo;
     }
 
-    private void displayDefinitions(List<Definition> definitions) {
+    private CharSequence displayDefinitions(List<Definition> definitions) {
         TextView textView = (TextView) context.findViewById(R.id.definition_view);
         textView.setText("");
 
@@ -158,6 +168,8 @@ public class JDictClientTask
                 textView.setHighlightColor(Color.BLUE);
             }
         }
+
+        return textView.getText();
     }
 
     private void displayDictionaryInfo(String dictInfo) {

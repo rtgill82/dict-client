@@ -7,6 +7,8 @@
     <string name="search_button_text">Lookup Word</string>
     <string name="dictinfo_button_text">Dictionary Info</string>
 
+    <string name="menu_back">Back</string>
+    <string name="menu_forward">Forward</string>
     <string name="menu_host">Select Host</string>
     <string name="menu_about">About</string>
 
