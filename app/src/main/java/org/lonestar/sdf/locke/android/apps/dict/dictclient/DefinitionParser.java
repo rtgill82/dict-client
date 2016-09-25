@@ -35,10 +35,14 @@ public final class DefinitionParser {
             }
 
             if (activity != null) {
-                EditText search_text = (EditText) activity.findViewById(R.id.search_text);
+                EditText search_text =
+                  (EditText) activity.findViewById(R.id.search_text);
                 search_text.setText(word);
                 search_text.selectAll();
-                new JDictClientTask(activity, JDictClientRequest.DEFINE(word)).execute();
+                new JDictClientTask(
+                        activity,
+                        JDictClientRequest.DEFINE(word))
+                  .execute();
             }
         }
 

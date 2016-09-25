@@ -6,37 +6,42 @@ import java.util.LinkedList;
  * Created by locke on 9/24/16.
  */
 
-public class DictionaryHostCache extends LinkedList<DictionaryHost> {
-    @Override
-    public boolean add(DictionaryHost host)
+public class DictionaryHostCache extends LinkedList<DictionaryHost>
+{
+  @Override
+  public boolean add(DictionaryHost host)
     {
-        boolean listHasHost = false;
+      boolean listHasHost = false;
 
-        if (host == null)
-            return false;
+      if (host == null)
+        return false;
 
-        for (DictionaryHost item : this) {
-            if (host.getId() == item.getId()) {
-                listHasHost = true;
-                break;
+      for (DictionaryHost item : this)
+        {
+          if (host.getId() == item.getId())
+            {
+              listHasHost = true;
+              break;
             }
         }
 
-        if (!listHasHost) {
-            super.add(host);
-            return true;
+      if (!listHasHost)
+        {
+          super.add(host);
+          return true;
         }
 
-        return false;
+      return false;
     }
 
-    public DictionaryHost findHostById(Integer id)
+  public DictionaryHost findHostById(Integer id)
     {
-        for (DictionaryHost item : this) {
-            if (item.getId() == id)
-                return item;
+      for (DictionaryHost item : this)
+        {
+          if (item.getId() == id)
+            return item;
         }
 
-        return null;
+      return null;
     }
 }

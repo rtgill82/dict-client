@@ -16,19 +16,23 @@ import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class AboutDialog extends DialogFragment {
+public class AboutDialog extends DialogFragment
+{
     private String html;
 
-    public static void show(FragmentActivity activity) {
+    public static void show(FragmentActivity activity)
+      {
         new AboutDialog().show(activity.getSupportFragmentManager(),
-                activity.getString(R.string.about_text));
-    }
+                               activity.getString(R.string.about_text));
+      }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState)
+      {
         Context context = getActivity();
 
-        if (html == null) {
+        if (html == null)
+          {
             Resources resources = context.getResources();
             InputStream stream = resources.openRawResource(R.raw.about);
 
@@ -36,11 +40,11 @@ public class AboutDialog extends DialogFragment {
                 byte[] buffer = new byte[stream.available()];
                 stream.read(buffer);
                 html = new String(buffer);
-            } catch (IOException e) {
+              } catch (IOException e) {
                 this.dismiss();
                 ErrorDialog.show(this.getActivity(), "Unable to read file about.html: " + e.getMessage());
-            }
-        }
+              }
+          }
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         TextView textView = (TextView) inflater.inflate(R.layout.dialog_about, null);
@@ -48,7 +52,7 @@ public class AboutDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getString(R.string.about_text))
-                .setView(textView);
+          .setView(textView);
         return builder.create();
-    }
+      }
 }

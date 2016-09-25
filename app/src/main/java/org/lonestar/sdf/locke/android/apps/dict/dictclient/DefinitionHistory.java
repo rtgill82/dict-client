@@ -1,6 +1,5 @@
 /*
- * Created:  Sun 14 Aug 2016 05:52:31 PM PDT
- * Modified: Thu 18 Aug 2016 06:39:00 PM PDT
+ * Modified: Sun 25 Sep 2016 02:19:23 PM PDT
  * Copyright © 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of DictClient
@@ -18,217 +17,239 @@ import java.util.Collection;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class DefinitionHistory extends ArrayList<HistoryEntry> {
-    public enum Direction { BACK, FORWARD };
+public class DefinitionHistory extends ArrayList<HistoryEntry>
+{
+  public enum Direction { BACK, FORWARD };
 
-    /** Instance for singleton class. */
-    static private DefinitionHistory instance;
+  /** Instance for singleton class. */
+  static private DefinitionHistory instance;
 
-    /** The current position in the history list. */
-    private int _current_pos = -1;
+  /** The current position in the history list. */
+  private int _current_pos = -1;
 
-    /**
-     * Default constructor.
-     *
-     */
-    private DefinitionHistory() {
-        super();
+  /**
+   * Default constructor.
+   *
+   */
+  private DefinitionHistory()
+    {
+      super();
     }
 
-    /**
-     * Construct new DefinitionHistory from Collection.
-     *
-     */
-    private DefinitionHistory(Collection<? extends HistoryEntry> c) {
-        super(c);
-        _current_pos = c.size() - 1;
+  /**
+   * Construct new DefinitionHistory from Collection.
+   *
+   */
+  private DefinitionHistory(Collection<? extends HistoryEntry> c)
+    {
+      super(c);
+      _current_pos = c.size() - 1;
     }
 
-    /**
-     * Initialize singleton instance with Collection.
-     * Does nothing if instance has been previously initialized.
-     *
-     */
-    @SuppressWarnings("unused")
-    static public void initialize(Collection<? extends HistoryEntry> c) {
-        if (instance == null)
-          instance = new DefinitionHistory(c);
+  /**
+   * Initialize singleton instance with Collection.
+   * Does nothing if instance has been previously initialized.
+   *
+   */
+  @SuppressWarnings("unused")
+  static public void initialize(Collection<? extends HistoryEntry> c)
+    {
+      if (instance == null)
+        instance = new DefinitionHistory(c);
     }
 
-    /**
-     * Get instance of singleton class.
-     *
-     */
-    static public DefinitionHistory getInstance() {
-        if (instance == null)
-          instance = new DefinitionHistory();
+  /**
+   * Get instance of singleton class.
+   *
+   */
+  static public DefinitionHistory getInstance()
+    {
+      if (instance == null)
+        instance = new DefinitionHistory();
 
-        return instance;
+      return instance;
     }
 
-    /**
-     * Return previous Definition in history list.
-     *
-     */
-    public HistoryEntry back() {
-        HistoryEntry rv = null;
-        if (_current_pos > 0) {
-            _current_pos -= 1;
-            rv = this.get(_current_pos);
+  /**
+   * Return previous Definition in history list.
+   *
+   */
+  public HistoryEntry back()
+    {
+      HistoryEntry rv = null;
+      if (_current_pos > 0)
+        {
+          _current_pos -= 1;
+          rv = this.get(_current_pos);
         }
-        return rv;
+      return rv;
     }
 
-    public boolean canGoBack() {
-        return (_current_pos > 0);
+  public boolean canGoBack()
+    {
+      return (_current_pos > 0);
     }
 
-    /**
-     * Return next Definition in history list.
-     *
-     */
-    public HistoryEntry forward() {
-        HistoryEntry rv = null;
-        if (_current_pos < this.size() - 1) {
-            _current_pos += 1;
-            rv = this.get(_current_pos);
+  /**
+   * Return next Definition in history list.
+   *
+   */
+  public HistoryEntry forward()
+    {
+      HistoryEntry rv = null;
+      if (_current_pos < this.size() - 1)
+        {
+          _current_pos += 1;
+          rv = this.get(_current_pos);
         }
-        return rv;
+      return rv;
     }
 
-    public boolean canGoForward() {
-        return (_current_pos < (this.size() - 1));
+  public boolean canGoForward()
+    {
+      return (_current_pos < (this.size() - 1));
     }
 
-    /**
-     * Appends definition after current history position.
-     *
-     */
-    @Override
-    public boolean add(HistoryEntry entry) {
-        clearToEnd();
+  /**
+   * Appends definition after current history position.
+   *
+   */
+  @Override
+  public boolean add(HistoryEntry entry)
+    {
+      clearToEnd();
+      _current_pos += 1;
+      return super.add(entry);
+    }
+
+  /**
+   * Inserts definition at specified position in history.
+   *
+   */
+  @Override
+  public void add(int index, HistoryEntry entry)
+    {
+      if (index <= _current_pos)
         _current_pos += 1;
-        return super.add(entry);
+      super.add(index, entry);
     }
 
-    /**
-     * Inserts definition at specified position in history.
-     *
-     */
-    @Override
-    public void add(int index, HistoryEntry entry) {
-        if (index <= _current_pos)
-            _current_pos += 1;
-        super.add(index, entry);
+  /**
+   * Appends all definitions after the current history position.
+   *
+   */
+  @Override
+  public boolean addAll(Collection<? extends HistoryEntry> c)
+    {
+      clearToEnd();
+      _current_pos += c.size() - 1;
+      return super.addAll(c);
     }
 
-    /**
-     * Appends all definitions after the current history position.
-     *
-     */
-    @Override
-    public boolean addAll(Collection<? extends HistoryEntry> c) {
-        clearToEnd();
+  /**
+   * Insert all definitions at specified position in history.
+   *
+   */
+  @Override
+  public boolean addAll(int index, Collection<? extends HistoryEntry> c)
+    {
+      if (index <= _current_pos)
         _current_pos += c.size() - 1;
-        return super.addAll(c);
+      return super.addAll(index, c);
     }
 
-    /**
-     * Insert all definitions at specified position in history.
-     *
-     */
-    @Override
-    public boolean addAll(int index, Collection<? extends HistoryEntry> c) {
-        if (index <= _current_pos)
-            _current_pos += c.size() - 1;
-        return super.addAll(index, c);
+  /**
+   * Clears definition history.
+   *
+   */
+  @Override
+  public void clear()
+    {
+      _current_pos = -1;
+      super.clear();
     }
 
-    /**
-     * Clears definition history.
-     *
-     */
-    @Override
-    public void clear() {
+  /**
+   * Removes the history entry at the specified position in the definition
+   * history.
+   *
+   */
+  @Override
+  public HistoryEntry remove(int index)
+    {
+      HistoryEntry rv = super.remove(index);
+
+      if (this.size() == 0)
         _current_pos = -1;
-        super.clear();
+      else if (rv != null && _current_pos > 0 && index <= _current_pos)
+        _current_pos -= 1;
+
+      return rv;
     }
 
-    /**
-     * Removes the history entry at the specified position in the definition
-     * history.
-     *
-     */
-    @Override
-    public HistoryEntry remove(int index) {
-        HistoryEntry rv = super.remove(index);
+  /**
+   * Removes first occurrence of the specified history entry from definition
+   * history.
+   *
+   */
+  @Override
+  public boolean remove(Object o)
+    {
+      int index = this.indexOf(o);
+      boolean rv = super.remove(o);
 
-        if (this.size() == 0)
-            _current_pos = -1;
-        else if (rv != null && _current_pos > 0 && index <= _current_pos)
-            _current_pos -= 1;
+      if (rv && _current_pos > 0 && index <= _current_pos)
+        _current_pos -= 1;
 
-        return rv;
+      return rv;
     }
 
-    /**
-     * Removes first occurrence of the specified history entry from definition
-     * history.
-     *
-     */
-    @Override
-    public boolean remove(Object o) {
-        int index = this.indexOf(o);
-        boolean rv = super.remove(o);
+  /**
+   * Remove all history entries from this history in the specified
+   * Collection.
+   *
+   */
+  @Override
+  public boolean removeAll(Collection<?> c)
+    {
+      HistoryEntry entry = this.get(_current_pos);
 
-        if (rv && _current_pos > 0 && index <= _current_pos)
-            _current_pos -= 1;
-
-        return rv;
-    }
-
-    /**
-     * Remove all history entries from this history in the specified
-     * Collection.
-     *
-     */
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        HistoryEntry entry = this.get(_current_pos);
-
-        while (true) {
-            if (c.contains(entry) && _current_pos > 0) {
-                _current_pos -= 1;
-                entry = this.get(_current_pos);
-                continue;
+      while (true) {
+          if (c.contains(entry) && _current_pos > 0)
+            {
+              _current_pos -= 1;
+              entry = this.get(_current_pos);
+              continue;
             }
 
-            break;
-        }
+          break;
+      }
 
-        return super.removeAll(c);
+      return super.removeAll(c);
     }
 
-    /**
-     * Remove all history entries specified between fromIndex and toIndex.
-     *
-     */
-    @Override
-    protected void removeRange(int fromIndex, int toIndex) {
-        if (_current_pos > toIndex)
-            _current_pos = _current_pos - (toIndex - fromIndex);
-        else if (_current_pos > fromIndex)
-            _current_pos = fromIndex;
+  /**
+   * Remove all history entries specified between fromIndex and toIndex.
+   *
+   */
+  @Override
+  protected void removeRange(int fromIndex, int toIndex)
+    {
+      if (_current_pos > toIndex)
+        _current_pos = _current_pos - (toIndex - fromIndex);
+      else if (_current_pos > fromIndex)
+        _current_pos = fromIndex;
 
-        super.removeRange(fromIndex, toIndex);
+      super.removeRange(fromIndex, toIndex);
     }
 
-    /**
-     * Clears from current position in history until end of list.
-     *
-     */
-    private void clearToEnd() {
-        for (int i = this.size() - 1; i > _current_pos; i--)
-            super.remove(i);
+  /**
+   * Clears from current position in history until end of list.
+   *
+   */
+  private void clearToEnd()
+    {
+      for (int i = this.size() - 1; i > _current_pos; i--)
+        super.remove(i);
     }
 }

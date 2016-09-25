@@ -5,23 +5,28 @@ import android.database.CursorWrapper;
 
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-public class HostListCursor extends CursorWrapper {
-    private Cursor cursor;
+public class HostListCursor extends CursorWrapper
+{
+  private Cursor cursor;
 
-    public HostListCursor(Cursor cursor) {
-        super(cursor);
-        this.cursor = cursor;
+  public HostListCursor(Cursor cursor)
+    {
+      super(cursor);
+      this.cursor = cursor;
     }
 
-    public String getString(int columnIndex) {
-        if (cursor.getColumnName(columnIndex).equals("port")) {
-            if (cursor.getInt(columnIndex) == JDictClient.DEFAULT_PORT) {
-                return "";
+  public String getString(int columnIndex)
+    {
+      if (cursor.getColumnName(columnIndex).equals("port"))
+        {
+          if (cursor.getInt(columnIndex) == JDictClient.DEFAULT_PORT)
+            {
+              return "";
             } else {
-                return ":" + cursor.getString(columnIndex);
+              return ":" + cursor.getString(columnIndex);
             }
         } else {
-            return cursor.getString(columnIndex);
+          return cursor.getString(columnIndex);
         }
     }
 }
