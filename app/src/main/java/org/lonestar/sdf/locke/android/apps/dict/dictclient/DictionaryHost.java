@@ -3,7 +3,10 @@ package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import org.lonestar.sdf.locke.libs.dict.Dictionary;
+
 import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("unused")
 @DatabaseTable(tableName = "dict_servers")
@@ -25,6 +28,8 @@ public class DictionaryHost {
     @DatabaseField(canBeNull = true)
     private Date last_db_refresh;
 
+    private List<Dictionary> dictionaries = null;
+
     public DictionaryHost() {
         this.port = PORT;
     }
@@ -41,6 +46,11 @@ public class DictionaryHost {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id)
+    {
+        this.id = id;
     }
 
     public String getHostName() {
@@ -89,5 +99,15 @@ public class DictionaryHost {
 
     public void setLastDBRefresh(Date date) {
         this.last_db_refresh = date;
+    }
+
+    public List<Dictionary> getDictionaries()
+    {
+        return dictionaries;
+    }
+
+    public void setDictionaries(List<Dictionary> list)
+    {
+        dictionaries = list;
     }
 }

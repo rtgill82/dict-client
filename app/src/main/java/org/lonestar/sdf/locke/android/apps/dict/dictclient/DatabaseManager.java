@@ -78,6 +78,12 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
         return dao.queryForId(host);
     }
 
+    public DictionaryHost getHostById(Integer id)
+        throws SQLException {
+        Dao<DictionaryHost, Integer> dao = instance.getDao(DictionaryHost.class);
+        return dao.queryForId(id);
+    }
+
     public HostListCursor getHostList()
             throws SQLException {
         Dao<DictionaryHost, Integer> dao = instance.getDao(DictionaryHost.class);

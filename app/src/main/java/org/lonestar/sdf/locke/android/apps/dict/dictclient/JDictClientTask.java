@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.lonestar.sdf.locke.android.apps.dict.dictclient.JDictClientRequest.JDictClientCommand;
@@ -15,7 +14,6 @@ import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
@@ -43,12 +41,7 @@ public class JDictClientTask
         super();
         this.context = context;
         this.request = request;
-
-        try {
-            host = DatabaseManager.getInstance().getCurrentHost(this.context);
-        } catch (SQLException e) {
-            exception = e;
-        }
+        host = ((MainActivity) context).getCurrentHost();
     }
 
     @Override
@@ -107,9 +100,7 @@ public class JDictClientTask
                 break;
 
             case DICT_LIST:
-                ((Spinner) context.findViewById(R.id.dictionary_spinner)).setAdapter(
-                        new DictionarySpinnerAdapter(context, result.getDictionaries())
-                );
+                ((MainActivity) context).setDictionaries(result.getDictionaries());
                 break;
 
             default:

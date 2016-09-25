@@ -51,12 +51,11 @@ public class HostDialog extends DialogFragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 AlertDialog alertDialog = (AlertDialog) dialog;
                                 HostListCursor c = (HostListCursor) alertDialog.getListView().getItemAtPosition(which);
-                                String hostId = c.getString(c.getColumnIndex("_id"));
+                                Integer hostId = c.getInt(c.getColumnIndexOrThrow("_id"));
                                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(alertDialog.getContext()).edit();
-                                editor.putString(getString(R.string.pref_key_dict_host), hostId);
+                                editor.putString(getString(R.string.pref_key_dict_host), hostId.toString());
                                 editor.apply();
-                                ((MainActivity) alertDialog.getOwnerActivity()).refreshDictionaries();
-                                ((MainActivity) alertDialog.getOwnerActivity()).reset();
+                                ((MainActivity) alertDialog.getOwnerActivity()).setCurrentHostById(hostId);
                                 alertDialog.dismiss();
                             }
                         });

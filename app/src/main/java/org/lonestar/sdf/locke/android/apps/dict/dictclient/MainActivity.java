@@ -18,8 +18,11 @@ import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class MainActivity extends FragmentActivity {
+    private DictionaryHost currentHost;
+    private DictionaryHostCache hostCache;
     private DefinitionHistory history = DefinitionHistory.getInstance();
 
     @SuppressLint("NewApi")
@@ -67,6 +70,13 @@ public class MainActivity extends FragmentActivity {
                 definition_view.setText("");
             }
         });
+
+        hostCache = new DictionaryHostCache();
+        try {
+            setCurrentHost(DatabaseManager.getInstance().getCurrentHost(this));
+        } catch (SQLException e) {
+            ErrorDialog.show(this, e.getMessage());
+        }
 
         refreshDictionaries();
     }
@@ -128,6 +138,50 @@ public class MainActivity extends FragmentActivity {
 
         return true;
     }
+    public DictionaryHost getCurrentHost()
+    {
+        return currentHost;
+    }
+
+    public void setCurrentHost(DictionaryHost host)
+    {
+        String hostname = "No Host Currently Selected";
+
+        hostCache.add(currentHost);
+        currentHost = host;
+        if (host != null) {
+            hostname = host.getHostName();
+            if (host.getDictionaries() == null)
+                refreshDictionaries();
+            else
+                setDictionarySpinnerData(host.getDictionaries());
+        }
+        setTitle(getString(R.string.app_name) + " - " + hostname);
+        reset();
+    }
+
+    public void setCurrentHostById(Integer id)
+    {
+        DictionaryHost host = hostCache.findHostById(id);
+
+        if (host == null) {
+            try {
+                host = DatabaseManager.getInstance().getHostById(id);
+            } catch (SQLException e) {
+                ErrorDialog.show(this, e.getMessage());
+            }
+        }
+
+        setCurrentHost(host);
+    }
+
+    public void setDictionaries(List<Dictionary> list)
+    {
+        if (currentHost != null) {
+            currentHost.setDictionaries(list);
+            setDictionarySpinnerData(list);
+        }
+    }
 
     public void lookupWord(View view) {
         EditText editText = (EditText) findViewById(R.id.search_text);
@@ -165,13 +219,6 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void refreshDictionaries() {
-        DictionaryHost host;
-        try {
-            host = DatabaseManager.getInstance().getCurrentHost(this);
-            setTitle(getString(R.string.app_name) + " - " + host.getHostName());
-        } catch (SQLException e) {
-            ErrorDialog.show(this, e.getMessage());
-        }
         new JDictClientTask(this, JDictClientRequest.DICT_LIST()).execute();
     }
 
@@ -180,6 +227,11 @@ public class MainActivity extends FragmentActivity {
         search_text.setText("");
         history.clear();
         supportInvalidateOptionsMenu();
+    }
+
+    private void setDictionarySpinnerData(List<Dictionary> list) {
+        ((Spinner) findViewById(R.id.dictionary_spinner)).setAdapter(
+                new DictionarySpinnerAdapter(this, list));
     }
 
     private void displayHistoryEntry(HistoryEntry entry) {
