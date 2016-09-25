@@ -185,7 +185,7 @@ public class MainActivity extends FragmentActivity
 
   public void setCurrentHostById(Integer id)
     {
-      DictionaryHost host = hostCache.findHostById(id);
+      DictionaryHost host = hostCache.getHostById(id);
 
       if (host == null)
         {
