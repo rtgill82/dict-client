@@ -53,7 +53,6 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
       Resources resources = this.context.getResources();
       try {
           TableUtils.createTable(cs, DictionaryHost.class);
-          TableUtils.createTable(cs, Dictionary.class);
           loadData(resources, db, cs, 0, DATABASE_VERSION);
       } catch (SQLException e) {
           Log.e("DatabaseManager", "SQLException caught: " + e.toString());
