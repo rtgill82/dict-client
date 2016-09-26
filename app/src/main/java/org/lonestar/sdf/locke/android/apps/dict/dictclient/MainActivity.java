@@ -147,7 +147,7 @@ public class MainActivity extends FragmentActivity
           break;
 
         case R.id.menu_host:
-          HostDialog.show(this);
+          SelectHostDialog.show(this);
           break;
 
         case R.id.menu_about:
