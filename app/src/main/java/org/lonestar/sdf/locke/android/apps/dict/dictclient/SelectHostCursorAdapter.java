@@ -13,10 +13,10 @@ import android.widget.TextView;
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-public class HostListCursorAdapter extends CursorAdapter
+public class SelectHostCursorAdapter extends CursorAdapter
 {
 
-  public HostListCursorAdapter(Context context, Cursor c, int flags)
+  public SelectHostCursorAdapter(Context context, Cursor c, int flags)
     {
       super(context, c, flags);
     }
@@ -24,8 +24,9 @@ public class HostListCursorAdapter extends CursorAdapter
   public View newView(Context context, Cursor cursor, ViewGroup parent)
     {
       LayoutInflater inflater = LayoutInflater.from(context);
-      CheckedTextView view =
-        (CheckedTextView) inflater.inflate(R.layout.host_list_item, null);
+      CheckedTextView view = (CheckedTextView) inflater.inflate(
+          R.layout.select_host_list_item, null
+        );
       String itemText = createItem(cursor);
       view.setText(Html.fromHtml(itemText));
       return view;
