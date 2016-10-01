@@ -16,7 +16,7 @@ import java.sql.SQLException;
 
 public class SelectHostDialog extends DialogFragment
 {
-  private HostListCursor cursor;
+  private DictionaryHostCursor cursor;
   private SelectHostCursorAdapter ca;
 
   public static void show(FragmentActivity activity)
@@ -58,8 +58,8 @@ public class SelectHostDialog extends DialogFragment
               public void onClick(DialogInterface dialog, int which)
                 {
                   AlertDialog alertDialog = (AlertDialog) dialog;
-                  HostListCursor c =
-                    (HostListCursor) alertDialog.getListView()
+                  DictionaryHostCursor c =
+                    (DictionaryHostCursor) alertDialog.getListView()
                                        .getItemAtPosition(which);
                   Integer hostId = c.getInt(c.getColumnIndexOrThrow("_id"));
                   SharedPreferences.Editor editor =
@@ -77,7 +77,7 @@ public class SelectHostDialog extends DialogFragment
       return builder.create();
     }
 
-  private int getSelectedHost(HostListCursor cursor, Integer hostId)
+  private int getSelectedHost(DictionaryHostCursor cursor, Integer hostId)
     {
       int rv = -1;
 

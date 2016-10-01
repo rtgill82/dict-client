@@ -5,11 +5,11 @@ import android.database.CursorWrapper;
 
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-public class HostListCursor extends CursorWrapper
+public class DictionaryHostCursor extends CursorWrapper
 {
   private Cursor cursor;
 
-  public HostListCursor(Cursor cursor)
+  public DictionaryHostCursor(Cursor cursor)
     {
       super(cursor);
       this.cursor = cursor;

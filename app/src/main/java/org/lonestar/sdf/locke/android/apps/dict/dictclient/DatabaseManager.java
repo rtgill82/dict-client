@@ -93,7 +93,7 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
       return dao.queryForId(id);
     }
 
-  public HostListCursor getHostList()
+  public DictionaryHostCursor getHostList()
     throws SQLException
     {
       Dao<DictionaryHost, Integer> dao = instance.getDao(DictionaryHost.class);
@@ -101,7 +101,7 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
       CloseableIterator<DictionaryHost> iterator = dao.iterator(qb.prepare());
       AndroidDatabaseResults results =
         (AndroidDatabaseResults) iterator.getRawResults();
-      return new HostListCursor(results.getRawCursor());
+      return new DictionaryHostCursor(results.getRawCursor());
     }
 
   private void loadData(Resources resources, SQLiteDatabase db,
