@@ -4,6 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
+import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
 import java.util.Date;
 import java.util.List;
@@ -121,5 +122,14 @@ public class DictionaryHost
   public void setDictionaries(List<Dictionary> list)
     {
       dictionaries = list;
+    }
+
+  @Override
+  public String toString()
+    {
+      if (this.port != JDictClient.DEFAULT_PORT)
+        return this.host_name + ":" + this.port;
+      else
+        return this.host_name;
     }
 }
