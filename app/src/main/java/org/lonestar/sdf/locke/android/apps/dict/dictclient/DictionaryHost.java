@@ -46,6 +46,13 @@ public class DictionaryHost
       this.port = port;
     }
 
+  public DictionaryHost(int id, String host_name, int port)
+    {
+      this.id = id;
+      this.host_name = host_name;
+      this.port = port;
+    }
+
   public Integer getId()
     {
       return id;

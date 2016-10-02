@@ -15,6 +15,45 @@ public class DictionaryHostCursor extends CursorWrapper
       this.cursor = cursor;
     }
 
+  public DictionaryHost getDictionaryHost()
+    {
+      DictionaryHost host = new DictionaryHost(getId(), getHostName(), getPort());
+      host.setDescription(getDescription());
+      host.setReadonly(isReadonly());
+      host.setUserDefined(isUserDefined());
+      return host;
+    }
+
+  public Integer getId()
+    {
+      return (cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
+    }
+
+  public String getHostName()
+    {
+      return (cursor.getString(cursor.getColumnIndexOrThrow("host_name")));
+    }
+
+  public Integer getPort()
+    {
+      return (cursor.getInt(cursor.getColumnIndexOrThrow("port")));
+    }
+
+  public String getDescription()
+    {
+      return (cursor.getString(cursor.getColumnIndexOrThrow("description")));
+    }
+
+  public boolean isReadonly()
+    {
+      return (cursor.getInt(cursor.getColumnIndexOrThrow("readonly")) != 0);
+    }
+
+  public boolean isUserDefined()
+    {
+      return (cursor.getInt(cursor.getColumnIndexOrThrow("user_defined")) != 0);
+    }
+
   public String getString(int columnIndex)
     {
       if (cursor.getColumnName(columnIndex).equals("port"))
