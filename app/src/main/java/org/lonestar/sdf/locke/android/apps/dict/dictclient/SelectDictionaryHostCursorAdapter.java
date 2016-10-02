@@ -13,12 +13,13 @@ import android.widget.TextView;
 import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-public class SelectHostCursorAdapter extends CursorAdapter
+public class SelectDictionaryHostCursorAdapter extends CursorAdapter
 {
 
-  public SelectHostCursorAdapter(Context context, Cursor c, int flags)
+  public SelectDictionaryHostCursorAdapter(Context context, Cursor cursor,
+                                           int flags)
     {
-      super(context, c, flags);
+      super(context, cursor, flags);
     }
 
   public View newView(Context context, Cursor cursor, ViewGroup parent)

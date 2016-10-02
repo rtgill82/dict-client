@@ -17,7 +17,7 @@ import java.sql.SQLException;
 public class SelectHostDialog extends DialogFragment
 {
   private DictionaryHostCursor cursor;
-  private SelectHostCursorAdapter ca;
+  private SelectDictionaryHostCursorAdapter ca;
 
   public static void show(FragmentActivity activity)
     {
@@ -34,7 +34,7 @@ public class SelectHostDialog extends DialogFragment
       Context context = getActivity();
       try {
           cursor = DatabaseManager.getInstance().getHostList();
-          ca = new SelectHostCursorAdapter(context, cursor, 0);
+          ca = new SelectDictionaryHostCursorAdapter(context, cursor, 0);
       } catch (SQLException e) {
           this.dismiss();
           ErrorDialog.show(this.getActivity(), e.getMessage());
