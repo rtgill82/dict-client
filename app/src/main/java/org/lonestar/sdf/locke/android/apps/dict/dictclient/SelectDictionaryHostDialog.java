@@ -14,16 +14,16 @@ import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 
 import java.sql.SQLException;
 
-public class SelectHostDialog extends DialogFragment
+public class SelectDictionaryHostDialog extends DialogFragment
 {
   private DictionaryHostCursor cursor;
   private SelectDictionaryHostCursorAdapter ca;
 
   public static void show(FragmentActivity activity)
     {
-      new SelectHostDialog().show(
+      new SelectDictionaryHostDialog().show(
           activity.getSupportFragmentManager(),
-          SelectHostDialog.class.getName()
+          SelectDictionaryHostDialog.class.getName()
       );
     }
 
