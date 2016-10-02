@@ -20,14 +20,12 @@ public class DictionaryHost
     private String host_name;
   @DatabaseField(canBeNull = false, uniqueIndexName = "host_port_idx", defaultValue = "2628")
     private Integer port;
-  @DatabaseField(canBeNull = true)
+  @DatabaseField()
     private String description;
   @DatabaseField(defaultValue = "false")
     private boolean readonly;
   @DatabaseField(defaultValue = "false")
     private boolean user_defined;
-  @DatabaseField(canBeNull = true)
-    private Date last_db_refresh;
 
   private List<Dictionary> dictionaries = null;
 
@@ -106,16 +104,6 @@ public class DictionaryHost
   public void setUserDefined(boolean userDefined)
     {
       this.user_defined = userDefined;
-    }
-
-  public Date getLastDBRefresh()
-    {
-      return last_db_refresh;
-    }
-
-  public void setLastDBRefresh(Date date)
-    {
-      this.last_db_refresh = date;
     }
 
   public List<Dictionary> getDictionaries()
