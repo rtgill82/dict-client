@@ -1,14 +1,12 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ErrorDialog extends DialogFragment
 {
   public static void show(Activity activity, String message)
@@ -18,7 +16,7 @@ public class ErrorDialog extends DialogFragment
       ErrorDialog dialog = new ErrorDialog();
       dialog.setArguments(args);
       dialog.show(
-          activity.getFragmentManager(),
+          ((FragmentActivity) activity).getSupportFragmentManager(),
           ErrorDialog.class.getSimpleName()
       );
     }
