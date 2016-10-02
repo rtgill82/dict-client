@@ -26,6 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="org.lonestar.sdf.locke.android.apps.dict.dictclient.HostManagementActivity" />
     </application>
 
 </manifest>

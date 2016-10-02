@@ -1,6 +1,7 @@
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
@@ -99,7 +100,6 @@ public class MainActivity extends FragmentActivity
   @Override
   public boolean onCreateOptionsMenu(Menu menu)
     {
-      // Inflate the menu; this adds items to the action bar if it is present.
       getMenuInflater().inflate(R.menu.activity_main, menu);
       return super.onCreateOptionsMenu(menu);
     }
@@ -148,6 +148,11 @@ public class MainActivity extends FragmentActivity
 
         case R.id.menu_host:
           SelectDictionaryHostDialog.show(this);
+          break;
+
+        case R.id.menu_manage_hosts:
+          Intent intent = new Intent(MainActivity.this, HostManagementActivity.class);
+          startActivity(intent);
           break;
 
         case R.id.menu_about:

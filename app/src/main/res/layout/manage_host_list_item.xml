@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/manage_host_list_item"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:padding="@dimen/definition_padding">
+
+    <TextView
+        android:id="@+id/manage_host_list_item_textview"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:freezesText="true" />
+
+    <ImageButton
+        android:id="@+id/manage_host_list_item_delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/manage_host_list_item_edit_button"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_vertical"
+        android:padding="@dimen/definition_padding"
+        android:src="@drawable/ic_clear_black_24dp"
+        android:background="?android:selectableItemBackground"
+        android:onClick="delete" />
+
+    <ImageButton
+        android:id="@+id/manage_host_list_item_edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_vertical"
+        android:padding="@dimen/definition_padding"
+        android:src="@drawable/ic_edit_black_24dp"
+        android:background="?android:selectableItemBackground" />
+
+</RelativeLayout>

@@ -20,6 +20,11 @@
         android:showAsAction="never"
         android:title="@string/menu_host" />
     <item
+        android:id="@+id/menu_manage_hosts"
+        android:orderInCategory="91"
+        android:showAsAction="never"
+        android:title="@string/menu_manage_hosts" />
+    <item
         android:id="@+id/menu_about"
         android:orderInCategory="110"
         android:showAsAction="never"

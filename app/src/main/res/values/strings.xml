@@ -7,10 +7,15 @@
     <string name="search_button_text">Lookup Word</string>
     <string name="dictinfo_button_text">Dictionary Info</string>
 
+    <!-- MainActivity Menus -->
     <string name="menu_back">Back</string>
     <string name="menu_forward">Forward</string>
     <string name="menu_host">Select Host</string>
+    <string name="menu_manage_hosts">Manage Hosts</string>
     <string name="menu_about">About</string>
+
+    <!-- HostManagementActivity Menus -->
+    <string name="menu_add">Add Host</string>
 
     <string name="pref_key_dict_host">dict_host</string>
     <string name="pref_value_dict_host">1</string>

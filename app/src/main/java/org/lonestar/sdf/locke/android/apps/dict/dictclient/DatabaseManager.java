@@ -93,6 +93,13 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
       return dao.queryForId(id);
     }
 
+  public boolean deleteHostById(int id)
+    throws SQLException
+    {
+      Dao<DictionaryHost, Integer> dao = instance.getDao(DictionaryHost.class);
+      return (dao.deleteById(id) == 1);
+    }
+
   public DictionaryHostCursor getHostList()
     throws SQLException
     {
