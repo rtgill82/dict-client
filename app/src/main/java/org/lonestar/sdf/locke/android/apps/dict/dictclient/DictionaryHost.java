@@ -6,7 +6,6 @@ import com.j256.ormlite.table.DatabaseTable;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("unused")

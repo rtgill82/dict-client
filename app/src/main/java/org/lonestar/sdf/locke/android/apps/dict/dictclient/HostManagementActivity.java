@@ -4,8 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -35,6 +35,22 @@ public class HostManagementActivity extends FragmentActivity
       return super.onCreateOptionsMenu(menu);
     }
 
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item)
+    {
+      switch(item.getItemId())
+        {
+        case R.id.menu_add:
+          EditDictionaryHostDialog.show(this);
+          break;
+
+        default:
+          return super.onOptionsItemSelected(item);
+        }
+
+      return true;
+    }
+
   public void delete(View view)
     {
       int pos = host_list.getPositionForView((View) view.getParent());
@@ -61,7 +77,7 @@ public class HostManagementActivity extends FragmentActivity
       dialog.create().show();
     }
 
-  private boolean refreshHostList()
+  public boolean refreshHostList()
     {
       boolean rv = true;
       try {

@@ -20,6 +20,8 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DatabaseManager extends OrmLiteSqliteOpenHelper
 {
@@ -109,6 +111,29 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
       AndroidDatabaseResults results =
         (AndroidDatabaseResults) iterator.getRawResults();
       return new DictionaryHostCursor(results.getRawCursor());
+    }
+
+
+  public void saveHost(DictionaryHost host)
+    throws SQLException
+    {
+      Dao<DictionaryHost, Integer> dao = getDao(DictionaryHost.class);
+
+      if (host.getId() == null)
+        {
+          Map<String, Object> map = new HashMap();
+          map.put("host_name", host.getHostName());
+          map.put("port", host.getPort());
+          if (!dao.queryForFieldValues(map).isEmpty())
+            {
+              SQLException exception =
+                  new SQLException("The host " + host.getHostName() + ":"
+                      + host.getPort().toString() + " already exists.");
+              throw exception;
+            }
+        }
+
+      dao.createOrUpdate(host);
     }
 
   private void loadData(Resources resources, SQLiteDatabase db,

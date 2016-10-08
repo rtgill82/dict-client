@@ -17,6 +17,14 @@
     <!-- HostManagementActivity Menus -->
     <string name="menu_add">Add Host</string>
 
+    <!-- EditDictionaryHostDialog Strings -->
+    <string name="dialog_edit_tag">EditDictionaryHostDialog</string>
+    <string name="dialog_edit_host_hint">Host Name</string>
+    <string name="dialog_edit_port_hint">Port</string>
+    <string name="dialog_edit_description_hint">Description</string>
+    <string name="dialog_add_title">Add New Host</string>
+    <string name="dialog_edit_title">Edit Host</string>
+
     <string name="pref_key_dict_host">dict_host</string>
     <string name="pref_value_dict_host">1</string>
 </resources>
