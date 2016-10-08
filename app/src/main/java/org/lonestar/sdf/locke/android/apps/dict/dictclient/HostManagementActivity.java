@@ -53,9 +53,7 @@ public class HostManagementActivity extends FragmentActivity
 
   public void delete(View view)
     {
-      int pos = host_list.getPositionForView((View) view.getParent());
-      final DictionaryHost host =
-        ((DictionaryHostCursor) adapter.getItem(pos)).getDictionaryHost();
+      final DictionaryHost host = getSelectedHost(view);
 
       // Confirm Dialog
       AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -77,6 +75,12 @@ public class HostManagementActivity extends FragmentActivity
       dialog.create().show();
     }
 
+  public void edit(View view)
+    {
+      final DictionaryHost host = getSelectedHost(view);
+      EditDictionaryHostDialog.show(this, host);
+    }
+
   public boolean refreshHostList()
     {
       boolean rv = true;
@@ -90,5 +94,11 @@ public class HostManagementActivity extends FragmentActivity
         rv = false;
       }
       return rv;
+    }
+
+  private DictionaryHost getSelectedHost(View view)
+    {
+      int pos = host_list.getPositionForView((View) view.getParent());
+      return ((DictionaryHostCursor) adapter.getItem(pos)).getDictionaryHost();
     }
 }

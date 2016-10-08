@@ -36,6 +36,7 @@
         android:layout_gravity="center_vertical"
         android:padding="@dimen/definition_padding"
         android:src="@drawable/ic_edit_black_24dp"
-        android:background="?android:selectableItemBackground" />
+        android:background="?android:selectableItemBackground"
+        android:onClick="edit" />
 
 </RelativeLayout>
