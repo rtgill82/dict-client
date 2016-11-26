@@ -1,5 +1,5 @@
 /*
- * Modified: Sat 26 Nov 2016 02:42:25 PM PST
+ * Modified: Sat 26 Nov 2016 03:03:16 PM PST
  * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of DictClient
@@ -300,7 +300,9 @@ public class MainActivity extends FragmentActivity
   public void reset()
   {
     EditText searchText = (EditText) findViewById(R.id.search_text);
+    TextView definitionView = (TextView) findViewById(R.id.definition_view);
     searchText.setText("");
+    definitionView.setText("");
     history.clear();
     supportInvalidateOptionsMenu();
   }
