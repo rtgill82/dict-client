@@ -1,3 +1,11 @@
+/*
+ * Modified: Sat 26 Nov 2016 02:42:13 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ *
+ * This file is part of DictClient
+ *
+ */
+
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
@@ -5,11 +13,11 @@ import org.lonestar.sdf.locke.libs.dict.Dictionary;
 public class JDictClientRequest
 {
   public enum JDictClientCommand
-    {
-      DEFINE,
-      DICT_INFO,
-      DICT_LIST
-    }
+  {
+    DEFINE,
+    DICT_INFO,
+    DICT_LIST
+  }
 
   private final JDictClientCommand command;
   private final Dictionary dictionary;
@@ -17,60 +25,52 @@ public class JDictClientRequest
 
   private JDictClientRequest(JDictClientCommand command, Dictionary dictionary,
                              String word)
-    {
-      this.command = command;
-      this.dictionary = dictionary;
-      this.word = word;
-    }
+  {
+    this.command = command;
+    this.dictionary = dictionary;
+    this.word = word;
+  }
 
   public static JDictClientRequest DEFINE(String word)
-    {
-      return new JDictClientRequest(
-          JDictClientCommand.DEFINE,
-          new Dictionary(null, "All Dictionaries"),
-          word
-        );
-    }
+  {
+    return new JDictClientRequest(JDictClientCommand.DEFINE,
+                                  new Dictionary(null, "All Dictionaries"),
+                                  word);
+  }
 
   public static JDictClientRequest DEFINE(Dictionary dictionary, String word)
-    {
-      return new JDictClientRequest(
-          JDictClientCommand.DEFINE,
-          dictionary,
-          word
-        );
-    }
+  {
+    return new JDictClientRequest(JDictClientCommand.DEFINE,
+                                  dictionary,
+                                  word);
+  }
 
   public static JDictClientRequest DICT_LIST()
-    {
-      return new JDictClientRequest(
-          JDictClientCommand.DICT_LIST,
-          null,
-          null
-        );
-    }
+  {
+    return new JDictClientRequest(JDictClientCommand.DICT_LIST,
+                                  null,
+                                  null);
+  }
 
   public static JDictClientRequest DICT_INFO(Dictionary dictionary)
-    {
-      return new JDictClientRequest(
-          JDictClientCommand.DICT_INFO,
-          dictionary,
-          null
-        );
-    }
+  {
+    return new JDictClientRequest(JDictClientCommand.DICT_INFO,
+                                  dictionary,
+                                  null);
+  }
 
   public JDictClientCommand getCommand()
-    {
-      return command;
-    }
+  {
+    return command;
+  }
 
   public Dictionary getDictionary()
-    {
-      return dictionary;
-    }
+  {
+    return dictionary;
+  }
 
   public String getWord()
-    {
-      return word;
-    }
+  {
+    return word;
+  }
 }

@@ -1,3 +1,11 @@
+/*
+ * Modified: Sat 26 Nov 2016 02:42:17 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ *
+ * This file is part of DictClient
+ *
+ */
+
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
@@ -14,54 +22,54 @@ public class JDictClientResult
 
   private JDictClientResult(JDictClientRequest request, List<?> list,
                             String dictionaryInfo)
-    {
-      this.request = request;
-      this.dictionaryInfo = dictionaryInfo;
+  {
+    this.request = request;
+    this.dictionaryInfo = dictionaryInfo;
 
-      switch (this.request.getCommand())
-        {
-        case DEFINE:
-          definitions = (List<Definition>) list;
-          dictionaries = null;
-          break;
-        case DICT_LIST:
-          dictionaries = (List<Dictionary>) list;
-          definitions = null;
-          break;
-        default:
-          dictionaries = null;
-          definitions = null;
-          break;
-        }
-    }
+    switch (this.request.getCommand())
+      {
+      case DEFINE:
+        definitions = (List<Definition>) list;
+        dictionaries = null;
+        break;
+      case DICT_LIST:
+        dictionaries = (List<Dictionary>) list;
+        definitions = null;
+        break;
+      default:
+        dictionaries = null;
+        definitions = null;
+        break;
+      }
+  }
 
   public JDictClientResult(JDictClientRequest request, List<?> list)
-    {
-      this(request, list, null);
-    }
+  {
+    this(request, list, null);
+  }
 
   public JDictClientResult(JDictClientRequest request, String dictionaryInfo)
-    {
-      this(request, null, dictionaryInfo);
-    }
+  {
+    this(request, null, dictionaryInfo);
+  }
 
   public JDictClientRequest getRequest()
-    {
-      return request;
-    }
+  {
+    return request;
+  }
 
   public List<Dictionary> getDictionaries()
-    {
-      return dictionaries;
-    }
+  {
+    return dictionaries;
+  }
 
   public List<Definition> getDefinitions()
-    {
-      return definitions;
-    }
+  {
+    return definitions;
+  }
 
   public String getDictionaryInfo()
-    {
-      return dictionaryInfo;
-    }
+  {
+    return dictionaryInfo;
+  }
 }

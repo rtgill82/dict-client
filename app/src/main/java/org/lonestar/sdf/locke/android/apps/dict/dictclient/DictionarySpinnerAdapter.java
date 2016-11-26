@@ -1,3 +1,11 @@
+/*
+ * Modified: Sat 26 Nov 2016 02:41:50 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ *
+ * This file is part of DictClient
+ *
+ */
+
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import android.content.Context;
@@ -19,77 +27,77 @@ public class DictionarySpinnerAdapter implements SpinnerAdapter
   private List<Dictionary> data;
 
   public DictionarySpinnerAdapter(Context context, List<Dictionary> data)
-    {
-      this.context = context;
-      this.data = data;
-    }
+  {
+    this.context = context;
+    this.data = data;
+  }
 
   @Override
   public int getCount()
-    {
-      return data.size();
-    }
+  {
+    return data.size();
+  }
 
   @Override
   public Dictionary getItem(int position)
-    {
-      return data.get(position);
-    }
+  {
+    return data.get(position);
+  }
 
   @Override
   public long getItemId(int position)
-    {
-      return position;
-    }
+  {
+    return position;
+  }
 
   @Override
   public int getItemViewType(int position)
-    {
-      return android.R.layout.simple_spinner_dropdown_item;
-    }
+  {
+    return android.R.layout.simple_spinner_dropdown_item;
+  }
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent)
-    {
-      TextView v = new TextView(context.getApplicationContext());
-      v.setTextColor(Color.BLACK);
-      v.setText(data.get(position).getDescription());
-      return v;
-    }
+  {
+    TextView v = new TextView(context.getApplicationContext());
+    v.setTextColor(Color.BLACK);
+    v.setText(data.get(position).getDescription());
+    return v;
+  }
 
   @Override
   public int getViewTypeCount()
-    {
-      return 1;
-    }
+  {
+    return 1;
+  }
 
   @Override
   public boolean hasStableIds()
-    {
-      return false;
-    }
+  {
+    return false;
+  }
 
   @Override
   public boolean isEmpty()
-    {
-      return data.isEmpty();
-    }
+  {
+    return data.isEmpty();
+  }
 
   @Override
   public void registerDataSetObserver(DataSetObserver observer)
-    {
-      // TODO Auto-generated method stub
-    }
+  {
+    // TODO Auto-generated method stub
+  }
 
   @Override
   public void unregisterDataSetObserver(DataSetObserver observer)
-    {
-      // TODO Auto-generated method stub
-    }
+  {
+    // TODO Auto-generated method stub
+  }
 
   @Override
   public View getDropDownView(int position, View convertView, ViewGroup parent)
-    {
-      return this.getView(position, convertView, parent);
-    }
+  {
+    return this.getView(position, convertView, parent);
+  }
 }

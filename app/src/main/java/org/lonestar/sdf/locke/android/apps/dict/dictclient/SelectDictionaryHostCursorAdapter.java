@@ -1,3 +1,11 @@
+/*
+ * Modified: Sat 26 Nov 2016 02:42:34 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ *
+ * This file is part of DictClient
+ *
+ */
+
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import android.content.Context;
@@ -17,45 +25,45 @@ public class SelectDictionaryHostCursorAdapter extends CursorAdapter
 {
 
   public SelectDictionaryHostCursorAdapter(Context context, Cursor cursor,
-                                           int flags)
-    {
-      super(context, cursor, flags);
-    }
+      int flags)
+  {
+    super(context, cursor, flags);
+  }
 
   public View newView(Context context, Cursor cursor, ViewGroup parent)
-    {
-      LayoutInflater inflater = LayoutInflater.from(context);
-      CheckedTextView view = (CheckedTextView) inflater.inflate(
-          R.layout.select_host_list_item, null
-        );
-      String itemText = createItem(cursor);
-      view.setText(Html.fromHtml(itemText));
-      return view;
-    }
+  {
+    LayoutInflater inflater = LayoutInflater.from(context);
+    CheckedTextView view = (CheckedTextView) inflater.inflate(
+                             R.layout.select_host_list_item, null
+                           );
+    String itemText = createItem(cursor);
+    view.setText(Html.fromHtml(itemText));
+    return view;
+  }
 
   public void bindView(View view, Context context, Cursor cursor)
-    {
-      if (view instanceof TextView)
-        {
-          String itemText = createItem(cursor);
-          ((TextView) view).setText(Html.fromHtml(itemText));
-        }
-    }
+  {
+    if (view instanceof TextView)
+      {
+        String itemText = createItem(cursor);
+        ((TextView) view).setText(Html.fromHtml(itemText));
+      }
+  }
 
   private String createItem(Cursor cursor)
-    {
-      String host = cursor.getString(cursor.getColumnIndex("host_name"));
-      Integer port = cursor.getInt(cursor.getColumnIndex("port"));
-      String description =
-        cursor.getString(cursor.getColumnIndex("description"));
+  {
+    String host = cursor.getString(cursor.getColumnIndex("host_name"));
+    Integer port = cursor.getInt(cursor.getColumnIndex("port"));
+    String description =
+      cursor.getString(cursor.getColumnIndex("description"));
 
-      String itemText = "<b>" + host;
-      if (port != JDictClient.DEFAULT_PORT)
-        itemText += ":" + port.toString();
-      itemText += "</b>";
-      if (description.length() > 0)
-        itemText += "<br><i>" + description + "</i>";
+    String itemText = "<b>" + host;
+    if (port != JDictClient.DEFAULT_PORT)
+      itemText += ":" + port.toString();
+    itemText += "</b>";
+    if (description.length() > 0)
+      itemText += "<br><i>" + description + "</i>";
 
-      return itemText;
-    }
+    return itemText;
+  }
 }

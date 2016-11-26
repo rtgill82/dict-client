@@ -1,3 +1,11 @@
+/*
+ * Modified: Sat 26 Nov 2016 02:40:59 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ *
+ * This file is part of DictClient
+ *
+ */
+
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import android.database.sqlite.SQLiteDatabase;
@@ -20,55 +28,55 @@ public class DatabaseRevision
   private List<DictionaryHost> remove_hosts;
 
   public Integer getVersion()
-    {
-      return this.version;
-    }
+  {
+    return this.version;
+  }
 
   public void setVersion(Integer version)
-    {
-      this.version = version;
-    }
+  {
+    this.version = version;
+  }
 
   public void setAddHosts(List<DictionaryHost> hosts)
-    {
-      this.add_hosts = hosts;
-    }
+  {
+    this.add_hosts = hosts;
+  }
 
   public void setRemoveHosts(List<DictionaryHost> hosts)
-    {
-      this.remove_hosts = hosts;
-    }
+  {
+    this.remove_hosts = hosts;
+  }
 
   public void commit(SQLiteDatabase db, ConnectionSource cs)
     throws SQLException
-    {
-      if (db.getVersion() < this.version)
-        {
-          db.setVersion(this.version);
-          Dao<DictionaryHost, Integer> dao =
-            DaoManager.createDao(cs, DictionaryHost.class);
+  {
+    if (db.getVersion() < this.version)
+      {
+        db.setVersion(this.version);
+        Dao<DictionaryHost, Integer> dao =
+          DaoManager.createDao(cs, DictionaryHost.class);
 
-          // Delete old hosts
-          if (remove_hosts != null)
-            {
-              for (DictionaryHost host : remove_hosts)
-                {
-                  List<DictionaryHost> rows = dao.queryForMatching(host);
-                  for (DictionaryHost row : rows)
-                    {
-                      dao.delete(row);
-                    }
-                }
-            }
+        // Delete old hosts
+        if (remove_hosts != null)
+          {
+            for (DictionaryHost host : remove_hosts)
+              {
+                List<DictionaryHost> rows = dao.queryForMatching(host);
+                for (DictionaryHost row : rows)
+                  {
+                    dao.delete(row);
+                  }
+              }
+          }
 
-          // Add new hosts
-          if (add_hosts != null)
-            {
-              for (DictionaryHost host : add_hosts)
-                {
-                  dao.create(host);
-                }
-            }
-        }
-    }
+        // Add new hosts
+        if (add_hosts != null)
+          {
+            for (DictionaryHost host : add_hosts)
+              {
+                dao.create(host);
+              }
+          }
+      }
+  }
 }

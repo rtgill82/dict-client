@@ -1,10 +1,11 @@
 /*
- * Modified: Sat 26 Nov 2016 02:03:02 PM PST
- * Copyright © 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Modified: Sat 26 Nov 2016 02:42:05 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of DictClient
  *
  */
+
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 /**
@@ -20,23 +21,23 @@ public class HistoryEntry
   private CharSequence definitionText;
 
   public HistoryEntry(String word, CharSequence definitionText)
-    {
-      this.word = word;
-      this.definitionText = definitionText;
-    }
+  {
+    this.word = word;
+    this.definitionText = definitionText;
+  }
 
   public String getWord()
-    {
-      return word;
-    }
+  {
+    return word;
+  }
 
   public CharSequence getDefinitionText()
-    {
-      return definitionText;
-    }
+  {
+    return definitionText;
+  }
 
   public String toString()
-    {
-      return String.format("Definitions for %s", word);
-    }
+  {
+    return String.format("Definitions for %s", word);
+  }
 }

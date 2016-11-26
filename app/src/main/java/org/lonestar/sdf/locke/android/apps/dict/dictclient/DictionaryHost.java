@@ -1,3 +1,11 @@
+/*
+ * Modified: Sat 26 Nov 2016 02:41:46 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ *
+ * This file is part of DictClient
+ *
+ */
+
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import com.j256.ormlite.field.DatabaseField;
@@ -15,120 +23,120 @@ public class DictionaryHost
   final private static int PORT = 2628;
 
   @DatabaseField(generatedId = true, columnName = "_id")
-    private Integer id;
+  private Integer id;
   @DatabaseField(canBeNull = false, uniqueIndexName = "host_port_idx")
-    private String host_name;
+  private String host_name;
   @DatabaseField(canBeNull = false, uniqueIndexName = "host_port_idx", defaultValue = "2628")
-    private Integer port;
+  private Integer port;
   @DatabaseField()
-    private String description;
+  private String description;
   @DatabaseField(defaultValue = "false")
-    private boolean readonly;
+  private boolean readonly;
   @DatabaseField(defaultValue = "false")
-    private boolean user_defined;
+  private boolean user_defined;
 
   private List<Dictionary> dictionaries = null;
 
   public DictionaryHost()
-    {
-      this.port = PORT;
-    }
+  {
+    this.port = PORT;
+  }
 
   public DictionaryHost(String hostName)
-    {
-      this.host_name = hostName;
-      this.port = PORT;
-    }
+  {
+    this.host_name = hostName;
+    this.port = PORT;
+  }
 
   public DictionaryHost(String hostName, int port)
-    {
-      this.host_name = hostName;
-      this.port = port;
-    }
+  {
+    this.host_name = hostName;
+    this.port = port;
+  }
 
   public DictionaryHost(int id, String hostName, int port)
-    {
-      this.id = id;
-      this.host_name = hostName;
-      this.port = port;
-    }
+  {
+    this.id = id;
+    this.host_name = hostName;
+    this.port = port;
+  }
 
   public Integer getId()
-    {
-      return id;
-    }
+  {
+    return id;
+  }
 
   public void setId(Integer id)
-    {
-      this.id = id;
-    }
+  {
+    this.id = id;
+  }
 
   public String getHostName()
-    {
-      return host_name;
-    }
+  {
+    return host_name;
+  }
 
   public void setHostName(String hostName)
-    {
-      this.host_name = hostName;
-    }
+  {
+    this.host_name = hostName;
+  }
 
   public Integer getPort()
-    {
-      return port;
-    }
+  {
+    return port;
+  }
 
   public void setPort(Integer port)
-    {
-      this.port = port;
-    }
+  {
+    this.port = port;
+  }
 
   public String getDescription()
-    {
-      return description;
-    }
+  {
+    return description;
+  }
 
   public void setDescription(String description)
-    {
-      this.description = description;
-    }
+  {
+    this.description = description;
+  }
 
   public boolean isReadonly()
-    {
-      return readonly;
-    }
+  {
+    return readonly;
+  }
 
   public void setReadonly(boolean readonly)
-    {
-      this.readonly = readonly;
-    }
+  {
+    this.readonly = readonly;
+  }
 
   public boolean isUserDefined()
-    {
-      return user_defined;
-    }
+  {
+    return user_defined;
+  }
 
   public void setUserDefined(boolean userDefined)
-    {
-      this.user_defined = userDefined;
-    }
+  {
+    this.user_defined = userDefined;
+  }
 
   public List<Dictionary> getDictionaries()
-    {
-      return dictionaries;
-    }
+  {
+    return dictionaries;
+  }
 
   public void setDictionaries(List<Dictionary> list)
-    {
-      dictionaries = list;
-    }
+  {
+    dictionaries = list;
+  }
 
   @Override
   public String toString()
-    {
-      if (port != JDictClient.DEFAULT_PORT)
-        return host_name + ":" + port;
-      else
-        return host_name;
-    }
+  {
+    if (port != JDictClient.DEFAULT_PORT)
+      return host_name + ":" + port;
+    else
+      return host_name;
+  }
 }

@@ -1,10 +1,11 @@
 /*
- * Modified: Sat 26 Nov 2016 01:54:30 PM PST
- * Copyright © 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Modified: Sat 26 Nov 2016 02:41:15 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of DictClient
  *
  */
+
 package org.lonestar.sdf.locke.android.apps.dict.dictclient;
 
 import java.util.ArrayList;
@@ -32,19 +33,19 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
    *
    */
   private DefinitionHistory()
-    {
-      super();
-    }
+  {
+    super();
+  }
 
   /**
    * Construct new DefinitionHistory from Collection.
    *
    */
   private DefinitionHistory(Collection<? extends HistoryEntry> c)
-    {
-      super(c);
-      currentPos = c.size() - 1;
-    }
+  {
+    super(c);
+    currentPos = c.size() - 1;
+  }
 
   /**
    * Initialize singleton instance with Collection.
@@ -53,62 +54,62 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
    */
   @SuppressWarnings("unused")
   static public void initialize(Collection<? extends HistoryEntry> c)
-    {
-      if (instance == null)
-        instance = new DefinitionHistory(c);
-    }
+  {
+    if (instance == null)
+      instance = new DefinitionHistory(c);
+  }
 
   /**
    * Get instance of singleton class.
    *
    */
   static public DefinitionHistory getInstance()
-    {
-      if (instance == null)
-        instance = new DefinitionHistory();
+  {
+    if (instance == null)
+      instance = new DefinitionHistory();
 
-      return instance;
-    }
+    return instance;
+  }
 
   /**
    * Return previous Definition in history list.
    *
    */
   public HistoryEntry back()
-    {
-      HistoryEntry rv = null;
-      if (currentPos > 0)
-        {
-          currentPos -= 1;
-          rv = this.get(currentPos);
-        }
-      return rv;
-    }
+  {
+    HistoryEntry rv = null;
+    if (currentPos > 0)
+      {
+        currentPos -= 1;
+        rv = this.get(currentPos);
+      }
+    return rv;
+  }
 
   public boolean canGoBack()
-    {
-      return (currentPos > 0);
-    }
+  {
+    return (currentPos > 0);
+  }
 
   /**
    * Return next Definition in history list.
    *
    */
   public HistoryEntry forward()
-    {
-      HistoryEntry rv = null;
-      if (currentPos < this.size() - 1)
-        {
-          currentPos += 1;
-          rv = this.get(currentPos);
-        }
-      return rv;
-    }
+  {
+    HistoryEntry rv = null;
+    if (currentPos < this.size() - 1)
+      {
+        currentPos += 1;
+        rv = this.get(currentPos);
+      }
+    return rv;
+  }
 
   public boolean canGoForward()
-    {
-      return (currentPos < (this.size() - 1));
-    }
+  {
+    return (currentPos < (this.size() - 1));
+  }
 
   /**
    * Appends definition after current history position.
@@ -116,11 +117,11 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
    */
   @Override
   public boolean add(HistoryEntry entry)
-    {
-      clearToEnd();
-      currentPos += 1;
-      return super.add(entry);
-    }
+  {
+    clearToEnd();
+    currentPos += 1;
+    return super.add(entry);
+  }
 
   /**
    * Inserts definition at specified position in history.
@@ -128,11 +129,11 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
    */
   @Override
   public void add(int index, HistoryEntry entry)
-    {
-      if (index <= currentPos)
-        currentPos += 1;
-      super.add(index, entry);
-    }
+  {
+    if (index <= currentPos)
+      currentPos += 1;
+    super.add(index, entry);
+  }
 
   /**
    * Appends all definitions after the current history position.
@@ -140,11 +141,11 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
    */
   @Override
   public boolean addAll(Collection<? extends HistoryEntry> c)
-    {
-      clearToEnd();
-      currentPos += c.size() - 1;
-      return super.addAll(c);
-    }
+  {
+    clearToEnd();
+    currentPos += c.size() - 1;
+    return super.addAll(c);
+  }
 
   /**
    * Insert all definitions at specified position in history.
@@ -152,11 +153,11 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
    */
   @Override
   public boolean addAll(int index, Collection<? extends HistoryEntry> c)
-    {
-      if (index <= currentPos)
-        currentPos += c.size() - 1;
-      return super.addAll(index, c);
-    }
+  {
+    if (index <= currentPos)
+      currentPos += c.size() - 1;
+    return super.addAll(index, c);
+  }
 
   /**
    * Clears definition history.
@@ -164,10 +165,10 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
    */
   @Override
   public void clear()
-    {
-      currentPos = -1;
-      super.clear();
-    }
+  {
+    currentPos = -1;
+    super.clear();
+  }
 
   /**
    * Removes the history entry at the specified position in the definition
@@ -176,16 +177,16 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
    */
   @Override
   public HistoryEntry remove(int index)
-    {
-      HistoryEntry rv = super.remove(index);
+  {
+    HistoryEntry rv = super.remove(index);
 
-      if (this.size() == 0)
-        currentPos = -1;
-      else if (rv != null && currentPos > 0 && index <= currentPos)
-        currentPos -= 1;
+    if (this.size() == 0)
+      currentPos = -1;
+    else if (rv != null && currentPos > 0 && index <= currentPos)
+      currentPos -= 1;
 
-      return rv;
-    }
+    return rv;
+  }
 
   /**
    * Removes first occurrence of the specified history entry from definition
@@ -194,15 +195,15 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
    */
   @Override
   public boolean remove(Object o)
-    {
-      int index = this.indexOf(o);
-      boolean rv = super.remove(o);
+  {
+    int index = this.indexOf(o);
+    boolean rv = super.remove(o);
 
-      if (rv && currentPos > 0 && index <= currentPos)
-        currentPos -= 1;
+    if (rv && currentPos > 0 && index <= currentPos)
+      currentPos -= 1;
 
-      return rv;
-    }
+    return rv;
+  }
 
   /**
    * Remove all history entries from this history in the specified
@@ -211,22 +212,23 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
    */
   @Override
   public boolean removeAll(Collection<?> c)
-    {
-      HistoryEntry entry = this.get(currentPos);
+  {
+    HistoryEntry entry = this.get(currentPos);
 
-      while (true) {
-          if (c.contains(entry) && currentPos > 0)
-            {
-              currentPos -= 1;
-              entry = this.get(currentPos);
-              continue;
-            }
+    while (true)
+      {
+        if (c.contains(entry) && currentPos > 0)
+          {
+            currentPos -= 1;
+            entry = this.get(currentPos);
+            continue;
+          }
 
-          break;
+        break;
       }
 
-      return super.removeAll(c);
-    }
+    return super.removeAll(c);
+  }
 
   /**
    * Remove all history entries specified between fromIndex and toIndex.
@@ -234,22 +236,22 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
    */
   @Override
   protected void removeRange(int fromIndex, int toIndex)
-    {
-      if (currentPos > toIndex)
-        currentPos = currentPos - (toIndex - fromIndex);
-      else if (currentPos > fromIndex)
-        currentPos = fromIndex;
+  {
+    if (currentPos > toIndex)
+      currentPos = currentPos - (toIndex - fromIndex);
+    else if (currentPos > fromIndex)
+      currentPos = fromIndex;
 
-      super.removeRange(fromIndex, toIndex);
-    }
+    super.removeRange(fromIndex, toIndex);
+  }
 
   /**
    * Clears from current position in history until end of list.
    *
    */
   private void clearToEnd()
-    {
-      for (int i = this.size() - 1; i > currentPos; i--)
-        super.remove(i);
-    }
+  {
+    for (int i = this.size() - 1; i > currentPos; i--)
+      super.remove(i);
+  }
 }
