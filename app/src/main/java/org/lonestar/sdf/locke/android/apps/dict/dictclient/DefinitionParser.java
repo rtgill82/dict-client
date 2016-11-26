@@ -35,10 +35,10 @@ public final class DefinitionParser {
             }
 
             if (activity != null) {
-                EditText search_text =
+                EditText searchText =
                   (EditText) activity.findViewById(R.id.search_text);
-                search_text.setText(word);
-                search_text.selectAll();
+                searchText.setText(word);
+                searchText.selectAll();
                 new JDictClientTask(
                         activity,
                         JDictClientRequest.DEFINE(word))
@@ -54,42 +54,42 @@ public final class DefinitionParser {
     }
 
     public static CharSequence parse(Definition definition) {
-        String def_string = definition.getDefinition();
-        SpannableStringBuilder spanned_string = new SpannableStringBuilder();
-        boolean in_braces = false;
-        int brace_pos = 0;
+        String defString = definition.getDefinition();
+        SpannableStringBuilder spannedString = new SpannableStringBuilder();
+        boolean inBraces = false;
+        int bracePos = 0;
 
         int i = 0;
-        for (int n = def_string.length(); i < n; i++) {
-            char c = def_string.charAt(i);
+        for (int n = defString.length(); i < n; i++) {
+            char c = defString.charAt(i);
 
             if (c == '{') {
-                if (in_braces != true) {
-                    spanned_string.append(def_string.substring(brace_pos, i));
-                    brace_pos = i;
+                if (inBraces != true) {
+                    spannedString.append(defString.substring(bracePos, i));
+                    bracePos = i;
                 }
-                in_braces = true;
+                inBraces = true;
             }
 
             if (c == '}') {
-                if (in_braces == true) {
-                    String word = def_string.substring(brace_pos + 1, i);
-                    spanned_string.append(word);
-                    spanned_string.setSpan(
+                if (inBraces == true) {
+                    String word = defString.substring(bracePos + 1, i);
+                    spannedString.append(word);
+                    spannedString.setSpan(
                             new WordSpan(word),
-                            spanned_string.length() - word.length(),
-                            spanned_string.length(),
+                            spannedString.length() - word.length(),
+                            spannedString.length(),
                             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                     );
-                    brace_pos = i + 1;
+                    bracePos = i + 1;
                 }
 
-                in_braces = false;
+                inBraces = false;
             }
         }
 
-        spanned_string.append(def_string.substring(brace_pos, i));
-        return spanned_string;
+        spannedString.append(defString.substring(bracePos, i));
+        return spannedString;
     }
 
     private DefinitionParser() {

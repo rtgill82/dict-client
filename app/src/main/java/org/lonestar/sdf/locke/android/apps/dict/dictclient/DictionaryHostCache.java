@@ -101,16 +101,16 @@ public class DictionaryHostCache extends LinkedList<DictionaryHost>
   @Override
   public DictionaryHost set(int index, DictionaryHost host)
     {
-      DictionaryHost old_host = getHostById(host.getId());
+      DictionaryHost oldHost = getHostById(host.getId());
 
-      if (old_host != null)
+      if (oldHost != null)
         {
-          int old_index = indexOf(old_host);
-          if (old_index < index)
+          int oldIndex = indexOf(oldHost);
+          if (oldIndex < index)
             index -= 1;
 
-          if (old_index != index)
-            remove(old_host);
+          if (oldIndex != index)
+            remove(oldHost);
         }
 
       return super.set(index, host);

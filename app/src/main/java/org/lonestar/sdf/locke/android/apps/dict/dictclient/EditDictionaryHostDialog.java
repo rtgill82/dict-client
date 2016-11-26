@@ -21,9 +21,9 @@ import java.sql.SQLException;
 public class EditDictionaryHostDialog extends DialogFragment
 {
   private DictionaryHost host;
-  private EditText edit_host_name;
-  private EditText edit_port;
-  private EditText edit_description;
+  private EditText editHostName;
+  private EditText editPort;
+  private EditText editDescription;
 
   public static void show(FragmentActivity activity)
     {
@@ -45,15 +45,15 @@ public class EditDictionaryHostDialog extends DialogFragment
       RelativeLayout layout = (RelativeLayout)
         inflater.inflate(R.layout.dialog_edit_dictionary_host, null);
 
-      edit_host_name = (EditText) layout.findViewById(R.id.edit_host_name);
-      edit_port = (EditText) layout.findViewById(R.id.edit_port);
-      edit_description = (EditText) layout.findViewById(R.id.edit_description);
+      editHostName = (EditText) layout.findViewById(R.id.edit_host_name);
+      editPort = (EditText) layout.findViewById(R.id.edit_port);
+      editDescription = (EditText) layout.findViewById(R.id.edit_description);
 
       if (host != null)
         {
-          edit_host_name.setText(host.getHostName());
-          edit_port.setText(host.getPort().toString());
-          edit_description.setText(host.getDescription().toString());
+          editHostName.setText(host.getHostName());
+          editPort.setText(host.getPort().toString());
+          editDescription.setText(host.getDescription().toString());
         }
 
       AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -65,12 +65,12 @@ public class EditDictionaryHostDialog extends DialogFragment
                 if (host == null)
                   host = new DictionaryHost();
 
-                String port_text = edit_port.getText().toString();
-                if (port_text.length() > 0)
-                  host.setPort(Integer.parseInt(port_text));
+                String portText = editPort.getText().toString();
+                if (portText.length() > 0)
+                  host.setPort(Integer.parseInt(portText));
 
-                host.setHostName(edit_host_name.getText().toString());
-                host.setDescription(edit_description.getText().toString());
+                host.setHostName(editHostName.getText().toString());
+                host.setDescription(editDescription.getText().toString());
 
                 try {
                   DatabaseManager.getInstance().saveHost(host);

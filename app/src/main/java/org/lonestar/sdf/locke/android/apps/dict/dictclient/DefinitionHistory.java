@@ -1,5 +1,5 @@
 /*
- * Modified: Sun 25 Sep 2016 02:19:23 PM PDT
+ * Modified: Sat 26 Nov 2016 01:54:30 PM PST
  * Copyright © 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of DictClient
@@ -25,7 +25,7 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
   static private DefinitionHistory instance;
 
   /** The current position in the history list. */
-  private int _current_pos = -1;
+  private int currentPos = -1;
 
   /**
    * Default constructor.
@@ -43,7 +43,7 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
   private DefinitionHistory(Collection<? extends HistoryEntry> c)
     {
       super(c);
-      _current_pos = c.size() - 1;
+      currentPos = c.size() - 1;
     }
 
   /**
@@ -77,17 +77,17 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
   public HistoryEntry back()
     {
       HistoryEntry rv = null;
-      if (_current_pos > 0)
+      if (currentPos > 0)
         {
-          _current_pos -= 1;
-          rv = this.get(_current_pos);
+          currentPos -= 1;
+          rv = this.get(currentPos);
         }
       return rv;
     }
 
   public boolean canGoBack()
     {
-      return (_current_pos > 0);
+      return (currentPos > 0);
     }
 
   /**
@@ -97,17 +97,17 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
   public HistoryEntry forward()
     {
       HistoryEntry rv = null;
-      if (_current_pos < this.size() - 1)
+      if (currentPos < this.size() - 1)
         {
-          _current_pos += 1;
-          rv = this.get(_current_pos);
+          currentPos += 1;
+          rv = this.get(currentPos);
         }
       return rv;
     }
 
   public boolean canGoForward()
     {
-      return (_current_pos < (this.size() - 1));
+      return (currentPos < (this.size() - 1));
     }
 
   /**
@@ -118,7 +118,7 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
   public boolean add(HistoryEntry entry)
     {
       clearToEnd();
-      _current_pos += 1;
+      currentPos += 1;
       return super.add(entry);
     }
 
@@ -129,8 +129,8 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
   @Override
   public void add(int index, HistoryEntry entry)
     {
-      if (index <= _current_pos)
-        _current_pos += 1;
+      if (index <= currentPos)
+        currentPos += 1;
       super.add(index, entry);
     }
 
@@ -142,7 +142,7 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
   public boolean addAll(Collection<? extends HistoryEntry> c)
     {
       clearToEnd();
-      _current_pos += c.size() - 1;
+      currentPos += c.size() - 1;
       return super.addAll(c);
     }
 
@@ -153,8 +153,8 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
   @Override
   public boolean addAll(int index, Collection<? extends HistoryEntry> c)
     {
-      if (index <= _current_pos)
-        _current_pos += c.size() - 1;
+      if (index <= currentPos)
+        currentPos += c.size() - 1;
       return super.addAll(index, c);
     }
 
@@ -165,7 +165,7 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
   @Override
   public void clear()
     {
-      _current_pos = -1;
+      currentPos = -1;
       super.clear();
     }
 
@@ -180,9 +180,9 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
       HistoryEntry rv = super.remove(index);
 
       if (this.size() == 0)
-        _current_pos = -1;
-      else if (rv != null && _current_pos > 0 && index <= _current_pos)
-        _current_pos -= 1;
+        currentPos = -1;
+      else if (rv != null && currentPos > 0 && index <= currentPos)
+        currentPos -= 1;
 
       return rv;
     }
@@ -198,8 +198,8 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
       int index = this.indexOf(o);
       boolean rv = super.remove(o);
 
-      if (rv && _current_pos > 0 && index <= _current_pos)
-        _current_pos -= 1;
+      if (rv && currentPos > 0 && index <= currentPos)
+        currentPos -= 1;
 
       return rv;
     }
@@ -212,13 +212,13 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
   @Override
   public boolean removeAll(Collection<?> c)
     {
-      HistoryEntry entry = this.get(_current_pos);
+      HistoryEntry entry = this.get(currentPos);
 
       while (true) {
-          if (c.contains(entry) && _current_pos > 0)
+          if (c.contains(entry) && currentPos > 0)
             {
-              _current_pos -= 1;
-              entry = this.get(_current_pos);
+              currentPos -= 1;
+              entry = this.get(currentPos);
               continue;
             }
 
@@ -235,10 +235,10 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
   @Override
   protected void removeRange(int fromIndex, int toIndex)
     {
-      if (_current_pos > toIndex)
-        _current_pos = _current_pos - (toIndex - fromIndex);
-      else if (_current_pos > fromIndex)
-        _current_pos = fromIndex;
+      if (currentPos > toIndex)
+        currentPos = currentPos - (toIndex - fromIndex);
+      else if (currentPos > fromIndex)
+        currentPos = fromIndex;
 
       super.removeRange(fromIndex, toIndex);
     }
@@ -249,7 +249,7 @@ public class DefinitionHistory extends ArrayList<HistoryEntry>
    */
   private void clearToEnd()
     {
-      for (int i = this.size() - 1; i > _current_pos; i--)
+      for (int i = this.size() - 1; i > currentPos; i--)
         super.remove(i);
     }
 }

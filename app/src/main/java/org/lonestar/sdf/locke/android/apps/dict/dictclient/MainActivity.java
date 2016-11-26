@@ -33,8 +33,8 @@ public class MainActivity extends FragmentActivity
     {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_main);
-      EditText search_text = (EditText) findViewById(R.id.search_text);
-      search_text.setOnKeyListener(new View.OnKeyListener() {
+      EditText searchText = (EditText) findViewById(R.id.search_text);
+      searchText.setOnKeyListener(new View.OnKeyListener() {
           public boolean onKey(View v, int keyCode, KeyEvent event)
             {
               switch (keyCode)
@@ -51,39 +51,39 @@ public class MainActivity extends FragmentActivity
             }
         });
 
-      Spinner dictionary_spinner = (Spinner) findViewById(R.id.dictionary_spinner);
-      dictionary_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+      Spinner dictionarySpinner = (Spinner) findViewById(R.id.dictionary_spinner);
+      dictionarySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View
                                      selectedItemView, int position, long id)
             {
-              Button dictinfo_button =
+              Button dictinfoButton =
                 (Button) findViewById(R.id.dictinfo_button);
-              TextView definition_view =
+              TextView definitionView =
                 (TextView) findViewById(R.id.definition_view);
               Dictionary currentDictionary =
                 (Dictionary) parent.getSelectedItem();
 
               if (currentDictionary.getDatabase() != null)
                 {
-                  dictinfo_button.setEnabled(true);
+                  dictinfoButton.setEnabled(true);
                 } else {
-                  dictinfo_button.setEnabled(false);
+                  dictinfoButton.setEnabled(false);
                 }
 
-                definition_view.setText("");
+                definitionView.setText("");
             }
 
           @Override
           public void onNothingSelected(AdapterView<?> parent)
             {
-              Button dictinfo_button =
+              Button dictinfoButton =
                 (Button) findViewById(R.id.dictinfo_button);
-              TextView definition_view =
+              TextView definitionView =
                 (TextView) findViewById(R.id.definition_view);
 
-              dictinfo_button.setEnabled(false);
-              definition_view.setText("");
+              dictinfoButton.setEnabled(false);
+              definitionView.setText("");
             }
       });
 
@@ -216,9 +216,9 @@ public class MainActivity extends FragmentActivity
   public void lookupWord(View view)
     {
       EditText editText = (EditText) findViewById(R.id.search_text);
-      Spinner dictionary_spinner =
+      Spinner dictionarySpinner =
         (Spinner) findViewById(R.id.dictionary_spinner);
-      Dictionary dict = (Dictionary) dictionary_spinner.getSelectedItem();
+      Dictionary dict = (Dictionary) dictionarySpinner.getSelectedItem();
       String word = editText.getText().toString();
       if (!(word.isEmpty()))
         {
@@ -240,10 +240,10 @@ public class MainActivity extends FragmentActivity
 
   public void getDictionaryInfo(View view)
     {
-      Spinner dictionary_spinner =
+      Spinner dictionarySpinner =
         (Spinner) findViewById(R.id.dictionary_spinner);
       Dictionary dictionary =
-        (Dictionary) dictionary_spinner.getSelectedItem();
+        (Dictionary) dictionarySpinner.getSelectedItem();
 
       new JDictClientTask(
           this,
@@ -273,8 +273,8 @@ public class MainActivity extends FragmentActivity
 
   public void reset()
     {
-      EditText search_text = (EditText) findViewById(R.id.search_text);
-      search_text.setText("");
+      EditText searchText = (EditText) findViewById(R.id.search_text);
+      searchText.setText("");
       history.clear();
       supportInvalidateOptionsMenu();
     }
@@ -287,9 +287,9 @@ public class MainActivity extends FragmentActivity
 
   private void displayHistoryEntry(HistoryEntry entry)
     {
-      EditText search_text = (EditText) findViewById(R.id.search_text);
-      TextView definition_view = (TextView) findViewById(R.id.definition_view);
-      search_text.setText(entry.getWord());
-      definition_view.setText(entry.getDefinitionText());
+      EditText searchText = (EditText) findViewById(R.id.search_text);
+      TextView definitionView = (TextView) findViewById(R.id.definition_view);
+      searchText.setText(entry.getWord());
+      definitionView.setText(entry.getDefinitionText());
     }
 }

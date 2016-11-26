@@ -15,9 +15,9 @@ import java.util.List;
 
 public class DatabaseRevision
 {
-  private Integer version = 0;
-  private List<DictionaryHost> add_hosts = null;
-  private List<DictionaryHost> remove_hosts = null;
+  private Integer version;
+  private List<DictionaryHost> add_hosts;
+  private List<DictionaryHost> remove_hosts;
 
   public Integer getVersion()
     {

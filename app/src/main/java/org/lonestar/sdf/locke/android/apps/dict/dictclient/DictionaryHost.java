@@ -34,22 +34,22 @@ public class DictionaryHost
       this.port = PORT;
     }
 
-  public DictionaryHost(String host_name)
+  public DictionaryHost(String hostName)
     {
-      this.host_name = host_name;
+      this.host_name = hostName;
       this.port = PORT;
     }
 
-  public DictionaryHost(String host_name, int port)
+  public DictionaryHost(String hostName, int port)
     {
-      this.host_name = host_name;
+      this.host_name = hostName;
       this.port = port;
     }
 
-  public DictionaryHost(int id, String host_name, int port)
+  public DictionaryHost(int id, String hostName, int port)
     {
       this.id = id;
-      this.host_name = host_name;
+      this.host_name = hostName;
       this.port = port;
     }
 
@@ -68,9 +68,9 @@ public class DictionaryHost
       return host_name;
     }
 
-  public void setHostName(String host_name)
+  public void setHostName(String hostName)
     {
-      this.host_name = host_name;
+      this.host_name = hostName;
     }
 
   public Integer getPort()
@@ -126,9 +126,9 @@ public class DictionaryHost
   @Override
   public String toString()
     {
-      if (this.port != JDictClient.DEFAULT_PORT)
-        return this.host_name + ":" + this.port;
+      if (port != JDictClient.DEFAULT_PORT)
+        return host_name + ":" + port;
       else
-        return this.host_name;
+        return host_name;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Modified: Sun 25 Sep 2016 02:27:13 PM PDT
+ * Modified: Sat 26 Nov 2016 02:03:02 PM PST
  * Copyright © 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of DictClient
@@ -16,27 +16,27 @@ package org.lonestar.sdf.locke.android.apps.dict.dictclient;
  */
 public class HistoryEntry
 {
-  private String _word;
-  private CharSequence _definition_text;
+  private String word;
+  private CharSequence definitionText;
 
-  public HistoryEntry(String word, CharSequence definition_text)
+  public HistoryEntry(String word, CharSequence definitionText)
     {
-      _word = word;
-      _definition_text = definition_text;
+      this.word = word;
+      this.definitionText = definitionText;
     }
 
   public String getWord()
     {
-      return _word;
+      return word;
     }
 
   public CharSequence getDefinitionText()
     {
-      return _definition_text;
+      return definitionText;
     }
 
   public String toString()
     {
-      return String.format("Definitions for %s", _word);
+      return String.format("Definitions for %s", word);
     }
 }

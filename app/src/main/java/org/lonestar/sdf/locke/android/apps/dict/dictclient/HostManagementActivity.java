@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 public class HostManagementActivity extends FragmentActivity
 {
-  private ListView host_list;
+  private ListView hostList;
   private DictionaryHostCursor cursor;
   private ManageHostCursorAdapter adapter;
 
@@ -87,8 +87,8 @@ public class HostManagementActivity extends FragmentActivity
       try {
         cursor = DatabaseManager.getInstance().getHostList();
         adapter = new ManageHostCursorAdapter(this, cursor, 0);
-        host_list = (ListView) findViewById(R.id.manage_host_list);
-        host_list.setAdapter(adapter);
+        hostList = (ListView) findViewById(R.id.manage_host_list);
+        hostList.setAdapter(adapter);
       } catch (SQLException e) {
         ErrorDialog.show(this, e.getMessage());
         rv = false;
@@ -98,7 +98,7 @@ public class HostManagementActivity extends FragmentActivity
 
   private DictionaryHost getSelectedHost(View view)
     {
-      int pos = host_list.getPositionForView((View) view.getParent());
+      int pos = hostList.getPositionForView((View) view.getParent());
       return ((DictionaryHostCursor) adapter.getItem(pos)).getDictionaryHost();
     }
 }
