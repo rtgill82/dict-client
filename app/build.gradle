@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    compile files('libs/jdict-client-0.2.1.jar')
+    compile project(':jdict-client')
     compile files('libs/ormlite-android-4.48.jar')
     compile files('libs/ormlite-core-4.48.jar')
     compile files('libs/snakeyaml-1.10-android.jar')

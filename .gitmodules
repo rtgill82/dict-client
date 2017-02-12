@@ -1,0 +1,3 @@
+[submodule "jdict-client"]
+	path = jdict-client
+	url = locke.mdns.org:/home/locke/.gitrepos/jdict-client.git
