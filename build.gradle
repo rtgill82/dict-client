@@ -10,12 +10,8 @@ buildscript {
 
 allprojects {
   tasks.withType(JavaCompile) {
-    targetCompatibility = '1.7'
-    sourceCompatibility = '1.7'
-
-    // ANDROID_CLASS_PATH should be set to the location of the Android JRE
-    // class path (included with Android Studio).
-    options.bootClasspath = "$ANDROID_CLASS_PATH/rt.jar"
+    targetCompatibility = JavaVersion.VERSION_1_7
+    sourceCompatibility = JavaVersion.VERSION_1_7
   }
 
   repositories {
