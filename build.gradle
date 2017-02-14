@@ -1,11 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
-    }
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.2.3'
+  }
 }
 
 allprojects {
@@ -16,5 +16,12 @@ allprojects {
 
   repositories {
     jcenter()
+  }
+
+  task tags {
+    exec {
+      executable 'ctags'
+      args '--tag-relative', '-R', "-f $rootDir/.git/tags", "$rootDir"
+    }
   }
 }
