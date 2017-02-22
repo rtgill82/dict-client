@@ -16,6 +16,10 @@ allprojects {
 
   repositories {
     jcenter()
+    mavenCentral()
+
+    // Required for SnakeYAML
+    maven { url 'https://jitpack.io' }
   }
 
   task tags {

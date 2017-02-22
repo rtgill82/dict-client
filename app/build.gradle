@@ -20,8 +20,8 @@ android {
 
 dependencies {
     compile project(':jdict-client')
-    compile files('libs/ormlite-android-4.48.jar')
-    compile files('libs/ormlite-core-4.48.jar')
-    compile files('libs/snakeyaml-1.10-android.jar')
+    compile 'com.j256.ormlite:ormlite-android:5.0'
+    compile 'com.j256.ormlite:ormlite-core:5.0'
+    compile 'com.github.bmoliveira:snake-yaml:v1.18-android'
     compile 'com.android.support:support-v4:22.2.1'
 }
