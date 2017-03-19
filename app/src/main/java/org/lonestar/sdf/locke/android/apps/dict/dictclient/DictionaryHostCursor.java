@@ -1,5 +1,4 @@
 /*
- * Modified: Sat 26 Nov 2016 02:41:40 PM PST
  * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of DictClient
