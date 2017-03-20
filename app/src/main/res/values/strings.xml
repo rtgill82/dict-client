@@ -10,7 +10,7 @@
     <!-- MainActivity Menus -->
     <string name="menu_back">Back</string>
     <string name="menu_forward">Forward</string>
-    <string name="menu_host">Select Host</string>
+    <string name="menu_host">Hosts</string>
     <string name="menu_manage_hosts">Manage Hosts</string>
     <string name="menu_about">About</string>
 
