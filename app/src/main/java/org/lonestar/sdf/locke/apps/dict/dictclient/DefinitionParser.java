@@ -5,7 +5,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.android.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,7 +17,6 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.EditText;
 
-import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.Definition;
 
 public final class DefinitionParser

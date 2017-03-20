@@ -5,7 +5,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.android.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

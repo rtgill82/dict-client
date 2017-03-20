@@ -5,7 +5,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.android.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import java.util.ArrayList;
 import java.util.Collection;

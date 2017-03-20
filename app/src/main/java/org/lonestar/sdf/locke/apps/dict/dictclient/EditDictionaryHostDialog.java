@@ -5,7 +5,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.android.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,8 +16,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-
-import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 
 import java.sql.SQLException;
 

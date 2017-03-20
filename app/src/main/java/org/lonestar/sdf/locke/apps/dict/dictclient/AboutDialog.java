@@ -5,7 +5,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.android.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,8 +17,6 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.widget.TextView;
-
-import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 
 import java.io.IOException;
 import java.io.InputStream;

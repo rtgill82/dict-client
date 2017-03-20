@@ -5,7 +5,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.android.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,8 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-
-import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 
 import java.sql.SQLException;
 

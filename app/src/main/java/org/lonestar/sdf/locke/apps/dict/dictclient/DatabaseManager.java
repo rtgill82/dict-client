@@ -5,7 +5,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.android.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -22,7 +22,6 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;

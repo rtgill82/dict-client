@@ -5,7 +5,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.android.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -15,8 +15,6 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
-import org.lonestar.sdf.locke.android.apps.dict.dictclient.JDictClientRequest.JDictClientCommand;
-import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
@@ -36,14 +34,14 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
 
   private ProgressDialog progressDialog;
 
-  private static final Map<JDictClientCommand, String> messages =
-    new EnumMap<JDictClientCommand, String>(JDictClientCommand.class);
+  private static final Map<JDictClientRequest.JDictClientCommand, String> messages =
+    new EnumMap<JDictClientRequest.JDictClientCommand, String>(JDictClientRequest.JDictClientCommand.class);
 
   static
   {
-    messages.put(JDictClientCommand.DEFINE, "Looking up word...");
-    messages.put(JDictClientCommand.DICT_INFO, "Retrieving dictionary information...");
-    messages.put(JDictClientCommand.DICT_LIST, "Retrieving available dictionaries...");
+    messages.put(JDictClientRequest.JDictClientCommand.DEFINE, "Looking up word...");
+    messages.put(JDictClientRequest.JDictClientCommand.DICT_INFO, "Retrieving dictionary information...");
+    messages.put(JDictClientRequest.JDictClientCommand.DICT_LIST, "Retrieving available dictionaries...");
   }
 
   public JDictClientTask(Activity context, JDictClientRequest request)
@@ -114,7 +112,7 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
 
     if (exception != null)
       {
-        if (request.getCommand() == JDictClientCommand.DICT_LIST)
+        if (request.getCommand() == JDictClientRequest.JDictClientCommand.DICT_LIST)
           disableInput();
 
         ErrorDialog.show(context, exception.getMessage());
