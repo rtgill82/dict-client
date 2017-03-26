@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * All rights reserved.
  *
- * This file is part of DictClient
+ * This file is a part of DictClient.
  *
  */
 
@@ -25,43 +26,43 @@ public class AboutDialog extends DialogFragment
 {
   private String html;
 
-  public static void show(FragmentActivity activity)
+  public static void show (FragmentActivity activity)
   {
-    new AboutDialog().show(activity.getSupportFragmentManager(),
-                           activity.getString(R.string.about_text));
+    new AboutDialog ().show (activity.getSupportFragmentManager (),
+                             activity.getString (R.string.about_text));
   }
 
   @Override
-  public Dialog onCreateDialog(Bundle savedInstanceState)
+  public Dialog onCreateDialog (Bundle savedInstanceState)
   {
-    Context context = getActivity();
-
+    Context context = getActivity ();
     if (html == null)
       {
-        Resources resources = context.getResources();
-        InputStream stream = resources.openRawResource(R.raw.about);
+        Resources resources = context.getResources ();
+        InputStream stream = resources.openRawResource (R.raw.about);
 
         try
           {
-            byte[] buffer = new byte[stream.available()];
-            stream.read(buffer);
-            html = new String(buffer);
+            byte[] buffer = new byte[stream.available ()];
+            stream.read (buffer);
+            html = new String (buffer);
           }
         catch (IOException e)
           {
-            this.dismiss();
-            ErrorDialog.show(this.getActivity(),
-                             "Unable to read file about.html: "
-                             + e.getMessage());
+            this.dismiss ();
+            ErrorDialog.show (this.getActivity (),
+                              "Unable to read file about.html: "
+                              + e.getMessage ());
           }
       }
 
-    LayoutInflater inflater = getActivity().getLayoutInflater();
-    TextView textView = (TextView) inflater.inflate(R.layout.dialog_about, null);
-    textView.setText(Html.fromHtml(html));
-
-    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-    builder.setTitle(context.getString(R.string.about_text)).setView(textView);
-    return builder.create();
+    LayoutInflater inflater = getActivity ().getLayoutInflater ();
+    TextView textView = (TextView) inflater.inflate (R.layout.dialog_about,
+                                                     null);
+    textView.setText (Html.fromHtml (html));
+    AlertDialog.Builder builder = new AlertDialog.Builder (context);
+    builder.setTitle (context.getString (R.string.about_text))
+           .setView (textView);
+    return builder.create ();
   }
 }

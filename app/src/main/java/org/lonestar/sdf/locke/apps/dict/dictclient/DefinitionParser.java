@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * All rights reserved.
  *
- * This file is part of DictClient
+ * This file is a part of DictClient.
  *
  */
 
@@ -25,16 +26,16 @@ public final class DefinitionParser
   {
     private String word;
 
-    public WordSpan(String word)
+    public WordSpan (String word)
     {
-      this.word = word.replace("\n", "").replaceAll("\\s+", " ");
+      this.word = word.replace ("\n", "").replaceAll ("\\s+", " ");
     }
 
     @Override
-    public void onClick(View textView)
+    public void onClick (View textView)
     {
       Activity activity = null;
-      Context context = textView.getContext();
+      Context context = textView.getContext ();
 
       while (context instanceof ContextWrapper)
         {
@@ -42,49 +43,50 @@ public final class DefinitionParser
             {
               activity = (Activity) context;
             }
-          context = ((ContextWrapper) context).getBaseContext();
+          context = ((ContextWrapper) context).getBaseContext ();
         }
 
       if (activity != null)
         {
-          DictClientApplication app = (DictClientApplication) activity.getApplication ();
+          DictClientApplication app = (DictClientApplication)
+            activity.getApplication ();
+          EditText searchText = (EditText)
+            activity.findViewById (R.id.search_text);
           DictionaryHost host = app.getCurrentHost ();
-          EditText searchText =
-            (EditText) activity.findViewById(R.id.search_text);
-          searchText.setText(word);
-          searchText.selectAll();
-          new JDictClientTask(
-            activity,
-            JDictClientRequest.DEFINE(host, word))
-          .execute();
+
+          searchText.setText (word);
+          searchText.selectAll ();
+          new JDictClientTask (activity,
+                               JDictClientRequest.DEFINE (host, word))
+            .execute ();
         }
     }
 
     @Override
-    public void updateDrawState(TextPaint ds)
+    public void updateDrawState (TextPaint ds)
     {
-      super.updateDrawState(ds);
-      ds.setUnderlineText(true);
+      super.updateDrawState (ds);
+      ds.setUnderlineText (true);
     }
   }
 
-  public static CharSequence parse(Definition definition)
+  public static CharSequence parse (Definition definition)
   {
-    String defString = definition.getDefinition();
-    SpannableStringBuilder spannedString = new SpannableStringBuilder();
+    String defString = definition.getDefinition ();
+    SpannableStringBuilder spannedString = new SpannableStringBuilder ();
     boolean inBraces = false;
     int bracePos = 0;
 
     int i = 0;
-    for (int n = defString.length(); i < n; i++)
+    for (int n = defString.length (); i < n; i++)
       {
-        char c = defString.charAt(i);
+        char c = defString.charAt (i);
 
         if (c == '{')
           {
             if (inBraces != true)
               {
-                spannedString.append(defString.substring(bracePos, i));
+                spannedString.append (defString.substring (bracePos, i));
                 bracePos = i;
               }
             inBraces = true;
@@ -94,12 +96,12 @@ public final class DefinitionParser
           {
             if (inBraces == true)
               {
-                String word = defString.substring(bracePos + 1, i);
-                spannedString.append(word);
-                spannedString.setSpan(
-                  new WordSpan(word),
-                  spannedString.length() - word.length(),
-                  spannedString.length(),
+                String word = defString.substring (bracePos + 1, i);
+                spannedString.append (word);
+                spannedString.setSpan (
+                  new WordSpan (word),
+                  spannedString.length () - word.length (),
+                  spannedString.length (),
                   Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 );
                 bracePos = i + 1;
@@ -109,12 +111,12 @@ public final class DefinitionParser
           }
       }
 
-    spannedString.append(defString.substring(bracePos, i));
+    spannedString.append (defString.substring (bracePos, i));
     return spannedString;
   }
 
-  private DefinitionParser()
+  private DefinitionParser ()
   {
-    throw new RuntimeException();
+    throw new RuntimeException ();
   }
 }

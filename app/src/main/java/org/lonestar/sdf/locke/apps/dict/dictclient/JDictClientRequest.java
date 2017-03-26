@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * All rights reserved.
  *
- * This file is part of DictClient
+ * This file is a part of DictClient.
  *
  */
 
@@ -23,8 +24,8 @@ public class JDictClientRequest
   private final Dictionary dictionary;
   private final String word;
 
-  private JDictClientRequest(DictionaryHost host, JDictClientCommand command,
-                             Dictionary dictionary, String word)
+  private JDictClientRequest (DictionaryHost host, JDictClientCommand command,
+                              Dictionary dictionary, String word)
   {
     this.host = host;
     this.command = command;
@@ -32,38 +33,38 @@ public class JDictClientRequest
     this.word = word;
   }
 
-  public static JDictClientRequest DEFINE(DictionaryHost host, String word)
+  public static JDictClientRequest DEFINE (DictionaryHost host, String word)
   {
-    return new JDictClientRequest(host,
-                                  JDictClientCommand.DEFINE,
-                                  new Dictionary(null, "All Dictionaries"),
-                                  word);
+    return new JDictClientRequest (host,
+                                   JDictClientCommand.DEFINE,
+                                   new Dictionary (null, "All Dictionaries"),
+                                   word);
   }
 
-  public static JDictClientRequest DEFINE(DictionaryHost host,
-                                          Dictionary dictionary, String word)
+  public static JDictClientRequest DEFINE (DictionaryHost host,
+                                           Dictionary dictionary, String word)
   {
-    return new JDictClientRequest(host,
-                                  JDictClientCommand.DEFINE,
-                                  dictionary,
-                                  word);
+    return new JDictClientRequest (host,
+                                   JDictClientCommand.DEFINE,
+                                   dictionary,
+                                   word);
   }
 
-  public static JDictClientRequest DICT_LIST(DictionaryHost host)
+  public static JDictClientRequest DICT_LIST (DictionaryHost host)
   {
-    return new JDictClientRequest(host,
-                                  JDictClientCommand.DICT_LIST,
-                                  null,
-                                  null);
+    return new JDictClientRequest (host,
+                                   JDictClientCommand.DICT_LIST,
+                                   null,
+                                   null);
   }
 
-  public static JDictClientRequest DICT_INFO(DictionaryHost host,
-                                             Dictionary dictionary)
+  public static JDictClientRequest DICT_INFO (DictionaryHost host,
+                                              Dictionary dictionary)
   {
-    return new JDictClientRequest(host,
-                                  JDictClientCommand.DICT_INFO,
-                                  dictionary,
-                                  null);
+    return new JDictClientRequest (host,
+                                   JDictClientCommand.DICT_INFO,
+                                   dictionary,
+                                   null);
   }
 
   public DictionaryHost getHost ()
@@ -71,17 +72,17 @@ public class JDictClientRequest
     return host;
   }
 
-  public JDictClientCommand getCommand()
+  public JDictClientCommand getCommand ()
   {
     return command;
   }
 
-  public Dictionary getDictionary()
+  public Dictionary getDictionary ()
   {
     return dictionary;
   }
 
-  public String getWord()
+  public String getWord ()
   {
     return word;
   }

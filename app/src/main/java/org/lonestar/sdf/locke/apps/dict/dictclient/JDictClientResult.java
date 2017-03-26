@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * All rights reserved.
  *
- * This file is part of DictClient
+ * This file is a part of DictClient.
  *
  */
 
@@ -19,13 +20,13 @@ public class JDictClientResult
   private final List<Dictionary> dictionaries;
   private final String dictionaryInfo;
 
-  private JDictClientResult(JDictClientRequest request, List<?> list,
-                            String dictionaryInfo)
+  private JDictClientResult (JDictClientRequest request, List<?> list,
+                             String dictionaryInfo)
   {
     this.request = request;
     this.dictionaryInfo = dictionaryInfo;
 
-    switch (this.request.getCommand())
+    switch (this.request.getCommand ())
       {
       case DEFINE:
         definitions = (List<Definition>) list;
@@ -42,32 +43,32 @@ public class JDictClientResult
       }
   }
 
-  public JDictClientResult(JDictClientRequest request, List<?> list)
+  public JDictClientResult (JDictClientRequest request, List<?> list)
   {
-    this(request, list, null);
+    this (request, list, null);
   }
 
-  public JDictClientResult(JDictClientRequest request, String dictionaryInfo)
+  public JDictClientResult (JDictClientRequest request, String dictionaryInfo)
   {
-    this(request, null, dictionaryInfo);
+    this (request, null, dictionaryInfo);
   }
 
-  public JDictClientRequest getRequest()
+  public JDictClientRequest getRequest ()
   {
     return request;
   }
 
-  public List<Dictionary> getDictionaries()
+  public List<Dictionary> getDictionaries ()
   {
     return dictionaries;
   }
 
-  public List<Definition> getDefinitions()
+  public List<Definition> getDefinitions ()
   {
     return definitions;
   }
 
-  public String getDictionaryInfo()
+  public String getDictionaryInfo ()
   {
     return dictionaryInfo;
   }

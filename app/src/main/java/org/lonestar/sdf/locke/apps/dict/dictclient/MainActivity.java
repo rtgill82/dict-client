@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * All rights reserved.
  *
- * This file is part of DictClient
+ * This file is a part of DictClient.
  *
  */
 
@@ -29,24 +30,24 @@ import java.util.List;
 public class MainActivity extends FragmentActivity
 {
   private DictionaryHost host;
-  private DefinitionHistory history = DefinitionHistory.getInstance();
+  private DefinitionHistory history = DefinitionHistory.getInstance ();
 
   @SuppressLint("NewApi")
   @Override
-  protected void onCreate(Bundle savedInstanceState)
+  protected void onCreate (Bundle savedInstanceState)
   {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    EditText searchText = (EditText) findViewById(R.id.search_text);
-    searchText.setOnKeyListener(new View.OnKeyListener()
+    super.onCreate (savedInstanceState);
+    setContentView (R.layout.activity_main);
+    EditText searchText = (EditText) findViewById (R.id.search_text);
+    searchText.setOnKeyListener (new View.OnKeyListener ()
     {
-      public boolean onKey(View v, int keyCode, KeyEvent event)
+      public boolean onKey (View v, int keyCode, KeyEvent event)
       {
         switch (keyCode)
           {
           case KeyEvent.KEYCODE_DPAD_CENTER:
           case KeyEvent.KEYCODE_ENTER:
-            lookupWord(v);
+            lookupWord (v);
             break;
 
           default:
@@ -56,42 +57,37 @@ public class MainActivity extends FragmentActivity
       }
     });
 
-    Spinner dictionarySpinner = (Spinner) findViewById(R.id.dictionary_spinner);
-    dictionarySpinner.setOnItemSelectedListener(new OnItemSelectedListener()
+    Spinner dictionarySpinner = (Spinner)
+      findViewById (R.id.dictionary_spinner);
+    dictionarySpinner.setOnItemSelectedListener (new OnItemSelectedListener ()
     {
       @Override
-      public void onItemSelected(AdapterView<?> parent, View
-                                 selectedItemView, int position, long id)
+      public void onItemSelected (AdapterView<?> parent, View
+                                  selectedItemView, int position, long id)
       {
-        Button dictinfoButton =
-          (Button) findViewById(R.id.dictinfo_button);
-        TextView definitionView =
-          (TextView) findViewById(R.id.definition_view);
-        Dictionary currentDictionary =
-          (Dictionary) parent.getSelectedItem();
+        Button dictinfoButton = (Button) findViewById (R.id.dictinfo_button);
+        TextView definitionView = (TextView)
+          findViewById (R.id.definition_view);
+        Dictionary currentDictionary = (Dictionary) parent.getSelectedItem ();
 
-        if (currentDictionary.getDatabase() != null)
-          {
-            dictinfoButton.setEnabled(true);
-          }
+        if (currentDictionary.getDatabase () != null)
+            dictinfoButton.setEnabled (true);
         else
-          {
-            dictinfoButton.setEnabled(false);
-          }
+            dictinfoButton.setEnabled (false);
 
-        definitionView.setText("");
+        definitionView.setText ("");
       }
 
       @Override
-      public void onNothingSelected(AdapterView<?> parent)
+      public void onNothingSelected (AdapterView<?> parent)
       {
         Button dictinfoButton =
-          (Button) findViewById(R.id.dictinfo_button);
+          (Button) findViewById (R.id.dictinfo_button);
         TextView definitionView =
-          (TextView) findViewById(R.id.definition_view);
+          (TextView) findViewById (R.id.definition_view);
 
-        dictinfoButton.setEnabled(false);
-        definitionView.setText("");
+        dictinfoButton.setEnabled (false);
+        definitionView.setText ("");
       }
     });
   }
@@ -106,171 +102,161 @@ public class MainActivity extends FragmentActivity
     String hostname = "No Host Currently Selected";
     if (host != null)
       {
-        hostname = host.getHostName();
-        if (host.getDictionaries() == null)
+        hostname = host.getHostName ();
+        if (host.getDictionaries () == null)
           refreshDictionaries ();
         else
-          setDictionarySpinnerData(host.getDictionaries());
+          setDictionarySpinnerData (host.getDictionaries ());
       }
-    setTitle(getString(R.string.app_name) + " - " + hostname);
-    reset();
+    setTitle (getString (R.string.app_name) + " - " + hostname);
+    reset ();
   }
 
   @Override
-  public boolean onCreateOptionsMenu(Menu menu)
+  public boolean onCreateOptionsMenu (Menu menu)
   {
-    getMenuInflater().inflate(R.menu.activity_main, menu);
-    return super.onCreateOptionsMenu(menu);
+    getMenuInflater ().inflate (R.menu.activity_main, menu);
+    return super.onCreateOptionsMenu (menu);
   }
 
   @Override
-  public boolean onPrepareOptionsMenu(Menu menu)
+  public boolean onPrepareOptionsMenu (Menu menu)
   {
-    MenuItem backButton = menu.findItem(R.id.menu_back);
-    MenuItem forwardButton = menu.findItem(R.id.menu_forward);
+    MenuItem backButton = menu.findItem (R.id.menu_back);
+    MenuItem forwardButton = menu.findItem (R.id.menu_forward);
 
-    if (history.isEmpty())
+    if (history.isEmpty ())
       {
-        backButton.setEnabled(false);
-        forwardButton.setEnabled(false);
+        backButton.setEnabled (false);
+        forwardButton.setEnabled (false);
       }
     else
       {
-        if (history.canGoBack())
-          {
-            backButton.setEnabled(true);
-          }
+        if (history.canGoBack ())
+            backButton.setEnabled (true);
         else
-          {
-            backButton.setEnabled(false);
-          }
+            backButton.setEnabled (false);
 
-        if (history.canGoForward())
-          {
-            forwardButton.setEnabled(true);
-          }
+        if (history.canGoForward ())
+            forwardButton.setEnabled (true);
         else
-          {
-            forwardButton.setEnabled(false);
-          }
+            forwardButton.setEnabled (false);
       }
 
-    return super.onPrepareOptionsMenu(menu);
+    return super.onPrepareOptionsMenu (menu);
   }
 
   @Override
-  public boolean onOptionsItemSelected(MenuItem item)
+  public boolean onOptionsItemSelected (MenuItem item)
   {
-    switch(item.getItemId())
+    switch (item.getItemId ())
       {
       case R.id.menu_back:
-        traverseHistory(DefinitionHistory.Direction.BACK);
+        traverseHistory (DefinitionHistory.Direction.BACK);
         break;
 
       case R.id.menu_forward:
-        traverseHistory(DefinitionHistory.Direction.FORWARD);
+        traverseHistory (DefinitionHistory.Direction.FORWARD);
         break;
 
       case R.id.menu_host:
-        startActivity(new Intent(this, SelectDictionaryHostActivity.class));
+        startActivity (new Intent (this, SelectDictionaryHostActivity.class));
         break;
 
       case R.id.menu_manage_hosts:
-        startActivity(new Intent(this, HostManagementActivity.class));
+        startActivity (new Intent (this, HostManagementActivity.class));
         break;
 
       case R.id.menu_about:
-        AboutDialog.show(this);
+        AboutDialog.show (this);
         break;
 
       default:
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected (item);
       }
 
     return true;
   }
 
-  public void lookupWord(View view)
+  public void lookupWord (View view)
   {
-    EditText editText = (EditText) findViewById(R.id.search_text);
+    EditText editText = (EditText) findViewById (R.id.search_text);
     Spinner dictionarySpinner =
-      (Spinner) findViewById(R.id.dictionary_spinner);
-    Dictionary dict = (Dictionary) dictionarySpinner.getSelectedItem();
-    String word = editText.getText().toString();
-    if (!(word.isEmpty()))
+      (Spinner) findViewById (R.id.dictionary_spinner);
+    Dictionary dict = (Dictionary) dictionarySpinner.getSelectedItem ();
+    String word = editText.getText ().toString ();
+    if (!(word.isEmpty ()))
       {
-        editText.selectAll();
+        editText.selectAll ();
         if (dict != null)
           {
-            new JDictClientTask(
-              this,
-              JDictClientRequest.DEFINE(host, dict, word))
-            .execute();
+            new JDictClientTask (this,
+                JDictClientRequest.DEFINE (host, dict, word))
+              .execute ();
           }
         else
           {
-            new JDictClientTask(
-              this,
-              JDictClientRequest.DEFINE(host, word))
-            .execute();
+            new JDictClientTask (this,
+                JDictClientRequest.DEFINE (host, word))
+              .execute ();
           }
       }
   }
 
-  public void getDictionaryInfo(View view)
+  public void getDictionaryInfo (View view)
   {
-    Spinner dictionarySpinner =
-      (Spinner) findViewById(R.id.dictionary_spinner);
-    Dictionary dictionary =
-      (Dictionary) dictionarySpinner.getSelectedItem();
+    Spinner dictionarySpinner = (Spinner)
+      findViewById (R.id.dictionary_spinner);
+    Dictionary dictionary = (Dictionary) dictionarySpinner.getSelectedItem ();
 
-    new JDictClientTask(
-      this,
-      JDictClientRequest.DICT_INFO(host, dictionary))
-    .execute();
+    new JDictClientTask (this,
+        JDictClientRequest.DICT_INFO (host, dictionary))
+      .execute ();
   }
 
-  public void traverseHistory(DefinitionHistory.Direction direction)
+  public void traverseHistory (DefinitionHistory.Direction direction)
   {
     HistoryEntry entry;
 
     if (DefinitionHistory.Direction.BACK == direction)
-      entry = history.back();
+      entry = history.back ();
     else
-      entry = history.forward();
+      entry = history.forward ();
 
     if (entry != null)
-      displayHistoryEntry(entry);
+      displayHistoryEntry (entry);
 
-    supportInvalidateOptionsMenu();
+    supportInvalidateOptionsMenu ();
   }
 
-  public void reset()
+  public void reset ()
   {
-    EditText searchText = (EditText) findViewById(R.id.search_text);
-    TextView definitionView = (TextView) findViewById(R.id.definition_view);
-    searchText.setText("");
-    definitionView.setText("");
-    history.clear();
-    supportInvalidateOptionsMenu();
+    EditText searchText = (EditText) findViewById (R.id.search_text);
+    TextView definitionView = (TextView) findViewById (R.id.definition_view);
+    searchText.setText ("");
+    definitionView.setText ("");
+    history.clear ();
+    supportInvalidateOptionsMenu ();
   }
 
-  public void setDictionarySpinnerData(List<Dictionary> list)
+  public void setDictionarySpinnerData (List<Dictionary> list)
   {
-    ((Spinner) findViewById(R.id.dictionary_spinner)).setAdapter(
-      new DictionarySpinnerAdapter(this, list));
+    ((Spinner) findViewById (R.id.dictionary_spinner)).setAdapter (
+      new DictionarySpinnerAdapter (this, list));
   }
 
-  private void refreshDictionaries()
+  private void refreshDictionaries ()
   {
-    new JDictClientTask(this, JDictClientRequest.DICT_LIST(host)).execute();
+    new JDictClientTask (this,
+        JDictClientRequest.DICT_LIST (host))
+      .execute ();
   }
 
-  private void displayHistoryEntry(HistoryEntry entry)
+  private void displayHistoryEntry (HistoryEntry entry)
   {
-    EditText searchText = (EditText) findViewById(R.id.search_text);
-    TextView definitionView = (TextView) findViewById(R.id.definition_view);
-    searchText.setText(entry.getWord());
-    definitionView.setText(entry.getDefinitionText());
+    EditText searchText = (EditText) findViewById (R.id.search_text);
+    TextView definitionView = (TextView) findViewById (R.id.definition_view);
+    searchText.setText (entry.getWord ());
+    definitionView.setText (entry.getDefinitionText ());
   }
 }

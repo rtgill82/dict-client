@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * All rights reserved.
  *
- * This file is part of DictClient
+ * This file is a part of DictClient.
  *
  */
 
@@ -12,11 +13,11 @@ import java.util.LinkedList;
 
 public class DictionaryHostCache extends LinkedList<DictionaryHost>
 {
-  public DictionaryHost getHostById(Integer id)
+  public DictionaryHost getHostById (Integer id)
   {
     for (DictionaryHost item : this)
       {
-        if (item.getId() == id)
+        if (item.getId () == id)
           return item;
       }
 
@@ -24,14 +25,14 @@ public class DictionaryHostCache extends LinkedList<DictionaryHost>
   }
 
   @Override
-  public boolean add(DictionaryHost host)
+  public boolean add (DictionaryHost host)
   {
     if (host == null)
       return false;
 
-    if (getHostById(host.getId()) == null)
+    if (getHostById (host.getId ()) == null)
       {
-        super.add(host);
+        super.add (host);
         return true;
       }
 
@@ -39,36 +40,36 @@ public class DictionaryHostCache extends LinkedList<DictionaryHost>
   }
 
   @Override
-  public void add(int index, DictionaryHost host)
+  public void add (int index, DictionaryHost host)
   {
     if (host == null)
       return;
 
-    if (getHostById(host.getId()) == null)
-      super.add(index, host);
+    if (getHostById (host.getId ()) == null)
+      super.add (index, host);
   }
 
   @Override
-  public boolean addAll(Collection<? extends DictionaryHost> c)
+  public boolean addAll (Collection<? extends DictionaryHost> c)
   {
     boolean rv = false;
 
     for (DictionaryHost host : c)
-      rv |= add(host);
+      rv |= add (host);
 
     return rv;
   }
 
   @Override
-  public boolean addAll(int index, Collection<? extends DictionaryHost> c)
+  public boolean addAll (int index, Collection<? extends DictionaryHost> c)
   {
     boolean rv = false;
 
     for (DictionaryHost host : c)
       {
-        if (getHostById(host.getId()) == null)
+        if (getHostById (host.getId ()) == null)
           {
-            super.add(index, host);
+            super.add (index, host);
             rv = true;
           }
       }
@@ -77,41 +78,41 @@ public class DictionaryHostCache extends LinkedList<DictionaryHost>
   }
 
   @Override
-  public void addFirst(DictionaryHost host)
+  public void addFirst (DictionaryHost host)
   {
-    if (getHostById(host.getId()) == null)
-      super.addFirst(host);
+    if (getHostById (host.getId ()) == null)
+      super.addFirst (host);
   }
 
   @Override
-  public void addLast(DictionaryHost host)
+  public void addLast (DictionaryHost host)
   {
-    if (getHostById(host.getId()) == null)
-      super.addLast(host);
+    if (getHostById (host.getId ()) == null)
+      super.addLast (host);
   }
 
   @Override
-  public void push(DictionaryHost host)
+  public void push (DictionaryHost host)
   {
-    if (getHostById(host.getId()) == null)
-      super.push(host);
+    if (getHostById (host.getId ()) == null)
+      super.push (host);
   }
 
   @Override
-  public DictionaryHost set(int index, DictionaryHost host)
+  public DictionaryHost set (int index, DictionaryHost host)
   {
-    DictionaryHost oldHost = getHostById(host.getId());
+    DictionaryHost oldHost = getHostById (host.getId ());
 
     if (oldHost != null)
       {
-        int oldIndex = indexOf(oldHost);
+        int oldIndex = indexOf (oldHost);
         if (oldIndex < index)
           index -= 1;
 
         if (oldIndex != index)
-          remove(oldHost);
+          remove (oldHost);
       }
 
-    return super.set(index, host);
+    return super.set (index, host);
   }
 }

@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * All rights reserved.
  *
- * This file is part of DictClient
+ * This file is a part of DictClient.
  *
  */
 
@@ -36,102 +37,102 @@ public class DictionaryHost
 
   private List<Dictionary> dictionaries = null;
 
-  public DictionaryHost()
+  public DictionaryHost ()
   {
     this.port = PORT;
   }
 
-  public DictionaryHost(String hostName)
+  public DictionaryHost (String hostName)
   {
     this.host_name = hostName;
     this.port = PORT;
   }
 
-  public DictionaryHost(String hostName, int port)
+  public DictionaryHost (String hostName, int port)
   {
     this.host_name = hostName;
     this.port = port;
   }
 
-  public DictionaryHost(int id, String hostName, int port)
+  public DictionaryHost (int id, String hostName, int port)
   {
     this.id = id;
     this.host_name = hostName;
     this.port = port;
   }
 
-  public Integer getId()
+  public Integer getId ()
   {
     return id;
   }
 
-  public void setId(Integer id)
+  public void setId (Integer id)
   {
     this.id = id;
   }
 
-  public String getHostName()
+  public String getHostName ()
   {
     return host_name;
   }
 
-  public void setHostName(String hostName)
+  public void setHostName (String hostName)
   {
     this.host_name = hostName;
   }
 
-  public Integer getPort()
+  public Integer getPort ()
   {
     return port;
   }
 
-  public void setPort(Integer port)
+  public void setPort (Integer port)
   {
     this.port = port;
   }
 
-  public String getDescription()
+  public String getDescription ()
   {
     return description;
   }
 
-  public void setDescription(String description)
+  public void setDescription (String description)
   {
     this.description = description;
   }
 
-  public boolean isReadonly()
+  public boolean isReadonly ()
   {
     return readonly;
   }
 
-  public void setReadonly(boolean readonly)
+  public void setReadonly (boolean readonly)
   {
     this.readonly = readonly;
   }
 
-  public boolean isUserDefined()
+  public boolean isUserDefined ()
   {
     return user_defined;
   }
 
-  public void setUserDefined(boolean userDefined)
+  public void setUserDefined (boolean userDefined)
   {
     this.user_defined = userDefined;
   }
 
-  public List<Dictionary> getDictionaries()
+  public List<Dictionary> getDictionaries ()
   {
     return dictionaries;
   }
 
-  public void setDictionaries(List<Dictionary> list)
+  public void setDictionaries (List<Dictionary> list)
   {
     dictionaries = list;
   }
 
   @Override
-  public String toString()
+  public String toString ()
   {
     if (port != JDictClient.DEFAULT_PORT)
       return host_name + ":" + port;

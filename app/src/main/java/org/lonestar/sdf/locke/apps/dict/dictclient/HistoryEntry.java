@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * All rights reserved.
  *
- * This file is part of DictClient
+ * This file is a part of DictClient.
  *
  */
 
@@ -19,24 +20,24 @@ public class HistoryEntry
   private String word;
   private CharSequence definitionText;
 
-  public HistoryEntry(String word, CharSequence definitionText)
+  public HistoryEntry (String word, CharSequence definitionText)
   {
     this.word = word;
     this.definitionText = definitionText;
   }
 
-  public String getWord()
+  public String getWord ()
   {
     return word;
   }
 
-  public CharSequence getDefinitionText()
+  public CharSequence getDefinitionText ()
   {
     return definitionText;
   }
 
-  public String toString()
+  public String toString ()
   {
-    return String.format("Definitions for %s", word);
+    return String.format ("Definitions for %s", word);
   }
 }

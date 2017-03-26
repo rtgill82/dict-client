@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * All rights reserved.
  *
- * This file is part of DictClient
+ * This file is a part of DictClient.
  *
  */
 
@@ -23,46 +24,48 @@ import org.lonestar.sdf.locke.libs.dict.JDictClient;
 public class ManageHostCursorAdapter extends CursorAdapter
 {
 
-  public ManageHostCursorAdapter(Context context, Cursor c, int flags)
+  public ManageHostCursorAdapter (Context context, Cursor c, int flags)
   {
-    super(context, c, flags);
+    super (context, c, flags);
   }
 
-  public View newView(Context context, Cursor cursor, ViewGroup parent)
+  public View newView (Context context, Cursor cursor, ViewGroup parent)
   {
-    LayoutInflater inflater = LayoutInflater.from(context);
-    RelativeLayout view = (RelativeLayout) inflater.inflate(
+    LayoutInflater inflater = LayoutInflater.from (context);
+    RelativeLayout view = (RelativeLayout) inflater.inflate (
                             R.layout.manage_host_list_item, null
                           );
-    String itemText = createItem(cursor);
+    String itemText = createItem (cursor);
 
-    TextView textview = (TextView) view.findViewById(R.id.manage_host_list_item_textview);
-    textview.setText(Html.fromHtml(itemText));
+    TextView textview = (TextView)
+      view.findViewById (R.id.manage_host_list_item_textview);
+    textview.setText (Html.fromHtml (itemText));
     return view;
   }
 
-  public void bindView(View view, Context context, Cursor cursor)
+  public void bindView (View view, Context context, Cursor cursor)
   {
-    TextView textview = (TextView) view.findViewById(R.id.manage_host_list_item_textview);
+    TextView textview = (TextView)
+      view.findViewById (R.id.manage_host_list_item_textview);
     if (textview != null)
       {
-        String itemText = createItem(cursor);
-        textview.setText(Html.fromHtml(itemText));
+        String itemText = createItem (cursor);
+        textview.setText (Html.fromHtml (itemText));
       }
   }
 
-  private String createItem(Cursor cursor)
+  private String createItem (Cursor cursor)
   {
-    String host = cursor.getString(cursor.getColumnIndex("host_name"));
-    Integer port = cursor.getInt(cursor.getColumnIndex("port"));
+    String host = cursor.getString (cursor.getColumnIndex ("host_name"));
+    Integer port = cursor.getInt (cursor.getColumnIndex ("port"));
     String description =
-      cursor.getString(cursor.getColumnIndex("description"));
+      cursor.getString (cursor.getColumnIndex ("description"));
 
     String itemText = "<b>" + host;
     if (port != JDictClient.DEFAULT_PORT)
-      itemText += ":" + port.toString();
+      itemText += ":" + port.toString ();
     itemText += "</b>";
-    if (description.length() > 0)
+    if (description.length () > 0)
       itemText += "<br><i>" + description + "</i>";
 
     return itemText;

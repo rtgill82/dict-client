@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * All rights reserved.
  *
- * This file is part of DictClient
+ * This file is a part of DictClient.
  *
  */
 
@@ -16,10 +17,10 @@ public class DictClientApplication extends Application
   private DictionaryHost currentHost;
 
   @Override
-  public void onCreate()
+  public void onCreate ()
   {
-    super.onCreate();
-    DatabaseManager.initialize(getApplicationContext());
+    super.onCreate ();
+    DatabaseManager.initialize (getApplicationContext ());
     try
       {
         currentHost = DatabaseManager.getInstance ().getPreferredHost (this);

@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * All rights reserved.
  *
- * This file is part of DictClient
+ * This file is a part of DictClient.
  *
  */
 
@@ -16,26 +17,26 @@ import android.support.v4.app.FragmentActivity;
 
 public class ErrorDialog extends DialogFragment
 {
-  public static void show(Activity activity, String message)
+  public static void show (Activity activity, String message)
   {
-    Bundle args = new Bundle();
-    args.putString("message", message);
-    ErrorDialog dialog = new ErrorDialog();
-    dialog.setArguments(args);
-    dialog.show(
-      ((FragmentActivity) activity).getSupportFragmentManager(),
-      ErrorDialog.class.getSimpleName()
+    Bundle args = new Bundle ();
+    args.putString ("message", message);
+    ErrorDialog dialog = new ErrorDialog ();
+    dialog.setArguments (args);
+    dialog.show (
+      ((FragmentActivity) activity).getSupportFragmentManager (),
+      ErrorDialog.class.getSimpleName ()
     );
   }
 
   @Override
-  public Dialog onCreateDialog(Bundle savedInstanceState)
+  public Dialog onCreateDialog (Bundle savedInstanceState)
   {
-    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-    String message = getArguments().getString("message");
-    builder.setTitle("Error")
-      .setMessage(message)
-      .setPositiveButton("Ok", null);
-    return builder.create();
+    AlertDialog.Builder builder = new AlertDialog.Builder (getActivity ());
+    String message = getArguments ().getString ("message");
+    builder.setTitle ("Error")
+           .setMessage (message)
+           .setPositiveButton ("Ok", null);
+    return builder.create ();
   }
 }

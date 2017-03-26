@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * All rights reserved.
  *
- * This file is part of DictClient
+ * This file is a part of DictClient.
  *
  */
 
@@ -38,48 +39,48 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
 
   static
   {
-    messages.put(JDictClientRequest.JDictClientCommand.DEFINE, "Looking up word...");
-    messages.put(JDictClientRequest.JDictClientCommand.DICT_INFO, "Retrieving dictionary information...");
-    messages.put(JDictClientRequest.JDictClientCommand.DICT_LIST, "Retrieving available dictionaries...");
+    messages.put (JDictClientRequest.JDictClientCommand.DEFINE, "Looking up word...");
+    messages.put (JDictClientRequest.JDictClientCommand.DICT_INFO, "Retrieving dictionary information...");
+    messages.put (JDictClientRequest.JDictClientCommand.DICT_LIST, "Retrieving available dictionaries...");
   }
 
-  public JDictClientTask(Activity context, JDictClientRequest request)
+  public JDictClientTask (Activity context, JDictClientRequest request)
   {
-    super();
+    super ();
     this.context = context;
     this.request = request;
   }
 
   @Override
-  protected void onPreExecute()
+  protected void onPreExecute ()
   {
-    disableInput();
-    progressDialog = ProgressDialog.show(context,
-                                         "Waiting",
-                                         messages.get(request.getCommand()),
-                                         true);
+    disableInput ();
+    progressDialog = ProgressDialog.show (context,
+                                          "Waiting",
+                                          messages.get (request.getCommand ()),
+                                          true);
   }
 
-  protected JDictClientResult doInBackground(Void... voids)
+  protected JDictClientResult doInBackground (Void... voids)
   {
     try
       {
-        switch (request.getCommand())
+        switch (request.getCommand ())
           {
           case DEFINE:
-            return new JDictClientResult(
+            return new JDictClientResult (
               request,
-              getDefinitions(request.getWord(), request.getDictionary())
+              getDefinitions (request.getWord (), request.getDictionary ())
             );
           case DICT_INFO:
-            return new JDictClientResult(
+            return new JDictClientResult (
               request,
-              getDictionaryInfo(request.getDictionary())
+              getDictionaryInfo (request.getDictionary ())
             );
           case DICT_LIST:
-            return new JDictClientResult(
+            return new JDictClientResult (
               request,
-              getDictionaries()
+              getDictionaries ()
             );
           default:
             break;
@@ -101,34 +102,34 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
   }
 
   @Override
-  protected void onPostExecute(JDictClientResult result)
+  protected void onPostExecute (JDictClientResult result)
   {
-    DefinitionHistory history = DefinitionHistory.getInstance();
+    DefinitionHistory history = DefinitionHistory.getInstance ();
 
-    enableInput();
-    progressDialog.dismiss();
+    enableInput ();
+    progressDialog.dismiss ();
 
     if (exception != null)
       {
-        if (request.getCommand() == JDictClientRequest.JDictClientCommand.DICT_LIST)
-          disableInput();
+        if (request.getCommand () == JDictClientRequest.JDictClientCommand.DICT_LIST)
+          disableInput ();
 
-        ErrorDialog.show(context, exception.getMessage());
+        ErrorDialog.show (context, exception.getMessage ());
         return;
       }
 
-    switch(result.getRequest().getCommand())
+    switch (result.getRequest ().getCommand ())
       {
       case DEFINE:
-        CharSequence text = displayDefinitions(result.getDefinitions());
-        HistoryEntry entry = new HistoryEntry(request.getWord(), text);
-        history.add(entry);
-        ((MainActivity) context).supportInvalidateOptionsMenu();;
+        CharSequence text = displayDefinitions (result.getDefinitions ());
+        HistoryEntry entry = new HistoryEntry (request.getWord (), text);
+        history.add (entry);
+        ((MainActivity) context).supportInvalidateOptionsMenu ();;
         break;
 
       case DICT_INFO:
-        ((MainActivity) context).reset();
-        displayDictionaryInfo(result.getDictionaryInfo());
+        ((MainActivity) context).reset ();
+        displayDictionaryInfo (result.getDictionaryInfo ());
         break;
 
       case DICT_LIST:
@@ -142,106 +143,107 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
       }
   }
 
-  private List<Dictionary> getDictionaries()
+  private List<Dictionary> getDictionaries ()
   throws Exception
   {
     DictionaryHost host = request.getHost ();
     JDictClient dictClient =
-      JDictClient.connect(host.getHostName(), host.getPort());
+      JDictClient.connect (host.getHostName (), host.getPort ());
 
     List<Dictionary> dictionaries = new ArrayList<Dictionary>();
-    dictionaries.add(new Dictionary(null, "All Dictionaries"));
-    dictionaries.addAll(dictClient.getDictionaries());
-    dictClient.close();
+    dictionaries.add (new Dictionary (null, "All Dictionaries"));
+    dictionaries.addAll (dictClient.getDictionaries ());
+    dictClient.close ();
     return dictionaries;
   }
 
-  private List<Definition> getDefinitions(String word, Dictionary dictionary)
+  private List<Definition> getDefinitions (String word, Dictionary dictionary)
   throws Exception
   {
     DictionaryHost host = request.getHost ();
     JDictClient dictClient =
-      JDictClient.connect(host.getHostName(), host.getPort());
+      JDictClient.connect (host.getHostName (), host.getPort ());
 
     List<Definition> definitions;
-    if (dictionary.getDatabase() != null)
+    if (dictionary.getDatabase () != null)
       {
-        definitions = dictClient.define(dictionary.getDatabase(), word);
+        definitions = dictClient.define (dictionary.getDatabase (), word);
       }
     else
       {
-        definitions = dictClient.define(word);
+        definitions = dictClient.define (word);
       }
-    dictClient.close();
+    dictClient.close ();
 
     return definitions;
   }
 
-  private String getDictionaryInfo(Dictionary dictionary)
+  private String getDictionaryInfo (Dictionary dictionary)
   throws Exception
   {
     DictionaryHost host = request.getHost ();
-    JDictClient dictClient = JDictClient.connect(host.getHostName(), host.getPort());
-    String dictInfo = dictClient.getDictionaryInfo(dictionary.getDatabase());
-    dictClient.close();
+    JDictClient dictClient = JDictClient.connect (host.getHostName (),
+                                                  host.getPort ());
+    String dictInfo = dictClient.getDictionaryInfo (dictionary.getDatabase ());
+    dictClient.close ();
     return dictInfo;
   }
 
-  private CharSequence displayDefinitions(List<Definition> definitions)
+  private CharSequence displayDefinitions (List<Definition> definitions)
   {
-    TextView textView = (TextView) context.findViewById(R.id.definition_view);
-    textView.setText("");
+    TextView textView = (TextView) context.findViewById (R.id.definition_view);
+    textView.setText ("");
 
     if (definitions == null)
       {
-        textView.setText("No definitions found.");
+        textView.setText ("No definitions found.");
       }
     else
       {
-        Iterator<Definition> itr = definitions.iterator();
-        while (itr.hasNext())
+        Iterator<Definition> itr = definitions.iterator ();
+        while (itr.hasNext ())
           {
-            Definition definition = itr.next();
-            Dictionary dictionary = definition.getDictionary();
+            Definition definition = itr.next ();
+            Dictionary dictionary = definition.getDictionary ();
 
-            textView.append(Html.fromHtml("<b>" + dictionary.getDescription() + "</b><br>"));
-            textView.append(DefinitionParser.parse(definition));
-            textView.append("\n");
-            textView.setMovementMethod(LinkMovementMethod.getInstance());
-            textView.setHighlightColor(Color.BLUE);
+            textView.append (Html.fromHtml ("<b>" + dictionary.getDescription () + "</b><br>"));
+            textView.append (DefinitionParser.parse (definition));
+            textView.append ("\n");
+            textView.setMovementMethod (LinkMovementMethod.getInstance ());
+            textView.setHighlightColor (Color.BLUE);
           }
       }
 
-    return textView.getText();
+    return textView.getText ();
   }
 
-  private void displayDictionaryInfo(String dictInfo)
+  private void displayDictionaryInfo (String dictInfo)
   {
-    TextView textView = (TextView) context.findViewById(R.id.definition_view);
-    textView.setText("");
+    TextView textView = (TextView) context.findViewById (R.id.definition_view);
+    textView.setText ("");
     if (dictInfo == null)
       {
-        textView.setText("No dictionary info received.");
+        textView.setText ("No dictionary info received.");
       }
     else
       {
-        textView.setText(dictInfo);
+        textView.setText (dictInfo);
       }
   }
 
-  private void disableInput()
+  private void disableInput ()
   {
-    context.findViewById(R.id.search_text).setEnabled(false);
-    context.findViewById(R.id.search_button).setEnabled(false);
-    context.findViewById(R.id.dictionary_spinner).setEnabled(false);
-    context.findViewById(R.id.dictinfo_button).setEnabled(false);
+    context.findViewById (R.id.search_text).setEnabled (false);
+    context.findViewById (R.id.search_button).setEnabled (false);
+    context.findViewById (R.id.dictionary_spinner).setEnabled (false);
+    context.findViewById (R.id.dictinfo_button).setEnabled (false);
   }
 
-  private void enableInput()
+  private void enableInput ()
   {
-    context.findViewById(R.id.search_text).setEnabled(true);
-    context.findViewById(R.id.search_button).setEnabled(true);
-    context.findViewById(R.id.dictionary_spinner).setEnabled(true);
-    context.findViewById(R.id.dictinfo_button).setEnabled(true);
+    context.findViewById (R.id.search_text).setEnabled (true);
+    context.findViewById (R.id.search_button).setEnabled (true);
+    context.findViewById (R.id.dictionary_spinner).setEnabled (true);
+    context.findViewById (R.id.dictinfo_button).setEnabled (true);
   }
 }
