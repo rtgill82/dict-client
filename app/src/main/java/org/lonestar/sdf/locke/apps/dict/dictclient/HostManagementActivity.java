@@ -8,10 +8,10 @@
 
 package org.lonestar.sdf.locke.apps.dict.dictclient;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +19,7 @@ import android.widget.ListView;
 
 import java.sql.SQLException;
 
-public class HostManagementActivity extends FragmentActivity
+public class HostManagementActivity extends Activity
 {
   private ListView hostList;
   private DictionaryHostCursor cursor;

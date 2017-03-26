@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "org.lonestar.sdf.locke.apps.dict.dictclient"
-        minSdkVersion 10
+        minSdkVersion 11
         targetSdkVersion 17
     }
 
@@ -31,5 +31,4 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.j256.ormlite:ormlite-core:5.0'
     compile 'com.github.bmoliveira:snake-yaml:v1.18-android'
-    compile 'com.android.support:support-v4:22.2.1'
 }

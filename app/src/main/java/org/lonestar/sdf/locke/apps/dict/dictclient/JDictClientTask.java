@@ -124,7 +124,7 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
         CharSequence text = displayDefinitions (result.getDefinitions ());
         HistoryEntry entry = new HistoryEntry (request.getWord (), text);
         history.add (entry);
-        ((MainActivity) context).supportInvalidateOptionsMenu ();;
+        context.invalidateOptionsMenu ();;
         break;
 
       case DICT_INFO:

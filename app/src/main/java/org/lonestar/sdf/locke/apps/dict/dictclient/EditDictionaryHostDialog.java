@@ -8,12 +8,12 @@
 
 package org.lonestar.sdf.locke.apps.dict.dictclient;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -27,16 +27,16 @@ public class EditDictionaryHostDialog extends DialogFragment
   private EditText editPort;
   private EditText editDescription;
 
-  public static void show (FragmentActivity activity)
+  public static void show (Activity activity)
   {
     EditDictionaryHostDialog.show (activity, null);
   }
 
-  public static void show (FragmentActivity activity, DictionaryHost host)
+  public static void show (Activity activity, DictionaryHost host)
   {
     EditDictionaryHostDialog dialog = new EditDictionaryHostDialog ();
     dialog.setDictionaryHost (host);
-    dialog.show (activity.getSupportFragmentManager (),
+    dialog.show (activity.getFragmentManager (),
                  activity.getString (R.string.dialog_edit_tag));
   }
 

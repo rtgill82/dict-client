@@ -8,13 +8,13 @@
 
 package org.lonestar.sdf.locke.apps.dict.dictclient;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.widget.TextView;
@@ -26,9 +26,9 @@ public class AboutDialog extends DialogFragment
 {
   private String html;
 
-  public static void show (FragmentActivity activity)
+  public static void show (Activity activity)
   {
-    new AboutDialog ().show (activity.getSupportFragmentManager (),
+    new AboutDialog ().show (activity.getFragmentManager (),
                              activity.getString (R.string.about_text));
   }
 

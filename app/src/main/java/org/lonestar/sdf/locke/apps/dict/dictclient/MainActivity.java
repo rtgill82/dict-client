@@ -9,9 +9,9 @@
 package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +27,7 @@ import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
 import java.util.List;
 
-public class MainActivity extends FragmentActivity
+public class MainActivity extends Activity
 {
   private DictionaryHost host;
   private DefinitionHistory history = DefinitionHistory.getInstance ();
@@ -226,7 +226,7 @@ public class MainActivity extends FragmentActivity
     if (entry != null)
       displayHistoryEntry (entry);
 
-    supportInvalidateOptionsMenu ();
+    invalidateOptionsMenu ();
   }
 
   public void reset ()
@@ -236,7 +236,7 @@ public class MainActivity extends FragmentActivity
     searchText.setText ("");
     definitionView.setText ("");
     history.clear ();
-    supportInvalidateOptionsMenu ();
+    invalidateOptionsMenu ();
   }
 
   public void setDictionarySpinnerData (List<Dictionary> list)
