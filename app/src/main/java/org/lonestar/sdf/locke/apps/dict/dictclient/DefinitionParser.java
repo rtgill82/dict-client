@@ -47,13 +47,15 @@ public final class DefinitionParser
 
       if (activity != null)
         {
+          DictClientApplication app = (DictClientApplication) activity.getApplication ();
+          DictionaryHost host = app.getCurrentHost ();
           EditText searchText =
             (EditText) activity.findViewById(R.id.search_text);
           searchText.setText(word);
           searchText.selectAll();
           new JDictClientTask(
             activity,
-            JDictClientRequest.DEFINE(word))
+            JDictClientRequest.DEFINE(host, word))
           .execute();
         }
     }

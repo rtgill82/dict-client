@@ -19,7 +19,7 @@
         android:orderInCategory="90"
         android:showAsAction="always"
         android:title="@string/menu_host"
-        android:icon="@drawable/ic_collections_bookmark_white_24dp"/>
+        android:icon="@drawable/ic_collections_bookmark_white_24dp" />
     <item
         android:id="@+id/menu_manage_hosts"
         android:orderInCategory="91"

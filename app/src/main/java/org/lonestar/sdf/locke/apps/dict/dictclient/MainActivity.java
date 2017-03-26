@@ -24,13 +24,11 @@ import android.widget.TextView;
 
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity
 {
-  private DictionaryHost currentHost;
-  private DictionaryHostCache hostCache;
+  private DictionaryHost host;
   private DefinitionHistory history = DefinitionHistory.getInstance();
 
   @SuppressLint("NewApi")
@@ -96,18 +94,26 @@ public class MainActivity extends FragmentActivity
         definitionView.setText("");
       }
     });
+  }
 
-    hostCache = new DictionaryHostCache();
-    try
-      {
-        setCurrentHost(DatabaseManager.getInstance().getCurrentHost(this));
-      }
-    catch (SQLException e)
-      {
-        ErrorDialog.show(this, e.getMessage());
-      }
+  @Override
+  public void onResume ()
+  {
+    super.onResume ();
+    DictClientApplication app = (DictClientApplication) getApplication ();
+    host = app.getCurrentHost ();
 
-    refreshDictionaries();
+    String hostname = "No Host Currently Selected";
+    if (host != null)
+      {
+        hostname = host.getHostName();
+        if (host.getDictionaries() == null)
+          refreshDictionaries ();
+        else
+          setDictionarySpinnerData(host.getDictionaries());
+      }
+    setTitle(getString(R.string.app_name) + " - " + hostname);
+    reset();
   }
 
   @Override
@@ -166,12 +172,11 @@ public class MainActivity extends FragmentActivity
         break;
 
       case R.id.menu_host:
-        SelectDictionaryHostDialog.show(this);
+        startActivity(new Intent(this, SelectDictionaryHostActivity.class));
         break;
 
       case R.id.menu_manage_hosts:
-        Intent intent = new Intent(MainActivity.this, HostManagementActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, HostManagementActivity.class));
         break;
 
       case R.id.menu_about:
@@ -183,56 +188,6 @@ public class MainActivity extends FragmentActivity
       }
 
     return true;
-  }
-  public DictionaryHost getCurrentHost()
-  {
-    return currentHost;
-  }
-
-  public void setCurrentHost(DictionaryHost host)
-  {
-    String hostname = "No Host Currently Selected";
-
-    hostCache.add(currentHost);
-    currentHost = host;
-    if (host != null)
-      {
-        hostname = host.getHostName();
-        if (host.getDictionaries() == null)
-          refreshDictionaries();
-        else
-          setDictionarySpinnerData(host.getDictionaries());
-      }
-    setTitle(getString(R.string.app_name) + " - " + hostname);
-    reset();
-  }
-
-  public void setCurrentHostById(Integer id)
-  {
-    DictionaryHost host = hostCache.getHostById(id);
-
-    if (host == null)
-      {
-        try
-          {
-            host = DatabaseManager.getInstance().getHostById(id);
-          }
-        catch (SQLException e)
-          {
-            ErrorDialog.show(this, e.getMessage());
-          }
-      }
-
-    setCurrentHost(host);
-  }
-
-  public void setDictionaries(List<Dictionary> list)
-  {
-    if (currentHost != null)
-      {
-        currentHost.setDictionaries(list);
-        setDictionarySpinnerData(list);
-      }
   }
 
   public void lookupWord(View view)
@@ -249,14 +204,14 @@ public class MainActivity extends FragmentActivity
           {
             new JDictClientTask(
               this,
-              JDictClientRequest.DEFINE(dict, word))
+              JDictClientRequest.DEFINE(host, dict, word))
             .execute();
           }
         else
           {
             new JDictClientTask(
               this,
-              JDictClientRequest.DEFINE(word))
+              JDictClientRequest.DEFINE(host, word))
             .execute();
           }
       }
@@ -271,7 +226,7 @@ public class MainActivity extends FragmentActivity
 
     new JDictClientTask(
       this,
-      JDictClientRequest.DICT_INFO(dictionary))
+      JDictClientRequest.DICT_INFO(host, dictionary))
     .execute();
   }
 
@@ -290,11 +245,6 @@ public class MainActivity extends FragmentActivity
     supportInvalidateOptionsMenu();
   }
 
-  public void refreshDictionaries()
-  {
-    new JDictClientTask(this, JDictClientRequest.DICT_LIST()).execute();
-  }
-
   public void reset()
   {
     EditText searchText = (EditText) findViewById(R.id.search_text);
@@ -305,10 +255,15 @@ public class MainActivity extends FragmentActivity
     supportInvalidateOptionsMenu();
   }
 
-  private void setDictionarySpinnerData(List<Dictionary> list)
+  public void setDictionarySpinnerData(List<Dictionary> list)
   {
     ((Spinner) findViewById(R.id.dictionary_spinner)).setAdapter(
       new DictionarySpinnerAdapter(this, list));
+  }
+
+  private void refreshDictionaries()
+  {
+    new JDictClientTask(this, JDictClientRequest.DICT_LIST(host)).execute();
   }
 
   private void displayHistoryEntry(HistoryEntry entry)

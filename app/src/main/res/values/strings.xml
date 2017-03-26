@@ -26,5 +26,4 @@
     <string name="dialog_edit_title">Edit Host</string>
 
     <string name="pref_key_dict_host">dict_host</string>
-    <string name="pref_value_dict_host">1</string>
 </resources>

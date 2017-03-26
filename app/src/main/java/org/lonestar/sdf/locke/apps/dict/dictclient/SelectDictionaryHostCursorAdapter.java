@@ -14,10 +14,8 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.TextView;
 
-import org.lonestar.sdf.locke.apps.dict.dictclient.R;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
 public class SelectDictionaryHostCursorAdapter extends CursorAdapter
@@ -32,7 +30,7 @@ public class SelectDictionaryHostCursorAdapter extends CursorAdapter
   public View newView(Context context, Cursor cursor, ViewGroup parent)
   {
     LayoutInflater inflater = LayoutInflater.from(context);
-    CheckedTextView view = (CheckedTextView) inflater.inflate(
+    TextView view = (TextView) inflater.inflate(
                              R.layout.select_host_list_item, null
                            );
     String itemText = createItem(cursor);

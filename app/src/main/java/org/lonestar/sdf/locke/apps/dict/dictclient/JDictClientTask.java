@@ -30,7 +30,6 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
   private Activity context;
   private JDictClientRequest request;
   private Exception exception;
-  private DictionaryHost host;
 
   private ProgressDialog progressDialog;
 
@@ -49,7 +48,6 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
     super();
     this.context = context;
     this.request = request;
-    host = ((MainActivity) context).getCurrentHost();
   }
 
   @Override
@@ -134,7 +132,9 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
         break;
 
       case DICT_LIST:
-        ((MainActivity) context).setDictionaries(result.getDictionaries());
+        DictionaryHost host = request.getHost ();
+        host.setDictionaries (result.getDictionaries ());
+        ((MainActivity) context).setDictionarySpinnerData (result.getDictionaries ());
         break;
 
       default:
@@ -145,6 +145,7 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
   private List<Dictionary> getDictionaries()
   throws Exception
   {
+    DictionaryHost host = request.getHost ();
     JDictClient dictClient =
       JDictClient.connect(host.getHostName(), host.getPort());
 
@@ -158,6 +159,7 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
   private List<Definition> getDefinitions(String word, Dictionary dictionary)
   throws Exception
   {
+    DictionaryHost host = request.getHost ();
     JDictClient dictClient =
       JDictClient.connect(host.getHostName(), host.getPort());
 
@@ -178,6 +180,7 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
   private String getDictionaryInfo(Dictionary dictionary)
   throws Exception
   {
+    DictionaryHost host = request.getHost ();
     JDictClient dictClient = JDictClient.connect(host.getHostName(), host.getPort());
     String dictInfo = dictClient.getDictionaryInfo(dictionary.getDatabase());
     dictClient.close();
