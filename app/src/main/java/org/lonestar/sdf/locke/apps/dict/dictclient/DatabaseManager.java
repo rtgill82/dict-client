@@ -88,14 +88,16 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
       }
   }
 
-  public DictionaryHost getPreferredHost (Context context)
+  public DictionaryHost getDefaultHost (Context context)
     throws SQLException
   {
     SharedPreferences prefs =
       PreferenceManager.getDefaultSharedPreferences (context);
     Resources resources = context.getResources ();
-    int host = prefs.getInt (resources.getString (R.string.pref_key_dict_host),
-        resources.getInteger (R.integer.pref_value_dict_host));
+    int host = prefs.getInt (
+      resources.getString (R.string.pref_key_default_host),
+      resources.getInteger (R.integer.pref_value_default_host)
+    );
     Dao<DictionaryHost, Integer> dao = instance.getDao (DictionaryHost.class);
     return dao.queryForId (host);
   }

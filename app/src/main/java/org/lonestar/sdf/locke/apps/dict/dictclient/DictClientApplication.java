@@ -23,7 +23,7 @@ public class DictClientApplication extends Application
     DatabaseManager.initialize (getApplicationContext ());
     try
       {
-        currentHost = DatabaseManager.getInstance ().getPreferredHost (this);
+        currentHost = DatabaseManager.getInstance ().getDefaultHost (this);
       }
     catch (SQLException e)
       {
