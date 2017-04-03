@@ -11,7 +11,7 @@
     <string name="menu_back">Back</string>
     <string name="menu_forward">Forward</string>
     <string name="menu_host">Hosts</string>
-    <string name="menu_manage_hosts">Manage Hosts</string>
+    <string name="menu_preferences">Preferences</string>
     <string name="menu_about">About</string>
 
     <!-- HostManagementActivity Menus -->
@@ -25,5 +25,16 @@
     <string name="dialog_add_title">Add New Host</string>
     <string name="dialog_edit_title">Edit Host</string>
 
+    <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Settings</string>
+    <string name="pref_header_general">General</string>
+    <string name="pref_header_manage_hosts">Manage Hosts</string>
+
+    <string name="pref_title_default_host">Default Host</string>
     <string name="pref_key_default_host">default_host</string>
+    <string name="pref_value_default_host">1</string>
+
+    <string name="pref_description_manage_hosts">
+        Add, Edit, and Delete Dictionary Hosts
+    </string>
 </resources>

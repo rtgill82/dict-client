@@ -163,8 +163,8 @@ public class MainActivity extends Activity
         startActivity (new Intent (this, SelectDictionaryHostActivity.class));
         break;
 
-      case R.id.menu_manage_hosts:
-        startActivity (new Intent (this, HostManagementActivity.class));
+      case R.id.menu_preferences:
+        startActivity (new Intent (this, SettingsActivity.class));
         break;
 
       case R.id.menu_about:

@@ -89,24 +89,40 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
   }
 
   public DictionaryHost getDefaultHost (Context context)
-    throws SQLException
   {
     SharedPreferences prefs =
       PreferenceManager.getDefaultSharedPreferences (context);
     Resources resources = context.getResources ();
-    int host = prefs.getInt (
+    int hostId = Integer.parseInt(prefs.getString (
       resources.getString (R.string.pref_key_default_host),
-      resources.getInteger (R.integer.pref_value_default_host)
+      resources.getString (R.string.pref_value_default_host))
     );
-    Dao<DictionaryHost, Integer> dao = instance.getDao (DictionaryHost.class);
-    return dao.queryForId (host);
+
+    DictionaryHost host;
+    try
+      {
+        Dao<DictionaryHost, Integer> dao = instance.getDao (DictionaryHost.class);
+        host = dao.queryForId (hostId);
+      }
+    catch (SQLException e)
+      {
+        throw new RuntimeException (e);
+      }
+    return host;
   }
 
   public DictionaryHost getHostById (Integer id)
-    throws SQLException
   {
-    Dao<DictionaryHost, Integer> dao = instance.getDao (DictionaryHost.class);
-    return dao.queryForId (id);
+    try
+      {
+        Dao<DictionaryHost, Integer> dao;
+        dao = instance.getDao(DictionaryHost.class);
+        return dao.queryForId (id);
+      }
+    catch (SQLException e)
+      {
+        throw new RuntimeException (e);
+      }
   }
 
   public boolean deleteHostById (int id)
@@ -117,11 +133,19 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
   }
 
   public DictionaryHostCursor getHostList ()
-    throws SQLException
   {
-    Dao<DictionaryHost, Integer> dao = instance.getDao (DictionaryHost.class);
-    QueryBuilder<DictionaryHost, Integer> qb = dao.queryBuilder ();
-    CloseableIterator<DictionaryHost> iterator = dao.iterator (qb.prepare ());
+    CloseableIterator<DictionaryHost> iterator;
+    try
+      {
+        Dao<DictionaryHost, Integer> dao = instance.getDao (DictionaryHost.class);
+        QueryBuilder<DictionaryHost, Integer> qb = dao.queryBuilder ();
+        iterator = dao.iterator (qb.prepare ());
+      }
+    catch(SQLException e)
+      {
+        throw new RuntimeException (e);
+      }
+
     AndroidDatabaseResults results =
       (AndroidDatabaseResults) iterator.getRawResults ();
     return new DictionaryHostCursor (results.getRawCursor ());

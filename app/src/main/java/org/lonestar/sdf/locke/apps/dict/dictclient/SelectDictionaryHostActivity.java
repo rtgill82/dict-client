@@ -13,26 +13,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import java.sql.SQLException;
-
 public class SelectDictionaryHostActivity extends ListActivity
 {
   @Override
   protected void onCreate (Bundle savedInstanceState)
   {
     super.onCreate (savedInstanceState);
-    try
-      {
-        DictionaryHostCursor cursor = DatabaseManager.getInstance ()
-                                                     .getHostList ();
-        SelectDictionaryHostCursorAdapter ca =
-          new SelectDictionaryHostCursorAdapter (this, cursor, 0);
-        getListView ().setAdapter (ca);
-      }
-    catch (SQLException e)
-      {
-        ErrorDialog.show (this, e.getMessage ());
-      }
+    DictionaryHostCursor cursor = DatabaseManager.getInstance ()
+                                                 .getHostList ();
+    SelectDictionaryHostCursorAdapter ca =
+      new SelectDictionaryHostCursorAdapter (this, cursor, 0);
+    getListView ().setAdapter (ca);
   }
 
   @Override

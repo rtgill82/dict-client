@@ -94,18 +94,11 @@ public class HostManagementActivity extends Activity
   public boolean refreshHostList ()
   {
     boolean rv = true;
-    try
-      {
-        cursor = DatabaseManager.getInstance ().getHostList ();
-        adapter = new ManageHostCursorAdapter (this, cursor, 0);
-        hostList = (ListView) findViewById (R.id.manage_host_list);
-        hostList.setAdapter (adapter);
-      }
-    catch (SQLException e)
-      {
-        ErrorDialog.show (this, e.getMessage ());
-        rv = false;
-      }
+
+    cursor = DatabaseManager.getInstance ().getHostList ();
+    adapter = new ManageHostCursorAdapter (this, cursor, 0);
+    hostList = (ListView) findViewById (R.id.manage_host_list);
+    hostList.setAdapter (adapter);
     return rv;
   }
 
