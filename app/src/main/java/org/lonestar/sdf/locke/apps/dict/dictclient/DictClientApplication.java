@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
  * All rights reserved.
  *
- * This file is a part of DictClient.
+ * This file is a part of DICT Client.
  *
  */
 
@@ -28,7 +28,8 @@ public class DictClientApplication extends Application
     listener =
       new SharedPreferences.OnSharedPreferenceChangeListener()
       {
-        public void onSharedPreferenceChanged (SharedPreferences preferences, String key)
+        public void onSharedPreferenceChanged (SharedPreferences preferences,
+                                               String key)
         {
           if (key == getString(R.string.pref_key_default_host))
             {
@@ -38,7 +39,8 @@ public class DictClientApplication extends Application
         }
       };
 
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences (this);
+    SharedPreferences prefs =
+      PreferenceManager.getDefaultSharedPreferences (this);
     prefs.registerOnSharedPreferenceChangeListener (listener);
   }
 

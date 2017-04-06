@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
  * All rights reserved.
  *
- * This file is a part of DictClient.
+ * This file is a part of DICT Client.
  *
  */
 

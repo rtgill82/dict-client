@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
  * All rights reserved.
  *
- * This file is a part of DictClient.
+ * This file is a part of DICT Client.
  *
  * FIXME: Look for a way to refresh the list of hosts in
  *        ManageHostsListFragment without tying these two classes as tightly
