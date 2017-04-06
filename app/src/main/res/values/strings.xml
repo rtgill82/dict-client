@@ -15,7 +15,9 @@
     <string name="menu_about">About</string>
 
     <!-- HostManagementActivity Menus -->
-    <string name="menu_add">Add Host</string>
+    <string name="menu_add_host">Add Host</string>
+    <string name="menu_delete_host">Delete Host</string>
+    <string name="menu_edit_host">Edit Host</string>
 
     <!-- EditDictionaryHostDialog Strings -->
     <string name="dialog_edit_tag">EditDictionaryHostDialog</string>

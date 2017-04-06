@@ -4,11 +4,13 @@
  *
  * This file is a part of DictClient.
  *
+ * FIXME: Look for a way to refresh the list of hosts in
+ *        ManageHostsListFragment without tying these two classes as tightly
+ *        togetheras they are.
  */
 
 package org.lonestar.sdf.locke.apps.dict.dictclient;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -23,21 +25,24 @@ import java.sql.SQLException;
 public class EditDictionaryHostDialog extends DialogFragment
 {
   private DictionaryHost host;
+  private ManageHostsListFragment fragment;
   private EditText editHostName;
   private EditText editPort;
   private EditText editDescription;
 
-  public static void show (Activity activity)
+  public static void show (ManageHostsListFragment fragment)
   {
-    EditDictionaryHostDialog.show (activity, null);
+    EditDictionaryHostDialog.show (fragment, null);
   }
 
-  public static void show (Activity activity, DictionaryHost host)
+  public static void show (ManageHostsListFragment fragment,
+                           DictionaryHost host)
   {
     EditDictionaryHostDialog dialog = new EditDictionaryHostDialog ();
     dialog.setDictionaryHost (host);
-    dialog.show (activity.getFragmentManager (),
-                 activity.getString (R.string.dialog_edit_tag));
+    dialog.setManageHostsListFragment (fragment);
+    dialog.show (fragment.getActivity ().getFragmentManager (),
+                 fragment.getString (R.string.dialog_edit_tag));
   }
 
   @Override
@@ -85,7 +90,7 @@ public class EditDictionaryHostDialog extends DialogFragment
             ErrorDialog.show (getActivity (), e.getMessage ());
           }
 
-        ((HostManagementActivity) getActivity ()).refreshHostList ();
+        fragment.refreshHostList ();
       }
     }).setView (layout);
     return builder.create ();
@@ -102,5 +107,10 @@ public class EditDictionaryHostDialog extends DialogFragment
   public void setDictionaryHost (DictionaryHost host)
   {
     this.host = host;
+  }
+
+  public void setManageHostsListFragment (ManageHostsListFragment fragment)
+  {
+    this.fragment = fragment;
   }
 }

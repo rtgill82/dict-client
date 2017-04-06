@@ -15,14 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
 public class ManageHostCursorAdapter extends CursorAdapter
 {
-
   public ManageHostCursorAdapter (Context context, Cursor c, int flags)
   {
     super (context, c, flags);
@@ -31,26 +29,15 @@ public class ManageHostCursorAdapter extends CursorAdapter
   public View newView (Context context, Cursor cursor, ViewGroup parent)
   {
     LayoutInflater inflater = LayoutInflater.from (context);
-    RelativeLayout view = (RelativeLayout) inflater.inflate (
-                            R.layout.manage_host_list_item, null
-                          );
-    String itemText = createItem (cursor);
-
-    TextView textview = (TextView)
-      view.findViewById (R.id.manage_host_list_item_textview);
-    textview.setText (Html.fromHtml (itemText));
-    return view;
+    TextView textview = (TextView) inflater.inflate (R.layout.list_item_host, null);
+    textview.setText (Html.fromHtml (createItem (cursor)));
+    return textview;
   }
 
   public void bindView (View view, Context context, Cursor cursor)
   {
-    TextView textview = (TextView)
-      view.findViewById (R.id.manage_host_list_item_textview);
-    if (textview != null)
-      {
-        String itemText = createItem (cursor);
-        textview.setText (Html.fromHtml (itemText));
-      }
+    TextView textview = (TextView) view;
+    textview.setText (Html.fromHtml (createItem (cursor)));
   }
 
   private String createItem (Cursor cursor)

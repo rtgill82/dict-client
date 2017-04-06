@@ -3,6 +3,6 @@
         android:fragment="org.lonestar.sdf.locke.apps.dict.dictclient.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general"/>
     <header
-        android:fragment="org.lonestar.sdf.locke.apps.dict.dictclient.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="org.lonestar.sdf.locke.apps.dict.dictclient.ManageHostsListFragment"
         android:title="@string/pref_header_manage_hosts"/>
 </preference-headers>
