@@ -16,6 +16,7 @@ import android.preference.PreferenceManager;
 public class DictClientApplication extends Application
 {
   private Host currentHost;
+  private HostCache cache;
   private OnSharedPreferenceChangeListener listener;
 
   @Override
@@ -23,7 +24,10 @@ public class DictClientApplication extends Application
   {
     super.onCreate ();
     DatabaseManager.initialize (getApplicationContext ());
+    cache = new HostCache ();
+
     currentHost = DatabaseManager.getInstance ().getDefaultHost (this);
+    cache.add (currentHost);
 
     listener =
       new SharedPreferences.OnSharedPreferenceChangeListener()
@@ -53,12 +57,25 @@ public class DictClientApplication extends Application
   {
     /* Ensure new host is not the same as the old one. */
     if (currentHost == null || currentHost.getId () != host.getId ())
-      currentHost = host;
+      currentHost = findCachedHost (host.getId (), host);
   }
 
   public void setCurrentHostById (int hostId)
   {
     if (currentHost == null || currentHost.getId() != hostId)
-      currentHost = DatabaseManager.getInstance ().getHostById (hostId);
+      currentHost = findCachedHost (hostId, null);
+  }
+
+  private Host findCachedHost (int hostId, Host defaultHost)
+  {
+    Host host = cache.getHostById (hostId);
+    if (host == null)
+      {
+        if (defaultHost == null)
+          defaultHost = DatabaseManager.getInstance ().getHostById (hostId);
+        host = defaultHost;
+        cache.add (defaultHost);
+      }
+    return host;
   }
 }

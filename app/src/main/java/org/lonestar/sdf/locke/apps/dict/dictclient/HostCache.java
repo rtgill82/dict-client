@@ -24,6 +24,12 @@ public class HostCache extends LinkedList<Host>
     return null;
   }
 
+  public Host addHost (Host host)
+  {
+    add (host);
+    return getHostById (host.getId ());
+  }
+
   @Override
   public boolean add (Host host)
   {
