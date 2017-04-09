@@ -18,7 +18,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @DatabaseTable(tableName = "dict_servers")
-public class DictionaryHost
+public class Host
 {
   final private static int PORT = 2628;
 
@@ -37,24 +37,24 @@ public class DictionaryHost
 
   private List<Dictionary> dictionaries = null;
 
-  public DictionaryHost ()
+  public Host()
   {
     this.port = PORT;
   }
 
-  public DictionaryHost (String hostName)
+  public Host(String hostName)
   {
     this.host_name = hostName;
     this.port = PORT;
   }
 
-  public DictionaryHost (String hostName, int port)
+  public Host(String hostName, int port)
   {
     this.host_name = hostName;
     this.port = port;
   }
 
-  public DictionaryHost (int id, String hostName, int port)
+  public Host(int id, String hostName, int port)
   {
     this.id = id;
     this.host_name = hostName;

@@ -15,7 +15,7 @@ import android.preference.PreferenceManager;
 
 public class DictClientApplication extends Application
 {
-  private DictionaryHost currentHost;
+  private Host currentHost;
   private OnSharedPreferenceChangeListener listener;
 
   @Override
@@ -44,12 +44,12 @@ public class DictClientApplication extends Application
     prefs.registerOnSharedPreferenceChangeListener (listener);
   }
 
-  public DictionaryHost getCurrentHost ()
+  public Host getCurrentHost ()
   {
     return currentHost;
   }
 
-  public void setCurrentHost (DictionaryHost host)
+  public void setCurrentHost (Host host)
   {
     /* Ensure new host is not the same as the old one. */
     if (currentHost == null || currentHost.getId () != host.getId ())

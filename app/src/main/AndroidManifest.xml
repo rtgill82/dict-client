@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".HostManagementActivity" />
-        <activity android:name=".SelectDictionaryHostActivity"
+        <activity android:name=".SelectHostActivity"
                   android:label="@string/host_text" />
         <activity android:name=".SettingsActivity"
                   android:label="@string/title_activity_settings" />

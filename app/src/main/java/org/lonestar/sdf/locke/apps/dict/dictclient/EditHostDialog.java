@@ -22,9 +22,9 @@ import android.widget.RelativeLayout;
 
 import java.sql.SQLException;
 
-public class EditDictionaryHostDialog extends DialogFragment
+public class EditHostDialog extends DialogFragment
 {
-  private DictionaryHost host;
+  private Host host;
   private ManageHostsListFragment fragment;
   private EditText editHostName;
   private EditText editPort;
@@ -32,13 +32,12 @@ public class EditDictionaryHostDialog extends DialogFragment
 
   public static void show (ManageHostsListFragment fragment)
   {
-    EditDictionaryHostDialog.show (fragment, null);
+    EditHostDialog.show (fragment, null);
   }
 
-  public static void show (ManageHostsListFragment fragment,
-                           DictionaryHost host)
+  public static void show (ManageHostsListFragment fragment, Host host)
   {
-    EditDictionaryHostDialog dialog = new EditDictionaryHostDialog ();
+    EditHostDialog dialog = new EditHostDialog();
     dialog.setDictionaryHost (host);
     dialog.setManageHostsListFragment (fragment);
     dialog.show (fragment.getActivity ().getFragmentManager (),
@@ -72,7 +71,7 @@ public class EditDictionaryHostDialog extends DialogFragment
       public void onClick (DialogInterface dialog, int which)
       {
         if (host == null)
-          host = new DictionaryHost ();
+          host = new Host();
 
         String portText = editPort.getText ().toString ();
         if (portText.length () > 0)
@@ -104,7 +103,7 @@ public class EditDictionaryHostDialog extends DialogFragment
       return getActivity ().getString (R.string.dialog_edit_title);
   }
 
-  public void setDictionaryHost (DictionaryHost host)
+  public void setDictionaryHost (Host host)
   {
     this.host = host;
   }

@@ -52,7 +52,7 @@ public final class DefinitionParser
             activity.getApplication ();
           EditText searchText = (EditText)
             activity.findViewById (R.id.search_text);
-          DictionaryHost host = app.getCurrentHost ();
+          Host host = app.getCurrentHost ();
 
           searchText.setText (word);
           searchText.selectAll ();

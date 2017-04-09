@@ -13,20 +13,19 @@ import android.database.CursorWrapper;
 
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-public class DictionaryHostCursor extends CursorWrapper
+public class HostCursor extends CursorWrapper
 {
   private Cursor cursor;
 
-  public DictionaryHostCursor (Cursor cursor)
+  public HostCursor(Cursor cursor)
   {
     super (cursor);
     this.cursor = cursor;
   }
 
-  public DictionaryHost getDictionaryHost ()
+  public Host getDictionaryHost ()
   {
-    DictionaryHost host = new DictionaryHost (getId (), getHostName (),
-                                              getPort ());
+    Host host = new Host(getId (), getHostName (), getPort ());
     host.setDescription (getDescription ());
     host.setReadonly (isReadonly ());
     host.setUserDefined (isUserDefined ());

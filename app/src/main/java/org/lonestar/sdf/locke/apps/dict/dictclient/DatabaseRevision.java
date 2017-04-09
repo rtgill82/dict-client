@@ -20,8 +20,8 @@ import java.util.List;
 public class DatabaseRevision
 {
   private Integer version;
-  private List<DictionaryHost> add_hosts;
-  private List<DictionaryHost> remove_hosts;
+  private List<Host> add_hosts;
+  private List<Host> remove_hosts;
 
   public Integer getVersion ()
   {
@@ -33,12 +33,12 @@ public class DatabaseRevision
     this.version = version;
   }
 
-  public void setAddHosts (List<DictionaryHost> hosts)
+  public void setAddHosts (List<Host> hosts)
   {
     this.add_hosts = hosts;
   }
 
-  public void setRemoveHosts (List<DictionaryHost> hosts)
+  public void setRemoveHosts (List<Host> hosts)
   {
     this.remove_hosts = hosts;
   }
@@ -49,16 +49,15 @@ public class DatabaseRevision
     if (db.getVersion () < this.version)
       {
         db.setVersion (this.version);
-        Dao<DictionaryHost, Integer> dao =
-          DaoManager.createDao (cs, DictionaryHost.class);
+        Dao<Host, Integer> dao = DaoManager.createDao (cs, Host.class);
 
         // Delete old hosts
         if (remove_hosts != null)
           {
-            for (DictionaryHost host : remove_hosts)
+            for (Host host : remove_hosts)
               {
-                List<DictionaryHost> rows = dao.queryForMatching (host);
-                for (DictionaryHost row : rows)
+                List<Host> rows = dao.queryForMatching (host);
+                for (Host row : rows)
                   {
                     dao.delete (row);
                   }
@@ -68,7 +67,7 @@ public class DatabaseRevision
         // Add new hosts
         if (add_hosts != null)
           {
-            for (DictionaryHost host : add_hosts)
+            for (Host host : add_hosts)
               {
                 dao.create (host);
               }

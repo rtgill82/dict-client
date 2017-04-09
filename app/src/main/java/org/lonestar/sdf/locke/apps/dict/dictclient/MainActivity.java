@@ -29,7 +29,7 @@ import java.util.List;
 
 public class MainActivity extends Activity
 {
-  private DictionaryHost host;
+  private Host host;
   private DefinitionHistory history = DefinitionHistory.getInstance ();
 
   @SuppressLint("NewApi")
@@ -160,7 +160,7 @@ public class MainActivity extends Activity
         break;
 
       case R.id.menu_host:
-        startActivity (new Intent (this, SelectDictionaryHostActivity.class));
+        startActivity (new Intent (this, SelectHostActivity.class));
         break;
 
       case R.id.menu_preferences:

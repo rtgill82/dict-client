@@ -46,7 +46,7 @@ public class ManageHostsListFragment extends ListFragment
     switch (item.getItemId ())
       {
       case R.id.menu_add_host:
-        EditDictionaryHostDialog.show (this);
+        EditHostDialog.show (this);
         break;
 
       case R.id.menu_delete_host:
@@ -78,8 +78,7 @@ public class ManageHostsListFragment extends ListFragment
 
   public void refreshHostList ()
   {
-    DictionaryHostCursor cursor = DatabaseManager.getInstance ()
-                                                 .getHostList ();
+    HostCursor cursor = DatabaseManager.getInstance ().getHostList ();
     ManageHostCursorAdapter ca =
         new ManageHostCursorAdapter (this.getActivity (), cursor, 0);
     setListAdapter (ca);
@@ -92,7 +91,7 @@ public class ManageHostsListFragment extends ListFragment
     if (itemCount == 1)
       {
         int pos = view.getCheckedItemPositions ().keyAt (0);
-        DictionaryHost host = getHostAtPosition (pos);
+        Host host = getHostAtPosition (pos);
         showConfirmDeleteDialog ("Are you sure you want to delete " +
                                  host.toString () + "?");
       }
@@ -110,7 +109,7 @@ public class ManageHostsListFragment extends ListFragment
       {
         int pos = selected.keyAt (i);
         getListView ().setItemChecked (pos, false);
-        DictionaryHost host = getHostAtPosition (pos);
+        Host host = getHostAtPosition (pos);
 
         try
           {
@@ -126,14 +125,14 @@ public class ManageHostsListFragment extends ListFragment
 
   private void editSelectedHost (int pos)
   {
-    final DictionaryHost host = getHostAtPosition (pos);
-    EditDictionaryHostDialog.show (this, host);
+    final Host host = getHostAtPosition (pos);
+    EditHostDialog.show (this, host);
   }
 
-  private DictionaryHost getHostAtPosition (int pos)
+  private Host getHostAtPosition (int pos)
   {
     if (pos == -1) return null;
-    return ((DictionaryHostCursor) getListAdapter ().getItem (pos))
+    return ((HostCursor) getListAdapter ().getItem (pos))
         .getDictionaryHost ();
   }
 

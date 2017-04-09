@@ -13,23 +13,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-public class SelectDictionaryHostActivity extends ListActivity
+public class SelectHostActivity extends ListActivity
 {
   @Override
   protected void onCreate (Bundle savedInstanceState)
   {
     super.onCreate (savedInstanceState);
-    DictionaryHostCursor cursor = DatabaseManager.getInstance ()
-                                                 .getHostList ();
-    SelectDictionaryHostCursorAdapter ca =
-      new SelectDictionaryHostCursorAdapter (this, cursor, 0);
+    HostCursor cursor = DatabaseManager.getInstance ().getHostList ();
+    SelectHostCursorAdapter ca = new SelectHostCursorAdapter(this, cursor, 0);
     getListView ().setAdapter (ca);
   }
 
   @Override
   public void onListItemClick (ListView l, View v, int pos, long id)
   {
-    DictionaryHostCursor c = (DictionaryHostCursor) l.getItemAtPosition (pos);
+    HostCursor c = (HostCursor) l.getItemAtPosition (pos);
     DictClientApplication app = (DictClientApplication) getApplication ();
     app.setCurrentHost (c.getDictionaryHost ());
     finish ();

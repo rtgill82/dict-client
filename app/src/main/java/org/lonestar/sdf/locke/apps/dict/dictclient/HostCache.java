@@ -11,11 +11,11 @@ package org.lonestar.sdf.locke.apps.dict.dictclient;
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class DictionaryHostCache extends LinkedList<DictionaryHost>
+public class HostCache extends LinkedList<Host>
 {
-  public DictionaryHost getHostById (Integer id)
+  public Host getHostById (Integer id)
   {
-    for (DictionaryHost item : this)
+    for (Host item : this)
       {
         if (item.getId () == id)
           return item;
@@ -25,7 +25,7 @@ public class DictionaryHostCache extends LinkedList<DictionaryHost>
   }
 
   @Override
-  public boolean add (DictionaryHost host)
+  public boolean add (Host host)
   {
     if (host == null)
       return false;
@@ -40,7 +40,7 @@ public class DictionaryHostCache extends LinkedList<DictionaryHost>
   }
 
   @Override
-  public void add (int index, DictionaryHost host)
+  public void add (int index, Host host)
   {
     if (host == null)
       return;
@@ -50,22 +50,22 @@ public class DictionaryHostCache extends LinkedList<DictionaryHost>
   }
 
   @Override
-  public boolean addAll (Collection<? extends DictionaryHost> c)
+  public boolean addAll (Collection<? extends Host> c)
   {
     boolean rv = false;
 
-    for (DictionaryHost host : c)
+    for (Host host : c)
       rv |= add (host);
 
     return rv;
   }
 
   @Override
-  public boolean addAll (int index, Collection<? extends DictionaryHost> c)
+  public boolean addAll (int index, Collection<? extends Host> c)
   {
     boolean rv = false;
 
-    for (DictionaryHost host : c)
+    for (Host host : c)
       {
         if (getHostById (host.getId ()) == null)
           {
@@ -78,30 +78,30 @@ public class DictionaryHostCache extends LinkedList<DictionaryHost>
   }
 
   @Override
-  public void addFirst (DictionaryHost host)
+  public void addFirst (Host host)
   {
     if (getHostById (host.getId ()) == null)
       super.addFirst (host);
   }
 
   @Override
-  public void addLast (DictionaryHost host)
+  public void addLast (Host host)
   {
     if (getHostById (host.getId ()) == null)
       super.addLast (host);
   }
 
   @Override
-  public void push (DictionaryHost host)
+  public void push (Host host)
   {
     if (getHostById (host.getId ()) == null)
       super.push (host);
   }
 
   @Override
-  public DictionaryHost set (int index, DictionaryHost host)
+  public Host set (int index, Host host)
   {
-    DictionaryHost oldHost = getHostById (host.getId ());
+    Host oldHost = getHostById (host.getId ());
 
     if (oldHost != null)
       {

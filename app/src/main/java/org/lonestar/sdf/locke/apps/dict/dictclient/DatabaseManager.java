@@ -62,7 +62,7 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
     Resources resources = this.context.getResources ();
     try
       {
-        TableUtils.createTable (cs, DictionaryHost.class);
+        TableUtils.createTable (cs, Host.class);
         loadData (resources, db, cs, 0, DATABASE_VERSION);
       }
     catch (SQLException e)
@@ -88,7 +88,7 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
       }
   }
 
-  public DictionaryHost getDefaultHost (Context context)
+  public Host getDefaultHost (Context context)
   {
     SharedPreferences prefs =
       PreferenceManager.getDefaultSharedPreferences (context);
@@ -98,10 +98,10 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
       resources.getString (R.string.pref_value_default_host))
     );
 
-    DictionaryHost host;
+    Host host;
     try
       {
-        Dao<DictionaryHost, Integer> dao = instance.getDao (DictionaryHost.class);
+        Dao<Host, Integer> dao = instance.getDao (Host.class);
         host = dao.queryForId (hostId);
       }
     catch (SQLException e)
@@ -111,12 +111,12 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
     return host;
   }
 
-  public DictionaryHost getHostById (Integer id)
+  public Host getHostById (Integer id)
   {
     try
       {
-        Dao<DictionaryHost, Integer> dao;
-        dao = instance.getDao(DictionaryHost.class);
+        Dao<Host, Integer> dao;
+        dao = instance.getDao(Host.class);
         return dao.queryForId (id);
       }
     catch (SQLException e)
@@ -128,17 +128,17 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
   public boolean deleteHostById (int id)
     throws SQLException
   {
-    Dao<DictionaryHost, Integer> dao = instance.getDao (DictionaryHost.class);
+    Dao<Host, Integer> dao = instance.getDao (Host.class);
     return (dao.deleteById (id) == 1);
   }
 
-  public DictionaryHostCursor getHostList ()
+  public HostCursor getHostList ()
   {
-    CloseableIterator<DictionaryHost> iterator;
+    CloseableIterator<Host> iterator;
     try
       {
-        Dao<DictionaryHost, Integer> dao = instance.getDao (DictionaryHost.class);
-        QueryBuilder<DictionaryHost, Integer> qb = dao.queryBuilder ();
+        Dao<Host, Integer> dao = instance.getDao (Host.class);
+        QueryBuilder<Host, Integer> qb = dao.queryBuilder ();
         iterator = dao.iterator (qb.prepare ());
       }
     catch(SQLException e)
@@ -148,13 +148,13 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper
 
     AndroidDatabaseResults results =
       (AndroidDatabaseResults) iterator.getRawResults ();
-    return new DictionaryHostCursor (results.getRawCursor ());
+    return new HostCursor(results.getRawCursor ());
   }
 
-  public void saveHost (DictionaryHost host)
+  public void saveHost (Host host)
     throws SQLException
   {
-    Dao<DictionaryHost, Integer> dao = getDao (DictionaryHost.class);
+    Dao<Host, Integer> dao = getDao (Host.class);
 
     if (host.getId () == null)
       {

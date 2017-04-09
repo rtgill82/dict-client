@@ -19,12 +19,12 @@ public class JDictClientRequest
     DICT_LIST
   }
 
-  private final DictionaryHost host;
+  private final Host host;
   private final JDictClientCommand command;
   private final Dictionary dictionary;
   private final String word;
 
-  private JDictClientRequest (DictionaryHost host, JDictClientCommand command,
+  private JDictClientRequest (Host host, JDictClientCommand command,
                               Dictionary dictionary, String word)
   {
     this.host = host;
@@ -33,41 +33,33 @@ public class JDictClientRequest
     this.word = word;
   }
 
-  public static JDictClientRequest DEFINE (DictionaryHost host, String word)
+  public static JDictClientRequest DEFINE (Host host, String word)
   {
-    return new JDictClientRequest (host,
-                                   JDictClientCommand.DEFINE,
+    return new JDictClientRequest (host, JDictClientCommand.DEFINE,
                                    new Dictionary (null, "All Dictionaries"),
                                    word);
   }
 
-  public static JDictClientRequest DEFINE (DictionaryHost host,
-                                           Dictionary dictionary, String word)
+  public static JDictClientRequest DEFINE (Host host, Dictionary dictionary,
+                                           String word)
   {
-    return new JDictClientRequest (host,
-                                   JDictClientCommand.DEFINE,
-                                   dictionary,
-                                   word);
+    return new JDictClientRequest (host, JDictClientCommand.DEFINE,
+                                   dictionary, word);
   }
 
-  public static JDictClientRequest DICT_LIST (DictionaryHost host)
+  public static JDictClientRequest DICT_LIST (Host host)
   {
-    return new JDictClientRequest (host,
-                                   JDictClientCommand.DICT_LIST,
-                                   null,
-                                   null);
+    return new JDictClientRequest (host, JDictClientCommand.DICT_LIST,
+                                   null, null);
   }
 
-  public static JDictClientRequest DICT_INFO (DictionaryHost host,
-                                              Dictionary dictionary)
+  public static JDictClientRequest DICT_INFO (Host host, Dictionary dictionary)
   {
-    return new JDictClientRequest (host,
-                                   JDictClientCommand.DICT_INFO,
-                                   dictionary,
-                                   null);
+    return new JDictClientRequest (host, JDictClientCommand.DICT_INFO,
+                                   dictionary, null);
   }
 
-  public DictionaryHost getHost ()
+  public Host getHost ()
   {
     return host;
   }

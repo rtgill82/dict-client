@@ -165,7 +165,7 @@ public class SettingsActivity extends PreferenceActivity
           findPreference(getString(R.string.pref_key_default_host));
 
       DatabaseManager dm = DatabaseManager.getInstance();
-      DictionaryHostCursor cursor = dm.getHostList();
+      HostCursor cursor = dm.getHostList();
       CharSequence[] entries = new CharSequence[cursor.getCount()];
       CharSequence[] entryValues = new CharSequence[cursor.getCount()];
 
