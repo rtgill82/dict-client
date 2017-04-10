@@ -14,6 +14,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
@@ -30,8 +31,10 @@ public class SelectHostCursorAdapter extends CursorAdapter
   public View newView (Context context, Cursor cursor, ViewGroup parent)
   {
     LayoutInflater inflater = LayoutInflater.from (context);
-    TextView view = (TextView) inflater.inflate (R.layout.list_item_host, null);
+    CheckedTextView view = (CheckedTextView)
+        inflater.inflate (R.layout.list_item_host, null);
     view.setText (Html.fromHtml (createItem (cursor)));
+    view.setCheckMarkDrawable (null);
     return view;
   }
 
