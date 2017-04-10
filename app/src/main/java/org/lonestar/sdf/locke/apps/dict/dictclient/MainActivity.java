@@ -101,7 +101,6 @@ public class MainActivity extends Activity
 
     if (host != null)
       {
-        String hostname = host.getHostName ();
         if (host.getDictionaries () == null)
           refreshDictionaries ();
         else
