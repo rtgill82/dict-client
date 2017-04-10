@@ -99,16 +99,16 @@ public class MainActivity extends Activity
     DictClientApplication app = (DictClientApplication) getApplication ();
     host = app.getCurrentHost ();
 
-    String hostname = "No Host Currently Selected";
     if (host != null)
       {
-        hostname = host.getHostName ();
+        String hostname = host.getHostName ();
         if (host.getDictionaries () == null)
           refreshDictionaries ();
         else
           setDictionarySpinnerData (host.getDictionaries ());
+
+        setTitle (host.getHostName ());
       }
-    setTitle (getString (R.string.app_name) + " - " + hostname);
     reset ();
   }
 
