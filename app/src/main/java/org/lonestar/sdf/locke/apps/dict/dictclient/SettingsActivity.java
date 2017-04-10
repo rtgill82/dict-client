@@ -125,7 +125,8 @@ public class SettingsActivity extends PreferenceActivity
   protected boolean isValidFragment(String fragmentName)
     {
       return PreferenceFragment.class.getName().equals(fragmentName)
-          || GeneralPreferenceFragment.class.getName().equals(fragmentName);
+          || GeneralPreferenceFragment.class.getName().equals(fragmentName)
+          || ManageHostsListFragment.class.getName().equals(fragmentName);
     }
 
   /**
