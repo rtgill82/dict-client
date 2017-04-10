@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">DICT Client</string>
     <string name="about_text">About</string>
-    <string name="host_text">Select Host</string>
     <string name="search_text_hint">Enter a word</string>
     <string name="search_button_text">Lookup Word</string>
     <string name="dictinfo_button_text">Dictionary Info</string>
@@ -10,9 +9,12 @@
     <!-- MainActivity Menus -->
     <string name="menu_back">Back</string>
     <string name="menu_forward">Forward</string>
-    <string name="menu_host">Hosts</string>
+    <string name="menu_host_select">Select Host</string>
     <string name="menu_preferences">Preferences</string>
     <string name="menu_about">About</string>
+
+    <!-- Strings related to SelectHostActivity -->
+    <string name="title_activity_select_host">Select Host</string>
 
     <!-- HostManagementActivity Menus -->
     <string name="menu_add_host">Add Host</string>

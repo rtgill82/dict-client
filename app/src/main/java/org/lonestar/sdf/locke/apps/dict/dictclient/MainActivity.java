@@ -159,7 +159,7 @@ public class MainActivity extends Activity
         traverseHistory (DefinitionHistory.Direction.FORWARD);
         break;
 
-      case R.id.menu_host:
+      case R.id.menu_host_select:
         startActivity (new Intent (this, SelectHostActivity.class));
         break;
 
