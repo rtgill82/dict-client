@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import org.lonestar.sdf.locke.libs.dict.JDictClient;
+
 import java.sql.SQLException;
 
 public class EditHostDialog extends DialogFragment
@@ -54,6 +56,7 @@ public class EditHostDialog extends DialogFragment
 
     editHostName = (EditText) layout.findViewById (R.id.edit_host_name);
     editPort = (EditText) layout.findViewById (R.id.edit_port);
+    editPort.setText (Integer.toString (JDictClient.DEFAULT_PORT));
     editDescription = (EditText) layout.findViewById (R.id.edit_description);
 
     if (host != null)
