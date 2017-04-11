@@ -74,8 +74,6 @@ public class MainActivity extends Activity
             dictinfoButton.setEnabled (true);
         else
             dictinfoButton.setEnabled (false);
-
-        definitionView.setText ("");
       }
 
       @Override
@@ -87,7 +85,6 @@ public class MainActivity extends Activity
           (TextView) findViewById (R.id.definition_view);
 
         dictinfoButton.setEnabled (false);
-        definitionView.setText ("");
       }
     });
   }
@@ -108,7 +105,6 @@ public class MainActivity extends Activity
 
         setTitle (host.getHostName ());
       }
-    reset ();
   }
 
   @Override
