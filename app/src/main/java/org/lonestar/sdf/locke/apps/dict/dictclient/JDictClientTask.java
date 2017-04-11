@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
@@ -29,6 +30,8 @@ import java.util.Map;
 public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
 {
   private Activity context;
+  private TextView definitionView;
+  private ScrollView definitionScrollView;
   private JDictClientRequest request;
   private Exception exception;
 
@@ -49,6 +52,9 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
     super ();
     this.context = context;
     this.request = request;
+    definitionView = (TextView) context.findViewById (R.id.definition_view);
+    definitionScrollView = (ScrollView)
+      context.findViewById (R.id.definition_scroll_view);
   }
 
   @Override
@@ -124,12 +130,14 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
         CharSequence text = displayDefinitions (result.getDefinitions ());
         HistoryEntry entry = new HistoryEntry (request.getWord (), text);
         history.add (entry);
-        context.invalidateOptionsMenu ();;
+        context.invalidateOptionsMenu ();
+        definitionScrollView.scrollTo (0, 0);
         break;
 
       case DICT_INFO:
         ((MainActivity) context).reset ();
         displayDictionaryInfo (result.getDictionaryInfo ());
+        definitionScrollView.scrollTo (0, 0);
         break;
 
       case DICT_LIST:
@@ -166,15 +174,11 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
 
     List<Definition> definitions;
     if (dictionary.getDatabase () != null)
-      {
-        definitions = dictClient.define (dictionary.getDatabase (), word);
-      }
+      definitions = dictClient.define (dictionary.getDatabase (), word);
     else
-      {
-        definitions = dictClient.define (word);
-      }
-    dictClient.close ();
+      definitions = dictClient.define (word);
 
+    dictClient.close ();
     return definitions;
   }
 
@@ -191,13 +195,9 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
 
   private CharSequence displayDefinitions (List<Definition> definitions)
   {
-    TextView textView = (TextView) context.findViewById (R.id.definition_view);
-    textView.setText ("");
-
+    definitionView.setText ("");
     if (definitions == null)
-      {
-        textView.setText ("No definitions found.");
-      }
+      definitionView.setText ("No definitions found.");
     else
       {
         Iterator<Definition> itr = definitions.iterator ();
@@ -206,29 +206,25 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
             Definition definition = itr.next ();
             Dictionary dictionary = definition.getDictionary ();
 
-            textView.append (Html.fromHtml ("<b>" + dictionary.getDescription () + "</b><br>"));
-            textView.append (DefinitionParser.parse (definition));
-            textView.append ("\n");
-            textView.setMovementMethod (LinkMovementMethod.getInstance ());
-            textView.setHighlightColor (Color.BLUE);
+            definitionView.append (Html.fromHtml ("<b>" + dictionary.getDescription () + "</b><br>"));
+            definitionView.append (DefinitionParser.parse (definition));
+            definitionView.append ("\n");
+            definitionView.setMovementMethod (LinkMovementMethod.getInstance ());
+            definitionView.setHighlightColor (Color.BLUE);
           }
       }
 
-    return textView.getText ();
+    return definitionView.getText ();
   }
 
   private void displayDictionaryInfo (String dictInfo)
   {
-    TextView textView = (TextView) context.findViewById (R.id.definition_view);
-    textView.setText ("");
+    definitionView.setText ("");
+
     if (dictInfo == null)
-      {
-        textView.setText ("No dictionary info received.");
-      }
+      definitionView.setText ("No dictionary info received.");
     else
-      {
-        textView.setText (dictInfo);
-      }
+      definitionView.setText (dictInfo);
   }
 
   private void disableInput ()
