@@ -38,6 +38,20 @@ public class ManageHostsListFragment extends ListFragment
   {
     inflater.inflate (R.menu.fragment_host_management, menu);
     super.onCreateOptionsMenu (menu, inflater);
+    MenuItem deleteButton = menu.findItem (R.id.menu_delete_host);
+    deleteButton.setEnabled (false);
+  }
+
+  @Override
+  public void onPrepareOptionsMenu (Menu menu)
+  {
+    MenuItem deleteButton = menu.findItem (R.id.menu_delete_host);
+    if (getListView ().getCheckedItemCount () > 0)
+      deleteButton.setEnabled (true);
+    else
+      deleteButton.setEnabled (false);
+
+    super.onPrepareOptionsMenu (menu);
   }
 
   @Override
@@ -63,14 +77,27 @@ public class ManageHostsListFragment extends ListFragment
   @Override
   public void onViewCreated (View view, Bundle savedInstanceState)
   {
-    getListView ().setChoiceMode (AbsListView.CHOICE_MODE_MULTIPLE);
-    getListView ().setOnItemLongClickListener (
+    ListView listView = getListView ();
+    listView.setChoiceMode (AbsListView.CHOICE_MODE_MULTIPLE);
+
+    listView.setOnItemLongClickListener (
         new AbsListView.OnItemLongClickListener ()
         {
-          public boolean onItemLongClick (AdapterView<?> parent, View view, int pos, long id)
+          public boolean onItemLongClick (AdapterView<?> parent, View view,
+                                          int pos, long id)
           {
             editSelectedHost (pos);
             return true;
+          }
+        }
+    );
+
+    listView.setOnItemClickListener (
+        new AdapterView.OnItemClickListener () {
+          public void onItemClick (AdapterView<?> parent, View view, int pos,
+                                   long id)
+          {
+            getActivity ().invalidateOptionsMenu ();
           }
         }
     );
