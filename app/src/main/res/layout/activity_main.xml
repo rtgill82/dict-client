@@ -50,23 +50,15 @@
         android:onClick="getDictionaryInfo"
         android:text="@string/dictinfo_button_text" />
 
-    <ScrollView
-        android:id="@+id/definition_scroll_view"
+    <TextView
+        android:id="@+id/definition_view"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/dictinfo_button" >
-
-        <TextView
-            android:id="@+id/definition_view"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:freezesText="true"
-            android:paddingLeft="@dimen/definition_padding_left"
-            android:paddingRight="@dimen/definition_padding_right"
-            android:paddingTop="@dimen/definition_padding_top" />
-    </ScrollView>
+        android:layout_width="match_parent"
+        android:layout_below="@+id/dictinfo_button"
+        android:scrollbars="vertical"
+        android:freezesText="true"
+        android:paddingLeft="@dimen/definition_padding_left"
+        android:paddingRight="@dimen/definition_padding_right"
+        android:paddingTop="@dimen/definition_padding_top" />
 
 </RelativeLayout>

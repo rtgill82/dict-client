@@ -57,6 +57,9 @@ public class MainActivity extends Activity
       }
     });
 
+    ((TextView) findViewById (R.id.definition_view))
+        .setHorizontallyScrolling (true);
+
     Spinner dictionarySpinner = (Spinner)
       findViewById (R.id.dictionary_spinner);
     dictionarySpinner.setOnItemSelectedListener (new OnItemSelectedListener ()

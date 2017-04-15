@@ -14,7 +14,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
@@ -31,7 +30,6 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
 {
   private Activity context;
   private TextView definitionView;
-  private ScrollView definitionScrollView;
   private JDictClientRequest request;
   private Exception exception;
 
@@ -53,8 +51,6 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
     this.context = context;
     this.request = request;
     definitionView = (TextView) context.findViewById (R.id.definition_view);
-    definitionScrollView = (ScrollView)
-      context.findViewById (R.id.definition_scroll_view);
   }
 
   @Override
@@ -131,13 +127,13 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
         HistoryEntry entry = new HistoryEntry (request.getWord (), text);
         history.add (entry);
         context.invalidateOptionsMenu ();
-        definitionScrollView.scrollTo (0, 0);
+        definitionView.scrollTo (0, 0);
         break;
 
       case DICT_INFO:
         ((MainActivity) context).reset ();
         displayDictionaryInfo (result.getDictionaryInfo ());
-        definitionScrollView.scrollTo (0, 0);
+        definitionView.scrollTo (0, 0);
         break;
 
       case DICT_LIST:
