@@ -66,8 +66,6 @@ public class MainActivity extends Activity
                                   selectedItemView, int position, long id)
       {
         Button dictinfoButton = (Button) findViewById (R.id.dictinfo_button);
-        TextView definitionView = (TextView)
-          findViewById (R.id.definition_view);
         Dictionary currentDictionary = (Dictionary) parent.getSelectedItem ();
 
         if (currentDictionary.getDatabase () != null)
@@ -81,9 +79,6 @@ public class MainActivity extends Activity
       {
         Button dictinfoButton =
           (Button) findViewById (R.id.dictinfo_button);
-        TextView definitionView =
-          (TextView) findViewById (R.id.definition_view);
-
         dictinfoButton.setEnabled (false);
       }
     });
