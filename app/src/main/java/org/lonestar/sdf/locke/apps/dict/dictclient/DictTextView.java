@@ -17,7 +17,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.widget.TextView;
 
-public class ScalableTextView extends TextView
+public class DictTextView extends TextView
 {
   private static final float MIN_TEXT_SIZE = 8.0f;
   private static final float MAX_TEXT_SIZE = 60.0f;
@@ -25,7 +25,7 @@ public class ScalableTextView extends TextView
   private ScaleGestureDetector scaleGesture;
   private float textSize;
 
-  public ScalableTextView (Context context, AttributeSet attrs)
+  public DictTextView(Context context, AttributeSet attrs)
   {
     super (context, attrs);
     setHorizontallyScrolling (true);

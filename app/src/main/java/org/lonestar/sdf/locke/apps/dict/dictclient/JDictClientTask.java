@@ -29,7 +29,7 @@ import java.util.Map;
 public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
 {
   private Activity context;
-  private TextView definitionView;
+  private TextView dictView;
   private JDictClientRequest request;
   private Exception exception;
 
@@ -50,7 +50,7 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
     super ();
     this.context = context;
     this.request = request;
-    definitionView = (TextView) context.findViewById (R.id.definition_view);
+    dictView = (TextView) context.findViewById (R.id.dict_view);
   }
 
   @Override
@@ -189,9 +189,9 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
 
   private CharSequence displayDefinitions (List<Definition> definitions)
   {
-    definitionView.setText ("");
+    dictView.setText ("");
     if (definitions == null)
-      definitionView.setText ("No definitions found.");
+      dictView.setText ("No definitions found.");
     else
       {
         Iterator<Definition> itr = definitions.iterator ();
@@ -200,25 +200,25 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
             Definition definition = itr.next ();
             Dictionary dictionary = definition.getDictionary ();
 
-            definitionView.append (Html.fromHtml ("<b>" + dictionary.getDescription () + "</b><br>"));
-            definitionView.append (DefinitionParser.parse (definition));
-            definitionView.append ("\n");
-            definitionView.setMovementMethod (LinkMovementMethod.getInstance ());
-            definitionView.setHighlightColor (Color.BLUE);
+            dictView.append (Html.fromHtml ("<b>" + dictionary.getDescription () + "</b><br>"));
+            dictView.append (DefinitionParser.parse (definition));
+            dictView.append ("\n");
+            dictView.setMovementMethod (LinkMovementMethod.getInstance ());
+            dictView.setHighlightColor (Color.BLUE);
           }
       }
 
-    return definitionView.getText ();
+    return dictView.getText ();
   }
 
   private void displayDictionaryInfo (String dictInfo)
   {
-    definitionView.setText ("");
+    dictView.setText ("");
 
     if (dictInfo == null)
-      definitionView.setText ("No dictionary info received.");
+      dictView.setText ("No dictionary info received.");
     else
-      definitionView.setText (dictInfo);
+      dictView.setText (dictInfo);
   }
 
   private void disableInput ()

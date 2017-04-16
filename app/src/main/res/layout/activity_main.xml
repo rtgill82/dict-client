@@ -38,8 +38,8 @@
         android:onClick="getDictionaryInfo"
         android:text="@string/dictinfo_button_text" />
 
-    <org.lonestar.sdf.locke.apps.dict.dictclient.ScalableTextView
-        android:id="@+id/definition_view"
+    <org.lonestar.sdf.locke.apps.dict.dictclient.DictTextView
+        android:id="@+id/dict_view"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_below="@+id/dictinfo_button"

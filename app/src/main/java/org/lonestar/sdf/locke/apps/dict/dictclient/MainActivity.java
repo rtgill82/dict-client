@@ -57,7 +57,7 @@ public class MainActivity extends Activity
       }
     });
 
-    ((TextView) findViewById (R.id.definition_view))
+    ((TextView) findViewById (R.id.dict_view))
         .setHorizontallyScrolling (true);
 
     Spinner dictionarySpinner = (Spinner)
@@ -225,9 +225,9 @@ public class MainActivity extends Activity
   public void reset ()
   {
     EditText searchText = (EditText) findViewById (R.id.search_text);
-    TextView definitionView = (TextView) findViewById (R.id.definition_view);
+    TextView dictView = (TextView) findViewById (R.id.dict_view);
     searchText.setText ("");
-    definitionView.setText ("");
+    dictView.setText ("");
     history.clear ();
     invalidateOptionsMenu ();
   }
@@ -248,8 +248,8 @@ public class MainActivity extends Activity
   private void displayHistoryEntry (HistoryEntry entry)
   {
     EditText searchText = (EditText) findViewById (R.id.search_text);
-    TextView definitionView = (TextView) findViewById (R.id.definition_view);
+    TextView dictView = (TextView) findViewById (R.id.dict_view);
     searchText.setText (entry.getWord ());
-    definitionView.setText (entry.getDefinitionText ());
+    dictView.setText (entry.getDefinitionText ());
   }
 }
