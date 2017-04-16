@@ -3,7 +3,6 @@
     <string name="app_name">DICT Client</string>
     <string name="about_text">About</string>
     <string name="search_text_hint">Enter a word</string>
-    <string name="search_button_text">Lookup Word</string>
     <string name="dictinfo_button_text">Dictionary Info</string>
 
     <!-- MainActivity Menus -->

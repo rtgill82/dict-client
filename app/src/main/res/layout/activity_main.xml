@@ -7,11 +7,9 @@
     <EditText
         android:id="@+id/search_text"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignBottom="@+id/search_button"
+        android:layout_width="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/search_button"
         android:hint="@string/search_text_hint"
         android:imeOptions="actionSearch"
         android:inputType="text|textAutoCorrect|textAutoComplete"
@@ -19,16 +17,6 @@
 
         <requestFocus />
     </EditText>
-
-    <Button
-        android:id="@+id/search_button"
-        android:text="@string/search_button_text"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:onClick="lookupWord" />
 
     <Spinner
         android:id="@+id/dictionary_spinner"
@@ -44,7 +32,6 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_alignLeft="@+id/search_button"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/search_text"
         android:onClick="getDictionaryInfo"

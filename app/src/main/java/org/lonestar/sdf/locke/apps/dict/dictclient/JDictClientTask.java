@@ -224,7 +224,6 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
   private void disableInput ()
   {
     context.findViewById (R.id.search_text).setEnabled (false);
-    context.findViewById (R.id.search_button).setEnabled (false);
     context.findViewById (R.id.dictionary_spinner).setEnabled (false);
     context.findViewById (R.id.dictinfo_button).setEnabled (false);
   }
@@ -232,7 +231,6 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
   private void enableInput ()
   {
     context.findViewById (R.id.search_text).setEnabled (true);
-    context.findViewById (R.id.search_button).setEnabled (true);
     context.findViewById (R.id.dictionary_spinner).setEnabled (true);
     context.findViewById (R.id.dictinfo_button).setEnabled (true);
   }
