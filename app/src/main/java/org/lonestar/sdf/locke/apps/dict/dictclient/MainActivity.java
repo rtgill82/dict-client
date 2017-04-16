@@ -31,7 +31,9 @@ public class MainActivity extends Activity
 {
   private Host host;
   private DefinitionHistory history = DefinitionHistory.getInstance ();
+
   private TextView dictView;
+  private Spinner dictSpinner;
 
   @SuppressLint("NewApi")
   @Override
@@ -40,6 +42,7 @@ public class MainActivity extends Activity
     super.onCreate (savedInstanceState);
     setContentView (R.layout.activity_main);
     dictView = (TextView) findViewById (R.id.dict_view);
+    dictSpinner = setupDictSpinner ();
 
     EditText searchText = (EditText) findViewById (R.id.search_text);
     searchText.setOnKeyListener (new View.OnKeyListener ()
@@ -60,31 +63,6 @@ public class MainActivity extends Activity
       }
     });
 
-    Spinner dictionarySpinner = (Spinner)
-      findViewById (R.id.dictionary_spinner);
-    dictionarySpinner.setOnItemSelectedListener (new OnItemSelectedListener ()
-    {
-      @Override
-      public void onItemSelected (AdapterView<?> parent, View
-                                  selectedItemView, int position, long id)
-      {
-        Button dictinfoButton = (Button) findViewById (R.id.dictinfo_button);
-        Dictionary currentDictionary = (Dictionary) parent.getSelectedItem ();
-
-        if (currentDictionary.getDatabase () != null)
-            dictinfoButton.setEnabled (true);
-        else
-            dictinfoButton.setEnabled (false);
-      }
-
-      @Override
-      public void onNothingSelected (AdapterView<?> parent)
-      {
-        Button dictinfoButton =
-          (Button) findViewById (R.id.dictinfo_button);
-        dictinfoButton.setEnabled (false);
-      }
-    });
   }
 
   @Override
@@ -174,9 +152,7 @@ public class MainActivity extends Activity
   public void lookupWord (View view)
   {
     EditText editText = (EditText) findViewById (R.id.search_text);
-    Spinner dictionarySpinner =
-      (Spinner) findViewById (R.id.dictionary_spinner);
-    Dictionary dict = (Dictionary) dictionarySpinner.getSelectedItem ();
+    Dictionary dict = (Dictionary) dictSpinner.getSelectedItem ();
     String word = editText.getText ().toString ();
     if (!(word.isEmpty ()))
       {
@@ -198,9 +174,7 @@ public class MainActivity extends Activity
 
   public void getDictionaryInfo (View view)
   {
-    Spinner dictionarySpinner = (Spinner)
-      findViewById (R.id.dictionary_spinner);
-    Dictionary dictionary = (Dictionary) dictionarySpinner.getSelectedItem ();
+    Dictionary dictionary = (Dictionary) dictSpinner.getSelectedItem ();
 
     new JDictClientTask (this,
         JDictClientRequest.DICT_INFO (host, dictionary))
@@ -233,8 +207,7 @@ public class MainActivity extends Activity
 
   public void setDictionarySpinnerData (List<Dictionary> list)
   {
-    ((Spinner) findViewById (R.id.dictionary_spinner)).setAdapter (
-      new DictionarySpinnerAdapter (this, list));
+    dictSpinner.setAdapter (new DictionarySpinnerAdapter (this, list));
   }
 
   private void refreshDictionaries ()
@@ -249,5 +222,34 @@ public class MainActivity extends Activity
     EditText searchText = (EditText) findViewById (R.id.search_text);
     searchText.setText (entry.getWord ());
     dictView.setText (entry.getDefinitionText ());
+  }
+
+  private Spinner setupDictSpinner ()
+  {
+    Spinner dictSpinner = (Spinner) findViewById (R.id.dict_spinner);
+    dictSpinner.setOnItemSelectedListener (new OnItemSelectedListener ()
+    {
+      @Override
+      public void onItemSelected (AdapterView<?> parent, View
+                                  selectedItemView, int position, long id)
+      {
+        Button dictinfoButton = (Button) findViewById (R.id.dictinfo_button);
+        Dictionary currentDictionary = (Dictionary) parent.getSelectedItem ();
+
+        if (currentDictionary.getDatabase () != null)
+            dictinfoButton.setEnabled (true);
+        else
+            dictinfoButton.setEnabled (false);
+      }
+
+      @Override
+      public void onNothingSelected (AdapterView<?> parent)
+      {
+        Button dictinfoButton =
+          (Button) findViewById (R.id.dictinfo_button);
+        dictinfoButton.setEnabled (false);
+      }
+    });
+    return dictSpinner;
   }
 }

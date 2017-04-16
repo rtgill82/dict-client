@@ -20,7 +20,7 @@
     </EditText>
 
     <Spinner
-        android:id="@+id/dictionary_spinner"
+        android:id="@+id/dict_spinner"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignBottom="@+id/dictinfo_button"
