@@ -13,6 +13,7 @@
         android:hint="@string/search_text_hint"
         android:imeOptions="actionSearch"
         android:inputType="text|textAutoCorrect|textAutoComplete"
+        android:textSize="20sp"
         android:maxLines="@integer/search_text_max_lines" >
 
         <requestFocus />
