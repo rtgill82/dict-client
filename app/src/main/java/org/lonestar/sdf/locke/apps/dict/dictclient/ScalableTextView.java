@@ -9,7 +9,10 @@
 package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.widget.TextView;
@@ -20,12 +23,23 @@ public class ScalableTextView extends TextView
   private static final float MAX_TEXT_SIZE = 60.0f;
 
   private ScaleGestureDetector scaleGesture;
+  private float textSize;
 
   public ScalableTextView (Context context, AttributeSet attrs)
   {
     super (context, attrs);
     setHorizontallyScrolling (true);
+    addTextChangedListener (createTextWatcher ());
     scaleGesture = createScaleGestureDetector ();
+  }
+
+  @Override
+  public void onFinishInflate ()
+  {
+    super.onFinishInflate ();
+
+    // Save original text size
+    textSize = getTextSize ();
   }
 
   @Override
@@ -33,6 +47,26 @@ public class ScalableTextView extends TextView
   {
     scaleGesture.onTouchEvent (event);
     return super.onTouchEvent (event);
+  }
+
+  private TextWatcher createTextWatcher ()
+  {
+    return new TextWatcher () {
+      public void afterTextChanged (Editable s)
+      {
+        setTextSize (TypedValue.COMPLEX_UNIT_PX, textSize);
+      }
+
+      public void beforeTextChanged (CharSequence s, int start, int count,
+                                     int after)
+      {
+      }
+
+      public void onTextChanged (CharSequence s, int start, int before,
+                                 int count)
+      {
+      }
+    };
   }
 
   private ScaleGestureDetector createScaleGestureDetector ()
