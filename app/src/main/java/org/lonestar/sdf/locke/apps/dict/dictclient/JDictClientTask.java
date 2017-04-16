@@ -127,13 +127,11 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
         HistoryEntry entry = new HistoryEntry (request.getWord (), text);
         history.add (entry);
         context.invalidateOptionsMenu ();
-        definitionView.scrollTo (0, 0);
         break;
 
       case DICT_INFO:
         ((MainActivity) context).reset ();
         displayDictionaryInfo (result.getDictionaryInfo ());
-        definitionView.scrollTo (0, 0);
         break;
 
       case DICT_LIST:

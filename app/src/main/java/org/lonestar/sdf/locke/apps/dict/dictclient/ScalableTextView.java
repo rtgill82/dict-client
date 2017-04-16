@@ -55,6 +55,7 @@ public class ScalableTextView extends TextView
       public void afterTextChanged (Editable s)
       {
         setTextSize (TypedValue.COMPLEX_UNIT_PX, textSize);
+        scrollTo (0, 0);
       }
 
       public void beforeTextChanged (CharSequence s, int start, int count,
