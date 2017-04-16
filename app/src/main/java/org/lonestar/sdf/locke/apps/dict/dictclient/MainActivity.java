@@ -33,6 +33,7 @@ public class MainActivity extends Activity
   private DefinitionHistory history = DefinitionHistory.getInstance ();
 
   private TextView dictView;
+  private EditText searchText;
   private Spinner dictSpinner;
 
   @SuppressLint("NewApi")
@@ -42,27 +43,8 @@ public class MainActivity extends Activity
     super.onCreate (savedInstanceState);
     setContentView (R.layout.activity_main);
     dictView = (TextView) findViewById (R.id.dict_view);
+    searchText = setupSearchText ();
     dictSpinner = setupDictSpinner ();
-
-    EditText searchText = (EditText) findViewById (R.id.search_text);
-    searchText.setOnKeyListener (new View.OnKeyListener ()
-    {
-      public boolean onKey (View v, int keyCode, KeyEvent event)
-      {
-        switch (keyCode)
-          {
-          case KeyEvent.KEYCODE_DPAD_CENTER:
-          case KeyEvent.KEYCODE_ENTER:
-            lookupWord (v);
-            break;
-
-          default:
-            break;
-          }
-        return false;
-      }
-    });
-
   }
 
   @Override
@@ -151,12 +133,11 @@ public class MainActivity extends Activity
 
   public void lookupWord (View view)
   {
-    EditText editText = (EditText) findViewById (R.id.search_text);
     Dictionary dict = (Dictionary) dictSpinner.getSelectedItem ();
-    String word = editText.getText ().toString ();
+    String word = searchText.getText ().toString ();
     if (!(word.isEmpty ()))
       {
-        editText.selectAll ();
+        searchText.selectAll ();
         if (dict != null)
           {
             new JDictClientTask (this,
@@ -198,7 +179,6 @@ public class MainActivity extends Activity
 
   public void reset ()
   {
-    EditText searchText = (EditText) findViewById (R.id.search_text);
     searchText.setText ("");
     dictView.setText ("");
     history.clear ();
@@ -219,9 +199,31 @@ public class MainActivity extends Activity
 
   private void displayHistoryEntry (HistoryEntry entry)
   {
-    EditText searchText = (EditText) findViewById (R.id.search_text);
     searchText.setText (entry.getWord ());
     dictView.setText (entry.getDefinitionText ());
+  }
+
+  private EditText setupSearchText ()
+  {
+    EditText searchText = (EditText) findViewById (R.id.search_text);
+    searchText.setOnKeyListener (new View.OnKeyListener ()
+    {
+      public boolean onKey (View v, int keyCode, KeyEvent event)
+        {
+          switch (keyCode)
+            {
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+            case KeyEvent.KEYCODE_ENTER:
+              lookupWord (v);
+              break;
+
+            default:
+              break;
+            }
+          return false;
+        }
+    });
+    return searchText;
   }
 
   private Spinner setupDictSpinner ()
