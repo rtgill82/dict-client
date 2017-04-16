@@ -31,6 +31,7 @@ public class MainActivity extends Activity
 {
   private Host host;
   private DefinitionHistory history = DefinitionHistory.getInstance ();
+  private TextView dictView;
 
   @SuppressLint("NewApi")
   @Override
@@ -38,6 +39,8 @@ public class MainActivity extends Activity
   {
     super.onCreate (savedInstanceState);
     setContentView (R.layout.activity_main);
+    dictView = (TextView) findViewById (R.id.dict_view);
+
     EditText searchText = (EditText) findViewById (R.id.search_text);
     searchText.setOnKeyListener (new View.OnKeyListener ()
     {
@@ -56,9 +59,6 @@ public class MainActivity extends Activity
         return false;
       }
     });
-
-    ((TextView) findViewById (R.id.dict_view))
-        .setHorizontallyScrolling (true);
 
     Spinner dictionarySpinner = (Spinner)
       findViewById (R.id.dictionary_spinner);
@@ -225,7 +225,6 @@ public class MainActivity extends Activity
   public void reset ()
   {
     EditText searchText = (EditText) findViewById (R.id.search_text);
-    TextView dictView = (TextView) findViewById (R.id.dict_view);
     searchText.setText ("");
     dictView.setText ("");
     history.clear ();
@@ -248,7 +247,6 @@ public class MainActivity extends Activity
   private void displayHistoryEntry (HistoryEntry entry)
   {
     EditText searchText = (EditText) findViewById (R.id.search_text);
-    TextView dictView = (TextView) findViewById (R.id.dict_view);
     searchText.setText (entry.getWord ());
     dictView.setText (entry.getDefinitionText ());
   }
