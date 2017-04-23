@@ -66,6 +66,16 @@ public class MainActivity extends Activity
   }
 
   @Override
+  public void onDestroy ()
+  {
+    super.onDestroy ();
+
+    // Reset to default settings and clear memory
+    // TODO: Look for additional memory to free / state to destroy
+    reset ();
+  }
+
+  @Override
   public boolean onCreateOptionsMenu (Menu menu)
   {
     getMenuInflater ().inflate (R.menu.activity_main, menu);
@@ -157,6 +167,7 @@ public class MainActivity extends Activity
   {
     Dictionary dictionary = (Dictionary) dictSpinner.getSelectedItem ();
 
+    searchText.setText ("");
     new JDictClientTask (this,
         JDictClientRequest.DICT_INFO (host, dictionary))
       .execute ();
@@ -179,6 +190,7 @@ public class MainActivity extends Activity
 
   public void reset ()
   {
+    ((DictClientApplication) getApplication ()).useDefaultHost ();
     searchText.setText ("");
     dictView.setText ("");
     history.clear ();

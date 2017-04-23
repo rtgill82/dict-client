@@ -26,7 +26,7 @@ public class DictClientApplication extends Application
     DatabaseManager.initialize (getApplicationContext ());
     cache = new HostCache ();
 
-    currentHost = DatabaseManager.getInstance ().getDefaultHost (this);
+    currentHost = getDefaultHost ();
     cache.add (currentHost);
 
     listener =
@@ -46,6 +46,16 @@ public class DictClientApplication extends Application
     SharedPreferences prefs =
       PreferenceManager.getDefaultSharedPreferences (this);
     prefs.registerOnSharedPreferenceChangeListener (listener);
+  }
+
+  public Host getDefaultHost ()
+  {
+    return DatabaseManager.getInstance ().getDefaultHost (this);
+  }
+
+  public void useDefaultHost ()
+  {
+    currentHost = getDefaultHost ();
   }
 
   public Host getCurrentHost ()

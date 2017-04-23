@@ -128,7 +128,6 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
         break;
 
       case DICT_INFO:
-        ((MainActivity) context).reset ();
         displayDictionaryInfo (result.getDictionaryInfo ());
         break;
 
