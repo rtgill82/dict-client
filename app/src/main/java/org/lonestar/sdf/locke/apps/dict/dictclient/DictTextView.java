@@ -9,8 +9,10 @@
 package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -29,6 +31,8 @@ public class DictTextView extends TextView
   {
     super (context, attrs);
     setHorizontallyScrolling (true);
+    setMovementMethod (LinkMovementMethod.getInstance ());
+    setHighlightColor (Color.BLUE);
     addTextChangedListener (createTextWatcher ());
     scaleGesture = createScaleGestureDetector ();
   }

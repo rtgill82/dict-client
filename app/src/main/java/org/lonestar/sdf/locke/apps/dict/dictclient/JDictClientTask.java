@@ -10,10 +10,8 @@ package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
@@ -203,8 +201,6 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
             dictView.append (Html.fromHtml ("<b>" + dictionary.getDescription () + "</b><br>"));
             dictView.append (DefinitionParser.parse (definition));
             dictView.append ("\n");
-            dictView.setMovementMethod (LinkMovementMethod.getInstance ());
-            dictView.setHighlightColor (Color.BLUE);
           }
       }
 
