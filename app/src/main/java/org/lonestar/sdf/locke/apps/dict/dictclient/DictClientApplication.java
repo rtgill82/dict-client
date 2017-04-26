@@ -55,7 +55,7 @@ public class DictClientApplication extends Application
 
   public void useDefaultHost ()
   {
-    currentHost = getDefaultHost ();
+    setCurrentHost (getDefaultHost ());
   }
 
   public Host getCurrentHost ()
