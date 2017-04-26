@@ -12,7 +12,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,9 +29,6 @@ import java.util.List;
 
 public class MainActivity extends Activity
 {
-  private static final String TEXT_SIZE = "TEXT_SIZE";
-  private static final String SCROLL_POS = "SCROLL_POS";
-
   private Host host;
   private DefinitionHistory history = DefinitionHistory.getInstance ();
 
@@ -140,20 +136,6 @@ public class MainActivity extends Activity
       }
 
     return true;
-  }
-
-  @Override
-  public void onSaveInstanceState (Bundle outState)
-  {
-    super.onSaveInstanceState (outState);
-    saveDictViewState (outState);
-  }
-
-  @Override
-  public void onRestoreInstanceState (Bundle savedInstanceState)
-  {
-    super.onRestoreInstanceState (savedInstanceState);
-    restoreDictViewState (savedInstanceState);
   }
 
   public void lookupWord (View view)
@@ -280,22 +262,5 @@ public class MainActivity extends Activity
       }
     });
     return dictSpinner;
-  }
-
-  private void saveDictViewState (Bundle outState)
-  {
-    float textSize = dictView.getTextSize ();
-    int scrollPos[] = { dictView.getScrollX (), dictView.getScrollY () };
-
-    outState.putFloat (TEXT_SIZE, textSize);
-    outState.putIntArray (SCROLL_POS, scrollPos);
-  }
-
-  private void restoreDictViewState (Bundle savedInstanceState)
-  {
-    int scrollPos[] = savedInstanceState.getIntArray (SCROLL_POS);
-    dictView.scrollTo (scrollPos[0], scrollPos[1]);
-    dictView.setTextSize (TypedValue.COMPLEX_UNIT_PX,
-                          savedInstanceState.getFloat (TEXT_SIZE));
   }
 }
