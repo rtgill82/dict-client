@@ -256,8 +256,7 @@ public class MainActivity extends Activity
       @Override
       public void onNothingSelected (AdapterView<?> parent)
       {
-        Button dictinfoButton =
-          (Button) findViewById (R.id.dictinfo_button);
+        Button dictinfoButton = (Button) findViewById (R.id.dictinfo_button);
         dictinfoButton.setEnabled (false);
       }
     });
