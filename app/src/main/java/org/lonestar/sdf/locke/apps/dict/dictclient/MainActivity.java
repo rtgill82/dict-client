@@ -29,12 +29,16 @@ import java.util.List;
 
 public class MainActivity extends Activity
 {
+  private static final String SELECTED_DICTIONARY = "SELECTED_DICTIONARY";
+
   private Host host;
   private DefinitionHistory history = DefinitionHistory.getInstance ();
 
   private TextView dictView;
   private EditText searchText;
   private Spinner dictSpinner;
+
+  private int selectedDictionary = -1;
 
   @SuppressLint("NewApi")
   @Override
@@ -45,6 +49,9 @@ public class MainActivity extends Activity
     dictView = (TextView) findViewById (R.id.dict_view);
     searchText = setupSearchText ();
     dictSpinner = setupDictSpinner ();
+
+    if (savedInstanceState != null)
+      selectedDictionary = savedInstanceState.getInt (SELECTED_DICTIONARY);
   }
 
   @Override
@@ -62,6 +69,7 @@ public class MainActivity extends Activity
           setDictionarySpinnerData (host.getDictionaries ());
 
         setTitle (host.getHostName ());
+        dictSpinner.setSelection (selectedDictionary);
       }
   }
 
@@ -129,6 +137,19 @@ public class MainActivity extends Activity
       }
 
     return true;
+  }
+
+  @Override
+  protected void onSaveInstanceState (Bundle bundle)
+  {
+    bundle.putInt (SELECTED_DICTIONARY,
+                   dictSpinner.getSelectedItemPosition ());
+  }
+
+  @Override
+  protected void onRestoreInstanceState (Bundle savedInstanceState)
+  {
+    dictSpinner.setSelection (savedInstanceState.getInt (SELECTED_DICTIONARY));
   }
 
   public void lookupWord (View view)
