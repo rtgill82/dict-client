@@ -66,13 +66,6 @@ public class MainActivity extends Activity
   }
 
   @Override
-  public void onDestroy ()
-  {
-    super.onDestroy ();
-    reset ();
-  }
-
-  @Override
   public boolean onCreateOptionsMenu (Menu menu)
   {
     getMenuInflater ().inflate (R.menu.activity_main, menu);
@@ -182,15 +175,6 @@ public class MainActivity extends Activity
     if (entry != null)
       displayHistoryEntry (entry);
 
-    invalidateOptionsMenu ();
-  }
-
-  public void reset ()
-  {
-    ((DictClientApplication) getApplication ()).useDefaultHost ();
-    searchText.setText ("");
-    dictView.setText ("");
-    history.clear ();
     invalidateOptionsMenu ();
   }
 
