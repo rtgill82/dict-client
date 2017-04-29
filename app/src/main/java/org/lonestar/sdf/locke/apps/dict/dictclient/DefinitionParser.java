@@ -20,7 +20,7 @@ import android.widget.EditText;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
 
-public final class DefinitionParser
+final class DefinitionParser
 {
   private static class WordSpan extends ClickableSpan
   {

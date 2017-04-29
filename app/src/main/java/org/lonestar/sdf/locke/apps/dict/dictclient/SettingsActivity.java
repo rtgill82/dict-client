@@ -23,7 +23,7 @@ import android.view.MenuItem;
 
 import java.util.List;
 
-public class SettingsActivity extends PreferenceActivity
+class SettingsActivity extends PreferenceActivity
 {
   /**
    * A preference value change listener that updates the preference's summary

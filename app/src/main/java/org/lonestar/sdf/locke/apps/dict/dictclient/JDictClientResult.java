@@ -13,7 +13,7 @@ import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
 import java.util.List;
 
-public class JDictClientResult
+class JDictClientResult
 {
   private final JDictClientRequest request;
   private final List<Definition> definitions;

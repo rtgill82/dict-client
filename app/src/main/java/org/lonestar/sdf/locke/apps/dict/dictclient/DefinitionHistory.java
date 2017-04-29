@@ -18,7 +18,7 @@ import java.util.Collection;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class DefinitionHistory extends ArrayList<HistoryEntry>
+class DefinitionHistory extends ArrayList<HistoryEntry>
 {
   public enum Direction { BACK, FORWARD };
 

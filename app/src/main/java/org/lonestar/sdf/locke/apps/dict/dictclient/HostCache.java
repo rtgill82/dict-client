@@ -11,7 +11,7 @@ package org.lonestar.sdf.locke.apps.dict.dictclient;
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class HostCache extends LinkedList<Host>
+class HostCache extends LinkedList<Host>
 {
   public Host getHostById (Integer id)
   {

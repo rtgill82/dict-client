@@ -23,7 +23,7 @@ import android.widget.ListView;
 
 import java.sql.SQLException;
 
-public class ManageHostsListFragment extends ListFragment
+class ManageHostsListFragment extends ListFragment
 {
   @Override
   public void onCreate (Bundle savedInstanceState)

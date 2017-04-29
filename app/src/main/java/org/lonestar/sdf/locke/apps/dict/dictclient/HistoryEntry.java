@@ -15,7 +15,7 @@ package org.lonestar.sdf.locke.apps.dict.dictclient;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class HistoryEntry
+class HistoryEntry
 {
   private String word;
   private CharSequence definitionText;

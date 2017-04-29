@@ -20,7 +20,7 @@ import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
 import java.util.List;
 
-public class DictionarySpinnerAdapter implements SpinnerAdapter
+class DictionarySpinnerAdapter implements SpinnerAdapter
 {
 
   private Context context;

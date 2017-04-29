@@ -17,7 +17,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import java.sql.SQLException;
 import java.util.List;
 
-public class DatabaseRevision
+class DatabaseRevision
 {
   private Integer version;
   private List<Host> add_hosts;

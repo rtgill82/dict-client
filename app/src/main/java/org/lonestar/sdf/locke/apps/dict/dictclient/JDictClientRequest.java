@@ -10,7 +10,7 @@ package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
-public class JDictClientRequest
+class JDictClientRequest
 {
   public enum JDictClientCommand
   {

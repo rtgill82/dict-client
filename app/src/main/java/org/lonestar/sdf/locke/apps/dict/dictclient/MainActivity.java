@@ -27,7 +27,7 @@ import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
 import java.util.List;
 
-public class MainActivity extends Activity
+class MainActivity extends Activity
 {
   private static final String SELECTED_DICTIONARY = "SELECTED_DICTIONARY";
 

@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DatabaseManager extends OrmLiteSqliteOpenHelper
+class DatabaseManager extends OrmLiteSqliteOpenHelper
 {
   final private static String DATABASE_NAME    = "dictclient.db";
   final private static int    DATABASE_VERSION = 1;

@@ -22,7 +22,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class AboutDialog extends DialogFragment
+class AboutDialog extends DialogFragment
 {
   private String html;
 

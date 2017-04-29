@@ -18,7 +18,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @DatabaseTable(tableName = "dict_servers")
-public class Host
+class Host
 {
   final private static int PORT = 2628;
 

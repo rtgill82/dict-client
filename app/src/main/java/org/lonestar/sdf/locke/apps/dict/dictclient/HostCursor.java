@@ -13,7 +13,7 @@ import android.database.CursorWrapper;
 
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-public class HostCursor extends CursorWrapper
+class HostCursor extends CursorWrapper
 {
   private Cursor cursor;
 

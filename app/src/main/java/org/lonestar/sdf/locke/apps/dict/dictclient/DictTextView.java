@@ -21,7 +21,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.widget.TextView;
 
-public class DictTextView extends TextView
+class DictTextView extends TextView
 {
   private static final float MIN_TEXT_SIZE = 8.0f;
   private static final float MAX_TEXT_SIZE = 60.0f;

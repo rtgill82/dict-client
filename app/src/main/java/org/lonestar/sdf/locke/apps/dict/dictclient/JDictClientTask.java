@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
+class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
 {
   private Activity context;
   private TextView dictView;
