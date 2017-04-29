@@ -18,8 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -249,7 +249,8 @@ public class MainActivity extends Activity
       public void onItemSelected (AdapterView<?> parent, View
                                   selectedItemView, int position, long id)
       {
-        Button dictinfoButton = (Button) findViewById (R.id.dictinfo_button);
+        ImageButton dictinfoButton = (ImageButton)
+            findViewById (R.id.dictinfo_button);
         Dictionary currentDictionary = (Dictionary) parent.getSelectedItem ();
 
         if (currentDictionary.getDatabase () != null)
@@ -261,7 +262,8 @@ public class MainActivity extends Activity
       @Override
       public void onNothingSelected (AdapterView<?> parent)
       {
-        Button dictinfoButton = (Button) findViewById (R.id.dictinfo_button);
+        ImageButton dictinfoButton = (ImageButton)
+            findViewById (R.id.dictinfo_button);
         dictinfoButton.setEnabled (false);
       }
     });

@@ -12,7 +12,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.text.Html;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
@@ -223,7 +223,8 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
     context.findViewById (R.id.search_text).setEnabled (false);
     context.findViewById (R.id.dict_spinner).setEnabled (false);
 
-    Button button = (Button) context.findViewById(R.id.dictinfo_button);
+    ImageButton button = (ImageButton)
+        context.findViewById(R.id.dictinfo_button);
     dictInfoButtonState = button.isEnabled ();
     button.setEnabled (false);
   }
@@ -233,7 +234,8 @@ public class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
     context.findViewById (R.id.search_text).setEnabled (true);
     context.findViewById (R.id.dict_spinner).setEnabled (true);
 
-    Button button = (Button) context.findViewById (R.id.dictinfo_button);
+    ImageButton button = (ImageButton)
+        context.findViewById (R.id.dictinfo_button);
     button.setEnabled (dictInfoButtonState);
   }
 }
