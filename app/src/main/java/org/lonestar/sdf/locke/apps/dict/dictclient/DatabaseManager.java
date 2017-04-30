@@ -106,6 +106,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
       }
     catch (SQLException e)
       {
+        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
         throw new RuntimeException (e);
       }
     return host;
@@ -121,15 +122,23 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
       }
     catch (SQLException e)
       {
+        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
         throw new RuntimeException (e);
       }
   }
 
   public boolean deleteHostById (int id)
-    throws SQLException
   {
-    Dao<Host, Integer> dao = instance.getDao (Host.class);
-    return (dao.deleteById (id) == 1);
+    try
+      {
+        Dao<Host, Integer> dao = instance.getDao (Host.class);
+        return (dao.deleteById (id) == 1);
+      }
+    catch (SQLException e)
+      {
+        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
+        throw new RuntimeException (e);
+      }
   }
 
   public HostCursor getHostList ()
@@ -143,6 +152,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
       }
     catch(SQLException e)
       {
+        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
         throw new RuntimeException (e);
       }
 

@@ -21,8 +21,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.sql.SQLException;
-
 class ManageHostsListFragment extends ListFragment
 {
   @Override
@@ -137,15 +135,7 @@ class ManageHostsListFragment extends ListFragment
         int pos = selected.keyAt (i);
         getListView ().setItemChecked (pos, false);
         Host host = getHostAtPosition (pos);
-
-        try
-          {
-            DatabaseManager.getInstance ().deleteHostById (host.getId ());
-          }
-        catch (SQLException e)
-          {
-            throw new RuntimeException (e);
-          }
+        DatabaseManager.getInstance ().deleteHostById (host.getId ());
       }
     refreshHostList ();
   }
