@@ -39,22 +39,20 @@ class Host
 
   public Host()
   {
-    this.port = JDictClient.DEFAULT_PORT;
+    this(null, null, JDictClient.DEFAULT_PORT);
   }
 
   public Host(String hostName)
   {
-    this.host_name = hostName;
-    this.port = JDictClient.DEFAULT_PORT;
+    this(null, hostName, JDictClient.DEFAULT_PORT);
   }
 
-  public Host(String hostName, int port)
+  public Host(String hostName, Integer port)
   {
-    this.host_name = hostName;
-    this.port = port;
+    this(null, hostName, port);
   }
 
-  public Host(int id, String hostName, int port)
+  public Host(Integer id, String hostName, Integer port)
   {
     this.id = id;
     this.host_name = hostName;
