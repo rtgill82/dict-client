@@ -16,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
-import org.lonestar.sdf.locke.libs.dict.Dictionary;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
 import java.util.ArrayList;
@@ -136,6 +135,7 @@ class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
       case DICT_LIST:
         Host host = request.getHost ();
         host.setDictionaries (result.getDictionaries ());
+        DatabaseManager.getInstance ().saveDictionaries (host);
         ((MainActivity) context).setDictionarySpinnerData (result.getDictionaries ());
         break;
 
@@ -152,8 +152,9 @@ class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
       JDictClient.connect (host.getHostName (), host.getPort ());
 
     List<Dictionary> dictionaries = new ArrayList<Dictionary>();
-    dictionaries.add (new Dictionary (null, "All Dictionaries"));
-    dictionaries.addAll (dictClient.getDictionaries ());
+    dictionaries.add (Dictionary.ALL_DICTIONARIES);
+    dictionaries.addAll (ClassConvert.convert (dictClient.getDictionaries (),
+                                               host));
     dictClient.close ();
     return dictionaries;
   }
@@ -197,9 +198,12 @@ class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
         while (itr.hasNext ())
           {
             Definition definition = itr.next ();
-            Dictionary dictionary = definition.getDictionary ();
 
-            dictView.append (Html.fromHtml ("<b>" + dictionary.getDescription () + "</b><br>"));
+            dictView.append (Html.fromHtml (
+                "<b>" +
+                definition.getDictionary ().getDescription () +
+                "</b><br>"
+            ));
             dictView.append (DefinitionParser.parse (definition));
             dictView.append ("\n");
           }

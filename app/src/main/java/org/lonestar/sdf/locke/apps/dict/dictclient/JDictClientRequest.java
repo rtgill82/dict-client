@@ -8,8 +8,6 @@
 
 package org.lonestar.sdf.locke.apps.dict.dictclient;
 
-import org.lonestar.sdf.locke.libs.dict.Dictionary;
-
 class JDictClientRequest
 {
   public enum JDictClientCommand
@@ -36,8 +34,7 @@ class JDictClientRequest
   public static JDictClientRequest DEFINE (Host host, String word)
   {
     return new JDictClientRequest (host, JDictClientCommand.DEFINE,
-                                   new Dictionary (null, "All Dictionaries"),
-                                   word);
+                                   new Dictionary (), word);
   }
 
   public static JDictClientRequest DEFINE (Host host, Dictionary dictionary,

@@ -23,8 +23,6 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.lonestar.sdf.locke.libs.dict.Dictionary;
-
 import java.util.List;
 
 class MainActivity extends Activity
@@ -63,10 +61,11 @@ class MainActivity extends Activity
 
     if (host != null)
       {
-        if (host.getDictionaries () == null)
+        List dictionaries = host.getDictionaries ();
+        if (dictionaries == null)
           refreshDictionaries ();
         else
-          setDictionarySpinnerData (host.getDictionaries ());
+          setDictionarySpinnerData (dictionaries);
 
         setTitle (host.getHostName ());
         dictSpinner.setSelection (selectedDictionary);

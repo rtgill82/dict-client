@@ -49,17 +49,20 @@ class DatabaseRevision
     if (db.getVersion () < this.version)
       {
         db.setVersion (this.version);
-        Dao<Host, Integer> dao = DaoManager.createDao (cs, Host.class);
+        Dao<Host, Integer> hostDao = DaoManager.createDao (cs, Host.class);
+        Dao<Dictionary, Void> dictDao = DaoManager.createDao (cs, Dictionary.class);
 
         // Delete old hosts
         if (remove_hosts != null)
           {
             for (Host host : remove_hosts)
               {
-                List<Host> rows = dao.queryForMatching (host);
+                List<Host> rows = hostDao.queryForMatching (host);
                 for (Host row : rows)
                   {
-                    dao.delete (row);
+                    for (Dictionary dict : row.getDictionaries ())
+                      dictDao.delete (dict);
+                    hostDao.delete (row);
                   }
               }
           }
@@ -69,7 +72,7 @@ class DatabaseRevision
           {
             for (Host host : add_hosts)
               {
-                dao.create (host);
+                hostDao.create (host);
               }
           }
       }

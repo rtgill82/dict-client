@@ -11,17 +11,15 @@ package org.lonestar.sdf.locke.apps.dict.dictclient;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import org.lonestar.sdf.locke.libs.dict.Dictionary;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
+import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("unused")
-@DatabaseTable(tableName = "dict_servers")
+@DatabaseTable(tableName = "hosts")
 class Host
 {
-  final private static int PORT = 2628;
-
   @DatabaseField(generatedId = true, columnName = "_id")
   private Integer id;
   @DatabaseField(canBeNull = false, uniqueIndexName = "host_port_idx")
@@ -30,6 +28,8 @@ class Host
   private Integer port;
   @DatabaseField()
   private String description;
+  @DatabaseField()
+  private Date last_refresh;
   @DatabaseField(defaultValue = "false")
   private boolean readonly;
   @DatabaseField(defaultValue = "false")
@@ -39,13 +39,13 @@ class Host
 
   public Host()
   {
-    this.port = PORT;
+    this.port = JDictClient.DEFAULT_PORT;
   }
 
   public Host(String hostName)
   {
     this.host_name = hostName;
-    this.port = PORT;
+    this.port = JDictClient.DEFAULT_PORT;
   }
 
   public Host(String hostName, int port)
@@ -101,6 +101,16 @@ class Host
     this.description = description;
   }
 
+  public Date getLastRefresh ()
+  {
+    return last_refresh;
+  }
+
+  public void setLastRefresh (Date date)
+  {
+    last_refresh = date;
+  }
+
   public boolean isReadonly ()
   {
     return readonly;
@@ -123,6 +133,8 @@ class Host
 
   public List<Dictionary> getDictionaries ()
   {
+    if (dictionaries == null)
+      dictionaries = DatabaseManager.getInstance ().getDictionaries (this);
     return dictionaries;
   }
 

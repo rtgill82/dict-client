@@ -27,7 +27,10 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 class DatabaseManager extends OrmLiteSqliteOpenHelper
@@ -63,6 +66,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
     try
       {
         TableUtils.createTable (cs, Host.class);
+        TableUtils.createTable (cs, Dictionary.class);
         loadData (resources, db, cs, 0, DATABASE_VERSION);
       }
     catch (SQLException e)
@@ -182,6 +186,49 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
       }
 
     dao.createOrUpdate (host);
+  }
+
+  public List<Dictionary> getDictionaries (Host host)
+  {
+    try
+      {
+        ArrayList<Dictionary> dictionaries = null;
+        Dao<Dictionary, Void> dictDao =
+            DatabaseManager.getInstance ().getDao (Dictionary.class);
+        List<Dictionary> dbdicts = dictDao.queryForEq ("host_id", host);
+        if (dbdicts.size () > 0)
+          {
+            dictionaries = new ArrayList<Dictionary>();
+            dictionaries.add (Dictionary.ALL_DICTIONARIES);
+            dictionaries.addAll(dbdicts);
+          }
+        return dictionaries;
+      }
+    catch (SQLException e)
+      {
+        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
+        throw new RuntimeException (e);
+      }
+  }
+
+  public void saveDictionaries (Host host)
+  {
+    try
+      {
+        Dao<Dictionary, Void> dictDao =
+            DatabaseManager.getInstance ().getDao (Dictionary.class);
+        for (Dictionary dict : host.getDictionaries ())
+          {
+            if (dict.getDatabase () != null)
+              dictDao.create (dict);
+          }
+        host.setLastRefresh (Calendar.getInstance ().getTime ());
+      }
+    catch (SQLException e)
+      {
+        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
+        throw new RuntimeException (e);
+      }
   }
 
   private void loadData (Resources resources, SQLiteDatabase db,

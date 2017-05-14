@@ -16,8 +16,6 @@ import android.view.ViewGroup;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import org.lonestar.sdf.locke.libs.dict.Dictionary;
-
 import java.util.List;
 
 class DictionarySpinnerAdapter implements SpinnerAdapter

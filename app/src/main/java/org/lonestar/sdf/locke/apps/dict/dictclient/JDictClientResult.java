@@ -9,7 +9,6 @@
 package org.lonestar.sdf.locke.apps.dict.dictclient;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
-import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
 import java.util.List;
 
