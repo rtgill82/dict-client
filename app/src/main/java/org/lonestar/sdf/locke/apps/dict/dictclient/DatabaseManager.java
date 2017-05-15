@@ -215,14 +215,15 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
   {
     try
       {
-        Dao<Dictionary, Void> dictDao =
-            DatabaseManager.getInstance ().getDao (Dictionary.class);
+        Dao<Host, Integer> hostDao = getDao (Host.class);
+        Dao<Dictionary, Void> dictDao = getDao (Dictionary.class);
         for (Dictionary dict : host.getDictionaries ())
           {
             if (dict.getDatabase () != null)
               dictDao.create (dict);
           }
         host.setLastRefresh (Calendar.getInstance ().getTime ());
+        hostDao.update (host);
       }
     catch (SQLException e)
       {

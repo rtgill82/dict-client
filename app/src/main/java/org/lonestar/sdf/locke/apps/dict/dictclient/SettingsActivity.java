@@ -37,6 +37,7 @@ class SettingsActivity extends PreferenceActivity
     public boolean onPreferenceChange(Preference preference, Object value)
       {
         String stringValue = value.toString();
+        Context context = preference.getContext ();
 
         if (preference instanceof ListPreference)
           {
@@ -51,7 +52,14 @@ class SettingsActivity extends PreferenceActivity
                     ? listPreference.getEntries()[index]
                     : null);
 
-          } else
+          }
+        else if (preference.getKey () ==
+            context.getString (R.string.pref_key_cache_time))
+          {
+            // Display days as the unit for the cache_time preference.
+            preference.setSummary (stringValue + " days");
+          }
+        else
           {
             // For all other preferences, set the summary to the value's
             // simple string representation.
@@ -143,9 +151,11 @@ class SettingsActivity extends PreferenceActivity
         addPreferencesFromResource(R.xml.pref_general);
         setHasOptionsMenu(true);
 
-        bindDefaultHostPreferences();
-        bindPreferenceSummaryToValue(
-          findPreference(getString(R.string.pref_key_default_host)));
+        bindDefaultHostPreferences ();
+        bindPreferenceSummaryToValue (
+          findPreference (getString (R.string.pref_key_default_host)));
+        bindPreferenceSummaryToValue (
+            findPreference (getString (R.string.pref_key_cache_time)));
       }
 
     @Override

@@ -37,6 +37,10 @@
     <string name="pref_key_default_host">default_host</string>
     <string name="pref_value_default_host">1</string>
 
+    <string name="pref_title_cache_time">Dictionary Cache Expiration</string>
+    <string name="pref_key_cache_time">cache_time</string>
+    <string name="pref_value_cache_time">7</string>
+
     <string name="pref_description_manage_hosts">
         Add, Edit, and Delete Dictionary Hosts
     </string>

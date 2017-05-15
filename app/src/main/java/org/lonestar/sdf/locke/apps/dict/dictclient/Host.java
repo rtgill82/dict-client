@@ -28,7 +28,7 @@ class Host
   private Integer port;
   @DatabaseField()
   private String description;
-  @DatabaseField()
+  @DatabaseField(canBeNull = false)
   private Date last_refresh;
   @DatabaseField(defaultValue = "false")
   private boolean readonly;
