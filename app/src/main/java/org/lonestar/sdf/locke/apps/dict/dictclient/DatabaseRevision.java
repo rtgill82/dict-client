@@ -60,8 +60,7 @@ class DatabaseRevision
                 List<Host> rows = hostDao.queryForMatching (host);
                 for (Host row : rows)
                   {
-                    for (Dictionary dict : row.getDictionaries ())
-                      dictDao.delete (dict);
+                    dictDao.deleteBuilder ().where ().eq ("host_id", row);
                     hostDao.delete (row);
                   }
               }
