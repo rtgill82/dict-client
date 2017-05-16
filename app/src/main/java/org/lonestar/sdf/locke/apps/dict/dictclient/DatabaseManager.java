@@ -221,6 +221,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
 
         // Delete all old dictionaries first
         dictDao.deleteBuilder ().where ().eq ("host_id", host);
+        getWritableDatabase ().execSQL ("VACUUM");
 
         /*
          * Save new dictionaries, but rollback if there's not enough disk
