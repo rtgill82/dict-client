@@ -19,6 +19,7 @@ import com.j256.ormlite.android.AndroidDatabaseResults;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
@@ -32,6 +33,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 class DatabaseManager extends OrmLiteSqliteOpenHelper
 {
@@ -211,19 +213,37 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
       }
   }
 
-  public void saveDictionaries (Host host)
+  public void saveDictionaries (final Host host)
   {
     try
       {
-        Dao<Host, Integer> hostDao = getDao (Host.class);
-        Dao<Dictionary, Void> dictDao = getDao (Dictionary.class);
+        final Dao<Dictionary, Void> dictDao = getDao (Dictionary.class);
+
+        // Delete all old dictionaries first
         for (Dictionary dict : host.getDictionaries ())
+          dictDao.delete (dict);
+
+        /*
+         * Save new dictionaries, but rollback if there's not enough disk
+         * space. This should force the dictionaries to be refreshed on every
+         * usage when the disk is full.
+         */
+        TransactionManager.callInTransaction (connectionSource,
+          new Callable<Void> ()
+        {
+          public Void call () throws Exception
           {
-            if (dict.getDatabase () != null)
-              dictDao.create (dict);
+            Dao<Host, Integer> hostDao = getDao (Host.class);
+            for (Dictionary dict : host.getDictionaries ())
+              {
+                if (dict.getDatabase () != null)
+                  dictDao.create (dict);
+              }
+            host.setLastRefresh (Calendar.getInstance ().getTime ());
+            hostDao.update (host);
+            return null;
           }
-        host.setLastRefresh (Calendar.getInstance ().getTime ());
-        hostDao.update (host);
+        });
       }
     catch (SQLException e)
       {
