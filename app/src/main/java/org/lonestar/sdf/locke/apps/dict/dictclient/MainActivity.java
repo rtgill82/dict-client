@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +25,10 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.lonestar.sdf.locke.libs.dict.Definition;
+
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 class MainActivity extends Activity
@@ -33,12 +37,15 @@ class MainActivity extends Activity
 
   private Host host;
   private DefinitionHistory history = DefinitionHistory.getInstance ();
+  private JDictClientTask runningTask;
 
   private TextView dictView;
   private EditText searchText;
   private Spinner dictSpinner;
+  private ImageButton dictInfo;
 
   private int selectedDictionary = -1;
+  private boolean dictInfoButtonState;
 
   @SuppressLint("NewApi")
   @Override
@@ -49,9 +56,21 @@ class MainActivity extends Activity
     dictView = (TextView) findViewById (R.id.dict_view);
     searchText = setupSearchText ();
     dictSpinner = setupDictSpinner ();
+    dictInfo = (ImageButton) findViewById (R.id.dictinfo_button);
 
     if (savedInstanceState != null)
       selectedDictionary = savedInstanceState.getInt (SELECTED_DICTIONARY);
+  }
+
+  @Override
+  public void onPause ()
+  {
+    super.onPause ();
+    if (runningTask != null)
+      {
+        runningTask.cancel (true);
+        runningTask = null;
+      }
   }
 
   @Override
@@ -163,6 +182,42 @@ class MainActivity extends Activity
     dictSpinner.setSelection (savedInstanceState.getInt (SELECTED_DICTIONARY));
   }
 
+  public void onTaskFinished (JDictClientResult result, Exception exception)
+  {
+    if (exception != null)
+      {
+        ErrorDialog.show (this, exception.getMessage ());
+        return;
+      }
+
+    JDictClientRequest request = result.getRequest ();
+    runningTask = null;
+    enableInput ();
+    switch (request.getCommand ())
+      {
+      case DEFINE:
+        CharSequence text = displayDefinitions (result.getDefinitions ());
+        HistoryEntry entry = new HistoryEntry (request.getWord (), text);
+        history.add (entry);
+        invalidateOptionsMenu ();
+        break;
+
+      case DICT_INFO:
+        displayDictionaryInfo (result.getDictionaryInfo ());
+        break;
+
+      case DICT_LIST:
+        Host host = request.getHost ();
+        host.setDictionaries (result.getDictionaries ());
+        DatabaseManager.getInstance ().saveDictionaries (host);
+        setDictionarySpinnerData (result.getDictionaries ());
+        break;
+
+      default:
+        break;
+      }
+  }
+
   public void lookupWord (View view)
   {
     Dictionary dict = (Dictionary) dictSpinner.getSelectedItem ();
@@ -171,17 +226,9 @@ class MainActivity extends Activity
       {
         searchText.selectAll ();
         if (dict != null)
-          {
-            new JDictClientTask (this,
-                JDictClientRequest.DEFINE (host, dict, word))
-              .execute ();
-          }
+          executeTask (JDictClientRequest.DEFINE (host, dict, word));
         else
-          {
-            new JDictClientTask (this,
-                JDictClientRequest.DEFINE (host, word))
-              .execute ();
-          }
+          executeTask (JDictClientRequest.DEFINE (host, word));
       }
   }
 
@@ -190,9 +237,7 @@ class MainActivity extends Activity
     Dictionary dictionary = (Dictionary) dictSpinner.getSelectedItem ();
 
     searchText.setText ("");
-    new JDictClientTask (this,
-        JDictClientRequest.DICT_INFO (host, dictionary))
-      .execute ();
+    executeTask (JDictClientRequest.DICT_INFO (host, dictionary));
   }
 
   public void traverseHistory (DefinitionHistory.Direction direction)
@@ -215,17 +260,73 @@ class MainActivity extends Activity
     dictSpinner.setAdapter (new DictionarySpinnerAdapter (this, list));
   }
 
+  private void executeTask (JDictClientRequest request)
+  {
+    disableInput ();
+    runningTask = new JDictClientTask (this, request);
+    runningTask.execute ();
+  }
+
   private void refreshDictionaries ()
   {
-    new JDictClientTask (this,
-        JDictClientRequest.DICT_LIST (host))
-      .execute ();
+    executeTask (JDictClientRequest.DICT_LIST (host));
   }
 
   private void displayHistoryEntry (HistoryEntry entry)
   {
     searchText.setText (entry.getWord ());
     dictView.setText (entry.getDefinitionText ());
+  }
+
+  private CharSequence displayDefinitions (List<Definition> definitions)
+  {
+    dictView.setText ("");
+    if (definitions == null)
+      dictView.setText ("No definitions found.");
+    else
+      {
+        Iterator<Definition> itr = definitions.iterator ();
+        while (itr.hasNext ())
+          {
+            Definition definition = itr.next ();
+
+            dictView.append (Html.fromHtml (
+                "<b>" +
+                    definition.getDictionary ().getDescription () +
+                    "</b><br>"
+            ));
+            dictView.append (DefinitionParser.parse (definition));
+            dictView.append ("\n");
+          }
+      }
+
+    return dictView.getText ();
+  }
+
+  private void displayDictionaryInfo (String dictInfo)
+  {
+    dictView.setText ("");
+
+    if (dictInfo == null)
+      dictView.setText ("No dictionary info received.");
+    else
+      dictView.setText (dictInfo);
+  }
+
+  private void disableInput ()
+  {
+    searchText.setEnabled (false);
+    dictSpinner.setEnabled (false);
+
+    dictInfoButtonState = dictInfo.isEnabled ();
+    dictInfo.setEnabled (false);
+  }
+
+  private void enableInput ()
+  {
+    searchText.setEnabled (true);
+    dictSpinner.setEnabled (true);
+    dictInfo.setEnabled (dictInfoButtonState);
   }
 
   private EditText setupSearchText ()

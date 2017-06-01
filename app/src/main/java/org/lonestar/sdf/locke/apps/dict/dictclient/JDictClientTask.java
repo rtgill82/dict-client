@@ -8,29 +8,22 @@
 
 package org.lonestar.sdf.locke.apps.dict.dictclient;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.text.Html;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
 {
-  private Activity context;
-  private TextView dictView;
+  private MainActivity context;
   private JDictClientRequest request;
   private Exception exception;
-  private boolean dictInfoButtonState;
 
   private ProgressDialog progressDialog;
 
@@ -44,22 +37,22 @@ class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
     messages.put (JDictClientRequest.JDictClientCommand.DICT_LIST, "Retrieving available dictionaries...");
   }
 
-  public JDictClientTask (Activity context, JDictClientRequest request)
+  public JDictClientTask (MainActivity context, JDictClientRequest request)
   {
     super ();
     this.context = context;
     this.request = request;
-    dictView = (TextView) context.findViewById (R.id.dict_view);
   }
 
   @Override
   protected void onPreExecute ()
   {
-    disableInput ();
-    progressDialog = ProgressDialog.show (context,
-                                          "Waiting",
-                                          messages.get (request.getCommand ()),
-                                          true);
+    progressDialog = ProgressDialog.show (
+        context,
+        "Waiting",
+        messages.get (request.getCommand ()),
+        true
+    );
   }
 
   protected JDictClientResult doInBackground (Void... voids)
@@ -105,43 +98,8 @@ class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
   @Override
   protected void onPostExecute (JDictClientResult result)
   {
-    DefinitionHistory history = DefinitionHistory.getInstance ();
-
-    enableInput ();
     progressDialog.dismiss ();
-
-    if (exception != null)
-      {
-        if (request.getCommand () == JDictClientRequest.JDictClientCommand.DICT_LIST)
-          disableInput ();
-
-        ErrorDialog.show (context, exception.getMessage ());
-        return;
-      }
-
-    switch (result.getRequest ().getCommand ())
-      {
-      case DEFINE:
-        CharSequence text = displayDefinitions (result.getDefinitions ());
-        HistoryEntry entry = new HistoryEntry (request.getWord (), text);
-        history.add (entry);
-        context.invalidateOptionsMenu ();
-        break;
-
-      case DICT_INFO:
-        displayDictionaryInfo (result.getDictionaryInfo ());
-        break;
-
-      case DICT_LIST:
-        Host host = request.getHost ();
-        host.setDictionaries (result.getDictionaries ());
-        DatabaseManager.getInstance ().saveDictionaries (host);
-        ((MainActivity) context).setDictionarySpinnerData (result.getDictionaries ());
-        break;
-
-      default:
-        break;
-      }
+    context.onTaskFinished (result, exception);
   }
 
   private List<Dictionary> getDictionaries ()
@@ -157,6 +115,12 @@ class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
                                                host));
     dictClient.close ();
     return dictionaries;
+  }
+
+  @Override
+  protected void onCancelled (JDictClientResult result)
+  {
+    progressDialog.dismiss ();
   }
 
   private List<Definition> getDefinitions (String word, Dictionary dictionary)
@@ -185,61 +149,5 @@ class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
     String dictInfo = dictClient.getDictionaryInfo (dictionary.getDatabase ());
     dictClient.close ();
     return dictInfo;
-  }
-
-  private CharSequence displayDefinitions (List<Definition> definitions)
-  {
-    dictView.setText ("");
-    if (definitions == null)
-      dictView.setText ("No definitions found.");
-    else
-      {
-        Iterator<Definition> itr = definitions.iterator ();
-        while (itr.hasNext ())
-          {
-            Definition definition = itr.next ();
-
-            dictView.append (Html.fromHtml (
-                "<b>" +
-                definition.getDictionary ().getDescription () +
-                "</b><br>"
-            ));
-            dictView.append (DefinitionParser.parse (definition));
-            dictView.append ("\n");
-          }
-      }
-
-    return dictView.getText ();
-  }
-
-  private void displayDictionaryInfo (String dictInfo)
-  {
-    dictView.setText ("");
-
-    if (dictInfo == null)
-      dictView.setText ("No dictionary info received.");
-    else
-      dictView.setText (dictInfo);
-  }
-
-  private void disableInput ()
-  {
-    context.findViewById (R.id.search_text).setEnabled (false);
-    context.findViewById (R.id.dict_spinner).setEnabled (false);
-
-    ImageButton button = (ImageButton)
-        context.findViewById(R.id.dictinfo_button);
-    dictInfoButtonState = button.isEnabled ();
-    button.setEnabled (false);
-  }
-
-  private void enableInput ()
-  {
-    context.findViewById (R.id.search_text).setEnabled (true);
-    context.findViewById (R.id.dict_spinner).setEnabled (true);
-
-    ImageButton button = (ImageButton)
-        context.findViewById (R.id.dictinfo_button);
-    button.setEnabled (dictInfoButtonState);
   }
 }

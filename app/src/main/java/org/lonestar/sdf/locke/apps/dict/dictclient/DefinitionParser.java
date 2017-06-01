@@ -8,7 +8,6 @@
 
 package org.lonestar.sdf.locke.apps.dict.dictclient;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.text.SpannableStringBuilder;
@@ -34,14 +33,14 @@ final class DefinitionParser
     @Override
     public void onClick (View textView)
     {
-      Activity activity = null;
+      MainActivity activity = null;
       Context context = textView.getContext ();
 
       while (context instanceof ContextWrapper)
         {
-          if (context instanceof Activity)
+          if (context instanceof MainActivity)
             {
-              activity = (Activity) context;
+              activity = (MainActivity) context;
             }
           context = ((ContextWrapper) context).getBaseContext ();
         }
