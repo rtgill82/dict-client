@@ -6,7 +6,7 @@
  *
  * FIXME: Look for a way to refresh the list of hosts in
  *        ManageHostsListFragment without tying these two classes as tightly
- *        togetheras they are.
+ *        together as they are.
  */
 
 package org.lonestar.sdf.locke.apps.dict.dictclient;

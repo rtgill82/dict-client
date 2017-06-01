@@ -158,6 +158,10 @@ class MainActivity extends Activity
         startActivity (new Intent (this, SettingsActivity.class));
         break;
 
+      case R.id.menu_refresh_dictionaries:
+        refreshDictionaries ();
+        break;
+
       case R.id.menu_about:
         AboutDialog.show (this);
         break;
