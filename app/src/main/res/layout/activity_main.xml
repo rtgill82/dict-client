@@ -44,8 +44,6 @@
         android:layout_below="@+id/dictinfo_button"
         android:scrollbars="vertical"
         android:freezesText="true"
-        android:paddingLeft="@dimen/definition_padding_left"
-        android:paddingRight="@dimen/definition_padding_right"
-        android:paddingTop="@dimen/definition_padding_top" />
+        android:padding="@dimen/text_padding" />
 
 </RelativeLayout>

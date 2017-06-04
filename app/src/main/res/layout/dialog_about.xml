@@ -3,4 +3,4 @@
     android:id="@+id/about_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="@dimen/definition_padding" />
+    android:padding="@dimen/text_padding" />
