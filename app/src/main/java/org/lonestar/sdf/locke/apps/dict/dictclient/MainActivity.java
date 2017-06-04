@@ -176,6 +176,7 @@ class MainActivity extends Activity
   @Override
   protected void onSaveInstanceState (Bundle bundle)
   {
+    super.onSaveInstanceState (bundle);
     bundle.putInt (SELECTED_DICTIONARY,
                    dictSpinner.getSelectedItemPosition ());
   }
@@ -183,6 +184,7 @@ class MainActivity extends Activity
   @Override
   protected void onRestoreInstanceState (Bundle savedInstanceState)
   {
+    super.onRestoreInstanceState (savedInstanceState);
     dictSpinner.setSelection (savedInstanceState.getInt (SELECTED_DICTIONARY));
   }
 
