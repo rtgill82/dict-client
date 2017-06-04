@@ -154,12 +154,12 @@ class MainActivity extends Activity
         startActivity (new Intent (this, SelectHostActivity.class));
         break;
 
-      case R.id.menu_preferences:
-        startActivity (new Intent (this, SettingsActivity.class));
-        break;
-
       case R.id.menu_refresh_dictionaries:
         refreshDictionaries ();
+        break;
+
+      case R.id.menu_preferences:
+        startActivity (new Intent (this, SettingsActivity.class));
         break;
 
       case R.id.menu_about:

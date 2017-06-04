@@ -20,15 +20,15 @@
         android:title="@string/menu_host_select"
         android:icon="@drawable/ic_collections_bookmark_white_24dp" />
     <item
+        android:id="@+id/menu_refresh_dictionaries"
+        android:orderInCategory="25"
+        android:showAsAction="never"
+        android:title="@string/menu_refresh_dictionaries" />
+    <item
         android:id="@+id/menu_preferences"
         android:orderInCategory="90"
         android:showAsAction="never"
         android:title="@string/menu_settings" />
-    <item
-        android:id="@+id/menu_refresh_dictionaries"
-        android:orderInCategory="95"
-        android:showAsAction="never"
-        android:title="Refresh Dictionaries" />
     <item
         android:id="@+id/menu_about"
         android:orderInCategory="100"
