@@ -13,6 +13,8 @@ import android.database.CursorWrapper;
 
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
+import java.util.Date;
+
 class HostCursor extends CursorWrapper
 {
   private Cursor cursor;
@@ -29,6 +31,7 @@ class HostCursor extends CursorWrapper
     host.setDescription (getDescription ());
     host.setReadonly (isReadonly ());
     host.setUserDefined (isUserDefined ());
+    host.setLastRefresh (getLastRefresh ());
     return host;
   }
 
@@ -60,6 +63,11 @@ class HostCursor extends CursorWrapper
   public boolean isUserDefined ()
   {
     return (cursor.getInt (cursor.getColumnIndexOrThrow ("user_defined")) != 0);
+  }
+
+  public Date getLastRefresh ()
+  {
+    return (new Date(cursor.getLong(cursor.getColumnIndexOrThrow ("last_refresh"))));
   }
 
   public String getString (int columnIndex)
