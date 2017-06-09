@@ -143,7 +143,11 @@ class ManageHostsListFragment extends ListFragment
   private void editSelectedHost (int pos)
   {
     final Host host = getHostAtPosition (pos);
-    EditHostDialog.show (this, host);
+
+    if (!host.isUserDefined ())
+      ErrorDialog.show (this.getActivity (), "The selected host is not modifiable.");
+    else
+      EditHostDialog.show (this, host);
   }
 
   private Host getHostAtPosition (int pos)
