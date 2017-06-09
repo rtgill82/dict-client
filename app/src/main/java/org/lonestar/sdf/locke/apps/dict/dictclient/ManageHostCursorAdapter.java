@@ -14,6 +14,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
@@ -26,18 +27,31 @@ class ManageHostCursorAdapter extends CursorAdapter
     super (context, c, flags);
   }
 
+  @Override
   public View newView (Context context, Cursor cursor, ViewGroup parent)
   {
+    HostCursor hostCursor = (HostCursor) cursor;
     LayoutInflater inflater = LayoutInflater.from (context);
-    TextView textview = (TextView) inflater.inflate (R.layout.list_item_host, null);
-    textview.setText (Html.fromHtml (createItem (cursor)));
+    CheckedTextView textview = (CheckedTextView)
+        inflater.inflate (R.layout.list_item_host, null);
+    textview.setText (Html.fromHtml (createItem (hostCursor)));
+    if (hostCursor.isReadonly ())
+      textview.setCheckMarkDrawable (null);
     return textview;
   }
 
+  @Override
   public void bindView (View view, Context context, Cursor cursor)
   {
     TextView textview = (TextView) view;
     textview.setText (Html.fromHtml (createItem (cursor)));
+  }
+
+  @Override
+  public boolean isEnabled (int position)
+  {
+    HostCursor hostCursor = (HostCursor) getItem (position);
+    return !hostCursor.isReadonly ();
   }
 
   private String createItem (Cursor cursor)

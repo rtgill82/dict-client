@@ -138,11 +138,19 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
     try
       {
         Dao<Host, Integer> dao = instance.getDao (Host.class);
-        if (!host.isUserDefined ())
+
+        // Ignore readonly hosts
+        if (host.isReadonly ())
+          return true;
+
+        // Remove preconfigured hosts from list
+        else if (!host.isUserDefined ())
           {
             host.setHidden (true);
             return saveHost (host);
           }
+
+        // Otherwise delete from database
         else
           return (dao.deleteById (host.getId ()) == 1);
       }
