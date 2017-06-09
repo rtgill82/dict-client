@@ -34,6 +34,8 @@ class Host
   private boolean readonly;
   @DatabaseField(defaultValue = "false")
   private boolean user_defined;
+  @DatabaseField(defaultValue = "false")
+  private boolean hidden;
 
   private List<Dictionary> dictionaries = null;
 
@@ -127,6 +129,16 @@ class Host
   public void setUserDefined (boolean userDefined)
   {
     this.user_defined = userDefined;
+  }
+
+  public boolean isHidden ()
+  {
+    return this.hidden;
+  }
+
+  public void setHidden (boolean hidden)
+  {
+    this.hidden = hidden;
   }
 
   public List<Dictionary> getDictionaries ()

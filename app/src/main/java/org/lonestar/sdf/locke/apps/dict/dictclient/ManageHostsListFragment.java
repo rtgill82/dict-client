@@ -135,7 +135,7 @@ class ManageHostsListFragment extends ListFragment
         int pos = selected.keyAt (i);
         getListView ().setItemChecked (pos, false);
         Host host = getHostAtPosition (pos);
-        DatabaseManager.getInstance ().deleteHostById (host.getId ());
+        DatabaseManager.getInstance ().deleteHost (host);
       }
     refreshHostList ();
   }

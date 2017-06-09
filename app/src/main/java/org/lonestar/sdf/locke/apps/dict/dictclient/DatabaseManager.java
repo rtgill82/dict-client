@@ -133,12 +133,18 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
       }
   }
 
-  public boolean deleteHostById (int id)
+  public boolean deleteHost (Host host)
   {
     try
       {
         Dao<Host, Integer> dao = instance.getDao (Host.class);
-        return (dao.deleteById (id) == 1);
+        if (!host.isUserDefined ())
+          {
+            host.setHidden (true);
+            return saveHost (host);
+          }
+        else
+          return (dao.deleteById (host.getId ()) == 1);
       }
     catch (SQLException e)
       {
@@ -154,7 +160,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
       {
         Dao<Host, Integer> dao = instance.getDao (Host.class);
         QueryBuilder<Host, Integer> qb = dao.queryBuilder ();
-        iterator = dao.iterator (qb.prepare ());
+        iterator = dao.iterator (qb.where ().eq ("hidden", false).prepare ());
       }
     catch(SQLException e)
       {
@@ -167,7 +173,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
     return new HostCursor(results.getRawCursor ());
   }
 
-  public void saveHost (Host host)
+  public boolean saveHost (Host host)
     throws SQLException
   {
     Dao<Host, Integer> dao = getDao (Host.class);
@@ -187,7 +193,8 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
           }
       }
 
-    dao.createOrUpdate (host);
+    Dao.CreateOrUpdateStatus status = dao.createOrUpdate (host);
+    return (status.isCreated () | status.isUpdated ());
   }
 
   public List<Dictionary> getDictionaries (Host host)
@@ -198,6 +205,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper
         Dao<Dictionary, Void> dictDao =
             DatabaseManager.getInstance ().getDao (Dictionary.class);
         List<Dictionary> dbdicts = dictDao.queryForEq ("host_id", host);
+
         if (dbdicts.size () > 0)
           {
             dictionaries = new ArrayList<Dictionary>();
