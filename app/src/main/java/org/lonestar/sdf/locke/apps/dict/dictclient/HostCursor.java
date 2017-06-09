@@ -29,9 +29,9 @@ class HostCursor extends CursorWrapper
   {
     Host host = new Host(getId (), getHostName (), getPort ());
     host.setDescription (getDescription ());
+    host.setLastRefresh (getLastRefresh ());
     host.setReadonly (isReadonly ());
     host.setUserDefined (isUserDefined ());
-    host.setLastRefresh (getLastRefresh ());
     return host;
   }
 
