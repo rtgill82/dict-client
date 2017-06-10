@@ -6,7 +6,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dictclient;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

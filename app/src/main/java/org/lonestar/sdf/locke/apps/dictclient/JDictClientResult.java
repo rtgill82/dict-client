@@ -6,7 +6,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dictclient;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
 

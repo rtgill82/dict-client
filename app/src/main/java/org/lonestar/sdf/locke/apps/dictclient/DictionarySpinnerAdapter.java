@@ -6,7 +6,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.content.Context;
 import android.database.DataSetObserver;

@@ -1,47 +1,47 @@
 ---
-!!org.lonestar.sdf.locke.apps.dict.dictclient.DatabaseRevision
+!!org.lonestar.sdf.locke.apps.dictclient.DatabaseRevision
 version: 1
 add_hosts:
-  - !!org.lonestar.sdf.locke.apps.dict.dictclient.Host
+  - !!org.lonestar.sdf.locke.apps.dictclient.Host
     id: 1
     host_name: dict.org
     description: The standard dictd server, contains several databases related to English language and the FreeDict databases
     last_refresh: 1970-01-01 00:00:00.0
     readonly: true
-  - !!org.lonestar.sdf.locke.apps.dict.dictclient.Host
+  - !!org.lonestar.sdf.locke.apps.dictclient.Host
     host_name: dict.tu-chemnitz.de
     description: Standard databases
     last_refresh: 1970-01-01 00:00:00.0
-  - !!org.lonestar.sdf.locke.apps.dict.dictclient.Host
+  - !!org.lonestar.sdf.locke.apps.dictclient.Host
     host_name: www.lojban.org
     description: To and from lojban and a number of other languages
     last_refresh: 1970-01-01 00:00:00.0
-  - !!org.lonestar.sdf.locke.apps.dict.dictclient.Host
+  - !!org.lonestar.sdf.locke.apps.dictclient.Host
     host_name: dict.arabeyes.org
     description: English-Arabic, extensible
     last_refresh: 1970-01-01 00:00:00.0
-  - !!org.lonestar.sdf.locke.apps.dict.dictclient.Host
+  - !!org.lonestar.sdf.locke.apps.dictclient.Host
     host_name: dict.saugus.net
     description: The contents of the Saugus.net computer knowledgebase, including a section on computer terms, filename extensions, and free software titles
     last_refresh: 1970-01-01 00:00:00.0
-  - !!org.lonestar.sdf.locke.apps.dict.dictclient.Host
+  - !!org.lonestar.sdf.locke.apps.dictclient.Host
     host_name: dict.mova.org
     description: Diverse databases, many Slavic/Russian dictionaries
     last_refresh: 1970-01-01 00:00:00.0
-  - !!org.lonestar.sdf.locke.apps.dict.dictclient.Host
+  - !!org.lonestar.sdf.locke.apps.dictclient.Host
     host_name: dict.uni-leipzig.de
     description: Official FreeDict server, most current, OpenSearch description
     last_refresh: 1970-01-01 00:00:00.0
-  - !!org.lonestar.sdf.locke.apps.dict.dictclient.Host
+  - !!org.lonestar.sdf.locke.apps.dictclient.Host
     host_name: dict.dvo.ru
     description: Standard databases, russian, ru-en, en-ru dictionaries
     last_refresh: 1970-01-01 00:00:00.0
-  - !!org.lonestar.sdf.locke.apps.dict.dictclient.Host
+  - !!org.lonestar.sdf.locke.apps.dictclient.Host
     host_name: indica-et-buddhica.org
     port: 2629
     description: Sanskrit-Tibetan Buddhist Terminology, Monier-Williams Sanskrit-English Dictionary
     last_refresh: 1970-01-01 00:00:00.0
-  - !!org.lonestar.sdf.locke.apps.dict.dictclient.Host
+  - !!org.lonestar.sdf.locke.apps.dictclient.Host
     host_name: dict.bibleonline.ru
     description: This DICT server Contains The Christian Material.
     last_refresh: 1970-01-01 00:00:00.0

@@ -6,7 +6,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dictclient;
 
 /**
  * Class containing the defined word and full definition text for use in

@@ -6,7 +6,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.app.ListActivity;
 import android.os.Bundle;

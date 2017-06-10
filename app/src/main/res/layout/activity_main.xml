@@ -37,7 +37,7 @@
         android:layout_below="@+id/search_text"
         android:onClick="getDictionaryInfo" />
 
-    <org.lonestar.sdf.locke.apps.dict.dictclient.DictTextView
+    <org.lonestar.sdf.locke.apps.dictclient.DictTextView
         android:id="@+id/dict_view"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"

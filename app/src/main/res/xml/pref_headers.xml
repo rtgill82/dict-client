@@ -1,8 +1,8 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
     <header
-        android:fragment="org.lonestar.sdf.locke.apps.dict.dictclient.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="org.lonestar.sdf.locke.apps.dictclient.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general"/>
     <header
-        android:fragment="org.lonestar.sdf.locke.apps.dict.dictclient.ManageHostsListFragment"
+        android:fragment="org.lonestar.sdf.locke.apps.dictclient.ManageHostsListFragment"
         android:title="@string/pref_header_manage_hosts"/>
 </preference-headers>

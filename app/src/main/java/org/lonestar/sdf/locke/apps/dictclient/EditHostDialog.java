@@ -9,7 +9,7 @@
  *        together as they are.
  */
 
-package org.lonestar.sdf.locke.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

@@ -6,7 +6,7 @@
  *
  */
 
-package org.lonestar.sdf.locke.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -20,31 +20,38 @@ import android.widget.TextView;
 
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-class SelectHostCursorAdapter extends CursorAdapter
+class ManageHostCursorAdapter extends CursorAdapter
 {
-
-  public SelectHostCursorAdapter(Context context, Cursor cursor, int flags)
+  public ManageHostCursorAdapter (Context context, Cursor c, int flags)
   {
-    super (context, cursor, flags);
+    super (context, c, flags);
   }
 
+  @Override
   public View newView (Context context, Cursor cursor, ViewGroup parent)
   {
+    HostCursor hostCursor = (HostCursor) cursor;
     LayoutInflater inflater = LayoutInflater.from (context);
-    CheckedTextView view = (CheckedTextView)
+    CheckedTextView textview = (CheckedTextView)
         inflater.inflate (R.layout.list_item_host, null);
-    view.setText (Html.fromHtml (createItem (cursor)));
-    view.setCheckMarkDrawable (null);
-    return view;
+    textview.setText (Html.fromHtml (createItem (hostCursor)));
+    if (hostCursor.isReadonly ())
+      textview.setCheckMarkDrawable (null);
+    return textview;
   }
 
+  @Override
   public void bindView (View view, Context context, Cursor cursor)
   {
-    if (view instanceof TextView)
-      {
-        String itemText = createItem (cursor);
-        ((TextView) view).setText (Html.fromHtml (itemText));
-      }
+    TextView textview = (TextView) view;
+    textview.setText (Html.fromHtml (createItem (cursor)));
+  }
+
+  @Override
+  public boolean isEnabled (int position)
+  {
+    HostCursor hostCursor = (HostCursor) getItem (position);
+    return !hostCursor.isReadonly ();
   }
 
   private String createItem (Cursor cursor)

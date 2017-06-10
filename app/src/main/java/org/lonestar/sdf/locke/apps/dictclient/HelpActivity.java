@@ -1,4 +1,4 @@
-package org.lonestar.sdf.locke.apps.dict.dictclient;
+package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.app.Activity;
 import android.content.res.Resources;
