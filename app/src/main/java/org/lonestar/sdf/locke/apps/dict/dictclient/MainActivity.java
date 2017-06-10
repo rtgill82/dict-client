@@ -158,8 +158,12 @@ public class MainActivity extends Activity
         refreshDictionaries ();
         break;
 
-      case R.id.menu_preferences:
+      case R.id.menu_settings:
         startActivity (new Intent (this, SettingsActivity.class));
+        break;
+
+      case R.id.menu_help:
+        startActivity (new Intent (this, HelpActivity.class));
         break;
 
       case R.id.menu_about:

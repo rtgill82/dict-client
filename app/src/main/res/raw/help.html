@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>DICT Client</h1>
+    <p>DICT Client looks up words on public internet dictionary host servers
+    that support the <a href='http://www.dict.org'>DICT protocol</a>. A number
+    of these hosts are available on the internet, some providing unique
+    dictionaries and reference databases. Selected hosts have been
+    preconfigured, but it's possible to find and add your own as well.
+
+    <p>Bandwidth requirements are low so this app is great if you have a
+    limited data plan and a web search could possibly use up a good chunk of
+    your allocated bandwidth when all you want to do is quickly look something
+    up.
+
+    <h2>Usage</h2>
+    <p>Simply touch the <b><i>Enter a word</i></b> search field to pull up the
+    touch keyboard and type in the word you would like to look up. Then touch
+    the <b><i>Search</i></b> icon on the keyboard to look up the word.  By
+    default all dictionaries on the currently selected host will be searched.
+    Specific dictionaries may be searched by selecting one from the dictionary
+    pull-down menu just below the <b><i>Enter a word</i></b> search field. The
+    <b><i>i</i></b> icon next to the dictionary pull-down menu will display
+    information about the currently selected dictionary, if one is selected.
+
+    <h3>Definitions</h3>
+    <p>Definition search results are displayed in the main section of the
+    screen and are organized by originating dictionary. Each section of words
+    and definitions are prefixed by their originating dictionary in bold.
+    Related words are underlined and highlighted in blue. These can be touched
+    to look up the definition of the highlighted word using the currently
+    selected dictionary on the currently selected host.
+
+    <p>Example Result:</p>
+    <b>WordNet (r) 3.0 (2006)</b><br>
+    arboretum<br>
+    &nbsp;&nbsp;n 1: a facility where trees and shrubs are cultivated for
+    exhibition [syn: <font color='blue'><u>arboretum</u></font>,
+    <font color='blue'><u>botanical garden</u></font>]
+
+    <h3>History Navigation</h3>
+    <p>When multiple words are searched for or are navigated to by touching
+    highlighted words within the displayed definitions, then previously viewed
+    definitions can be returned to by using the arrow navigation buttons at the
+    top of the screen. These work much like the forward and back buttons on a
+    web browser.
+
+    <h3>Menu Items</h3>
+    <p>Other than the navigation buttons, the following options are available
+    via the menu.
+
+    <p><i>Select Host</i> - Temporarily select another DICT host without
+    changing the default.  May appear as a bookmark icon on devices with wide
+    screens.
+
+    <p><i>Refresh Dictionaries</i> - Force retrieval of the available
+    dictionaries from the currently selected host. Usually dictionaries will
+    only be retrieved when the dictionary cache timeout has been exceeded.
+
+    <p><i>Settings</i> - Application settings.
+
+    <p><i>Help</i> - Display this help documentation.
+
+    <p><i>About</i> - About the application and donation button.
+
+    <h2>Settings</h2>
+    <h3>General</h3>
+
+    <p><i>Default Host</i> - Set the default DICT host to use for searches.
+
+    <p><i>Dictionary Cache Timeout</i> - How often available dictionaries will
+    be retrieved from the current DICT host. Defaults to 7 days.
+
+    <h3>Manage Hosts</h3>
+    <p>The manage hosts section of the settings allows you to add, edit, and
+    delete your own DICT hosts. Preconfigured hosts are not editable, but may
+    be removed.
+
+    <p>The <i>plus</i> icon will open a dialog allowing you to add a new host.
+    The dialog contains 3 fields, all of which are required.
+
+    <p><i>Host Name</i> - The domain name address of the host.
+
+    <p><i>Port</i> - The port number of the host (default: 2628)
+
+    <p><i>Description</i> - A short description of the host, the kinds of
+    dictionaries it provides, etc.
+
+    <p>Touch and hold a host to bring up the edit dialog. The edit dialog
+    behaves exactly as the add host dialog.
+
+    <p>When hosts are checked the <i>delete</i> icon will become active.
+    Touching it will delete all selected hosts.
+  </body>
+</html>

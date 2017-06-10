@@ -25,13 +25,18 @@
         android:showAsAction="never"
         android:title="@string/menu_refresh_dictionaries" />
     <item
-        android:id="@+id/menu_preferences"
-        android:orderInCategory="90"
+        android:id="@+id/menu_settings"
+        android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/menu_settings" />
     <item
+        android:id="@+id/menu_help"
+        android:orderInCategory="110"
+        android:showAsAction="never"
+        android:title="Help" />
+    <item
         android:id="@+id/menu_about"
-        android:orderInCategory="100"
+        android:orderInCategory="120"
         android:showAsAction="never"
         android:title="@string/menu_about" />
 </menu>
