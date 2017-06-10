@@ -24,7 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HostManagementActivity" />
         <activity android:name=".SelectHostActivity"
                   android:label="@string/title_activity_select_host" />
         <activity android:name=".SettingsActivity"

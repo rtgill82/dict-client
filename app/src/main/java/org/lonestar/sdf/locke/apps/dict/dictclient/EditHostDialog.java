@@ -24,7 +24,7 @@ import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
 import java.sql.SQLException;
 
-class EditHostDialog extends DialogFragment
+public class EditHostDialog extends DialogFragment
 {
   private Host host;
   private ManageHostsListFragment fragment;

@@ -14,7 +14,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 
-class ErrorDialog extends DialogFragment
+public class ErrorDialog extends DialogFragment
 {
   public static void show (Activity activity, String message)
   {

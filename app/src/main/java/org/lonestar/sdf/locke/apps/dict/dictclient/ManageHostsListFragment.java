@@ -21,7 +21,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-class ManageHostsListFragment extends ListFragment
+public class ManageHostsListFragment extends ListFragment
 {
   @Override
   public void onCreate (Bundle savedInstanceState)

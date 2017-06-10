@@ -31,7 +31,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
-class MainActivity extends Activity
+public class MainActivity extends Activity
 {
   private static final String SELECTED_DICTIONARY = "SELECTED_DICTIONARY";
 

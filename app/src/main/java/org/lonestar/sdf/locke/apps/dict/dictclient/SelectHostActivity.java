@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-class SelectHostActivity extends ListActivity
+public class SelectHostActivity extends ListActivity
 {
   @Override
   protected void onCreate (Bundle savedInstanceState)
