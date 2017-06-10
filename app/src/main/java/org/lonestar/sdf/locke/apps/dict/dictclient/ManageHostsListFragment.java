@@ -11,7 +11,9 @@ package org.lonestar.sdf.locke.apps.dict.dictclient;
 import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -130,11 +132,24 @@ public class ManageHostsListFragment extends ListFragment
   private void deleteSelectedHosts ()
   {
     SparseBooleanArray selected = getListView ().getCheckedItemPositions ();
+    Host defaultHost = DatabaseManager.getInstance ()
+        .getDefaultHost (this.getActivity ());
+
     for (int i = 0; i < selected.size (); i++)
       {
         int pos = selected.keyAt (i);
         getListView ().setItemChecked (pos, false);
         Host host = getHostAtPosition (pos);
+        if (host.getId () == defaultHost.getId ())
+          {
+            SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences (this.getActivity ());
+            prefs.edit ().putString (
+                getString (R.string.pref_key_default_host),
+                getString (R.string.pref_value_default_host)
+            ).commit ();
+          }
+
         DatabaseManager.getInstance ().deleteHost (host);
       }
     refreshHostList ();
