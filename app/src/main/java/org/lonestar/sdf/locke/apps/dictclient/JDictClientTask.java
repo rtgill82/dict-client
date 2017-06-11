@@ -19,7 +19,11 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
+import static org.lonestar.sdf.locke.apps.dictclient.JDictClientRequest.JDictClientCommand.DEFINE;
+import static org.lonestar.sdf.locke.apps.dictclient.JDictClientRequest.JDictClientCommand.DICT_INFO;
+import static org.lonestar.sdf.locke.apps.dictclient.JDictClientRequest.JDictClientCommand.DICT_LIST;
+
+class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult>
 {
   private MainActivity context;
   private JDictClientRequest request;
@@ -27,21 +31,21 @@ class JDictClientTask extends AsyncTask<Void, Void, JDictClientResult>
 
   private ProgressDialog progressDialog;
 
-  private static final Map<JDictClientRequest.JDictClientCommand, String> messages =
-    new EnumMap<JDictClientRequest.JDictClientCommand, String>(JDictClientRequest.JDictClientCommand.class);
-
-  static
-  {
-    messages.put (JDictClientRequest.JDictClientCommand.DEFINE, "Looking up word...");
-    messages.put (JDictClientRequest.JDictClientCommand.DICT_INFO, "Retrieving dictionary information...");
-    messages.put (JDictClientRequest.JDictClientCommand.DICT_LIST, "Retrieving available dictionaries...");
-  }
+  private static final Map<JDictClientRequest.JDictClientCommand,String> messages =
+    new EnumMap<JDictClientRequest.JDictClientCommand,String>(JDictClientRequest.JDictClientCommand.class);
 
   public JDictClientTask (MainActivity context, JDictClientRequest request)
   {
     super ();
     this.context = context;
     this.request = request;
+
+    if (messages.isEmpty ())
+      {
+        messages.put (DEFINE, context.getString (R.string.task_define));
+        messages.put (DICT_INFO, context.getString (R.string.task_dict_info));
+        messages.put (DICT_LIST, context.getString (R.string.task_dict_list));
+      }
   }
 
   @Override

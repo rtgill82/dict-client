@@ -160,7 +160,8 @@ public class ManageHostsListFragment extends ListFragment
     final Host host = getHostAtPosition (pos);
 
     if (!host.isUserDefined ())
-      ErrorDialog.show (this.getActivity (), "The selected host is not modifiable.");
+      ErrorDialog.show (this.getActivity (),
+          getString (R.string.message_host_readonly));
     else
       EditHostDialog.show (this, host);
   }
@@ -175,10 +176,10 @@ public class ManageHostsListFragment extends ListFragment
   private void showConfirmDeleteDialog (String message)
   {
     new AlertDialog.Builder (getActivity ())
-        .setTitle ("Confirm")
+        .setTitle (getString (R.string.title_confirm))
         .setMessage (message)
-        .setNegativeButton ("No", null)
-        .setPositiveButton ("Yes", new DialogInterface.OnClickListener ()
+        .setNegativeButton (getString (R.string.button_no), null)
+        .setPositiveButton (getString (R.string.button_yes), new DialogInterface.OnClickListener ()
         {
           public void onClick (DialogInterface dialog, int which)
           {

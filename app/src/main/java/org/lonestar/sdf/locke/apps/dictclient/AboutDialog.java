@@ -30,7 +30,7 @@ public class AboutDialog extends DialogFragment
   public static void show (Activity activity)
   {
     new AboutDialog ().show (activity.getFragmentManager (),
-                             activity.getString (R.string.about_text));
+                             activity.getString (R.string.title_about));
   }
 
   @Override
@@ -63,7 +63,7 @@ public class AboutDialog extends DialogFragment
     textView.setText (Html.fromHtml (html));
     textView.setMovementMethod (LinkMovementMethod.getInstance ());
     AlertDialog.Builder builder = new AlertDialog.Builder (context);
-    builder.setTitle (context.getString (R.string.about_text))
+    builder.setTitle (context.getString (R.string.title_about))
            .setView (textView);
     return builder.create ();
   }

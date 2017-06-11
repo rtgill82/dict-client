@@ -16,10 +16,12 @@ import android.os.Bundle;
 
 public class ErrorDialog extends DialogFragment
 {
+  private static final String MESSAGE = "message";
+
   public static void show (Activity activity, String message)
   {
     Bundle args = new Bundle ();
-    args.putString ("message", message);
+    args.putString (MESSAGE, message);
     ErrorDialog dialog = new ErrorDialog ();
     dialog.setArguments (args);
     dialog.show (
@@ -32,10 +34,10 @@ public class ErrorDialog extends DialogFragment
   public Dialog onCreateDialog (Bundle savedInstanceState)
   {
     AlertDialog.Builder builder = new AlertDialog.Builder (getActivity ());
-    String message = getArguments ().getString ("message");
-    builder.setTitle ("Error")
+    String message = getArguments ().getString (MESSAGE);
+    builder.setTitle (getString (R.string.title_error))
            .setMessage (message)
-           .setPositiveButton ("Ok", null);
+           .setPositiveButton (getString (R.string.button_ok), null);
     return builder.create ();
   }
 }

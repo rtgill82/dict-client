@@ -68,8 +68,9 @@ public class EditHostDialog extends DialogFragment
 
     AlertDialog.Builder builder = new AlertDialog.Builder (getActivity ());
     builder.setTitle (getTitle ())
-      .setNegativeButton ("Cancel", null)
-      .setPositiveButton ("Save", new DialogInterface.OnClickListener ()
+      .setNegativeButton (getString (R.string.button_cancel), null)
+      .setPositiveButton (getString (R.string.button_save),
+          new DialogInterface.OnClickListener ()
     {
       public void onClick (DialogInterface dialog, int which)
       {

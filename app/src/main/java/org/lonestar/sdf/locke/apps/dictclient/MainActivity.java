@@ -292,7 +292,7 @@ public class MainActivity extends Activity
   {
     dictView.setText ("");
     if (definitions == null)
-      dictView.setText ("No definitions found.");
+      dictView.setText (getString (R.string.result_definitions));
     else
       {
         Iterator<Definition> itr = definitions.iterator ();
@@ -318,7 +318,7 @@ public class MainActivity extends Activity
     dictView.setText ("");
 
     if (dictInfo == null)
-      dictView.setText ("No dictionary info received.");
+      dictView.setText (getString (R.string.result_dict_info));
     else
       dictView.setText (dictInfo);
   }

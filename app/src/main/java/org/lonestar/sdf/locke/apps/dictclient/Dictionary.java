@@ -26,7 +26,7 @@ class Dictionary
 
   public Dictionary ()
   {
-    description = "All Dictionaries".intern ();
+    description = "All Dictionaries";
   }
 
   public Dictionary (Host host,
