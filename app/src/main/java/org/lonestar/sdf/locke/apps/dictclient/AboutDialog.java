@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
@@ -60,6 +61,7 @@ public class AboutDialog extends DialogFragment
     TextView textView = (TextView) inflater.inflate (R.layout.dialog_about,
                                                      null);
     textView.setText (Html.fromHtml (html));
+    textView.setMovementMethod (LinkMovementMethod.getInstance ());
     AlertDialog.Builder builder = new AlertDialog.Builder (context);
     builder.setTitle (context.getString (R.string.about_text))
            .setView (textView);
