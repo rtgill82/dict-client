@@ -13,7 +13,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
-public class DictClientApplication extends Application
+public class DictClient extends Application
 {
   private Host currentHost;
   private HostCache cache;

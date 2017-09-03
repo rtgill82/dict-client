@@ -28,7 +28,7 @@ public class SelectHostActivity extends ListActivity
   public void onListItemClick (ListView l, View v, int pos, long id)
   {
     HostCursor c = (HostCursor) l.getItemAtPosition (pos);
-    DictClientApplication app = (DictClientApplication) getApplication ();
+    DictClient app = (DictClient) getApplication ();
     app.setCurrentHost (c.getDictionaryHost ());
     finish ();
   }

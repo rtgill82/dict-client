@@ -77,7 +77,7 @@ public class MainActivity extends Activity
   public void onResume ()
   {
     super.onResume ();
-    DictClientApplication app = (DictClientApplication) getApplication ();
+    DictClient app = (DictClient) getApplication ();
     host = app.getCurrentHost ();
 
     if (host != null)

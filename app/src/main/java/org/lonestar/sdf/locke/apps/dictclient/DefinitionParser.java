@@ -47,7 +47,7 @@ final class DefinitionParser
 
       if (activity != null)
         {
-          DictClientApplication app = (DictClientApplication)
+          DictClient app = (DictClient)
             activity.getApplication ();
           EditText searchText = (EditText)
             activity.findViewById (R.id.search_text);
