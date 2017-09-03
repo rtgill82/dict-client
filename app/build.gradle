@@ -11,13 +11,11 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 17
     buildToolsVersion '25.0.2'
-
     defaultConfig {
         applicationId "org.lonestar.sdf.locke.apps.dictclient"
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 17
     }
-
     buildTypes {
         release {
             minifyEnabled false
