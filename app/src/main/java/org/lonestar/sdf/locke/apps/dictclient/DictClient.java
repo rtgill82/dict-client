@@ -8,13 +8,16 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 public class DictClient extends Application
 {
+  private Activity currentActivity;
   private Host currentHost;
   private HostCache cache;
   private OnSharedPreferenceChangeListener listener;
@@ -30,14 +33,14 @@ public class DictClient extends Application
     cache.add (currentHost);
 
     listener =
-      new SharedPreferences.OnSharedPreferenceChangeListener()
+      new SharedPreferences.OnSharedPreferenceChangeListener ()
       {
         public void onSharedPreferenceChanged (SharedPreferences preferences,
                                                String key)
         {
-          if (key == getString(R.string.pref_key_default_host))
+          if (key == getString (R.string.pref_key_default_host))
             {
-              int hostId = Integer.parseInt(preferences.getString(key, "1"));
+              int hostId = Integer.parseInt (preferences.getString (key, "1"));
               setCurrentHostById (hostId);
             }
         }
@@ -46,6 +49,12 @@ public class DictClient extends Application
     SharedPreferences prefs =
       PreferenceManager.getDefaultSharedPreferences (this);
     prefs.registerOnSharedPreferenceChangeListener (listener);
+    setupActivityLifecycleCallbacks ();
+  }
+
+  public Activity getCurrentActivity ()
+  {
+    return currentActivity;
   }
 
   public Host getDefaultHost ()
@@ -72,7 +81,7 @@ public class DictClient extends Application
 
   public void setCurrentHostById (int hostId)
   {
-    if (currentHost == null || currentHost.getId() != hostId)
+    if (currentHost == null || currentHost.getId () != hostId)
       currentHost = findCachedHost (hostId, null);
   }
 
@@ -87,5 +96,34 @@ public class DictClient extends Application
         cache.add (defaultHost);
       }
     return host;
+  }
+
+  private void setupActivityLifecycleCallbacks ()
+  {
+    registerActivityLifecycleCallbacks (
+      new Application.ActivityLifecycleCallbacks ()
+      {
+        public void onActivityResumed (Activity activity)
+        {
+          currentActivity = activity;
+        }
+
+        public void onActivityDestroyed (Activity activity)
+        {
+          currentActivity = null;
+        }
+
+        public void onActivityCreated (Activity activity,
+                                       Bundle savedInstanceState) { }
+
+        public void onActivityPaused (Activity activity) { }
+
+        public void onActivitySaveInstanceState (Activity activity,
+                                                 Bundle outState) { }
+
+        public void onActivityStarted (Activity activity) { }
+
+        public void onActivityStopped (Activity activity) { }
+      });
   }
 }
