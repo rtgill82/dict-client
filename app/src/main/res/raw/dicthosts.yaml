@@ -9,12 +9,12 @@ add_hosts:
     last_refresh: 1970-01-01 00:00:00.0
     readonly: true
   - !!org.lonestar.sdf.locke.apps.dictclient.Host
-    host_name: dict.tu-chemnitz.de
-    description: Standard databases
+    host_name: crustulus.de
+    description: FreeDict databases
     last_refresh: 1970-01-01 00:00:00.0
   - !!org.lonestar.sdf.locke.apps.dictclient.Host
-    host_name: www.lojban.org
-    description: To and from lojban and a number of other languages
+    host_name: dict.tu-chemnitz.de
+    description: Standard databases
     last_refresh: 1970-01-01 00:00:00.0
   - !!org.lonestar.sdf.locke.apps.dictclient.Host
     host_name: dict.arabeyes.org
@@ -27,10 +27,6 @@ add_hosts:
   - !!org.lonestar.sdf.locke.apps.dictclient.Host
     host_name: dict.mova.org
     description: Diverse databases, many Slavic/Russian dictionaries
-    last_refresh: 1970-01-01 00:00:00.0
-  - !!org.lonestar.sdf.locke.apps.dictclient.Host
-    host_name: dict.uni-leipzig.de
-    description: Official FreeDict server, most current, OpenSearch description
     last_refresh: 1970-01-01 00:00:00.0
   - !!org.lonestar.sdf.locke.apps.dictclient.Host
     host_name: dict.dvo.ru
