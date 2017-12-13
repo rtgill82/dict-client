@@ -18,7 +18,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
@@ -26,9 +26,7 @@ android {
 
 dependencies {
     compile project(':jdict-client')
-    compile 'com.android.billingclient:billing:dp-1'
-    compile 'com.android.support:support-v4:25.0.+'
-    compile 'com.github.bmoliveira:snake-yaml:v1.18-android'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.j256.ormlite:ormlite-core:5.0'
+    compile 'com.github.bmoliveira:snake-yaml:v1.18-android'
 }
