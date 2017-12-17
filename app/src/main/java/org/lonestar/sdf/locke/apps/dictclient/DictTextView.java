@@ -16,10 +16,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.widget.TextView;
+
+import static android.util.TypedValue.COMPLEX_UNIT_PX;
 
 public class DictTextView extends TextView
 {
@@ -88,7 +89,7 @@ public class DictTextView extends TextView
     return new TextWatcher () {
       public void afterTextChanged (Editable s)
       {
-        setTextSize (TypedValue.COMPLEX_UNIT_PX, textSize);
+        setTextSize (COMPLEX_UNIT_PX, textSize);
         scrollTo (0, 0);
       }
 
@@ -112,8 +113,11 @@ public class DictTextView extends TextView
           public void onScaleEnd (ScaleGestureDetector detector)
           {
             float newSize = getTextSize () * detector.getScaleFactor ();
-            if (newSize >= MIN_TEXT_SIZE && newSize <= MAX_TEXT_SIZE)
-              setTextSize (newSize);
+            if (newSize < MIN_TEXT_SIZE)
+              newSize = MIN_TEXT_SIZE;
+            else if (newSize > MAX_TEXT_SIZE)
+              newSize = MAX_TEXT_SIZE;
+            setTextSize (COMPLEX_UNIT_PX, newSize);
           }
         });
   }
@@ -131,7 +135,7 @@ public class DictTextView extends TextView
   {
     int scrollPos[] = savedInstanceState.getIntArray (SCROLL_POS);
     scrollTo (scrollPos[0], scrollPos[1]);
-    setTextSize (TypedValue.COMPLEX_UNIT_PX,
+    setTextSize (COMPLEX_UNIT_PX,
                  savedInstanceState.getFloat (TEXT_SIZE));
   }
 }
