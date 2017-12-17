@@ -37,6 +37,8 @@ public class DictTextView extends TextView
   {
     super (context, attrs);
     setHorizontallyScrolling (true);
+
+    // Use LinkMovementMethod for scrolling to allow for both clickable links and scrolling.
     setMovementMethod (LinkMovementMethod.getInstance ());
     setHighlightColor (Color.BLUE);
     addTextChangedListener (createTextWatcher ());
