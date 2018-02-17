@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:hint="@string/hint_search"
         android:imeOptions="actionSearch"
@@ -25,14 +26,18 @@
         android:layout_width="wrap_content"
         android:layout_alignBottom="@+id/dictinfo_button"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/search_text"
-        android:layout_toLeftOf="@+id/dictinfo_button" />
+        android:layout_toLeftOf="@+id/dictinfo_button"
+        android:layout_toStartOf="@+id/dictinfo_button"/>
 
     <ImageButton
         android:id="@+id/dictinfo_button"
+        android:contentDescription="@string/button_dictinfo"
         android:src="@drawable/ic_info_outline"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/search_text"
         android:onClick="getDictionaryInfo" />

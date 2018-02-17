@@ -12,6 +12,7 @@
     <string name="button_yes">Yes</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_save">Save</string>
+    <string name="button_dictinfo">Dictionary Information</string>
 
     <!-- MainActivity result strings -->
     <string name="result_definitions">No definitions found.</string>
