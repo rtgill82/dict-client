@@ -26,7 +26,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
+import org.lonestar.sdf.locke.libs.dict.Match;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
@@ -42,6 +44,7 @@ public class MainActivity extends Activity
   private TextView dictView;
   private EditText searchText;
   private Spinner dictSpinner;
+  private Spinner stratSpinner;
   private ImageButton dictInfo;
 
   private int selectedDictionary = -1;
@@ -56,6 +59,7 @@ public class MainActivity extends Activity
     dictView = (TextView) findViewById (R.id.dict_view);
     searchText = setupSearchText ();
     dictSpinner = setupDictSpinner ();
+    stratSpinner = setupStratSpinner ();
     dictInfo = (ImageButton) findViewById (R.id.dictinfo_button);
 
     if (savedInstanceState != null)
@@ -93,6 +97,7 @@ public class MainActivity extends Activity
         expireTime.setTime (host.getLastRefresh ());
         expireTime.add (Calendar.DATE, cacheTime);
 
+        refreshStrategies ();
         if (dictionaries == null || expireTime.before (Calendar.getInstance ()))
           refreshDictionaries ();
         else
@@ -212,6 +217,10 @@ public class MainActivity extends Activity
         invalidateOptionsMenu ();
         break;
 
+      case MATCH:
+        displayMatches (result.getMatches ());
+        break;
+
       case DICT_INFO:
         displayDictionaryInfo (result.getDictionaryInfo ());
         break;
@@ -223,6 +232,10 @@ public class MainActivity extends Activity
         setDictionarySpinnerData (result.getDictionaries ());
         break;
 
+      case STRAT_LIST:
+        setStrategySpinnerData (result.getStrategies ());
+        break;
+
       default:
         break;
       }
@@ -230,15 +243,23 @@ public class MainActivity extends Activity
 
   public void lookupWord (View view)
   {
+    Strategy strat = (Strategy) stratSpinner.getSelectedItem ();
     Dictionary dict = (Dictionary) dictSpinner.getSelectedItem ();
     String word = searchText.getText ().toString ();
     if (!(word.isEmpty ()))
       {
         searchText.selectAll ();
-        if (dict != null)
-          executeTask (JDictClientRequest.DEFINE (host, dict, word));
+        if (!strat.getStrategy ().equals("define"))
+          {
+            executeTask(JDictClientRequest.MATCH (host, strat, word));
+          }
         else
-          executeTask (JDictClientRequest.DEFINE (host, word));
+          {
+            if (dict != null)
+              executeTask(JDictClientRequest.DEFINE(host, dict, word));
+            else
+              executeTask(JDictClientRequest.DEFINE(host, word));
+          }
       }
   }
 
@@ -270,6 +291,11 @@ public class MainActivity extends Activity
     dictSpinner.setAdapter (new DictionarySpinnerAdapter (this, list));
   }
 
+  public void setStrategySpinnerData (List<Strategy> list)
+  {
+    stratSpinner.setAdapter (new StrategySpinnerAdapter (this, list));
+  }
+
   private void executeTask (JDictClientRequest request)
   {
     disableInput ();
@@ -280,6 +306,11 @@ public class MainActivity extends Activity
   private void refreshDictionaries ()
   {
     executeTask (JDictClientRequest.DICT_LIST (host));
+  }
+
+  private void refreshStrategies ()
+  {
+    executeTask (JDictClientRequest.STRAT_LIST (host));
   }
 
   private void displayHistoryEntry (HistoryEntry entry)
@@ -313,6 +344,27 @@ public class MainActivity extends Activity
     return dictView.getText ();
   }
 
+  private CharSequence displayMatches (List<Match> matches)
+  {
+    dictView.setText ("");
+    if (matches == null)
+      dictView.setText (getString (R.string.result_matches));
+    else
+      {
+        Iterator<Match> itr = matches.iterator ();
+        while (itr.hasNext ())
+          {
+            Match match = itr.next ();
+            dictView.append (Html.fromHtml (
+                "<b>" +
+                    match.getDictionary () +
+                    "</b>: " + match.getWord () + "<br>"
+                ));
+          }
+      }
+    return dictView.getText ();
+  }
+
   private void displayDictionaryInfo (String dictInfo)
   {
     dictView.setText ("");
@@ -327,6 +379,7 @@ public class MainActivity extends Activity
   {
     searchText.setEnabled (false);
     dictSpinner.setEnabled (false);
+    stratSpinner.setEnabled (false);
 
     dictInfoButtonState = dictInfo.isEnabled ();
     dictInfo.setEnabled (false);
@@ -336,6 +389,7 @@ public class MainActivity extends Activity
   {
     searchText.setEnabled (true);
     dictSpinner.setEnabled (true);
+    stratSpinner.setEnabled (true);
     dictInfo.setEnabled (dictInfoButtonState);
   }
 
@@ -390,5 +444,14 @@ public class MainActivity extends Activity
       }
     });
     return dictSpinner;
+  }
+
+  private Spinner setupStratSpinner ()
+  {
+    Spinner stratSpinner = (Spinner) findViewById (R.id.strategy_spinner);
+    ArrayList<Strategy> list = new ArrayList<Strategy>();
+    list.add (Strategy.DEFINE);
+    stratSpinner.setAdapter (new StrategySpinnerAdapter (this, list));
+    return stratSpinner;
   }
 }

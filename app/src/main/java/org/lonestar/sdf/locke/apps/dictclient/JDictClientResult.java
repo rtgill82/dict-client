@@ -9,6 +9,7 @@
 package org.lonestar.sdf.locke.apps.dictclient;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
+import org.lonestar.sdf.locke.libs.dict.Match;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ class JDictClientResult
   private final JDictClientRequest request;
   private final List<Definition> definitions;
   private final List<Dictionary> dictionaries;
+  private final List<Strategy> strategies;
+  private final List<Match> matches;
   private final String dictionaryInfo;
 
   private JDictClientResult (JDictClientRequest request, List<?> list,
@@ -30,14 +33,32 @@ class JDictClientResult
       case DEFINE:
         definitions = (List<Definition>) list;
         dictionaries = null;
+        strategies = null;
+        matches = null;
+        break;
+      case MATCH:
+        definitions = null;
+        dictionaries = null;
+        strategies = null;
+        matches = (List<Match>) list;
         break;
       case DICT_LIST:
         dictionaries = (List<Dictionary>) list;
         definitions = null;
+        strategies = null;
+        matches = null;
+        break;
+      case STRAT_LIST:
+        strategies = (List<Strategy>) list;
+        definitions = null;
+        dictionaries = null;
+        matches = null;
         break;
       default:
-        dictionaries = null;
         definitions = null;
+        dictionaries = null;
+        strategies = null;
+        matches = null;
         break;
       }
   }
@@ -65,6 +86,16 @@ class JDictClientResult
   public List<Definition> getDefinitions ()
   {
     return definitions;
+  }
+
+  public List<Match> getMatches ()
+  {
+    return matches;
+  }
+
+  public List<Strategy> getStrategies ()
+  {
+    return strategies;
   }
 
   public String getDictionaryInfo ()
