@@ -10,7 +10,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 17
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "org.lonestar.sdf.locke.apps.dictclient"
         minSdkVersion 14
@@ -26,8 +26,8 @@ android {
 }
 
 dependencies {
-    compile project(':jdict-client')
-    compile 'com.j256.ormlite:ormlite-android:5.0'
-    compile 'com.j256.ormlite:ormlite-core:5.0'
-    compile 'com.github.bmoliveira:snake-yaml:v1.18-android'
+    implementation project(':jdict-client')
+    implementation 'com.j256.ormlite:ormlite-android:5.0'
+    implementation 'com.j256.ormlite:ormlite-core:5.0'
+    implementation 'com.github.bmoliveira:snake-yaml:v1.18-android'
 }
