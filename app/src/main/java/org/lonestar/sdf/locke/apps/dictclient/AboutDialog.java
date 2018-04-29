@@ -13,6 +13,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Html;
@@ -25,6 +27,7 @@ import java.io.InputStream;
 
 public class AboutDialog extends DialogFragment
 {
+  private Context context;
   private String html;
 
   public static void show (Activity activity)
@@ -36,7 +39,7 @@ public class AboutDialog extends DialogFragment
   @Override
   public Dialog onCreateDialog (Bundle savedInstanceState)
   {
-    Context context = getActivity ();
+    context = getActivity ();
     if (html == null)
       {
         Resources resources = context.getResources ();
@@ -47,13 +50,11 @@ public class AboutDialog extends DialogFragment
             byte[] buffer = new byte[stream.available ()];
             stream.read (buffer);
             html = new String (buffer);
+            html = replaceVersion (html);
           }
         catch (IOException e)
           {
-            this.dismiss ();
-            ErrorDialog.show (this.getActivity (),
-                              "Unable to read file about.html: "
-                              + e.getMessage ());
+            throw new RuntimeException (e);
           }
       }
 
@@ -66,5 +67,21 @@ public class AboutDialog extends DialogFragment
     builder.setTitle (context.getString (R.string.title_about))
            .setView (textView);
     return builder.create ();
+  }
+
+  private String replaceVersion (String html)
+  {
+    try
+      {
+        PackageInfo pInfo = context.getPackageManager()
+            .getPackageInfo(context.getPackageName(), 0);
+        String version = pInfo.versionName;
+        html = html.replaceAll ("@VERSION@", version);
+      }
+    catch (PackageManager.NameNotFoundException e)
+      {
+        throw new RuntimeException (e);
+      }
+    return html;
   }
 }
