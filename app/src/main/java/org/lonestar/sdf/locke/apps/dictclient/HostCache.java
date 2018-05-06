@@ -11,114 +11,94 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import java.util.Collection;
 import java.util.LinkedList;
 
-class HostCache extends LinkedList<Host>
-{
-  public Host getHostById (Integer id)
-  {
-    for (Host item : this)
-      {
-        if (item.getId () == id)
-          return item;
-      }
+class HostCache extends LinkedList<Host> {
+    public Host getHostById(Integer id) {
+        for (Host item : this) {
+            if (item.getId() == id)
+              return item;
+        }
+        return null;
+    }
 
-    return null;
-  }
+    public Host addHost(Host host) {
+        add(host);
+        return getHostById(host.getId());
+    }
 
-  public Host addHost (Host host)
-  {
-    add (host);
-    return getHostById (host.getId ());
-  }
+    @Override
+    public boolean add(Host host) {
+        if (host == null)
+          return false;
 
-  @Override
-  public boolean add (Host host)
-  {
-    if (host == null)
-      return false;
+        if (getHostById(host.getId()) == null) {
+            super.add(host);
+            return true;
+        }
+        return false;
+    }
 
-    if (getHostById (host.getId ()) == null)
-      {
-        super.add (host);
-        return true;
-      }
+    @Override
+    public void add(int index, Host host) {
+        if (host == null)
+          return;
 
-    return false;
-  }
+        if (getHostById(host.getId()) == null)
+          super.add(index, host);
+    }
 
-  @Override
-  public void add (int index, Host host)
-  {
-    if (host == null)
-      return;
+    @Override
+    public boolean addAll(Collection<? extends Host> c) {
+        boolean rv = false;
 
-    if (getHostById (host.getId ()) == null)
-      super.add (index, host);
-  }
+        for (Host host : c)
+          rv |= add(host);
 
-  @Override
-  public boolean addAll (Collection<? extends Host> c)
-  {
-    boolean rv = false;
+        return rv;
+    }
 
-    for (Host host : c)
-      rv |= add (host);
+    @Override
+    public boolean addAll(int index, Collection<? extends Host> c) {
+        boolean rv = false;
 
-    return rv;
-  }
+        for (Host host : c) {
+            if (getHostById(host.getId()) == null) {
+                super.add(index, host);
+                rv = true;
+            }
+        }
+        return rv;
+    }
 
-  @Override
-  public boolean addAll (int index, Collection<? extends Host> c)
-  {
-    boolean rv = false;
+    @Override
+    public void addFirst(Host host) {
+        if (getHostById(host.getId()) == null)
+          super.addFirst(host);
+    }
 
-    for (Host host : c)
-      {
-        if (getHostById (host.getId ()) == null)
-          {
-            super.add (index, host);
-            rv = true;
-          }
-      }
+    @Override
+    public void addLast(Host host) {
+        if (getHostById(host.getId()) == null)
+          super.addLast(host);
+    }
 
-    return rv;
-  }
+    @Override
+    public void push(Host host) {
+        if (getHostById(host.getId()) == null)
+          super.push(host);
+    }
 
-  @Override
-  public void addFirst (Host host)
-  {
-    if (getHostById (host.getId ()) == null)
-      super.addFirst (host);
-  }
+    @Override
+    public Host set(int index, Host host) {
+        Host oldHost = getHostById(host.getId());
 
-  @Override
-  public void addLast (Host host)
-  {
-    if (getHostById (host.getId ()) == null)
-      super.addLast (host);
-  }
+        if (oldHost != null) {
+            int oldIndex = indexOf(oldHost);
+            if (oldIndex < index)
+              index -= 1;
 
-  @Override
-  public void push (Host host)
-  {
-    if (getHostById (host.getId ()) == null)
-      super.push (host);
-  }
-
-  @Override
-  public Host set (int index, Host host)
-  {
-    Host oldHost = getHostById (host.getId ());
-
-    if (oldHost != null)
-      {
-        int oldIndex = indexOf (oldHost);
-        if (oldIndex < index)
-          index -= 1;
-
-        if (oldIndex != index)
-          remove (oldHost);
-      }
-
-    return super.set (index, host);
-  }
+            if (oldIndex != index)
+              remove(oldHost);
+        }
+        return super.set(index, host);
+    }
 }

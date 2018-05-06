@@ -20,47 +20,39 @@ import android.widget.TextView;
 
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-class SelectHostCursorAdapter extends CursorAdapter
-{
+class SelectHostCursorAdapter extends CursorAdapter {
+    public SelectHostCursorAdapter(Context context, Cursor cursor, int flags) {
+        super(context, cursor, flags);
+    }
 
-  public SelectHostCursorAdapter(Context context, Cursor cursor, int flags)
-  {
-    super (context, cursor, flags);
-  }
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        CheckedTextView view = (CheckedTextView)
+          inflater.inflate(R.layout.list_item_host, null);
+        view.setText(Html.fromHtml(createItem(cursor)));
+        view.setCheckMarkDrawable(null);
+        return view;
+    }
 
-  public View newView (Context context, Cursor cursor, ViewGroup parent)
-  {
-    LayoutInflater inflater = LayoutInflater.from (context);
-    CheckedTextView view = (CheckedTextView)
-        inflater.inflate (R.layout.list_item_host, null);
-    view.setText (Html.fromHtml (createItem (cursor)));
-    view.setCheckMarkDrawable (null);
-    return view;
-  }
+    public void bindView(View view, Context context, Cursor cursor) {
+        if (view instanceof TextView) {
+            String itemText = createItem(cursor);
+            ((TextView) view).setText(Html.fromHtml(itemText));
+        }
+    }
 
-  public void bindView (View view, Context context, Cursor cursor)
-  {
-    if (view instanceof TextView)
-      {
-        String itemText = createItem (cursor);
-        ((TextView) view).setText (Html.fromHtml (itemText));
-      }
-  }
+    private String createItem(Cursor cursor) {
+        String host = cursor.getString(cursor.getColumnIndex("host_name"));
+        Integer port = cursor.getInt(cursor.getColumnIndex("port"));
+        String description =
+          cursor.getString(cursor.getColumnIndex("description"));
 
-  private String createItem (Cursor cursor)
-  {
-    String host = cursor.getString (cursor.getColumnIndex ("host_name"));
-    Integer port = cursor.getInt (cursor.getColumnIndex ("port"));
-    String description =
-      cursor.getString (cursor.getColumnIndex ("description"));
-
-    String itemText = "<b>" + host;
-    if (port != JDictClient.DEFAULT_PORT)
-      itemText += ":" + port.toString ();
-    itemText += "</b>";
-    if (description.length () > 0)
-      itemText += "<br><i>" + description + "</i>";
-
-    return itemText;
-  }
+        String itemText = "<b>" + host;
+        if (port != JDictClient.DEFAULT_PORT)
+          itemText += ":" + port.toString();
+        itemText += "</b>";
+        if (description.length() > 0)
+          itemText += "<br><i>" + description + "</i>";
+        return itemText;
+    }
 }

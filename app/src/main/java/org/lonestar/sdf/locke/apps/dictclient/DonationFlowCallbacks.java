@@ -4,10 +4,10 @@ import android.app.Activity;
 
 interface DonationFlowCallbacks
 {
-  Activity getActivity ();
-  void onPurchasesUpdated ();
-  void onItemUnavailable ();
-  void onServiceUnavailable ();
-  void onError ();
-  void onBillingUnavailable ();
+  Activity getActivity();
+  void onPurchasesUpdated();
+  void onItemUnavailable();
+  void onServiceUnavailable();
+  void onError();
+  void onBillingUnavailable();
 }

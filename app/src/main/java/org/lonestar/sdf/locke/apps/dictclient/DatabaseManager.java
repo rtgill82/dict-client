@@ -35,250 +35,208 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-class DatabaseManager extends OrmLiteSqliteOpenHelper
-{
-  final private static String DATABASE_NAME    = "dictclient.db";
-  final private static int    DATABASE_VERSION = 1;
+class DatabaseManager extends OrmLiteSqliteOpenHelper {
+    final private static String DATABASE_NAME    = "dictclient.db";
+    final private static int    DATABASE_VERSION = 1;
 
-  private static DatabaseManager instance = null;
-  private Context context;
+    private static DatabaseManager instance = null;
+    private Context context;
 
-  private DatabaseManager (Context context)
-  {
-    super (context, DATABASE_NAME, null, DATABASE_VERSION);
-    this.context = context;
-  }
+    private DatabaseManager(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
+    }
 
-  static public void initialize (Context context)
-  {
-    if (instance == null)
-      instance = new DatabaseManager (context);
-  }
+    static public void initialize(Context context) {
+        if (instance == null)
+          instance = new DatabaseManager(context);
+    }
 
-  static public DatabaseManager getInstance ()
-  {
-    return instance;
-  }
+    static public DatabaseManager getInstance() {
+        return instance;
+    }
 
-  @Override
-  @SuppressWarnings("unchecked")
-  public void onCreate (SQLiteDatabase db, ConnectionSource cs)
-  {
-    Resources resources = this.context.getResources ();
-    try
-      {
-        TableUtils.createTable (cs, Host.class);
-        TableUtils.createTable (cs, Dictionary.class);
-        loadData (resources, db, cs, 0, DATABASE_VERSION);
-      }
-    catch (SQLException e)
-      {
-        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
-        throw new RuntimeException (e);
-      }
-  }
+    @Override
+    @SuppressWarnings("unchecked")
+    public void onCreate(SQLiteDatabase db, ConnectionSource cs) {
+        Resources resources = this.context.getResources();
+        try {
+            TableUtils.createTable(cs, Host.class);
+            TableUtils.createTable(cs, Dictionary.class);
+            loadData(resources, db, cs, 0, DATABASE_VERSION);
+        } catch (SQLException e) {
+            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
+            throw new RuntimeException(e);
+        }
+    }
 
-  @Override
-  public void onUpgrade (SQLiteDatabase db, ConnectionSource cs,
-                         int oldVersion, int newVersion)
-  {
-    Resources resources = this.context.getResources ();
-    try
-      {
-        loadData (resources, db, cs, oldVersion, newVersion);
-      }
-    catch (SQLException e)
-      {
-        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
-        throw new RuntimeException (e);
-      }
-  }
+    @Override
+    public void onUpgrade(SQLiteDatabase db, ConnectionSource cs,
+                          int oldVersion, int newVersion) {
+        Resources resources = this.context.getResources();
+        try {
+            loadData(resources, db, cs, oldVersion, newVersion);
+        } catch (SQLException e) {
+            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
+            throw new RuntimeException(e);
+        }
+    }
 
-  public Host getDefaultHost (Context context)
-  {
-    SharedPreferences prefs =
-      PreferenceManager.getDefaultSharedPreferences (context);
-    Resources resources = context.getResources ();
-    int hostId = Integer.parseInt(prefs.getString (
-      resources.getString (R.string.pref_key_default_host),
-      resources.getString (R.string.pref_value_default_host))
-    );
+    public Host getDefaultHost(Context context) {
+        SharedPreferences prefs =
+          PreferenceManager.getDefaultSharedPreferences(context);
+        Resources resources = context.getResources();
+        int hostId = Integer.parseInt(prefs.getString(
+            resources.getString(R.string.pref_key_default_host),
+            resources.getString(R.string.pref_value_default_host))
+        );
 
-    Host host;
-    try
-      {
-        Dao<Host, Integer> dao = instance.getDao (Host.class);
-        host = dao.queryForId (hostId);
-      }
-    catch (SQLException e)
-      {
-        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
-        throw new RuntimeException (e);
-      }
-    return host;
-  }
+        Host host;
+        try {
+            Dao<Host, Integer> dao = instance.getDao(Host.class);
+            host = dao.queryForId(hostId);
+        } catch (SQLException e) {
+            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
+            throw new RuntimeException(e);
+        }
+        return host;
+    }
 
-  public Host getHostById (Integer id)
-  {
-    try
-      {
-        Dao<Host, Integer> dao;
-        dao = instance.getDao(Host.class);
-        return dao.queryForId (id);
-      }
-    catch (SQLException e)
-      {
-        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
-        throw new RuntimeException (e);
-      }
-  }
+    public Host getHostById(Integer id) {
+        try {
+            Dao<Host, Integer> dao;
+            dao = instance.getDao(Host.class);
+            return dao.queryForId(id);
+        } catch (SQLException e) {
+            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
+            throw new RuntimeException(e);
+        }
+    }
 
-  public boolean deleteHost (Host host)
-  {
-    try
-      {
-        Dao<Host, Integer> dao = instance.getDao (Host.class);
+    public boolean deleteHost(Host host) {
+        try {
+            Dao<Host, Integer> dao = instance.getDao(Host.class);
 
-        // Ignore readonly hosts
-        if (host.isReadonly ())
-          return true;
+            // Ignore readonly hosts
+            if (host.isReadonly())
+              return true;
 
-        // Remove preconfigured hosts from list
-        else if (!host.isUserDefined ())
-          {
-            host.setHidden (true);
-            return saveHost (host);
-          }
+            // Remove preconfigured hosts from list
+            else if (!host.isUserDefined()) {
+                host.setHidden(true);
+                return saveHost(host);
+            }
 
-        // Otherwise delete from database
-        else
-          return (dao.deleteById (host.getId ()) == 1);
-      }
-    catch (SQLException e)
-      {
-        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
-        throw new RuntimeException (e);
-      }
-  }
+            // Otherwise delete from database
+            else
+              return (dao.deleteById(host.getId()) == 1);
+        } catch (SQLException e) {
+            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
+            throw new RuntimeException(e);
+        }
+    }
 
-  public HostCursor getHostList ()
-  {
-    CloseableIterator<Host> iterator;
-    try
-      {
-        Dao<Host, Integer> dao = instance.getDao (Host.class);
-        QueryBuilder<Host, Integer> qb = dao.queryBuilder ();
-        iterator = dao.iterator (qb.where ().eq ("hidden", false).prepare ());
-      }
-    catch(SQLException e)
-      {
-        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
-        throw new RuntimeException (e);
-      }
+    public HostCursor getHostList() {
+        CloseableIterator<Host> iterator;
+        try {
+            Dao<Host, Integer> dao = instance.getDao(Host.class);
+            QueryBuilder<Host, Integer> qb = dao.queryBuilder();
+            iterator = dao.iterator(qb.where().eq("hidden", false)
+                                    .prepare());
+        } catch(SQLException e) {
+            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
+            throw new RuntimeException(e);
+        }
 
-    AndroidDatabaseResults results =
-      (AndroidDatabaseResults) iterator.getRawResults ();
-    return new HostCursor(results.getRawCursor ());
-  }
+        AndroidDatabaseResults results =
+          (AndroidDatabaseResults) iterator.getRawResults();
+        return new HostCursor(results.getRawCursor());
+    }
 
-  public boolean saveHost (Host host)
-    throws SQLException
-  {
-    Dao<Host, Integer> dao = getDao (Host.class);
+    public boolean saveHost(Host host)
+          throws SQLException {
+        Dao<Host, Integer> dao = getDao(Host.class);
 
-    if (host.getId () == null)
-      {
-        Map<String, Object> map = new HashMap ();
-        map.put ("host_name", host.getHostName ());
-        map.put ("port", host.getPort ());
-        if (!dao.queryForFieldValues (map).isEmpty ())
-          {
-            SQLException exception =
-              new SQLException ("The host " + host.getHostName () + ":"
-                                + host.getPort ().toString ()
-                                + " already exists.");
-            throw exception;
-          }
-      }
+        if (host.getId() == null) {
+            Map<String, Object> map = new HashMap();
+            map.put("host_name", host.getHostName());
+            map.put("port", host.getPort());
+            if (!dao.queryForFieldValues(map).isEmpty()) {
+                SQLException exception =
+                  new SQLException("The host " + host.getHostName() + ":"
+                                   + host.getPort().toString()
+                                   + " already exists.");
+                throw exception;
+            }
+        }
 
-    Dao.CreateOrUpdateStatus status = dao.createOrUpdate (host);
-    return (status.isCreated () | status.isUpdated ());
-  }
+        Dao.CreateOrUpdateStatus status = dao.createOrUpdate(host);
+        return (status.isCreated() | status.isUpdated());
+    }
 
-  public List<Dictionary> getDictionaries (Host host)
-  {
-    try
-      {
-        ArrayList<Dictionary> dictionaries = null;
-        Dao<Dictionary, Void> dictDao =
-            DatabaseManager.getInstance ().getDao (Dictionary.class);
-        List<Dictionary> dbdicts = dictDao.queryForEq ("host_id", host);
+    public List<Dictionary> getDictionaries(Host host) {
+        try {
+            ArrayList<Dictionary> dictionaries = null;
+            Dao<Dictionary, Void> dictDao =
+              DatabaseManager.getInstance().getDao(Dictionary.class);
+            List<Dictionary> dbdicts = dictDao.queryForEq("host_id", host);
 
-        if (dbdicts.size () > 0)
-          {
-            dictionaries = new ArrayList<Dictionary>();
-            dictionaries.add (Dictionary.ALL_DICTIONARIES);
-            dictionaries.addAll(dbdicts);
-          }
-        return dictionaries;
-      }
-    catch (SQLException e)
-      {
-        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
-        throw new RuntimeException (e);
-      }
-  }
+            if (dbdicts.size() > 0) {
+                dictionaries = new ArrayList<Dictionary>();
+                dictionaries.add(Dictionary.ALL_DICTIONARIES);
+                dictionaries.addAll(dbdicts);
+            }
+            return dictionaries;
+        }
+        catch (SQLException e) {
+            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
+            throw new RuntimeException(e);
+        }
+    }
 
-  public void saveDictionaries (final Host host)
-  {
-    try
-      {
-        final Dao<Dictionary, Void> dictDao = getDao (Dictionary.class);
+    public void saveDictionaries(final Host host) {
+        try {
+            final Dao<Dictionary, Void> dictDao = getDao(Dictionary.class);
 
-        // Delete all old dictionaries first
-        dictDao.deleteBuilder ().where ().eq ("host_id", host);
-        getWritableDatabase ().execSQL ("VACUUM");
+            // Delete all old dictionaries first
+            dictDao.deleteBuilder().where().eq("host_id", host);
+            getWritableDatabase().execSQL("VACUUM");
 
-        /*
-         * Save new dictionaries, but rollback if there's not enough disk
-         * space. This should force the dictionaries to be refreshed on every
-         * usage when the disk is full.
-         */
-        TransactionManager.callInTransaction (connectionSource,
-          new Callable<Void> ()
-        {
-          public Void call () throws Exception
-          {
-            Dao<Host, Integer> hostDao = getDao (Host.class);
-            for (Dictionary dict : host.getDictionaries ())
-              {
-                if (dict.getDatabase () != null)
-                  dictDao.create (dict);
-              }
-            host.setLastRefresh (Calendar.getInstance ().getTime ());
-            hostDao.update (host);
-            return null;
-          }
-        });
-      }
-    catch (SQLException e)
-      {
-        Log.e ("DatabaseManager", "SQLException caught: " + e.toString ());
-        throw new RuntimeException (e);
-      }
-  }
+            /*
+             * Save new dictionaries, but rollback if there's not enough disk
+             * space. This should force the dictionaries to be refreshed on
+             * every usage when the disk is full.
+             */
+            TransactionManager.callInTransaction(connectionSource,
+                new Callable<Void>() {
+                    public Void call() throws Exception {
+                        Dao<Host, Integer> hostDao = getDao(Host.class);
+                        for (Dictionary dict : host.getDictionaries()) {
+                            if (dict.getDatabase() != null)
+                            dictDao.create(dict);
+                        }
+                        host.setLastRefresh(Calendar.getInstance()
+                                                    .getTime());
+                        hostDao.update(host);
+                        return null;
+                    }
+                });
+        } catch (SQLException e) {
+            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
+            throw new RuntimeException(e);
+        }
+    }
 
-  private void loadData (Resources resources, SQLiteDatabase db,
-                         ConnectionSource cs, int oldVersion, int newVersion)
-    throws SQLException
-  {
-    Yaml yaml = new Yaml ();
-    InputStream stream = resources.openRawResource (R.raw.dicthosts);
-    for (Object data : yaml.loadAll (stream))
-      {
-        DatabaseRevision rev = (DatabaseRevision) data;
-        if (rev.getVersion () > oldVersion && rev.getVersion () <= newVersion)
-          rev.commit (db, cs);
-      }
-  }
+    private void loadData(Resources resources, SQLiteDatabase db,
+                          ConnectionSource cs, int oldVersion, int newVersion)
+          throws SQLException {
+        Yaml yaml = new Yaml();
+        InputStream stream = resources.openRawResource(R.raw.dicthosts);
+        for (Object data : yaml.loadAll(stream)) {
+            DatabaseRevision rev = (DatabaseRevision) data;
+            if (rev.getVersion() > oldVersion &&
+                rev.getVersion() <= newVersion)
+              rev.commit(db, cs);
+        }
+    }
 }

@@ -15,77 +15,62 @@ import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
 import java.util.Date;
 
-class HostCursor extends CursorWrapper
-{
-  private Cursor cursor;
+class HostCursor extends CursorWrapper {
+    private Cursor cursor;
 
-  public HostCursor(Cursor cursor)
-  {
-    super (cursor);
-    this.cursor = cursor;
-  }
+    public HostCursor(Cursor cursor) {
+        super(cursor);
+        this.cursor = cursor;
+    }
 
-  public Host getDictionaryHost ()
-  {
-    Host host = new Host(getId (), getHostName (), getPort ());
-    host.setDescription (getDescription ());
-    host.setLastRefresh (getLastRefresh ());
-    host.setReadonly (isReadonly ());
-    host.setUserDefined (isUserDefined ());
-    return host;
-  }
+    public Host getDictionaryHost() {
+        Host host = new Host(getId(), getHostName(), getPort());
+        host.setDescription(getDescription());
+        host.setLastRefresh(getLastRefresh());
+        host.setReadonly(isReadonly());
+        host.setUserDefined(isUserDefined());
+        return host;
+    }
 
-  public Integer getId ()
-  {
-    return (cursor.getInt (cursor.getColumnIndexOrThrow ("_id")));
-  }
+    public Integer getId() {
+        return (cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
+    }
 
-  public String getHostName ()
-  {
-    return (cursor.getString (cursor.getColumnIndexOrThrow ("host_name")));
-  }
+    public String getHostName() {
+        return (cursor.getString(cursor.getColumnIndexOrThrow("host_name")));
+    }
 
-  public Integer getPort ()
-  {
-    return (cursor.getInt (cursor.getColumnIndexOrThrow ("port")));
-  }
+    public Integer getPort() {
+        return (cursor.getInt(cursor.getColumnIndexOrThrow("port")));
+    }
 
-  public String getDescription ()
-  {
-    return (cursor.getString (cursor.getColumnIndexOrThrow ("description")));
-  }
+    public String getDescription() {
+        return (cursor.getString(cursor.getColumnIndexOrThrow("description")));
+    }
 
-  public boolean isReadonly ()
-  {
-    return (cursor.getInt (cursor.getColumnIndexOrThrow ("readonly")) != 0);
-  }
+    public boolean isReadonly() {
+        return (cursor.getInt(cursor.getColumnIndexOrThrow("readonly")) != 0);
+    }
 
-  public boolean isUserDefined ()
-  {
-    return (cursor.getInt (cursor.getColumnIndexOrThrow ("user_defined")) != 0);
-  }
+    public boolean isUserDefined() {
+        return (cursor.getInt(cursor.getColumnIndexOrThrow("user_defined")) != 0);
+    }
 
-  public Date getLastRefresh ()
-  {
-    return (new Date(cursor.getLong(cursor.getColumnIndexOrThrow ("last_refresh"))));
-  }
+    public Date getLastRefresh() {
+        return (new Date(
+            cursor.getLong(cursor.getColumnIndexOrThrow("last_refresh"))
+        ));
+    }
 
-  public String getString (int columnIndex)
-  {
-    if (cursor.getColumnName (columnIndex).equals ("port"))
-      {
-        if (cursor.getInt (columnIndex) == JDictClient.DEFAULT_PORT)
-          {
-            return "";
-          }
-        else
-          {
-            return ":" + cursor.getString (columnIndex);
-          }
-      }
-    else
-      {
-        return cursor.getString (columnIndex);
-      }
-  }
+    public String getString(int columnIndex) {
+        if (cursor.getColumnName(columnIndex).equals("port")) {
+            if (cursor.getInt(columnIndex) == JDictClient.DEFAULT_PORT) {
+                return "";
+            } else {
+                return ":" + cursor.getString(columnIndex);
+            }
+        } else {
+            return cursor.getString(columnIndex);
+        }
+    }
 }

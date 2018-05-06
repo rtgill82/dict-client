@@ -13,42 +13,38 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @SuppressWarnings("unused")
 @DatabaseTable(tableName = "dictionaries")
-class Dictionary
-{
-  @DatabaseField(canBeNull = false, foreign = true)
-  private Host host;
-  @DatabaseField(canBeNull = false)
-  private String database;
-  @DatabaseField(canBeNull = false)
-  private String description;
+class Dictionary {
+    @DatabaseField(canBeNull = false, foreign = true)
+    private Host host;
+    @DatabaseField(canBeNull = false)
+    private String database;
+    @DatabaseField(canBeNull = false)
+    private String description;
 
-  public static final Dictionary ALL_DICTIONARIES = new Dictionary ();
+    public static final Dictionary ALL_DICTIONARIES = new Dictionary();
 
-  public Dictionary ()
-  {
-    description = "All Dictionaries";
-  }
+    public Dictionary() {
+        description = "All Dictionaries";
+    }
 
-  public Dictionary (Host host,
-                     org.lonestar.sdf.locke.libs.dict.Dictionary dictionary)
-  {
-    this.host = host;
-    this.database = dictionary.getDatabase ();
-    this.description = dictionary.getDescription ();
-  }
+    public Dictionary(
+        Host host,
+        org.lonestar.sdf.locke.libs.dict.Dictionary dictionary
+    ) {
+        this.host = host;
+        this.database = dictionary.getDatabase();
+        this.description = dictionary.getDescription();
+    }
 
-  public Host getHost ()
-  {
-      return host;
-  }
+    public Host getHost() {
+        return host;
+    }
 
-  public String getDatabase ()
-  {
-      return database;
-  }
+    public String getDatabase() {
+        return database;
+    }
 
-  public String getDescription ()
-  {
-      return description;
-  }
+    public String getDescription() {
+        return description;
+    }
 }

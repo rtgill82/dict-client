@@ -15,29 +15,24 @@ package org.lonestar.sdf.locke.apps.dictclient;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-class HistoryEntry
-{
-  private String word;
-  private CharSequence definitionText;
+class HistoryEntry {
+    private String word;
+    private CharSequence definitionText;
 
-  public HistoryEntry (String word, CharSequence definitionText)
-  {
-    this.word = word;
-    this.definitionText = definitionText;
-  }
+    public HistoryEntry(String word, CharSequence definitionText) {
+        this.word = word;
+        this.definitionText = definitionText;
+    }
 
-  public String getWord ()
-  {
-    return word;
-  }
+    public String getWord() {
+        return word;
+    }
 
-  public CharSequence getDefinitionText ()
-  {
-    return definitionText;
-  }
+    public CharSequence getDefinitionText() {
+        return definitionText;
+    }
 
-  public String toString ()
-  {
-    return String.format ("Definitions for %s", word);
-  }
+    public String toString() {
+        return String.format("Definitions for %s", word);
+    }
 }

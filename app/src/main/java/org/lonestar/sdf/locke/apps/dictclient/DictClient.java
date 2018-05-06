@@ -15,116 +15,103 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-public class DictClient extends Application
-{
-  private Activity currentActivity;
-  private Host currentHost;
-  private HostCache cache;
-  private OnSharedPreferenceChangeListener listener;
+public class DictClient extends Application {
+    private Activity currentActivity;
+    private Host currentHost;
+    private HostCache cache;
+    private OnSharedPreferenceChangeListener listener;
 
-  @Override
-  public void onCreate ()
-  {
-    super.onCreate ();
-    DatabaseManager.initialize (getApplicationContext ());
-    DonationManager.initialize (getApplicationContext ());
-    cache = new HostCache ();
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        DatabaseManager.initialize(getApplicationContext());
+        DonationManager.initialize(getApplicationContext());
+        cache = new HostCache();
 
-    currentHost = getDefaultHost ();
-    cache.add (currentHost);
+        currentHost = getDefaultHost();
+        cache.add(currentHost);
 
-    listener =
-      new SharedPreferences.OnSharedPreferenceChangeListener ()
-      {
-        public void onSharedPreferenceChanged (SharedPreferences preferences,
-                                               String key)
-        {
-          if (key == getString (R.string.pref_key_default_host))
-            {
-              int hostId = Integer.parseInt (preferences.getString (key, "1"));
-              setCurrentHostById (hostId);
-            }
+        listener =
+          new SharedPreferences.OnSharedPreferenceChangeListener() {
+              public void onSharedPreferenceChanged(
+                  SharedPreferences preferences,
+                  String key
+              ) {
+                  if (key == getString(R.string.pref_key_default_host)) {
+                      int hostId = Integer.parseInt(preferences
+                                                    .getString(key, "1"));
+                      setCurrentHostById(hostId);
+                  }
+              }
+          };
+
+        SharedPreferences prefs =
+          PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.registerOnSharedPreferenceChangeListener(listener);
+        setupActivityLifecycleCallbacks();
+    }
+
+    public Activity getCurrentActivity() {
+        return currentActivity;
+    }
+
+    public Host getDefaultHost() {
+        return DatabaseManager.getInstance().getDefaultHost(this);
+    }
+
+    public void useDefaultHost() {
+        setCurrentHost(getDefaultHost());
+    }
+
+    public Host getCurrentHost() {
+        return currentHost;
+    }
+
+    public void setCurrentHost(Host host) {
+        /* Ensure new host is not the same as the old one. */
+        if (currentHost == null || currentHost.getId() != host.getId())
+          currentHost = findCachedHost(host.getId(), host);
+    }
+
+    public void setCurrentHostById(int hostId) {
+        if (currentHost == null || currentHost.getId() != hostId)
+          currentHost = findCachedHost(hostId, null);
+    }
+
+    private Host findCachedHost(int hostId, Host defaultHost) {
+        Host host = cache.getHostById(hostId);
+        if (host == null) {
+            if (defaultHost == null)
+              defaultHost = DatabaseManager.getInstance()
+                                           .getHostById(hostId);
+            host = defaultHost;
+            cache.add(defaultHost);
         }
-      };
+        return host;
+    }
 
-    SharedPreferences prefs =
-      PreferenceManager.getDefaultSharedPreferences (this);
-    prefs.registerOnSharedPreferenceChangeListener (listener);
-    setupActivityLifecycleCallbacks ();
-  }
+    private void setupActivityLifecycleCallbacks() {
+        registerActivityLifecycleCallbacks(
+            new Application.ActivityLifecycleCallbacks() {
+                public void onActivityResumed(Activity activity) {
+                    currentActivity = activity;
+                }
 
-  public Activity getCurrentActivity ()
-  {
-    return currentActivity;
-  }
+                public void onActivityDestroyed(Activity activity) {
+                    currentActivity = null;
+                }
 
-  public Host getDefaultHost ()
-  {
-    return DatabaseManager.getInstance ().getDefaultHost (this);
-  }
+                public void onActivityCreated(Activity activity,
+                                              Bundle savedInstanceState) { }
 
-  public void useDefaultHost ()
-  {
-    setCurrentHost (getDefaultHost ());
-  }
+                public void onActivityPaused(Activity activity) { }
 
-  public Host getCurrentHost ()
-  {
-    return currentHost;
-  }
+                public void onActivitySaveInstanceState(Activity activity,
+                                                        Bundle outState) { }
 
-  public void setCurrentHost (Host host)
-  {
-    /* Ensure new host is not the same as the old one. */
-    if (currentHost == null || currentHost.getId () != host.getId ())
-      currentHost = findCachedHost (host.getId (), host);
-  }
+                public void onActivityStarted(Activity activity) { }
 
-  public void setCurrentHostById (int hostId)
-  {
-    if (currentHost == null || currentHost.getId () != hostId)
-      currentHost = findCachedHost (hostId, null);
-  }
-
-  private Host findCachedHost (int hostId, Host defaultHost)
-  {
-    Host host = cache.getHostById (hostId);
-    if (host == null)
-      {
-        if (defaultHost == null)
-          defaultHost = DatabaseManager.getInstance ().getHostById (hostId);
-        host = defaultHost;
-        cache.add (defaultHost);
-      }
-    return host;
-  }
-
-  private void setupActivityLifecycleCallbacks ()
-  {
-    registerActivityLifecycleCallbacks (
-      new Application.ActivityLifecycleCallbacks ()
-      {
-        public void onActivityResumed (Activity activity)
-        {
-          currentActivity = activity;
-        }
-
-        public void onActivityDestroyed (Activity activity)
-        {
-          currentActivity = null;
-        }
-
-        public void onActivityCreated (Activity activity,
-                                       Bundle savedInstanceState) { }
-
-        public void onActivityPaused (Activity activity) { }
-
-        public void onActivitySaveInstanceState (Activity activity,
-                                                 Bundle outState) { }
-
-        public void onActivityStarted (Activity activity) { }
-
-        public void onActivityStopped (Activity activity) { }
-      });
-  }
+                public void onActivityStopped(Activity activity) { }
+            });
+    }
 }
