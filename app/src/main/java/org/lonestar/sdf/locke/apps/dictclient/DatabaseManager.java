@@ -20,6 +20,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.misc.TransactionManager;
+import com.j256.ormlite.stmt.PreparedDelete;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
@@ -199,7 +200,9 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
             final Dao<Dictionary, Void> dictDao = getDao(Dictionary.class);
 
             // Delete all old dictionaries first
-            dictDao.deleteBuilder().where().eq("host_id", host);
+            PreparedDelete<Dictionary> statement = (PreparedDelete<Dictionary>)
+              dictDao.deleteBuilder().where().eq("host_id", host).prepare();
+            dictDao.delete(statement);
             getWritableDatabase().execSQL("VACUUM");
 
             /*
