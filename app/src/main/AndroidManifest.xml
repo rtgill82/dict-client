@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="org.lonestar.sdf.locke.apps.dictclient"
-          android:versionCode="26"
+          android:versionCode="28"
           android:versionName="0.90.1">
 
     <uses-sdk
@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application android:name=".DictClient"
                  android:allowBackup="true"
@@ -29,5 +30,6 @@
         <activity android:name=".SettingsActivity"
                   android:label="@string/title_activity_settings" />
         <activity android:name=".HelpActivity" />
+        <service android:name=".DonateNotificationService" />
     </application>
 </manifest>

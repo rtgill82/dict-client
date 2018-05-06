@@ -67,6 +67,18 @@ public class MainActivity extends Activity
   }
 
   @Override
+  protected void onStart ()
+  {
+    super.onStart ();
+    Intent intent = getIntent ();
+
+    if (intent.getBooleanExtra (DonateNotificationService.DONATE_ACTION, false))
+      {
+        DonateDialog.show (this);
+      }
+  }
+
+  @Override
   public void onPause ()
   {
     super.onPause ();
@@ -89,8 +101,8 @@ public class MainActivity extends Activity
         List dictionaries = host.getDictionaries ();
         int cacheTime = Integer.parseInt (
             PreferenceManager.getDefaultSharedPreferences (this)
-            .getString (getString (R.string.pref_key_cache_time),
-                        getString (R.string.pref_value_cache_time))
+              .getString (getString (R.string.pref_key_cache_time),
+                          getString (R.string.pref_value_cache_time))
         );
 
         Calendar expireTime = Calendar.getInstance ();
