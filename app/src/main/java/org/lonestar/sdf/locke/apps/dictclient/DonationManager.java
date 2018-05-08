@@ -23,7 +23,7 @@ import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.ConsumeResponseListener;
 import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.Purchase.PurchasesResult;
+import com.android.billingclient.api.PurchaseHistoryResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 
 import java.util.List;
@@ -31,8 +31,7 @@ import java.util.List;
 import static android.app.PendingIntent.FLAG_ONE_SHOT;
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.android.billingclient.api.BillingClient.BillingResponse.*;
-import static com.android.billingclient.api.BillingClient.Builder;
-import static com.android.billingclient.api.BillingClient.SkuType;
+import static com.android.billingclient.api.BillingClient.SkuType.INAPP;
 import static org.lonestar.sdf.locke.apps.dictclient.DonateNotificationService.DONATE_ACTION;
 
 class DonationManager implements PurchasesUpdatedListener {
@@ -40,15 +39,12 @@ class DonationManager implements PurchasesUpdatedListener {
     private static DonationManager instance;
 
     private Context context;
+    private SharedPreferences preferences;
+    private BillingClient billingClient;
     private boolean donated;
     private boolean serviceConnected;
     private int retries;
-    private List<Purchase> purchases;
-    private SharedPreferences preferences;
 
-    private BillingClient billingClient;
-
-    private String sku;
     private DonationFlowCallbacks donationFlowCallbacks;
 
     static public DonationManager initialize(Context context) {
@@ -67,7 +63,6 @@ class DonationManager implements PurchasesUpdatedListener {
 
     private DonationManager(Context context) {
         this.context = context;
-        this.billingClient = new Builder(context).setListener(this).build();
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         donated = preferences.getBoolean(
             context.getString(R.string.pref_key_donated),
@@ -76,65 +71,52 @@ class DonationManager implements PurchasesUpdatedListener {
         checkDonations(context);
     }
 
-    public void makeDonation(String sku, DonationFlowCallbacks listener) {
-        this.sku = sku;
+    public void makeDonation(final String sku, DonationFlowCallbacks listener) {
         this.donationFlowCallbacks = listener;
+        this.billingClient = buildBillingClient();
 
-        if (purchases != null)
-          consumeAndPurchase();
-        else {
-            queryPurchases(
-                new OnQueryPurchasesCallback() {
-                    @Override
-                    public void callback(List<Purchase> purchases) {
-                        DonationManager.this.purchases = purchases;
-                        consumeAndPurchase();
-                    }
+        queryPurchases(
+            new PurchaseHistoryResponseListener() {
+                @Override
+                public void onPurchaseHistoryResponse(
+                    @BillingResponse int code,
+                    List<Purchase> purchases)
+                {
+                    if (code == OK)
+                      consumeAndPurchase(sku, purchases);
+                    else
+                      handleBillingFlowResponse(code);
                 }
-            );
-        }
+            }
+        );
     }
 
-    private void queryPurchases(final OnQueryPurchasesCallback callback) {
+    private void queryPurchases(final PurchaseHistoryResponseListener l) {
         executeServiceRequest(
             new Runnable() {
                 public void run() {
-                    PurchasesResult result =
-                      billingClient.queryPurchases(SkuType.INAPP);
-                    if (result.getResponseCode() == OK)
-                      callback.callback(result.getPurchasesList());
+                    billingClient.queryPurchaseHistoryAsync(INAPP, l);
                 }
             }
         );
     }
 
-    private void refreshPurchases() {
-        queryPurchases(
-            new OnQueryPurchasesCallback() {
-                @Override
-                public void callback(List<Purchase> purchases) {
-                    DonationManager.this.purchases = purchases;
-                }
-            }
-        );
-    }
-
-    private void consumeAndPurchase() {
-        final Purchase purchase = findPurchaseBySku(sku);
+    private void consumeAndPurchase(String sku, List<Purchase> purchases) {
+        Purchase purchase = findPurchaseBySku(sku, purchases);
         if (purchase == null)
-          makePurchase();
+          makePurchase(sku);
         else
-          consumePurchase(true);
+          consumePurchase(purchase, true);
     }
 
-    private void makePurchase() {
+    private void makePurchase(final String sku) {
         executeServiceRequest(
             new Runnable() {
                 public void run() {
                     BillingFlowParams.Builder builder =
-                        new BillingFlowParams.Builder()
+                        BillingFlowParams.newBuilder()
                             .setSku(sku)
-                            .setType(SkuType.INAPP);
+                            .setType(INAPP);
 
                     int code = billingClient.launchBillingFlow(
                         donationFlowCallbacks.getActivity(),
@@ -146,8 +128,8 @@ class DonationManager implements PurchasesUpdatedListener {
         );
     }
 
-    private void consumePurchase(final boolean repurchase) {
-        final Purchase purchase = findPurchaseBySku(sku);
+    private void consumePurchase(final Purchase purchase,
+                                 final boolean repurchase) {
         executeServiceRequest(
             new Runnable() {
                 public void run() {
@@ -155,24 +137,25 @@ class DonationManager implements PurchasesUpdatedListener {
                         new ConsumeResponseListener() {
                             @Override
                             public void onConsumeResponse(
-                                String token,
-                                @BillingResponse int code) {
+                                @BillingResponse int code,
+                                String token
+                            ) {
+                                Log.d(TAG, "consume response = " + code);
                                 if ((code == OK || code == ITEM_NOT_OWNED)
-                                    && repurchase == true)
-                                  makePurchase();
+                                    && repurchase)
+                                  makePurchase(purchase.getSku());
                             }
                         });
                 }
             });
     }
 
-    private Purchase findPurchaseBySku(String sku) {
+    private Purchase findPurchaseBySku(String sku, List<Purchase> purchases) {
         if (purchases == null)
           return null;
 
         Purchase rv = null;
         for (Purchase purchase : purchases) {
-            Log.d(TAG, "purchase = " + purchase.toString());
             if (purchase.getSku().equals(sku)) {
                 rv = purchase;
                 break;
@@ -181,11 +164,8 @@ class DonationManager implements PurchasesUpdatedListener {
         return rv;
     }
 
-    private boolean getPurchaseStatus() {
-        return (purchases != null && purchases.size() > 0);
-    }
-
     private void applyDonation(Context context, boolean donated) {
+        this.donated = donated;
         preferences.edit()
           .putBoolean(context.getString(R.string.pref_key_donated), donated)
           .apply();
@@ -193,17 +173,23 @@ class DonationManager implements PurchasesUpdatedListener {
 
     private void checkDonations(final Context context) {
         if (!donated) {
+            billingClient = buildBillingClient();
             queryPurchases(
-                new OnQueryPurchasesCallback() {
+                new PurchaseHistoryResponseListener() {
                     @Override
-                    public void callback(List<Purchase> purchases) {
-                        DonationManager.this.purchases = purchases;
-                        if ((donated = getPurchaseStatus()))
-                          applyDonation(context, true);
-                        endConnection();
-
-                        if (!donated)
-                          startDonationNotificationService(context);
+                    public void onPurchaseHistoryResponse(
+                        @BillingResponse int code,
+                        List<Purchase> purchases
+                    ) {
+                        if (code != OK) {
+                            handleBillingFlowResponse(code);
+                        } else {
+                            if (purchases != null && purchases.size() > 0)
+                              applyDonation(context, true);
+                            if (!donated)
+                              startDonationNotificationService(context);
+                            endConnection();
+                        }
                     }
                 });
         }
@@ -216,8 +202,7 @@ class DonationManager implements PurchasesUpdatedListener {
             break;
 
           case ITEM_ALREADY_OWNED:
-            Log.d(TAG, "Item already owned.");
-            //consumeAndPurchase();
+            Log.w(TAG, "Item already owned.");
             break;
 
           case ITEM_UNAVAILABLE:
@@ -251,7 +236,10 @@ class DonationManager implements PurchasesUpdatedListener {
             Log.i(TAG, "launchBillingFlow() Result: " + code);
         }
 
-        donationFlowCallbacks = null;
+        if (code !=  ITEM_ALREADY_OWNED) {
+            endConnection();
+            donationFlowCallbacks = null;
+        }
     }
 
     private void startServiceConnection(final Runnable runnable) {
@@ -305,6 +293,7 @@ class DonationManager implements PurchasesUpdatedListener {
     }
 
     private void endConnection() {
+        serviceConnected = false;
         billingClient.endConnection();
     }
 
@@ -313,11 +302,16 @@ class DonationManager implements PurchasesUpdatedListener {
         if (code == OK) {
             Log.i(TAG, "Purchases updated");
             applyDonation(context, true);
-            refreshPurchases();
             if (donationFlowCallbacks != null)
               donationFlowCallbacks.onPurchasesUpdated();
         }
         handleBillingFlowResponse(code);
+    }
+
+    private BillingClient buildBillingClient() {
+        return BillingClient.newBuilder(context)
+                            .setListener(this)
+                            .build();
     }
 
     private PendingIntent createDonationIntent(
@@ -361,9 +355,5 @@ class DonationManager implements PurchasesUpdatedListener {
         NotificationManager notificationManager = (NotificationManager)
           context.getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, builder.build());
-    }
-
-    private abstract class OnQueryPurchasesCallback {
-        public abstract void callback(List<Purchase> purchases);
     }
 }

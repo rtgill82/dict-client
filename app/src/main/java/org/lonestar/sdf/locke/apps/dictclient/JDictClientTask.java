@@ -140,7 +140,8 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
 
     @Override
     protected void onCancelled(JDictClientResult result) {
-        progressDialog.dismiss();
+        if (progressDialog != null)
+          progressDialog.dismiss();
     }
 
     private List<Definition> getDefinitions(String word,
