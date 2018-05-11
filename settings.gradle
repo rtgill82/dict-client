@@ -1,1 +1,3 @@
 include ':app', ':jdict-client'
+project(':jdict-client').name = 'jdict-client'
+project(':jdict-client').projectDir = file('jdict-client')
