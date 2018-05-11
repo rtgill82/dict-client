@@ -100,7 +100,9 @@ public class DonateNotificationService extends Service {
     }
 
     private void showDonateDialog() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        getApplicationContext().sendBroadcast(intent);
+        intent = new Intent(this, MainActivity.class);
         intent.putExtra(DONATE_ACTION, true);
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
