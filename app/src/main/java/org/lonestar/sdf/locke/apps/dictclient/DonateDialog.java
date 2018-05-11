@@ -17,14 +17,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import static org.lonestar.sdf.locke.apps.dictclient.DonationManager.DonationFlowListener;
+
 public class DonateDialog extends DialogFragment {
     final private static String DONATION1 = "donation1";
     final private static String DONATION2 = "donation2";
     final private static String DONATION3 = "donation3";
 
     private static DonateDialog instance;
-    private DonationFlowCallbacksImpl callbacks =
-      new DonationFlowCallbacksImpl();
+    private DonationFlowListenerImpl callbacks =
+      new DonationFlowListenerImpl();
 
     public static void show(Activity activity) {
         // Only show one donate dialog at a time.
@@ -82,7 +84,7 @@ public class DonateDialog extends DialogFragment {
           });
     }
 
-    private class DonationFlowCallbacksImpl implements DonationFlowCallbacks {
+    private class DonationFlowListenerImpl implements DonationFlowListener {
         @Override
         public Activity getActivity() {
             return DonateDialog.this.getActivity();

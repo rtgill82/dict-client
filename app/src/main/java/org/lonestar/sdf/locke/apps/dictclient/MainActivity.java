@@ -33,6 +33,8 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.lonestar.sdf.locke.apps.dictclient.DonateNotificationService.DONATE_ACTION;
+
 public class MainActivity extends Activity {
     private static final String SELECTED_DICTIONARY = "SELECTED_DICTIONARY";
 
@@ -69,9 +71,10 @@ public class MainActivity extends Activity {
         super.onStart();
         Intent intent = getIntent();
 
-        if (intent.getBooleanExtra(DonateNotificationService.DONATE_ACTION,
-                                   false)) {
+        if (intent.getBooleanExtra(DONATE_ACTION, false)) {
             DonateDialog.show(this);
+        } else {
+            DonateNotificationService.start(getApplicationContext());
         }
     }
 

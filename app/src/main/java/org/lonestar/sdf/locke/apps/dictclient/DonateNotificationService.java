@@ -8,33 +8,85 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
-import android.app.Activity;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 
+import static android.app.PendingIntent.FLAG_ONE_SHOT;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static org.lonestar.sdf.locke.apps.dictclient.DonationManager.OnHasDonatedListener;
 
 public class DonateNotificationService extends Service {
     public static final String DONATE_ACTION = "DONATE_ACTION";
 
+    public static void start(final Context context) {
+        DonationManager.getInstance().checkDonations(context,
+            new OnHasDonatedListener() {
+                public void hasDonated(boolean donated) {
+                    if (!donated)
+                      startService(context);
+                }
+            });
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         boolean donate = intent.getBooleanExtra(DONATE_ACTION, false);
-        Activity activity =
-          ((DictClient) getApplication()).getCurrentActivity();
 
         closeNotification();
         if (donate)
-          showDonateDialog(activity);
+          showDonateDialog();
         else
           setDonatedPreference();
 
         stopSelf();
         return START_STICKY;
+    }
+
+    private static void startService(Context context) {
+        PendingIntent donateIntent = buildIntent(context, true);
+        PendingIntent passIntent = buildIntent(context, false);
+
+        NotificationCompat.BigTextStyle bigTextStyle =
+            new NotificationCompat.BigTextStyle();
+        bigTextStyle.setBigContentTitle(
+            context.getString(R.string.dialog_donate_title)
+        );
+        bigTextStyle.bigText(
+            context.getString(R.string.dialog_donate_text)
+        );
+
+        NotificationCompat.Builder builder =
+            new NotificationCompat.Builder(context)
+                .setStyle(bigTextStyle)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .addAction(0,
+                    context.getString(R.string.notification_donate_donate),
+                    donateIntent
+                )
+                .addAction(0,
+                    context.getString(R.string.notification_donate_no_thanks),
+                    passIntent
+                );
+
+        NotificationManager notificationManager = (NotificationManager)
+            context.getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, builder.build());
+    }
+
+    private static PendingIntent buildIntent(Context context, boolean donate) {
+        Intent intent = new Intent(context, DonateNotificationService.class);
+        intent.putExtra(DONATE_ACTION, donate);
+        PendingIntent pendingIntent = PendingIntent.getService(
+            context, (int) System.currentTimeMillis(), intent, FLAG_ONE_SHOT
+        );
+        return pendingIntent;
     }
 
     public IBinder onBind(Intent intent) {
@@ -47,20 +99,18 @@ public class DonateNotificationService extends Service {
         notificationManager.cancel(0);
     }
 
-    private void showDonateDialog(Activity activity) {
-        if (activity != null)
-          DonateDialog.show(activity);
-        else {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra(DONATE_ACTION, true);
-            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
+    private void showDonateDialog() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(DONATE_ACTION, true);
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void setDonatedPreference() {
         SharedPreferences.Editor editor =
-          PreferenceManager.getDefaultSharedPreferences(this).edit();
+          PreferenceManager
+              .getDefaultSharedPreferences(getApplicationContext())
+              .edit();
         editor.putBoolean(getString(R.string.pref_key_donated), true);
         editor.apply();
     }

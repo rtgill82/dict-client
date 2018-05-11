@@ -59,7 +59,7 @@
     <string name="notification_donate_no_thanks">No Thanks</string>
 
     <!-- Donation dialog strings -->
-    <string name="dialog_donate_title">Consider Donating</string>
+    <string name="dialog_donate_title">DICT Client Donation</string>
     <string name="dialog_donate_text">If you find this application useful, please consider donating.</string>
     <string name="dialog_donate_1">$1</string>
     <string name="dialog_donate_2">$3</string>
@@ -67,7 +67,7 @@
 
     <!-- Donation response message strings -->
     <string name="dialog_title_thank_you">Thank You</string>
-    <string name="dialog_message_thank_you">"Thank you for your generosity!"</string>
+    <string name="dialog_message_thank_you">Thank you for your donation!</string>
     <string name="dialog_message_unavailable">Unable to make donation, please contact support.</string>
     <string name="dialog_message_service_disconnected">Unable to connect to Google Play.</string>
     <string name="dialog_message_service_unavailable">No network connection is available, please try donating again later.</string>
