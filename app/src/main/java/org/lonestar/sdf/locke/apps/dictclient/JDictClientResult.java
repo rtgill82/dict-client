@@ -21,14 +21,14 @@ class JDictClientResult {
     private final List<Match> matches;
     private final String dictionaryInfo;
 
-    private JDictClientResult(JDictClientRequest request, List<?> list,
-                              String dictionaryInfo) {
+    private JDictClientResult(JDictClientRequest request, List<?> list1,
+                              List<?> list2, String dictionaryInfo) {
         this.request = request;
         this.dictionaryInfo = dictionaryInfo;
 
         switch (this.request.getCommand()) {
           case DEFINE:
-            definitions = (List<Definition>) list;
+            definitions = (List<Definition>) list1;
             dictionaries = null;
             strategies = null;
             matches = null;
@@ -37,18 +37,12 @@ class JDictClientResult {
             definitions = null;
             dictionaries = null;
             strategies = null;
-            matches = (List<Match>) list;
+            matches = (List<Match>) list1;
             break;
           case DICT_LIST:
-            dictionaries = (List<Dictionary>) list;
+            dictionaries = (List<Dictionary>) list1;
             definitions = null;
-            strategies = null;
-            matches = null;
-            break;
-          case STRAT_LIST:
-            strategies = (List<Strategy>) list;
-            definitions = null;
-            dictionaries = null;
+            strategies = (List<Strategy>) list2;
             matches = null;
             break;
           default:
@@ -61,12 +55,18 @@ class JDictClientResult {
     }
 
     public JDictClientResult(JDictClientRequest request, List<?> list) {
-        this(request, list, null);
+        this(request, list, null, null);
     }
 
     public JDictClientResult(JDictClientRequest request,
                              String dictionaryInfo) {
-        this(request, null, dictionaryInfo);
+        this(request, null, null, dictionaryInfo);
+    }
+
+    public JDictClientResult(JDictClientRequest request,
+                             List<Dictionary> dictionaries,
+                             List<Strategy> strategies) {
+        this(request, dictionaries, strategies, null);
     }
 
     public JDictClientRequest getRequest() {

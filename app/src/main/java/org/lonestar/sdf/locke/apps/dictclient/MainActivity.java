@@ -95,6 +95,7 @@ public class MainActivity extends Activity {
 
         if (host != null) {
             List dictionaries = host.getDictionaries();
+            List strategies = host.getStrategies();
             int cacheTime = Integer.parseInt(
                 PreferenceManager.getDefaultSharedPreferences(this)
                   .getString(getString(R.string.pref_key_cache_time),
@@ -105,12 +106,13 @@ public class MainActivity extends Activity {
             expireTime.setTime(host.getLastRefresh());
             expireTime.add(Calendar.DATE, cacheTime);
 
-            refreshStrategies();
             if (dictionaries == null ||
-                expireTime.before(Calendar.getInstance()))
-              refreshDictionaries();
-            else
-              setDictionarySpinnerData(dictionaries);
+                expireTime.before(Calendar.getInstance())) {
+                refreshDictionaries();
+            } else {
+                setDictionarySpinnerData(dictionaries);
+                setStrategySpinnerData(strategies);
+            }
 
             setTitle(host.getHostName());
             dictSpinner.setSelection(selectedDictionary);
@@ -226,11 +228,10 @@ public class MainActivity extends Activity {
           case DICT_LIST:
             Host host = request.getHost();
             host.setDictionaries(result.getDictionaries());
+            host.setStrategies(result.getStrategies());
             DatabaseManager.getInstance().saveDictionaries(host);
+            DatabaseManager.getInstance().saveStrategies(host);
             setDictionarySpinnerData(result.getDictionaries());
-            break;
-
-          case STRAT_LIST:
             setStrategySpinnerData(result.getStrategies());
             break;
 
@@ -289,10 +290,6 @@ public class MainActivity extends Activity {
 
     private void refreshDictionaries() {
         executeTask(JDictClientRequest.DICT_LIST(host));
-    }
-
-    private void refreshStrategies() {
-        executeTask(JDictClientRequest.STRAT_LIST(host));
     }
 
     private void displayHistoryEntry(HistoryEntry entry) {

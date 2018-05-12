@@ -8,9 +8,16 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName = "strategies")
 class Strategy {
+    @DatabaseField(canBeNull = false, foreign = true)
     private Host host;
+    @DatabaseField(canBeNull = false)
     private String strategy;
+    @DatabaseField(canBeNull = false)
     private String description;
 
     public static final Strategy DEFINE = new Strategy();

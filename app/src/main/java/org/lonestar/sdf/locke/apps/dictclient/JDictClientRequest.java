@@ -13,8 +13,7 @@ class JDictClientRequest {
         DEFINE,
         MATCH,
         DICT_INFO,
-        DICT_LIST,
-        STRAT_LIST
+        DICT_LIST
     }
 
     private final Host host;
@@ -71,18 +70,6 @@ class JDictClientRequest {
                                                Dictionary dictionary) {
         return new JDictClientRequest(host, JDictClientCommand.DICT_INFO,
                                       dictionary, null);
-    }
-
-    public static JDictClientRequest STRAT_LIST(Host host) {
-        JDictClientRequest request =
-          new JDictClientRequest(host, JDictClientCommand.STRAT_LIST,
-                                 null, null, null);
-        request.displayWaitMessage(false);
-        return request;
-    }
-
-    public void displayWaitMessage(boolean value) {
-        this.displayWaitMessage = value;
     }
 
     public boolean displayWaitMessage() {

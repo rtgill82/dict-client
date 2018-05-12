@@ -36,7 +36,8 @@ class Host {
     @DatabaseField(defaultValue = "false")
     private boolean hidden;
 
-    private List<Dictionary> dictionaries = null;
+    private List<Dictionary> dictionaries;
+    private List<Strategy> strategies;
 
     public Host() {
         this(null, null, JDictClient.DEFAULT_PORT);
@@ -128,6 +129,16 @@ class Host {
 
     public void setDictionaries(List<Dictionary> list) {
         dictionaries = list;
+    }
+
+    public List<Strategy> getStrategies() {
+        if (strategies == null)
+            strategies = DatabaseManager.getInstance().getStrategies(this);
+        return strategies;
+    }
+
+    public void setStrategies(List<Strategy> list) {
+        strategies = list;
     }
 
     @Override

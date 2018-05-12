@@ -78,11 +78,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
               case DICT_LIST:
                 return new JDictClientResult(
                     request,
-                    getDictionaries()
-                );
-              case STRAT_LIST:
-                return new JDictClientResult(
-                    request,
+                    getDictionaries(),
                     getStrategies()
                 );
               default:

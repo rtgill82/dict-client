@@ -64,6 +64,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(cs, Host.class);
             TableUtils.createTable(cs, Dictionary.class);
+            TableUtils.createTable(cs, Strategy.class);
             loadData(resources, db, cs, 0, DATABASE_VERSION);
         } catch (SQLException e) {
             Log.e("DatabaseManager", "SQLException caught: " + e.toString());
@@ -215,8 +216,8 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
                     public Void call() throws Exception {
                         Dao<Host, Integer> hostDao = getDao(Host.class);
                         for (Dictionary dict : host.getDictionaries()) {
-                            if (dict.getDatabase() != null)
-                            dictDao.create(dict);
+                            if (dict.getHost() != null)
+                              dictDao.create(dict);
                         }
                         host.setLastRefresh(Calendar.getInstance()
                                                     .getTime());
@@ -224,6 +225,61 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
                         return null;
                     }
                 });
+        } catch (SQLException e) {
+            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Strategy> getStrategies(Host host) {
+        try {
+            ArrayList<Strategy> strategies = null;
+            Dao<Strategy, Void> dictDao =
+                    DatabaseManager.getInstance().getDao(Strategy.class);
+            List<Strategy> dbstrats = dictDao.queryForEq("host_id", host);
+
+            if (dbstrats.size() > 0) {
+                strategies = new ArrayList<Strategy>();
+                strategies.add(Strategy.DEFINE);
+                strategies.addAll(dbstrats);
+            }
+            return strategies;
+        }
+        catch (SQLException e) {
+            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void saveStrategies(final Host host) {
+        try {
+            final Dao<Strategy, Void> stratDao = getDao(Strategy.class);
+
+            // Delete all old dictionaries first
+            PreparedDelete<Strategy> statement = (PreparedDelete<Strategy>)
+                    stratDao.deleteBuilder().where().eq("host_id", host).prepare();
+            stratDao.delete(statement);
+            getWritableDatabase().execSQL("VACUUM");
+
+            /*
+             * Save new dictionaries, but rollback if there's not enough disk
+             * space. This should force the dictionaries to be refreshed on
+             * every usage when the disk is full.
+             */
+            TransactionManager.callInTransaction(connectionSource,
+                    new Callable<Void>() {
+                        public Void call() throws Exception {
+                            Dao<Host, Integer> hostDao = getDao(Host.class);
+                            for (Strategy strat : host.getStrategies()) {
+                                if (strat.getHost() != null)
+                                  stratDao.create(strat);
+                            }
+                            host.setLastRefresh(Calendar.getInstance()
+                                    .getTime());
+                            hostDao.update(host);
+                            return null;
+                        }
+                    });
         } catch (SQLException e) {
             Log.e("DatabaseManager", "SQLException caught: " + e.toString());
             throw new RuntimeException(e);
