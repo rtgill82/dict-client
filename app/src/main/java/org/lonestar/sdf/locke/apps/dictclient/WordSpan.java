@@ -10,6 +10,8 @@ package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
@@ -66,6 +68,18 @@ class WordSpan extends ClickableSpan {
         ds.setUnderlineText(true);
     }
 
+    public CharSequence toCharSequence() {
+        SpannableStringBuilder spannedString = new SpannableStringBuilder();
+        spannedString.append(word);
+        spannedString.setSpan(
+                this,
+                spannedString.length() - word.length(),
+                spannedString.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+        return spannedString;
+    }
+
     private void setSelectedDictionary(MainActivity activity, String database) {
         Spinner spinner = (Spinner) activity.findViewById(R.id.dict_spinner);
         SpinnerAdapter adapter = spinner.getAdapter();
@@ -73,6 +87,7 @@ class WordSpan extends ClickableSpan {
         int count = adapter.getCount();
         for (int i = 0; i < count; i++) {
             Dictionary dictionary = (Dictionary) adapter.getItem(i);
+            if (dictionary.getHost() == null) continue;
             if (dictionary.getDatabase().equals(database))
               spinner.setSelection(i);
         }

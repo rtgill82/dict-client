@@ -326,10 +326,12 @@ public class MainActivity extends Activity {
             while (itr.hasNext()) {
                 Match match = itr.next();
                 dictView.append(Html.fromHtml(
-                    "<b>" +
-                        match.getDictionary() +
-                        "</b>: " + match.getWord() + "<br>"
-                ));
+                        "<b>" + match.getDictionary() + "</b>: "
+                    ));
+                dictView.append(new WordSpan(
+                        match.getWord(), match.getDictionary()
+                    ).toCharSequence());
+                dictView.append(Html.fromHtml("<br>"));
             }
         }
         return dictView.getText();
