@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
@@ -30,8 +31,11 @@ import org.lonestar.sdf.locke.libs.dict.Match;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static org.lonestar.sdf.locke.apps.dictclient.DonateNotificationService.DONATE_ACTION;
 
@@ -299,6 +303,7 @@ public class MainActivity extends Activity {
 
     private CharSequence displayDefinitions(List<Definition> definitions) {
         dictView.setText("");
+        dictView.setHorizontallyScrolling(true);
         if (definitions == null)
           dictView.setText(getString(R.string.result_definitions));
         else {
@@ -319,22 +324,50 @@ public class MainActivity extends Activity {
 
     private CharSequence displayMatches(List<Match> matches) {
         dictView.setText("");
+        dictView.setHorizontallyScrolling(false);
         if (matches == null)
           dictView.setText(getString(R.string.result_matches));
         else {
-            Iterator<Match> itr = matches.iterator();
-            while (itr.hasNext()) {
-                Match match = itr.next();
+            Map<Dictionary, List<String>> map = buildMatchMap(matches);
+            for (Dictionary dictionary : map.keySet()) {
+                List<String> list = map.get(dictionary);
                 dictView.append(Html.fromHtml(
-                        "<b>" + match.getDictionary() + "</b>: "
+                        "<b>" + dictionary.getDescription() + "</b><br>"
                     ));
-                dictView.append(new WordSpan(
-                        match.getWord(), match.getDictionary()
-                    ).toCharSequence());
-                dictView.append(Html.fromHtml("<br>"));
+                int i = 0;
+                int count = list.size();
+                for (String word : list) {
+                    dictView.append(new WordSpan(
+                            word, dictionary.getDatabase()
+                        ).toCharSequence());
+                    if (i != count - 1)
+                      dictView.append(", ");
+                    i += 1;
+                }
+                dictView.append(Html.fromHtml("<br><br>"));
             }
         }
         return dictView.getText();
+    }
+
+    private Map<Dictionary, List<String>> buildMatchMap(List<Match> matches) {
+        HashMap<Dictionary, List<String>> map =
+          new HashMap<Dictionary, List<String>>();
+
+        Adapter adapter = dictSpinner.getAdapter();
+        for (int i = 0; i < adapter.getCount(); i++) {
+            Dictionary dictionary = (Dictionary) adapter.getItem(i);
+            if (dictionary.getHost() == null) continue;
+            LinkedList<String> list = new LinkedList<String>();
+            map.put(dictionary, list);
+            for (Match match : matches) {
+                if (dictionary.getDatabase().equals(match.getDictionary()))
+                  list.add(match.getWord());
+            }
+            if (list.size() == 0)
+              map.remove(dictionary);
+        }
+        return map;
     }
 
     private void displayDictionaryInfo(String dictInfo) {

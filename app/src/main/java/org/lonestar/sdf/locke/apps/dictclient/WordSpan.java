@@ -56,6 +56,7 @@ class WordSpan extends ClickableSpan {
 
             searchText.setText(word);
             searchText.selectAll();
+            setDefineStrategy(activity);
             new JDictClientTask(activity,
                                 JDictClientRequest.DEFINE(host, word))
               .execute();
@@ -90,6 +91,20 @@ class WordSpan extends ClickableSpan {
             if (dictionary.getHost() == null) continue;
             if (dictionary.getDatabase().equals(database))
               spinner.setSelection(i);
+        }
+    }
+
+    private void setDefineStrategy(MainActivity activity) {
+        Spinner spinner = (Spinner) activity.findViewById(R.id.strategy_spinner);
+        SpinnerAdapter adapter = spinner.getAdapter();
+
+        int count = adapter.getCount();
+        for (int i = 0; i < count; i++) {
+            Strategy strategy = (Strategy) adapter.getItem(i);
+            if (strategy.getHost() == null) {
+                spinner.setSelection(i);
+                break;
+            }
         }
     }
 }
