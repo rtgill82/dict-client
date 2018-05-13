@@ -32,7 +32,6 @@ import org.lonestar.sdf.locke.libs.dict.Match;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -46,25 +45,25 @@ public class MainActivity extends Activity {
     private DefinitionHistory history = DefinitionHistory.getInstance();
     private JDictClientTask runningTask;
 
-    private TextView dictView;
+    private TextView resultView;
     private EditText searchText;
-    private Spinner dictSpinner;
-    private Spinner stratSpinner;
-    private ImageButton dictInfo;
+    private Spinner dictionarySpinner;
+    private Spinner strategySpinner;
+    private ImageButton infoButton;
 
     private int selectedDictionary = -1;
-    private boolean dictInfoButtonState;
+    private boolean infoButtonState;
 
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dictView = (TextView) findViewById(R.id.dict_view);
+        resultView = (TextView) findViewById(R.id.result_view);
         searchText = setupSearchText();
-        dictSpinner = setupDictSpinner();
-        stratSpinner = setupStratSpinner();
-        dictInfo = (ImageButton) findViewById(R.id.dictinfo_button);
+        dictionarySpinner = setupDictionarySpinner();
+        strategySpinner = setupStratSpinner();
+        infoButton = (ImageButton) findViewById(R.id.dictionary_info_button);
 
         if (savedInstanceState != null)
           selectedDictionary = savedInstanceState.getInt(SELECTED_DICTIONARY);
@@ -119,7 +118,7 @@ public class MainActivity extends Activity {
             }
 
             setTitle(host.getHostName());
-            dictSpinner.setSelection(selectedDictionary);
+            dictionarySpinner.setSelection(selectedDictionary);
         }
     }
 
@@ -192,13 +191,13 @@ public class MainActivity extends Activity {
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         bundle.putInt(SELECTED_DICTIONARY,
-                      dictSpinner.getSelectedItemPosition());
+                      dictionarySpinner.getSelectedItemPosition());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        dictSpinner.setSelection(
+        dictionarySpinner.setSelection(
             savedInstanceState.getInt(SELECTED_DICTIONARY)
         );
     }
@@ -245,13 +244,13 @@ public class MainActivity extends Activity {
     }
 
     public void lookupWord(View view) {
-        Strategy strat = (Strategy) stratSpinner.getSelectedItem();
-        Dictionary dict = (Dictionary) dictSpinner.getSelectedItem();
+        Strategy strategy = (Strategy) strategySpinner.getSelectedItem();
+        Dictionary dict = (Dictionary) dictionarySpinner.getSelectedItem();
         String word = searchText.getText().toString();
         if (!(word.isEmpty())) {
             searchText.selectAll();
-            if (!strat.getStrategy().equals("define")) {
-                executeTask(JDictClientRequest.MATCH(host, strat, word));
+            if (!strategy.getStrategy().equals("define")) {
+                executeTask(JDictClientRequest.MATCH(host, strategy, word));
             } else {
                 if (dict != null)
                   executeTask(JDictClientRequest.DEFINE(host, dict, word));
@@ -262,7 +261,8 @@ public class MainActivity extends Activity {
     }
 
     public void getDictionaryInfo(View view) {
-        Dictionary dictionary = (Dictionary) dictSpinner.getSelectedItem();
+        Dictionary dictionary = (Dictionary)
+          dictionarySpinner.getSelectedItem();
         searchText.setText("");
         executeTask(JDictClientRequest.DICT_INFO(host, dictionary));
     }
@@ -279,11 +279,11 @@ public class MainActivity extends Activity {
     }
 
     public void setDictionarySpinnerData(List<Dictionary> list) {
-        dictSpinner.setAdapter(new DictionarySpinnerAdapter(this, list));
+        dictionarySpinner.setAdapter(new DictionarySpinnerAdapter(this, list));
     }
 
     public void setStrategySpinnerData(List<Strategy> list) {
-        stratSpinner.setAdapter(new StrategySpinnerAdapter(this, list));
+        strategySpinner.setAdapter(new StrategySpinnerAdapter(this, list));
     }
 
     private void executeTask(JDictClientRequest request) {
@@ -298,63 +298,60 @@ public class MainActivity extends Activity {
 
     private void displayHistoryEntry(HistoryEntry entry) {
         searchText.setText(entry.getWord());
-        dictView.setText(entry.getDefinitionText());
+        resultView.setText(entry.getDefinitionText());
     }
 
     private CharSequence displayDefinitions(List<Definition> definitions) {
-        dictView.setText("");
-        dictView.setHorizontallyScrolling(true);
+        resultView.setText("");
+        resultView.setHorizontallyScrolling(true);
         if (definitions == null)
-          dictView.setText(getString(R.string.result_definitions));
+          resultView.setText(getString(R.string.result_definitions));
         else {
-            Iterator<Definition> itr = definitions.iterator();
-            while (itr.hasNext()) {
-                Definition definition = itr.next();
-                dictView.append(Html.fromHtml(
+            for (Definition definition : definitions) {
+                resultView.append(Html.fromHtml(
                     "<b>" +
                         definition.getDictionary().getDescription() +
                         "</b><br>"
                 ));
-                dictView.append(DefinitionParser.parse(definition));
-                dictView.append("\n");
+                resultView.append(DefinitionParser.parse(definition));
+                resultView.append("\n");
             }
         }
-        return dictView.getText();
+        return resultView.getText();
     }
 
     private CharSequence displayMatches(List<Match> matches) {
-        dictView.setText("");
-        dictView.setHorizontallyScrolling(false);
+        resultView.setText("");
+        resultView.setHorizontallyScrolling(false);
         if (matches == null)
-          dictView.setText(getString(R.string.result_matches));
+          resultView.setText(getString(R.string.result_matches));
         else {
             Map<Dictionary, List<String>> map = buildMatchMap(matches);
             for (Dictionary dictionary : map.keySet()) {
                 List<String> list = map.get(dictionary);
-                dictView.append(Html.fromHtml(
+                resultView.append(Html.fromHtml(
                         "<b>" + dictionary.getDescription() + "</b><br>"
                     ));
-                int i = 0;
-                int count = list.size();
+                int i = 0; int count = list.size();
                 for (String word : list) {
-                    dictView.append(new WordSpan(
+                    resultView.append(new WordSpan(
                             word, dictionary.getDatabase()
                         ).toCharSequence());
                     if (i != count - 1)
-                      dictView.append(", ");
+                      resultView.append(", ");
                     i += 1;
                 }
-                dictView.append(Html.fromHtml("<br><br>"));
+                resultView.append(Html.fromHtml("<br><br>"));
             }
         }
-        return dictView.getText();
+        return resultView.getText();
     }
 
     private Map<Dictionary, List<String>> buildMatchMap(List<Match> matches) {
         HashMap<Dictionary, List<String>> map =
           new HashMap<Dictionary, List<String>>();
 
-        Adapter adapter = dictSpinner.getAdapter();
+        Adapter adapter = dictionarySpinner.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
             Dictionary dictionary = (Dictionary) adapter.getItem(i);
             if (dictionary.getHost() == null) continue;
@@ -370,27 +367,27 @@ public class MainActivity extends Activity {
         return map;
     }
 
-    private void displayDictionaryInfo(String dictInfo) {
-        dictView.setText("");
-        if (dictInfo == null)
-          dictView.setText(getString(R.string.result_dict_info));
+    private void displayDictionaryInfo(String dictionaryInfo) {
+        resultView.setText("");
+        if (dictionaryInfo == null)
+          resultView.setText(getString(R.string.result_dict_info));
         else
-          dictView.setText(dictInfo);
+          resultView.setText(dictionaryInfo);
     }
 
     private void disableInput() {
         searchText.setEnabled(false);
-        dictSpinner.setEnabled(false);
-        stratSpinner.setEnabled(false);
-        dictInfoButtonState = dictInfo.isEnabled();
-        dictInfo.setEnabled(false);
+        dictionarySpinner.setEnabled(false);
+        strategySpinner.setEnabled(false);
+        infoButtonState = infoButton.isEnabled();
+        infoButton.setEnabled(false);
     }
 
     private void enableInput() {
         searchText.setEnabled(true);
-        dictSpinner.setEnabled(true);
-        stratSpinner.setEnabled(true);
-        dictInfo.setEnabled(dictInfoButtonState);
+        dictionarySpinner.setEnabled(true);
+        strategySpinner.setEnabled(true);
+        infoButton.setEnabled(infoButtonState);
     }
 
     private EditText setupSearchText() {
@@ -412,39 +409,40 @@ public class MainActivity extends Activity {
         return searchText;
     }
 
-    private Spinner setupDictSpinner() {
-    Spinner dictSpinner = (Spinner) findViewById(R.id.dict_spinner);
-        dictSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+    private Spinner setupDictionarySpinner() {
+    Spinner spinner = (Spinner) findViewById(R.id.dictionary_spinner);
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View
                                        selectedItemView, int position,
                                        long id) {
-                ImageButton dictinfoButton = (ImageButton)
-                  findViewById(R.id.dictinfo_button);
+                ImageButton button = (ImageButton)
+                  findViewById(R.id.dictionary_info_button);
                 Dictionary currentDictionary = (Dictionary)
                   parent.getSelectedItem();
 
                 if (currentDictionary.getDatabase() != null)
-                  dictinfoButton.setEnabled(true);
+                  button.setEnabled(true);
                 else
-                  dictinfoButton.setEnabled(false);
+                  button.setEnabled(false);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                 ImageButton dictinfoButton = (ImageButton)
-                   findViewById(R.id.dictinfo_button);
-                 dictinfoButton.setEnabled(false);
+                 ImageButton button = (ImageButton)
+                   findViewById(R.id.dictionary_info_button);
+                 button.setEnabled(false);
             }
         });
-        return dictSpinner;
+        return spinner;
     }
 
     private Spinner setupStratSpinner() {
-        Spinner stratSpinner = (Spinner) findViewById(R.id.strategy_spinner);
+        Spinner strategySpinner = (Spinner)
+          findViewById(R.id.strategy_spinner);
         ArrayList<Strategy> list = new ArrayList<Strategy>();
         list.add(Strategy.DEFINE);
-        stratSpinner.setAdapter(new StrategySpinnerAdapter(this, list));
-        return stratSpinner;
+        strategySpinner.setAdapter(new StrategySpinnerAdapter(this, list));
+        return strategySpinner;
     }
 }

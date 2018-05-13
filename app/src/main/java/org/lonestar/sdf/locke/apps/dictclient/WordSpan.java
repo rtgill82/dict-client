@@ -82,7 +82,8 @@ class WordSpan extends ClickableSpan {
     }
 
     private void setSelectedDictionary(MainActivity activity, String database) {
-        Spinner spinner = (Spinner) activity.findViewById(R.id.dict_spinner);
+        Spinner spinner = (Spinner)
+          activity.findViewById(R.id.dictionary_spinner);
         SpinnerAdapter adapter = spinner.getAdapter();
 
         int count = adapter.getCount();
