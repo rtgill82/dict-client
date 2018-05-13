@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
         resultView = (TextView) findViewById(R.id.result_view);
         searchText = setupSearchText();
         dictionarySpinner = setupDictionarySpinner();
-        strategySpinner = setupStratSpinner();
+        strategySpinner = setupStrategySpinner();
         infoButton = (ImageButton) findViewById(R.id.dictionary_info_button);
 
         if (savedInstanceState != null)
@@ -437,7 +437,7 @@ public class MainActivity extends Activity {
         return spinner;
     }
 
-    private Spinner setupStratSpinner() {
+    private Spinner setupStrategySpinner() {
         Spinner strategySpinner = (Spinner)
           findViewById(R.id.strategy_spinner);
         ArrayList<Strategy> list = new ArrayList<Strategy>();

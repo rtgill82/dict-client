@@ -61,6 +61,7 @@
     <!-- Donation dialog strings -->
     <string name="dialog_donate_title">DICT Client Donation</string>
     <string name="dialog_donate_text">If you find this application useful, please consider donating.</string>
+    <string name="dialog_donate_disclaimer">Donations are not tax deductible.</string>
     <string name="dialog_donate_1">$1</string>
     <string name="dialog_donate_2">$3</string>
     <string name="dialog_donate_3">$5</string>

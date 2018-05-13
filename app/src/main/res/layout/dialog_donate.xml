@@ -7,8 +7,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/text_padding"
-        android:text="@string/dialog_donate_text" />
+        android:text="@string/dialog_donate_text"
+        android:padding="@dimen/text_padding" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_donate_disclaimer"
+        android:gravity="center_horizontal"
+        android:textSize="12sp"
+        android:textStyle="italic" />
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"
