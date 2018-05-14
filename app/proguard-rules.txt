@@ -7,4 +7,5 @@
 -keep class org.lonestar.sdf.locke.apps.dictclient.DatabaseRevision { *; }
 -keep class org.lonestar.sdf.locke.apps.dictclient.Dictionary { *; }
 -keep class org.lonestar.sdf.locke.apps.dictclient.Host { *; }
+-keep class org.lonestar.sdf.locke.apps.dictclient.Strategy { *; }
 -keeppackagenames org.lonestar.sdf.locke.libs.dict
