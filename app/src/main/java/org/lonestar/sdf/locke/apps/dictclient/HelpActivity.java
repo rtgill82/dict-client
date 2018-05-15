@@ -27,7 +27,7 @@ public class HelpActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
         setTitle(getString(R.string.title_help));
-        helpText = (TextView) findViewById(R.id.help_text);
+        helpText = findViewById(R.id.help_text);
         helpText.setMovementMethod(LinkMovementMethod.getInstance());
         readHelpFile();
     }

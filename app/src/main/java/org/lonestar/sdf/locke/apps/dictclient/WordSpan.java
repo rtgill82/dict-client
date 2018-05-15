@@ -47,8 +47,7 @@ class WordSpan extends ClickableSpan {
         if (activity != null) {
             DictClient app = (DictClient)
               activity.getApplication();
-            EditText searchText = (EditText)
-              activity.findViewById(R.id.search_text);
+            EditText searchText = activity.findViewById(R.id.search_text);
             Host host = app.getCurrentHost();
 
             if (database != null)
@@ -82,8 +81,7 @@ class WordSpan extends ClickableSpan {
     }
 
     private void setSelectedDictionary(MainActivity activity, String database) {
-        Spinner spinner = (Spinner)
-          activity.findViewById(R.id.dictionary_spinner);
+        Spinner spinner = activity.findViewById(R.id.dictionary_spinner);
         SpinnerAdapter adapter = spinner.getAdapter();
 
         int count = adapter.getCount();
@@ -96,7 +94,7 @@ class WordSpan extends ClickableSpan {
     }
 
     private void setDefineStrategy(MainActivity activity) {
-        Spinner spinner = (Spinner) activity.findViewById(R.id.strategy_spinner);
+        Spinner spinner = activity.findViewById(R.id.strategy_spinner);
         SpinnerAdapter adapter = spinner.getAdapter();
 
         int count = adapter.getCount();

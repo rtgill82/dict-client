@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 class DatabaseManager extends OrmLiteSqliteOpenHelper {
-    final private static String DATABASE_NAME    = "dictclient.db";
+    final private static String DATABASE_NAME    = "dict-client.db";
     final private static int    DATABASE_VERSION = 1;
 
     private static DatabaseManager instance = null;

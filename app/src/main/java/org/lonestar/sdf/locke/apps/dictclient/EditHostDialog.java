@@ -49,11 +49,10 @@ public class EditHostDialog extends DialogFragment {
         RelativeLayout layout = (RelativeLayout)
           inflater.inflate(R.layout.dialog_edit_dictionary_host, null);
 
-        editHostName = (EditText) layout.findViewById(R.id.edit_host_name);
-        editPort = (EditText) layout.findViewById(R.id.edit_port);
+        editHostName = layout.findViewById(R.id.edit_host_name);
+        editPort = layout.findViewById(R.id.edit_port);
         editPort.setText(Integer.toString(JDictClient.DEFAULT_PORT));
-        editDescription = (EditText)
-          layout.findViewById(R.id.edit_description);
+        editDescription = layout.findViewById(R.id.edit_description);
 
         if (host != null) {
             editHostName.setText(host.getHostName());

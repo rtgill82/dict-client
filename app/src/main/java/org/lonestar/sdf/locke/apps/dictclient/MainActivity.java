@@ -59,11 +59,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        resultView = (TextView) findViewById(R.id.result_view);
+        resultView = findViewById(R.id.result_view);
         searchText = setupSearchText();
         dictionarySpinner = setupDictionarySpinner();
         strategySpinner = setupStrategySpinner();
-        infoButton = (ImageButton) findViewById(R.id.dictionary_info_button);
+        infoButton = findViewById(R.id.dictionary_info_button);
 
         if (savedInstanceState != null)
           selectedDictionary = savedInstanceState.getInt(SELECTED_DICTIONARY);
@@ -102,7 +102,7 @@ public class MainActivity extends Activity {
             int cacheTime = Integer.parseInt(
                 PreferenceManager.getDefaultSharedPreferences(this)
                   .getString(getString(R.string.pref_key_cache_time),
-                   getString(R.string.pref_value_cache_time))
+                             getString(R.string.pref_value_cache_time))
             );
 
             Calendar expireTime = Calendar.getInstance();
@@ -348,14 +348,12 @@ public class MainActivity extends Activity {
     }
 
     private Map<Dictionary, List<String>> buildMatchMap(List<Match> matches) {
-        HashMap<Dictionary, List<String>> map =
-          new HashMap<Dictionary, List<String>>();
-
+        HashMap<Dictionary, List<String>> map = new HashMap<>();
         Adapter adapter = dictionarySpinner.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
             Dictionary dictionary = (Dictionary) adapter.getItem(i);
             if (dictionary.getHost() == null) continue;
-            LinkedList<String> list = new LinkedList<String>();
+            LinkedList<String> list = new LinkedList<>();
             map.put(dictionary, list);
             for (Match match : matches) {
                 if (dictionary.getDatabase().equals(match.getDictionary()))
@@ -391,7 +389,7 @@ public class MainActivity extends Activity {
     }
 
     private EditText setupSearchText() {
-        EditText searchText = (EditText) findViewById(R.id.search_text);
+        EditText searchText = findViewById(R.id.search_text);
         searchText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 switch (keyCode) {
@@ -410,13 +408,13 @@ public class MainActivity extends Activity {
     }
 
     private Spinner setupDictionarySpinner() {
-    Spinner spinner = (Spinner) findViewById(R.id.dictionary_spinner);
+    Spinner spinner = findViewById(R.id.dictionary_spinner);
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View
                                        selectedItemView, int position,
                                        long id) {
-                ImageButton button = (ImageButton)
+                ImageButton button =
                   findViewById(R.id.dictionary_info_button);
                 Dictionary currentDictionary = (Dictionary)
                   parent.getSelectedItem();
@@ -429,7 +427,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                 ImageButton button = (ImageButton)
+                 ImageButton button =
                    findViewById(R.id.dictionary_info_button);
                  button.setEnabled(false);
             }
@@ -438,9 +436,8 @@ public class MainActivity extends Activity {
     }
 
     private Spinner setupStrategySpinner() {
-        Spinner strategySpinner = (Spinner)
-          findViewById(R.id.strategy_spinner);
-        ArrayList<Strategy> list = new ArrayList<Strategy>();
+        Spinner strategySpinner = findViewById(R.id.strategy_spinner);
+        ArrayList<Strategy> list = new ArrayList<>();
         list.add(Strategy.DEFINE);
         strategySpinner.setAdapter(new StrategySpinnerAdapter(this, list));
         return strategySpinner;
