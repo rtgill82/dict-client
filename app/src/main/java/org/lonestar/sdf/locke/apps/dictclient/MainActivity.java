@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.text.SpannableStringBuilder;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -302,47 +303,51 @@ public class MainActivity extends Activity {
     }
 
     private CharSequence displayDefinitions(List<Definition> definitions) {
-        resultView.setText("");
         resultView.setHorizontallyScrolling(true);
         if (definitions == null)
           resultView.setText(getString(R.string.result_definitions));
         else {
+            SpannableStringBuilder stringBuilder =
+              new SpannableStringBuilder();
             for (Definition definition : definitions) {
-                resultView.append(Html.fromHtml(
+                stringBuilder.append(Html.fromHtml(
                     "<b>" +
                         definition.getDictionary().getDescription() +
                         "</b><br>"
                 ));
-                resultView.append(DefinitionParser.parse(definition));
-                resultView.append("\n");
+                stringBuilder.append(DefinitionParser.parse(definition));
+                stringBuilder.append("\n");
             }
+            resultView.setText(stringBuilder);
         }
         return resultView.getText();
     }
 
     private CharSequence displayMatches(List<Match> matches) {
-        resultView.setText("");
         resultView.setHorizontallyScrolling(false);
         if (matches == null)
           resultView.setText(getString(R.string.result_matches));
         else {
             Map<Dictionary, List<String>> map = buildMatchMap(matches);
+            SpannableStringBuilder stringBuilder =
+              new SpannableStringBuilder();
             for (Dictionary dictionary : map.keySet()) {
                 List<String> list = map.get(dictionary);
-                resultView.append(Html.fromHtml(
+                stringBuilder.append(Html.fromHtml(
                         "<b>" + dictionary.getDescription() + "</b><br>"
                     ));
                 int i = 0; int count = list.size();
                 for (String word : list) {
-                    resultView.append(new WordSpan(
+                    stringBuilder.append(new WordSpan(
                             word, dictionary.getDatabase()
                         ).toCharSequence());
                     if (i != count - 1)
-                      resultView.append(", ");
+                      stringBuilder.append(", ");
                     i += 1;
                 }
-                resultView.append(Html.fromHtml("<br><br>"));
+                stringBuilder.append(Html.fromHtml("<br><br>"));
             }
+            resultView.setText(stringBuilder);
         }
         return resultView.getText();
     }
