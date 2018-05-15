@@ -8,24 +8,30 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
+import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 import static android.app.PendingIntent.FLAG_ONE_SHOT;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static org.lonestar.sdf.locke.apps.dictclient.DictClient.CHANNEL;
 import static org.lonestar.sdf.locke.apps.dictclient.DonationManager.OnHasDonatedListener;
 
 public class DonateNotificationService extends Service {
     public static final String DONATE_ACTION = "DONATE_ACTION";
 
     public static void start(final Context context) {
+        startService(context);
         DonationManager.getInstance().checkDonations(context,
             new OnHasDonatedListener() {
                 public void hasDonated(boolean donated) {
@@ -62,10 +68,22 @@ public class DonateNotificationService extends Service {
             context.getString(R.string.dialog_donate_text)
         );
 
+        NotificationManager notificationManager = (NotificationManager)
+          context.getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                CHANNEL,
+                context.getString(R.string.app_name),
+                IMPORTANCE_DEFAULT
+              );
+            notificationManager.createNotificationChannel(channel);
+        }
+
         NotificationCompat.Builder builder =
-            new NotificationCompat.Builder(context)
+            new NotificationCompat.Builder(context, CHANNEL)
                 .setStyle(bigTextStyle)
                 .setSmallIcon(R.drawable.ic_launcher)
+                .setColor(Color.CYAN)
                 .addAction(0,
                     context.getString(R.string.notification_donate_donate),
                     donateIntent
@@ -75,8 +93,6 @@ public class DonateNotificationService extends Service {
                     passIntent
                 );
 
-        NotificationManager notificationManager = (NotificationManager)
-            context.getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, builder.build());
     }
 

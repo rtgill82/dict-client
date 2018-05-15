@@ -14,6 +14,8 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
 public class DictClient extends Application {
+    public static final String CHANNEL = "dict-client";
+
     private Host currentHost;
     private HostCache cache;
     private OnSharedPreferenceChangeListener listener;

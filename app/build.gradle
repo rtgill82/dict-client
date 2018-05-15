@@ -9,12 +9,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 17
+    compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "org.lonestar.sdf.locke.apps.dictclient"
         minSdkVersion 14
-        targetSdkVersion 17
+        targetSdkVersion 27
     }
     buildTypes {
         release {
@@ -28,7 +28,7 @@ android {
 dependencies {
     implementation project(':jdict-client')
     implementation 'com.android.billingclient:billing:1.0'
-    implementation 'com.android.support:support-v4:25.0.+'
+    implementation 'com.android.support:support-v4:27.+'
     implementation 'com.github.bmoliveira:snake-yaml:v1.18-android'
     implementation 'com.j256.ormlite:ormlite-android:5.0'
     implementation 'com.j256.ormlite:ormlite-core:5.0'
