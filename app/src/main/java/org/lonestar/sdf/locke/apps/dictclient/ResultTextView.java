@@ -99,7 +99,7 @@ public class ResultTextView extends TextView {
                 @Override
                 public void onScaleEnd(ScaleGestureDetector detector) {
                     float newSize =
-                    getTextSize() * detector.getScaleFactor();
+                      getTextSize() * detector.getScaleFactor();
                     if (newSize < MIN_TEXT_SIZE)
                       newSize = MIN_TEXT_SIZE;
                     else if (newSize > MAX_TEXT_SIZE)
