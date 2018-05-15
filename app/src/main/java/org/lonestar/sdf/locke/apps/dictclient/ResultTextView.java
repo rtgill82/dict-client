@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
 
-public class DictTextView extends TextView {
+public class ResultTextView extends TextView {
     private static final float MIN_TEXT_SIZE = 8.0f;
     private static final float MAX_TEXT_SIZE = 60.0f;
 
@@ -33,7 +33,7 @@ public class DictTextView extends TextView {
     private ScaleGestureDetector scaleGesture;
     private float textSize;
 
-    public DictTextView(Context context, AttributeSet attrs) {
+    public ResultTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setHorizontallyScrolling(true);
 
