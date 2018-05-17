@@ -212,16 +212,30 @@ public class MainActivity extends Activity {
         JDictClientRequest request = result.getRequest();
         runningTask = null;
         enableInput();
+
+        CharSequence text;
+        HistoryEntry entry;
         switch (request.getCommand()) {
           case DEFINE:
-            CharSequence text = displayDefinitions(result.getDefinitions());
-            HistoryEntry entry = new HistoryEntry(request.getWord(), text);
+            text = displayDefinitions(result.getDefinitions());
+            entry = new HistoryEntry(
+                request.getWord(),
+                ((Strategy) strategySpinner.getSelectedItem()).getStrategy(),
+                text
+            );
             history.add(entry);
             invalidateOptionsMenu();
             break;
 
           case MATCH:
-            displayMatches(result.getMatches());
+            text = displayMatches(result.getMatches());
+            entry = new HistoryEntry(
+                request.getWord(),
+                ((Strategy) strategySpinner.getSelectedItem()).getStrategy(),
+                text
+            );
+            history.add(entry);
+            invalidateOptionsMenu();
             break;
 
           case DICT_INFO:
@@ -297,8 +311,20 @@ public class MainActivity extends Activity {
     }
 
     private void displayHistoryEntry(HistoryEntry entry) {
+        Adapter adapter = strategySpinner.getAdapter();
+        for (int i = 0; i < adapter.getCount(); i++) {
+          Strategy strategy = (Strategy) adapter.getItem(i);
+          if (strategy.getStrategy().equals(entry.getStrategy())) {
+            strategySpinner.setSelection(i);
+            break;
+          }
+        }
+        if (entry.getStrategy().equals("define"))
+          resultView.setWordWrap(false);
+        else
+          resultView.setWordWrap(true);
         searchText.setText(entry.getWord());
-        resultView.setText(entry.getDefinitionText());
+        resultView.setText(entry.getText());
     }
 
     private CharSequence displayDefinitions(List<Definition> definitions) {

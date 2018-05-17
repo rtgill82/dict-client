@@ -17,22 +17,24 @@ package org.lonestar.sdf.locke.apps.dictclient;
  */
 class HistoryEntry {
     private String word;
-    private CharSequence definitionText;
+    private String strategy;
+    private CharSequence text;
 
-    public HistoryEntry(String word, CharSequence definitionText) {
+    public HistoryEntry(String word, String strategy, CharSequence text) {
         this.word = word;
-        this.definitionText = definitionText;
+        this.strategy = strategy;
+        this.text = text;
     }
 
     public String getWord() {
         return word;
     }
 
-    public CharSequence getDefinitionText() {
-        return definitionText;
+    public String getStrategy() {
+        return strategy;
     }
 
-    public String toString() {
-        return String.format("Definitions for %s", word);
+    public CharSequence getText () {
+        return text;
     }
 }
