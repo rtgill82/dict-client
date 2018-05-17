@@ -53,13 +53,20 @@
         android:layout_below="@+id/search_text"
         android:onClick="getDictionaryInfo" />
 
-    <org.lonestar.sdf.locke.apps.dictclient.ResultTextView
+    <org.lonestar.sdf.locke.apps.dictclient.ResultView
         android:id="@+id/result_view"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/dictionary_info_button"
-        android:scrollbars="vertical"
-        android:freezesText="true"
-        android:padding="@dimen/text_padding" />
+        android:fillViewport="true"
+        android:scrollbars="vertical">
+
+        <org.lonestar.sdf.locke.apps.dictclient.ResultTextView
+            android:id="@+id/result_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:freezesText="true"
+            android:padding="@dimen/text_padding" />
+    </org.lonestar.sdf.locke.apps.dictclient.ResultView>
 
 </RelativeLayout>

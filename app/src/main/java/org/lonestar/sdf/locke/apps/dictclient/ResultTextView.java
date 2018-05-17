@@ -35,8 +35,6 @@ public class ResultTextView extends TextView {
 
     public ResultTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setHorizontallyScrolling(true);
-
         // Use LinkMovementMethod for scrolling to allow for both clickable
         // links and scrolling.
         setMovementMethod(LinkMovementMethod.getInstance());

@@ -172,7 +172,6 @@ class DonationManager implements PurchasesUpdatedListener {
                                 @BillingResponse int code,
                                 String token
                             ) {
-                                Log.d(TAG, "consume response = " + code);
                                 if ((code == OK || code == ITEM_NOT_OWNED)
                                     && repurchase)
                                   makePurchase(purchase.getSku());
@@ -255,7 +254,6 @@ class DonationManager implements PurchasesUpdatedListener {
             new BillingClientStateListener() {
                 @Override
                 public void onBillingSetupFinished(@BillingResponse int code) {
-                  Log.d(TAG, "onBillingSetupFinished()");
                   switch (code) {
                     case OK:
                       serviceConnected = true;

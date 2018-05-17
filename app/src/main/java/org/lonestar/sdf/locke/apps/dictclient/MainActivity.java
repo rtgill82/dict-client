@@ -25,7 +25,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.Match;
@@ -46,7 +45,7 @@ public class MainActivity extends Activity {
     private DefinitionHistory history = DefinitionHistory.getInstance();
     private JDictClientTask runningTask;
 
-    private TextView resultView;
+    private ResultView resultView;
     private EditText searchText;
     private Spinner dictionarySpinner;
     private Spinner strategySpinner;
@@ -303,7 +302,7 @@ public class MainActivity extends Activity {
     }
 
     private CharSequence displayDefinitions(List<Definition> definitions) {
-        resultView.setHorizontallyScrolling(true);
+        resultView.setWordWrap(false);
         if (definitions == null)
           resultView.setText(getString(R.string.result_definitions));
         else {
@@ -324,7 +323,7 @@ public class MainActivity extends Activity {
     }
 
     private CharSequence displayMatches(List<Match> matches) {
-        resultView.setHorizontallyScrolling(false);
+        resultView.setWordWrap(true);
         if (matches == null)
           resultView.setText(getString(R.string.result_matches));
         else {
