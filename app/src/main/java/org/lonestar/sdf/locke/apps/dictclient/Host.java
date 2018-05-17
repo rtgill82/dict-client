@@ -55,6 +55,7 @@ class Host {
         this.id = id;
         this.host_name = hostName;
         this.port = port;
+        this.last_refresh = new Date();
     }
 
     public Integer getId() {
