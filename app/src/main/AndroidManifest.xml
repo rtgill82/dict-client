@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="org.lonestar.sdf.locke.apps.dictclient"
-          android:versionCode="30"
-          android:versionName="0.95.0">
+          android:versionCode="40"
+          android:versionName="0.97.0">
 
     <uses-sdk
         android:minSdkVersion="14"
