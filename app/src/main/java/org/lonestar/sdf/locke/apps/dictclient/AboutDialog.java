@@ -13,9 +13,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Html;
@@ -27,9 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class AboutDialog extends DialogFragment {
-    private Context context;
-    private String html;
-
     public static void show(Activity activity) {
         new AboutDialog().show(activity.getFragmentManager(),
                                activity.getString(R.string.title_about));
@@ -37,19 +34,18 @@ public class AboutDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        context = getActivity();
-        if (html == null) {
-            Resources resources = context.getResources();
-            InputStream stream = resources.openRawResource(R.raw.about);
+        String html;
+        Context context = getActivity();
+        Resources resources = context.getResources();
+        InputStream stream = resources.openRawResource(R.raw.about);
 
-            try {
-                byte[] buffer = new byte[stream.available()];
-                stream.read(buffer);
-                html = new String(buffer);
-                html = replaceVersion(html);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        try {
+            byte[] buffer = new byte[stream.available()];
+            stream.read(buffer);
+            html = new String(buffer);
+            html = replaceVersion(context, html);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -70,7 +66,7 @@ public class AboutDialog extends DialogFragment {
         return builder.create();
     }
 
-    private String replaceVersion(String html) {
+    private String replaceVersion(Context context, String html) {
         try {
             PackageInfo pInfo = context.getPackageManager()
               .getPackageInfo(context.getPackageName(), 0);
