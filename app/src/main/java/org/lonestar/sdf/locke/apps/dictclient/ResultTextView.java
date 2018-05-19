@@ -10,17 +10,25 @@ package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
+
+import static android.util.TypedValue.COMPLEX_UNIT_PX;
+
 public class ResultTextView extends TextView {
     private static final String SUPER_STATE = "SUPER_STATE";
-    private static final String SCROLL_POS = "SCROLL_POS";
+    private static final String TEXT_SIZE = "TEXT_SIZE";
+    private final float origTextSize = getTextSize();
+    private float textSize;
 
     public ResultTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -28,7 +36,31 @@ public class ResultTextView extends TextView {
         // links and scrolling.
         setMovementMethod(LinkMovementMethod.getInstance());
         setHighlightColor(Color.BLUE);
-        addTextChangedListener(createTextWatcher());
+    }
+
+    public void restoreTextSize() {
+        textSize = origTextSize;
+        setTextSize(COMPLEX_UNIT_PX, origTextSize);
+    }
+
+    public void scaleToFitWidth() {
+        if (getMeasuredWidth() <= 0)
+          return;
+
+        int availableWidth =
+          getMeasuredWidth() - getTotalPaddingLeft() - getTotalPaddingRight();
+
+        if (availableWidth <= 0)
+          return;
+
+        textSize = findOptimalTextSize(availableWidth);
+        setTextSize(COMPLEX_UNIT_PX, textSize);
+    }
+
+    @Override
+    public void onFinishInflate() {
+        super.onFinishInflate();
+        textSize = getTextSize();
     }
 
     @Override
@@ -52,27 +84,45 @@ public class ResultTextView extends TextView {
           restoreState(bundle);
     }
 
-    private TextWatcher createTextWatcher() {
-        return new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                scrollTo(0, 0);
+    private float findOptimalTextSize(int availableWidth) {
+        String text = getText().toString();
+        BufferedReader reader = new BufferedReader(new StringReader(text));
+        String longestLine = "";
+        int longestLineLength = 0;
+
+        try {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (longestLineLength < line.length()) {
+                    longestLine = line;
+                    longestLineLength = longestLine.length();
+                }
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) { }
-
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) { }
-        };
+        Rect rect = new Rect();
+        TextPaint paint = new TextPaint(getPaint());
+        int size = Math.round(paint.getTextSize());
+        rect.right = Integer.MAX_VALUE;
+        while (rect.right >= availableWidth) {
+            paint.getTextBounds(longestLine, 0, longestLineLength, rect);
+            if (rect.right < availableWidth) break;
+            size -= 1;
+            paint.setTextSize((float) size);
+        }
+        return (float) size;
     }
 
     private void saveState(Bundle outState) {
-        int scrollPos[] = { getScrollX(), getScrollY() };
-        outState.putIntArray(SCROLL_POS, scrollPos);
+        float textSize = getTextSize();
+        outState.putFloat(TEXT_SIZE, textSize);
     }
 
     private void restoreState(Bundle savedInstanceState) {
-        int scrollPos[] = savedInstanceState.getIntArray(SCROLL_POS);
-        scrollTo(scrollPos[0], scrollPos[1]);
+        setTextSize(COMPLEX_UNIT_PX,
+                    savedInstanceState.getFloat(TEXT_SIZE));
     }
 }
