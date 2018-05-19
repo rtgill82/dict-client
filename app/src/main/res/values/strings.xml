@@ -41,7 +41,6 @@
     <!-- Host Management Menus -->
     <string name="menu_add_host">Add Host</string>
     <string name="menu_delete_host">Delete Host</string>
-    <string name="menu_edit_host">Edit Host</string>
 
     <!-- Host management error messages -->
     <string name="message_host_readonly">The selected host is not modifiable.</string>
