@@ -32,6 +32,10 @@ class ResultView extends NestedScrollView {
 
     public void setText(CharSequence text) {
         resultTextView.setText(text);
+        resultTextView.restoreTextSize();
+        if (!wordWrap)
+          resultTextView.scaleToFitWidth();
+        scrollTo(0, 0);
     }
 
     public void setWordWrap(boolean value) {
