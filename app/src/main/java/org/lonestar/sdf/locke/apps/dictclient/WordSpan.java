@@ -40,13 +40,13 @@ class WordSpan extends ClickableSpan {
         while (context instanceof ContextWrapper) {
             if (context instanceof MainActivity) {
                 activity = (MainActivity) context;
+                break;
             }
             context = ((ContextWrapper) context).getBaseContext();
         }
 
         if (activity != null) {
-            DictClient app = (DictClient)
-              activity.getApplication();
+            DictClient app = (DictClient) activity.getApplication();
             EditText searchText = activity.findViewById(R.id.search_text);
             Host host = app.getCurrentHost();
 
@@ -63,19 +63,19 @@ class WordSpan extends ClickableSpan {
     }
 
     @Override
-    public void updateDrawState(TextPaint ds) {
-        super.updateDrawState(ds);
-        ds.setUnderlineText(true);
+    public void updateDrawState(TextPaint paint) {
+        paint.setUnderlineText(true);
+        super.updateDrawState(paint);
     }
 
     public CharSequence toCharSequence() {
         SpannableStringBuilder spannedString = new SpannableStringBuilder();
         spannedString.append(word);
         spannedString.setSpan(
-                this,
-                spannedString.length() - word.length(),
-                spannedString.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            this,
+            spannedString.length() - word.length(),
+            spannedString.length(),
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         );
         return spannedString;
     }
