@@ -40,6 +40,7 @@ import static org.lonestar.sdf.locke.apps.dictclient.DonateNotificationService.D
 
 public class MainActivity extends Activity {
     private static final String SELECTED_DICTIONARY = "SELECTED_DICTIONARY";
+    private static final String SELECTED_STRATEGY = "SELECTED_STRATEGY";
 
     private Host host;
     private DefinitionHistory history = DefinitionHistory.getInstance();
@@ -52,6 +53,7 @@ public class MainActivity extends Activity {
     private ImageButton infoButton;
 
     private int selectedDictionary = -1;
+    private int selectedStrategy = -1;
     private boolean infoButtonState;
 
     @SuppressLint("NewApi")
@@ -65,8 +67,10 @@ public class MainActivity extends Activity {
         strategySpinner = setupStrategySpinner();
         infoButton = findViewById(R.id.dictionary_info_button);
 
-        if (savedInstanceState != null)
-          selectedDictionary = savedInstanceState.getInt(SELECTED_DICTIONARY);
+        if (savedInstanceState != null) {
+            selectedDictionary = savedInstanceState.getInt(SELECTED_DICTIONARY);
+            selectedStrategy = savedInstanceState.getInt(SELECTED_STRATEGY);
+        }
     }
 
     @Override
@@ -119,6 +123,7 @@ public class MainActivity extends Activity {
 
             setTitle(host.getHostName());
             dictionarySpinner.setSelection(selectedDictionary);
+            strategySpinner.setSelection(selectedStrategy);
         }
     }
 
@@ -192,6 +197,8 @@ public class MainActivity extends Activity {
         super.onSaveInstanceState(bundle);
         bundle.putInt(SELECTED_DICTIONARY,
                       dictionarySpinner.getSelectedItemPosition());
+        bundle.putInt(SELECTED_STRATEGY,
+                      strategySpinner.getSelectedItemPosition());
     }
 
     @Override
@@ -199,6 +206,9 @@ public class MainActivity extends Activity {
         super.onRestoreInstanceState(savedInstanceState);
         dictionarySpinner.setSelection(
             savedInstanceState.getInt(SELECTED_DICTIONARY)
+        );
+        strategySpinner.setSelection(
+            savedInstanceState.getInt(SELECTED_STRATEGY)
         );
     }
 
