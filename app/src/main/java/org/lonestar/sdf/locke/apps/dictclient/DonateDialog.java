@@ -11,11 +11,16 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import static org.lonestar.sdf.locke.apps.dictclient.DonationManager.DonationFlowListener;
 
@@ -47,12 +52,12 @@ public class DonateDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =
+        LinearLayout view = (LinearLayout)
           inflater.inflate(R.layout.dialog_donate, container, false);
         setupDonationButton(view, R.id.button_donate1, DONATION1);
         setupDonationButton(view, R.id.button_donate2, DONATION2);
         setupDonationButton(view, R.id.button_donate3, DONATION3);
-        setupCancelButton(view);
+        setupPassButton(view);
         return view;
     }
 
@@ -62,9 +67,9 @@ public class DonateDialog extends DialogFragment {
         instance = null;
     }
 
-    private void setupDonationButton(View view, int button_id,
+    private void setupDonationButton(ViewGroup viewGroup, int button_id,
                                      final String sku) {
-        view.findViewById(button_id)
+        viewGroup.findViewById(button_id)
           .setOnClickListener(
               new View.OnClickListener() {
                   public void onClick(View view) {
@@ -74,14 +79,34 @@ public class DonateDialog extends DialogFragment {
           });
     }
 
-    private void setupCancelButton(View view) {
-        view.findViewById(R.id.button_cancel)
-          .setOnClickListener(
-              new View.OnClickListener() {
-                  public void onClick(View view) {
-                      dismiss();
-                  }
-          });
+    private void setupPassButton(ViewGroup viewGroup) {
+        View button = viewGroup.findViewById(R.id.button_pass);
+        if (showPassButton()) {
+            final Context context = getActivity();
+            button.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View view) {
+                        SharedPreferences.Editor editor =
+                          PreferenceManager
+                            .getDefaultSharedPreferences(context)
+                            .edit();
+                        editor.putBoolean(
+                            getString(R.string.pref_key_donated),
+                            true
+                        );
+                        editor.apply();
+                        dismiss();
+                    }
+                });
+            button.setVisibility(View.VISIBLE);
+            return;
+        }
+    }
+
+    private boolean showPassButton() {
+        return (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+               || (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP)
+               || (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1);
     }
 
     private class DonationFlowListenerImpl implements DonationFlowListener {

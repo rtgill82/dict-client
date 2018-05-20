@@ -53,11 +53,13 @@
             android:layout_weight="1"
             android:text="@string/dialog_donate_3"/>
 
-        <Button android:id="@+id/button_cancel"
+        <Button android:id="@+id/button_pass"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/button_cancel"/>
+            android:paddingRight="@dimen/default_margins"
+            android:visibility="gone"
+            android:text="@string/dialog_donate_pass"/>
     </LinearLayout>
 </LinearLayout>

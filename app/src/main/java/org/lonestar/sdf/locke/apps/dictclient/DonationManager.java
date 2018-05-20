@@ -57,6 +57,9 @@ class DonationManager implements PurchasesUpdatedListener {
 
     private DonationManager(final Context context) {
         this.context = context;
+        final String keyDonated = context.getString(R.string.pref_key_donated);
+        boolean valueDonated = context.getResources()
+                                      .getBoolean(R.bool.pref_value_donated);
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferences.registerOnSharedPreferenceChangeListener(
                 new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -64,16 +67,12 @@ class DonationManager implements PurchasesUpdatedListener {
                             SharedPreferences preferences,
                             String key
                     ) {
-                        if (key.equals(context.getString(R.string.pref_key_donated))) {
-                            donated = preferences.getBoolean(key, false);
-                        }
+                        if (key.equals(keyDonated))
+                          donated = preferences.getBoolean(key, false);
                     }
                 }
         );
-        donated = preferences.getBoolean(
-            context.getString(R.string.pref_key_donated),
-            context.getResources().getBoolean(R.bool.pref_value_donated)
-        );
+        donated = preferences.getBoolean(keyDonated, valueDonated);
     }
 
     public void makeDonation(final String sku, DonationFlowListener listener) {

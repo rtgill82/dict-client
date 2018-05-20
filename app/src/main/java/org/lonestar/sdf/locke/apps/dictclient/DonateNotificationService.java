@@ -32,7 +32,6 @@ public class DonateNotificationService extends Service {
     public static final String DONATE_SEEN = "DONATE_SEEN";
 
     public static void start(final Context context) {
-        startService(context);
         DonationManager.getInstance().checkDonations(context,
             new OnHasDonatedListener() {
                 public void hasDonated(boolean donated) {
@@ -60,15 +59,6 @@ public class DonateNotificationService extends Service {
         PendingIntent donateIntent = buildIntent(context, true);
         PendingIntent passIntent = buildIntent(context, false);
 
-        NotificationCompat.BigTextStyle bigTextStyle =
-            new NotificationCompat.BigTextStyle();
-        bigTextStyle.setBigContentTitle(
-            context.getString(R.string.dialog_donate_title)
-        );
-        bigTextStyle.bigText(
-            context.getString(R.string.dialog_donate_text)
-        );
-
         NotificationManager notificationManager = (NotificationManager)
           context.getSystemService(NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -80,19 +70,31 @@ public class DonateNotificationService extends Service {
             notificationManager.createNotificationChannel(channel);
         }
 
+        String dialogDonateTitle =
+            context.getString(R.string.dialog_donate_title);
+        String dialogDonateText =
+            context.getString(R.string.dialog_donate_text);
+        String buttonDonate =
+            context.getString(R.string.notification_donate_donate);
+        String buttonPass =
+            context.getString(R.string.notification_donate_no_thanks);
+
+        NotificationCompat.BigTextStyle bigTextStyle =
+          new NotificationCompat.BigTextStyle();
+        bigTextStyle.setBigContentTitle(dialogDonateTitle);
+        bigTextStyle.bigText(dialogDonateText);
+
         NotificationCompat.Builder builder =
-            new NotificationCompat.Builder(context, CHANNEL)
-                .setStyle(bigTextStyle)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setColor(Color.CYAN)
-                .addAction(0,
-                    context.getString(R.string.notification_donate_donate),
-                    donateIntent
-                )
-                .addAction(0,
-                    context.getString(R.string.notification_donate_no_thanks),
-                    passIntent
-                );
+          new NotificationCompat.Builder(context, CHANNEL)
+              .setStyle(bigTextStyle)
+              .setSmallIcon(R.drawable.ic_launcher)
+              .setContentTitle(dialogDonateTitle)
+              .setContentText(dialogDonateText)
+              .setColor(Color.CYAN)
+              .setContentIntent(donateIntent)
+              .setDeleteIntent(passIntent)
+              .addAction(0, buttonDonate, donateIntent)
+              .addAction(0, buttonPass, passIntent);
 
         notificationManager.notify(0, builder.build());
     }
