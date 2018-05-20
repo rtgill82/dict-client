@@ -77,7 +77,10 @@
     <!-- Settings Strings -->
     <string name="title_activity_settings">Settings</string>
     <string name="pref_header_general">General</string>
+    <string name="pref_summary_general">General Preferences</string>
+
     <string name="pref_header_manage_hosts">Manage Hosts</string>
+    <string name="pref_summary_manage_hosts">Add, Edit, and Delete Dictionary Hosts</string>
 
     <string name="pref_title_default_host">Default Host</string>
     <string name="pref_key_default_host">default_host</string>
@@ -86,10 +89,6 @@
     <string name="pref_title_cache_time">Dictionary Cache Timeout</string>
     <string name="pref_key_cache_time">cache_time</string>
     <string name="pref_value_cache_time">7</string>
-
-    <string name="pref_description_manage_hosts">
-        Add, Edit, and Delete Dictionary Hosts
-    </string>
 
     <!-- Keys for settings not visible to user -->
     <string name="pref_key_donated">donated</string>
