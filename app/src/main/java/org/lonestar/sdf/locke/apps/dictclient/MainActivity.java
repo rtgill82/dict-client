@@ -54,6 +54,7 @@ public class MainActivity extends Activity {
 
     private int selectedDictionary = -1;
     private int selectedStrategy = -1;
+    private Integer previousStrategySelection;
     private boolean infoButtonState;
 
     @SuppressLint("NewApi")
@@ -325,6 +326,7 @@ public class MainActivity extends Activity {
         for (int i = 0; i < adapter.getCount(); i++) {
           Strategy strategy = (Strategy) adapter.getItem(i);
           if (strategy.getStrategy().equals(entry.getStrategy())) {
+            previousStrategySelection = i;
             strategySpinner.setSelection(i);
             break;
           }
@@ -476,10 +478,27 @@ public class MainActivity extends Activity {
     }
 
     private Spinner setupStrategySpinner() {
-        Spinner strategySpinner = findViewById(R.id.strategy_spinner);
+        final Spinner strategySpinner = findViewById(R.id.strategy_spinner);
         ArrayList<Strategy> list = new ArrayList<>();
         list.add(Strategy.DEFINE);
         strategySpinner.setAdapter(new StrategySpinnerAdapter(this, list));
+        strategySpinner.setOnItemSelectedListener (
+            new OnItemSelectedListener () {
+                @Override
+                public void onItemSelected (AdapterView<?> parent, View view,
+                                            int position, long id) {
+                    if (previousStrategySelection != null
+                          && !previousStrategySelection.equals(position)) {
+                        String text = searchText.getText().toString();
+                        if (text.trim().length() > 0)
+                          lookupWord(searchText);
+                    }
+                    previousStrategySelection = position;
+                }
+
+                @Override
+                public void onNothingSelected (AdapterView<?> parent) { }
+            });
         return strategySpinner;
     }
 }
