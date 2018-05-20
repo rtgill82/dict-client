@@ -61,8 +61,7 @@ public class AboutDialog extends DialogFragment {
                      public void onClick(DialogInterface dialog, int which) {
                          DonateDialog.show(getActivity());
                      }
-                 })
-               .setPositiveButton(getString(R.string.button_ok), null);
+                 });
         return builder.create();
     }
 
