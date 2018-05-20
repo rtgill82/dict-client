@@ -4,19 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_donate_text"
-        android:padding="@dimen/default_margins" />
+        android:padding="@dimen/default_margins"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/dialog_donate_disclaimer"
-        android:gravity="center_horizontal"
-        android:textSize="12sp"
-        android:textStyle="italic" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/default_margins"
+            android:text="@string/dialog_donate_text"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_donate_disclaimer"
+            android:gravity="center_horizontal"
+            android:textSize="12sp"
+            android:textStyle="italic"/>
+    </LinearLayout>
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"
@@ -44,7 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/dialog_donate_3" />
+            android:text="@string/dialog_donate_3"/>
 
         <Button android:id="@+id/button_cancel"
             style="?android:attr/buttonBarButtonStyle"
