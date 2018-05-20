@@ -29,6 +29,7 @@ import static org.lonestar.sdf.locke.apps.dictclient.DonationManager.OnHasDonate
 
 public class DonateNotificationService extends Service {
     public static final String DONATE_ACTION = "DONATE_ACTION";
+    public static final String DONATE_SEEN = "DONATE_SEEN";
 
     public static void start(final Context context) {
         startService(context);
