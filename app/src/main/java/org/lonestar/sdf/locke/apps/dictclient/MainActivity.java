@@ -270,6 +270,12 @@ public class MainActivity extends Activity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (!traverseHistory(DefinitionHistory.Direction.BACK))
+          super.onBackPressed();
+    }
+
     public void lookupWord(View view) {
         Strategy strategy = (Strategy) strategySpinner.getSelectedItem();
         Dictionary dict = (Dictionary) dictionarySpinner.getSelectedItem();
@@ -294,7 +300,7 @@ public class MainActivity extends Activity {
         executeTask(JDictClientRequest.DICT_INFO(host, dictionary));
     }
 
-    public void traverseHistory(DefinitionHistory.Direction direction) {
+    public boolean traverseHistory(DefinitionHistory.Direction direction) {
         HistoryEntry entry;
         if (DefinitionHistory.Direction.BACK == direction)
           entry = history.back();
@@ -303,6 +309,7 @@ public class MainActivity extends Activity {
         if (entry != null)
           displayHistoryEntry(entry);
         invalidateOptionsMenu();
+        return (entry != null);
     }
 
     public void setDictionarySpinnerData(List<Dictionary> list) {
