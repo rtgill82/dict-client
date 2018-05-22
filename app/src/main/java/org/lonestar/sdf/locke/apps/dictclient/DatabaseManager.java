@@ -184,7 +184,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
             List<Dictionary> dbdicts = dictDao.queryForEq("host_id", host);
 
             if (dbdicts.size() > 0) {
-                dictionaries = new ArrayList<Dictionary>();
+                dictionaries = new ArrayList<>();
                 dictionaries.add(Dictionary.ALL_DICTIONARIES);
                 dictionaries.addAll(dbdicts);
             }
@@ -239,8 +239,9 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
             List<Strategy> dbstrats = dictDao.queryForEq("host_id", host);
 
             if (dbstrats.size() > 0) {
-                strategies = new ArrayList<Strategy>();
+                strategies = new ArrayList<>();
                 strategies.add(Strategy.DEFINE);
+                strategies.add(Strategy.MATCH);
                 strategies.addAll(dbstrats);
             }
             return strategies;

@@ -66,6 +66,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
                     getDefinitions(request.getWord(), request.getDictionary())
                 );
               case MATCH:
+                String strategy = request.getStrategy().getStrategy();
                 return new JDictClientResult(
                     request,
                     getMatches(request.getWord(), request.getStrategy())
@@ -126,6 +127,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
 
         List<Strategy> strategies = new ArrayList<Strategy>();
         strategies.add(Strategy.DEFINE);
+        strategies.add(Strategy.MATCH);
         strategies.addAll(
             ClassConvert.convertStrategyList(dictClient.getStrategies(),
                                              host)
@@ -163,7 +165,10 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
         JDictClient dictClient =
           JDictClient.connect(host.getHostName(), host.getPort());
 
-        List <Match> matches = dictClient.match(strategy.getStrategy(), word);
+        String strategyName = strategy.getStrategy();
+        if (strategyName.equals("match"))
+          strategyName = ".";
+        List <Match> matches = dictClient.match(strategyName, word);
         dictClient.close();
         return matches;
     }

@@ -20,11 +20,24 @@ class Strategy {
     @DatabaseField(canBeNull = false)
     private String description;
 
-    public static final Strategy DEFINE = new Strategy();
+    private static final String DEFINE_KEY = "define";
+    private static final String DEFINE_DESCRIPTION = "Define the entered word";
+    private static final String MATCH_KEY = "match";
+    private static final String MATCH_DESCRIPTION = "Match the entered word";
+
+    public static final Strategy DEFINE =
+      new Strategy(DEFINE_KEY, DEFINE_DESCRIPTION);
+    public static final Strategy MATCH =
+      new Strategy(MATCH_KEY, MATCH_DESCRIPTION);
 
     public Strategy() {
-        strategy = "define";
-        description = "Define the entered word";
+        this.strategy = DEFINE_KEY;
+        this.description = DEFINE_DESCRIPTION;
+    }
+
+    public Strategy(String strategy, String description) {
+        this.strategy = strategy;
+        this.description = description;
     }
 
     public Strategy(Host host,

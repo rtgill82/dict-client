@@ -282,13 +282,13 @@ public class MainActivity extends Activity {
         String word = searchText.getText().toString();
         if (!(word.isEmpty())) {
             searchText.selectAll();
-            if (!strategy.getStrategy().equals("define")) {
-                executeTask(JDictClientRequest.MATCH(host, strategy, word));
-            } else {
+            if (strategy.getStrategy().equals("define")) {
                 if (dict != null)
                   executeTask(JDictClientRequest.DEFINE(host, dict, word));
                 else
                   executeTask(JDictClientRequest.DEFINE(host, word));
+            } else {
+                executeTask(JDictClientRequest.MATCH(host, strategy, word));
             }
         }
     }
@@ -490,6 +490,7 @@ public class MainActivity extends Activity {
         final Spinner strategySpinner = findViewById(R.id.strategy_spinner);
         ArrayList<Strategy> list = new ArrayList<>();
         list.add(Strategy.DEFINE);
+        list.add(Strategy.MATCH);
         strategySpinner.setAdapter(new StrategySpinnerAdapter(this, list));
         strategySpinner.setOnItemSelectedListener (
             new OnItemSelectedListener () {
