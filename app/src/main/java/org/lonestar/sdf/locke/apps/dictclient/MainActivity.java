@@ -281,7 +281,6 @@ public class MainActivity extends Activity {
         Dictionary dict = (Dictionary) dictionarySpinner.getSelectedItem();
         String word = searchText.getText().toString();
         if (!(word.isEmpty())) {
-            searchText.selectAll();
             if (strategy.getStrategy().equals("define")) {
                 if (dict != null)
                   executeTask(JDictClientRequest.DEFINE(host, dict, word));
