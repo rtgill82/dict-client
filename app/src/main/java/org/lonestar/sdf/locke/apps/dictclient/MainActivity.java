@@ -217,6 +217,7 @@ public class MainActivity extends Activity {
 
     public void onTaskFinished(JDictClientResult result,
                                Exception exception) {
+        enableInput();
         if (exception != null) {
             ErrorDialog.show(this, exception.getMessage());
             return;
@@ -224,7 +225,6 @@ public class MainActivity extends Activity {
 
         JDictClientRequest request = result.getRequest();
         runningTask = null;
-        enableInput();
 
         CharSequence text;
         HistoryEntry entry;
