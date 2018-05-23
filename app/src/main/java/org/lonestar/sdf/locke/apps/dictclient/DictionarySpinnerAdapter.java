@@ -11,6 +11,7 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SpinnerAdapter;
@@ -52,6 +53,8 @@ class DictionarySpinnerAdapter implements SpinnerAdapter {
         TextView v = new TextView(context.getApplicationContext());
         v.setTextColor(Color.BLACK);
         v.setText(data.get(position).getDescription());
+        v.setMaxLines(1);
+        v.setEllipsize(TextUtils.TruncateAt.END);
         return v;
     }
 
