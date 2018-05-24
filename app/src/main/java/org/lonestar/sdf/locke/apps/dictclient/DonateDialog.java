@@ -117,6 +117,7 @@ public class DonateDialog extends DialogFragment {
 
         @Override
         public void onPurchasesUpdated() {
+            dismiss();
             Activity activity = getActivity();
             MessageDialog.show(
                 activity,

@@ -83,13 +83,14 @@ class DonationManager implements PurchasesUpdatedListener {
             new PurchaseHistoryResponseListener() {
                 @Override
                 public void onPurchaseHistoryResponse(
-                    @BillingResponse int code,
-                    List<Purchase> purchases)
-                {
-                    if (code == OK)
-                      consumeAndPurchase(sku, purchases);
-                    else
-                      handleBillingFlowResponse(code);
+                  @BillingResponse int code,
+                  List<Purchase> purchases
+                ) {
+                    handleBillingFlowResponse(code);
+                    if (code == OK) {
+                        billingClient = buildBillingClient();
+                        consumeAndPurchase(sku, purchases);
+                    }
                 }
             }
         );
@@ -107,15 +108,13 @@ class DonationManager implements PurchasesUpdatedListener {
             new PurchaseHistoryResponseListener() {
                 @Override
                 public void onPurchaseHistoryResponse(
-                    @BillingResponse int code,
-                    List<Purchase> purchases
+                  @BillingResponse int code,
+                  List<Purchase> purchases
                 ) {
-                    if (code != OK) {
-                        handleBillingFlowResponse(code);
-                    } else {
+                    handleBillingFlowResponse(code);
+                    if (code == OK) {
                         if (purchases != null && purchases.size() > 0)
                           applyDonation(context, true);
-                        endConnection();
                     }
                     listener.hasDonated(donated);
                 }
@@ -149,11 +148,10 @@ class DonationManager implements PurchasesUpdatedListener {
                             .setSku(sku)
                             .setType(INAPP);
 
-                    int code = billingClient.launchBillingFlow(
-                        donationFlowListener.getActivity(),
-                        builder.build()
+                    billingClient.launchBillingFlow(
+                      donationFlowListener.getActivity(),
+                      builder.build()
                     );
-                    handleBillingFlowResponse(code);
                 }
             }
         );
@@ -168,12 +166,15 @@ class DonationManager implements PurchasesUpdatedListener {
                         new ConsumeResponseListener() {
                             @Override
                             public void onConsumeResponse(
-                                @BillingResponse int code,
-                                String token
+                              @BillingResponse int code,
+                              String token
                             ) {
+                                handleBillingFlowResponse(code);
                                 if ((code == OK || code == ITEM_NOT_OWNED)
-                                    && repurchase)
-                                  makePurchase(purchase.getSku());
+                                      && repurchase) {
+                                    billingClient = buildBillingClient();
+                                    makePurchase (purchase.getSku ());
+                                }
                             }
                         });
                 }
@@ -241,11 +242,7 @@ class DonationManager implements PurchasesUpdatedListener {
           default:
             Log.i(TAG, "launchBillingFlow() Result: " + code);
         }
-
-        if (code !=  ITEM_ALREADY_OWNED) {
-            endConnection();
-            donationFlowListener = null;
-        }
+        endConnection();
     }
 
     private void startServiceConnection(final Runnable runnable) {
@@ -304,13 +301,14 @@ class DonationManager implements PurchasesUpdatedListener {
 
     @Override
     public void onPurchasesUpdated(int code, List<Purchase> purchases) {
+        handleBillingFlowResponse(code);
         if (code == OK) {
             Log.i(TAG, "Purchases updated");
             applyDonation(context, true);
             if (donationFlowListener != null)
               donationFlowListener.onPurchasesUpdated();
         }
-        handleBillingFlowResponse(code);
+
     }
 
     private BillingClient buildBillingClient() {
