@@ -241,7 +241,6 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
             if (dbstrats.size() > 0) {
                 strategies = new ArrayList<>();
                 strategies.add(Strategy.DEFINE);
-                strategies.add(Strategy.MATCH);
                 strategies.addAll(dbstrats);
             }
             return strategies;
