@@ -55,7 +55,6 @@ public class MainActivity extends Activity {
 
     private int selectedDictionary = -1;
     private int selectedStrategy = -1;
-    private Integer previousStrategySelection;
     private boolean infoButtonState;
 
     @SuppressLint("NewApi")
@@ -117,7 +116,7 @@ public class MainActivity extends Activity {
             expireTime.add(Calendar.DATE, cacheTime);
 
             if (dictionaries == null ||
-                expireTime.before(Calendar.getInstance())) {
+                  expireTime.before(Calendar.getInstance())) {
                 refreshDictionaries();
             } else {
                 setDictionarySpinnerData(dictionaries);
@@ -207,12 +206,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        dictionarySpinner.setSelection(
-            savedInstanceState.getInt(SELECTED_DICTIONARY)
-        );
-        strategySpinner.setSelection(
-            savedInstanceState.getInt(SELECTED_STRATEGY)
-        );
+        selectedDictionary = savedInstanceState.getInt(SELECTED_DICTIONARY);
+        selectedStrategy = savedInstanceState.getInt(SELECTED_STRATEGY);
     }
 
     public void onTaskFinished(JDictClientResult result,
@@ -334,7 +329,7 @@ public class MainActivity extends Activity {
         for (int i = 0; i < adapter.getCount(); i++) {
           Strategy strategy = (Strategy) adapter.getItem(i);
           if (strategy.getStrategy().equals(entry.getStrategy())) {
-            previousStrategySelection = i;
+            selectedStrategy = i;
             strategySpinner.setSelection(i);
             break;
           }
@@ -495,13 +490,14 @@ public class MainActivity extends Activity {
                 @Override
                 public void onItemSelected (AdapterView<?> parent, View view,
                                             int position, long id) {
-                    if (previousStrategySelection != null
-                          && !previousStrategySelection.equals(position)) {
+                    if (selectedStrategy != -1
+                          && selectedStrategy != position) {
+                        if (host == null) return;
                         String text = searchText.getText().toString();
                         if (text.trim().length() > 0)
                           lookupWord(searchText);
                     }
-                    previousStrategySelection = position;
+                    selectedStrategy = position;
                 }
 
                 @Override
