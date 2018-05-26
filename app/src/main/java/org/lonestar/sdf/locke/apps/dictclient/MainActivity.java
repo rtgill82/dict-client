@@ -367,9 +367,10 @@ public class MainActivity extends Activity {
     }
 
     private void displayHistoryEntry(HistoryEntry entry) {
+        Strategy strategy = entry.getStrategy();
         setSelectedDictionary(entry.getDictionary());
-        setSelectedStrategy(entry.getStrategy());
-        if (entry.getStrategy().equals("define"))
+        setSelectedStrategy(strategy);
+        if (strategy.getStrategy().equals("define"))
           resultView.setWordWrap(false);
         else
           resultView.setWordWrap(true);

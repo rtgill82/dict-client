@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
+import android.util.Log;
 
 class ResultView extends NestedScrollView {
     private static final String SUPER_STATE = "SUPER_STATE";
@@ -44,7 +45,7 @@ class ResultView extends NestedScrollView {
         Bundle bundle;
         if (state instanceof Bundle) {
             bundle = (Bundle) state;
-            wordWrap = bundle.getBoolean(WORD_WRAP);
+            setWordWrap(bundle.getBoolean(WORD_WRAP));
             state = bundle.getParcelable(SUPER_STATE);
         }
         super.onRestoreInstanceState(state);
