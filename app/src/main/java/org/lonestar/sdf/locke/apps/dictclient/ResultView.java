@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
-import android.util.Log;
 
 class ResultView extends NestedScrollView {
     private static final String SUPER_STATE = "SUPER_STATE";
