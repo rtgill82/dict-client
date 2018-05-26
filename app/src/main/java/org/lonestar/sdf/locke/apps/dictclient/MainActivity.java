@@ -30,6 +30,7 @@ import android.widget.SpinnerAdapter;
 import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.Match;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -215,7 +216,12 @@ public class MainActivity extends Activity {
                                Exception exception) {
         enableInput();
         if (exception != null) {
-            ErrorDialog.show(this, exception.getMessage());
+            if (exception.getClass().equals(UnknownHostException.class)) {
+                ErrorDialog.show(this, "Unknown host: " +
+                                       exception.getMessage());
+            } else {
+                ErrorDialog.show(this, exception.toString());
+            }
             return;
         }
 
