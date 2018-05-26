@@ -228,9 +228,10 @@ public class MainActivity extends Activity {
           case DEFINE:
             text = displayDefinitions(result.getDefinitions());
             entry = new HistoryEntry(
-                request.getWord(),
-                ((Strategy) strategySpinner.getSelectedItem()).getStrategy(),
-                text
+              request.getWord(),
+              ((Dictionary) dictionarySpinner.getSelectedItem()),
+              ((Strategy) strategySpinner.getSelectedItem()),
+              text
             );
             history.add(entry);
             invalidateOptionsMenu();
@@ -239,9 +240,10 @@ public class MainActivity extends Activity {
           case MATCH:
             text = displayMatches(result.getMatches());
             entry = new HistoryEntry(
-                request.getWord(),
-                ((Strategy) strategySpinner.getSelectedItem()).getStrategy(),
-                text
+              request.getWord(),
+              ((Dictionary) dictionarySpinner.getSelectedItem()),
+              ((Strategy) strategySpinner.getSelectedItem()),
+              text
             );
             history.add(entry);
             invalidateOptionsMenu();
@@ -316,7 +318,7 @@ public class MainActivity extends Activity {
     }
 
     public void setSelectedDictionary(Dictionary dictionary) {
-        if (dictionary == null)
+        if (dictionary == null || dictionary.getDatabase() == null)
           selectedDictionary = 0;
         else {
             SpinnerAdapter adapter = dictionarySpinner.getAdapter();
@@ -339,7 +341,6 @@ public class MainActivity extends Activity {
             SpinnerAdapter adapter = strategySpinner.getAdapter();
             for (int i = 0; i < adapter.getCount(); i++) {
                 Strategy item = (Strategy) adapter.getItem(i);
-                if (item.getStrategy() == null) continue;
                 if (item.getStrategy().equals(strategy.getStrategy())) {
                     selectedStrategy = i;
                     break;
@@ -360,15 +361,8 @@ public class MainActivity extends Activity {
     }
 
     private void displayHistoryEntry(HistoryEntry entry) {
-        Adapter adapter = strategySpinner.getAdapter();
-        for (int i = 0; i < adapter.getCount(); i++) {
-          Strategy strategy = (Strategy) adapter.getItem(i);
-          if (strategy.getStrategy().equals(entry.getStrategy())) {
-            selectedStrategy = i;
-            strategySpinner.setSelection(i);
-            break;
-          }
-        }
+        setSelectedDictionary(entry.getDictionary());
+        setSelectedStrategy(entry.getStrategy());
         if (entry.getStrategy().equals("define"))
           resultView.setWordWrap(false);
         else

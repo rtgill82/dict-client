@@ -17,11 +17,14 @@ package org.lonestar.sdf.locke.apps.dictclient;
  */
 class HistoryEntry {
     private String word;
-    private String strategy;
+    private Dictionary dictionary;
+    private Strategy strategy;
     private CharSequence text;
 
-    public HistoryEntry(String word, String strategy, CharSequence text) {
+    public HistoryEntry(String word, Dictionary dictionary,
+                        Strategy strategy, CharSequence text) {
         this.word = word;
+        this.dictionary = dictionary;
         this.strategy = strategy;
         this.text = text;
     }
@@ -30,7 +33,11 @@ class HistoryEntry {
         return word;
     }
 
-    public String getStrategy() {
+    public Dictionary getDictionary() {
+        return dictionary;
+    }
+
+    public Strategy getStrategy() {
         return strategy;
     }
 
