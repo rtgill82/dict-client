@@ -148,7 +148,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
           JDictClient.connect(host.getHostName(), host.getPort());
 
         List<Definition> definitions;
-        if (dictionary.getDatabase() != null)
+        if (dictionary != null && dictionary.getDatabase() != null)
           definitions = dictClient.define(dictionary.getDatabase(), word);
         else
           definitions = dictClient.define(word);

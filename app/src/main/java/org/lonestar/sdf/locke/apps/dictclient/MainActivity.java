@@ -25,6 +25,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.Match;
@@ -314,6 +315,40 @@ public class MainActivity extends Activity {
         strategySpinner.setAdapter(new StrategySpinnerAdapter(this, list));
     }
 
+    public void setSelectedDictionary(Dictionary dictionary) {
+        if (dictionary == null)
+          selectedDictionary = 0;
+        else {
+            SpinnerAdapter adapter = dictionarySpinner.getAdapter();
+            for (int i = 0; i < adapter.getCount(); i++) {
+                Dictionary item = (Dictionary) adapter.getItem(i);
+                if (item.getDatabase() == null) continue;
+                if (item.getDatabase().equals(dictionary.getDatabase())) {
+                    selectedDictionary = i;
+                    break;
+                }
+            }
+        }
+        dictionarySpinner.setSelection(selectedDictionary);
+    }
+
+    public void setSelectedStrategy(Strategy strategy) {
+        if (strategy == null)
+          selectedStrategy = 0;
+        else {
+            SpinnerAdapter adapter = strategySpinner.getAdapter();
+            for (int i = 0; i < adapter.getCount(); i++) {
+                Strategy item = (Strategy) adapter.getItem(i);
+                if (item.getStrategy() == null) continue;
+                if (item.getStrategy().equals(strategy.getStrategy())) {
+                    selectedStrategy = i;
+                    break;
+                }
+            }
+        }
+        strategySpinner.setSelection(selectedStrategy);
+    }
+
     private void executeTask(JDictClientRequest request) {
         disableInput();
         runningTask = new JDictClientTask(this, request);
@@ -378,9 +413,8 @@ public class MainActivity extends Activity {
                     ));
                 int i = 0; int count = list.size();
                 for (String word : list) {
-                    stringBuilder.append(new WordSpan(
-                            word, dictionary.getDatabase()
-                        ).toCharSequence());
+                    stringBuilder.append(new WordSpan(word, dictionary)
+                                                     .toCharSequence());
                     if (i != count - 1)
                       stringBuilder.append(", ");
                     i += 1;

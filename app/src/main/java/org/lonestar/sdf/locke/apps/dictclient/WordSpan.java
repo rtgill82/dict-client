@@ -16,16 +16,14 @@ import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 class WordSpan extends ClickableSpan {
     private String word;
-    private String database;
+    private Dictionary dictionary;
 
-    public WordSpan(String word, String database) {
+    public WordSpan(String word, Dictionary dictionary) {
         this.word = word.replace("\n", "").replaceAll("\\s+", " ");
-        this.database = database;
+        this.dictionary = dictionary;
     }
 
     public WordSpan(String word) {
@@ -49,15 +47,12 @@ class WordSpan extends ClickableSpan {
             DictClient app = (DictClient) activity.getApplication();
             EditText searchText = activity.findViewById(R.id.search_text);
             Host host = app.getCurrentHost();
-
-            if (database != null)
-              setSelectedDictionary(activity, database);
-
+            setSelectedDictionary(activity, dictionary);
             searchText.setText(word);
             searchText.selectAll();
             setDefineStrategy(activity);
             new JDictClientTask(activity,
-                                JDictClientRequest.DEFINE(host, word))
+                                JDictClientRequest.DEFINE(host, dictionary, word))
               .execute();
         }
     }
@@ -80,30 +75,12 @@ class WordSpan extends ClickableSpan {
         return spannedString;
     }
 
-    private void setSelectedDictionary(MainActivity activity, String database) {
-        Spinner spinner = activity.findViewById(R.id.dictionary_spinner);
-        SpinnerAdapter adapter = spinner.getAdapter();
-
-        int count = adapter.getCount();
-        for (int i = 0; i < count; i++) {
-            Dictionary dictionary = (Dictionary) adapter.getItem(i);
-            if (dictionary.getHost() == null) continue;
-            if (dictionary.getDatabase().equals(database))
-              spinner.setSelection(i);
-        }
+    private void setSelectedDictionary(MainActivity activity,
+                                       Dictionary dictionary) {
+        activity.setSelectedDictionary(dictionary);
     }
 
     private void setDefineStrategy(MainActivity activity) {
-        Spinner spinner = activity.findViewById(R.id.strategy_spinner);
-        SpinnerAdapter adapter = spinner.getAdapter();
-
-        int count = adapter.getCount();
-        for (int i = 0; i < count; i++) {
-            Strategy strategy = (Strategy) adapter.getItem(i);
-            if (strategy.getHost() == null) {
-                spinner.setSelection(i);
-                break;
-            }
-        }
+        activity.setSelectedStrategy(null);
     }
 }
