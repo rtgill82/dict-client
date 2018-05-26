@@ -16,7 +16,7 @@
     <h2>Usage</h2>
     <p>Simply touch the <b><i>Enter a word</i></b> search field to pull up the
     touch keyboard and type in the word you would like to look up. Then touch
-    the <b><i>Search</i></b> icon on the keyboard to look up the word.  By
+    the <b><i>Search</i></b> icon on the keyboard to look up the word. By
     default all dictionaries on the currently selected host will be searched.
     Specific dictionaries may be searched by selecting one from the dictionary
     pull-down menu just below the <b><i>Enter a word</i></b> search field. The
@@ -44,6 +44,82 @@
     definitions can be returned to by using the arrow navigation buttons at the
     top of the screen. These work much like the forward and back buttons on a
     web browser.
+
+    <h3>Match strategies</h3>
+    <p>To the right of the <b><i>Enter a word</i></b> search field is
+    a pull-down menu containing available <i>match strategies</i>. Match
+    strategies allow you to search the available dictionaries for similar words
+    or by patterns. <i>define</i> is selected by default and will bring up the
+    definitions for the currently entered word. Available strategies vary from
+    host server to host server, but some of the most frequently available are
+    described below.
+
+    <ul>
+      <li><b>Match headwords exactly</b></li>
+      <p>An exact match.
+
+      <li><b>Match prefixes</b></li>
+      <p>Prefix match.
+
+      <li><b>Match prefixes (skip, count)</b></li>
+      <p>Like <i>prefix</i> but returns the specified range of matches. For
+      example, when prefix strategy returns 1000 matches, you can get only 100
+      ones skipping the first 800 matches. This is made by specifying these
+      limits in a query like this: <i>800#100#app</i>, where 800 is skip count,
+      100 is a number of matches you want to get and "app" is your query.
+
+      <li><b>Match substring occurring anywhere in a headword</b></li>
+      <p>Match a substring anywhere in the headword.
+
+      <li><b>Match suffixes</b></li>
+      <p>Suffix match.
+
+      <li><b>POSIX 1003.2 (modern) regular expressions</b></li>
+      <p>These regular expressions allow predefined character classes (e.g.,
+      [[:alnum:]], [[:alpha:]], [[:digit:]], and [[:xdigit:]] are useful for
+      this application); uses * to match a sequence 0 or more matches of the
+      previous atom; uses + to match a sequence of 1 or more matches of the
+      previous atom; uses ? to match a sequence of 0 or 1 matches of the
+      previous atom; used ^ to match the beginning of a word, uses $ to match
+      the end of a word, and allows nested subexpression and alternation with
+      () and |. For example, "(foo|bar)" matches all words that contain either
+      "foo" or "bar". To match these special characters, they must be quoted
+      with two backslashes (due to the quoting characteristics of the server).
+
+      <li><b>Old (basic) regular expressions</b></li>
+      <p>These regular expressions don't support |, +, or ?. Groups use escaped
+      parentheses. While modern regular expressions are generally easier to
+      use, basic regular expressions have a back reference feature. This can be
+      used to match a second occurrence of something that was already matched.
+      For example, the following expression finds all words that begin and end
+      with the same three letters:
+
+      <p>^\\(...\\).*\\1$
+
+      <li><b>Match using SOUNDEX algorithm</b></li>
+      <p>The Soundex algorithm, a classic algorithm for finding words that
+      sound similar to each other. The algorithm encodes each word using the
+      first letter of the word and up to three digits. Since the first letter
+      is known, this search is relatively fast, and it sometimes good for
+      correcting spelling errors when the Levenshtein algorithm doesn't help.
+
+      <li><b>Match headwords within Levenshtein distance one</b></li>
+      <p>The Levenshtein algorithm (string edit distance of one). This
+      algorithm searches for all words which are within an edit distance of one
+      from the target word. An "edit" means an insertion, deletion, or
+      transposition.  This is a rapid algorithm for correcting spelling errors,
+      since many spelling errors are within a Levenshtein distance of one from
+      the original word.
+
+      <li><b>Match separate words within headwords</b></li>
+      <p>Match any single word, even if part of a multi-word entry.
+
+      <li><b>Match the first word within headwords</b></li>
+      <p>Match the first word that begins a multi-word entry.
+
+      <li><b>Match the last word within headwords</b></li>
+      <p>Match the last word that ends a multi-word entry.
+    </ul>
 
     <h3>Menu Items</h3>
     <p>Other than the navigation buttons, the following options are available
