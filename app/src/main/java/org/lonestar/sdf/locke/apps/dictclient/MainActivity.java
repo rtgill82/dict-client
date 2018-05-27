@@ -534,24 +534,6 @@ public class MainActivity extends Activity {
         ArrayList<Strategy> list = new ArrayList<>();
         list.add(Strategy.DEFINE);
         strategySpinner.setAdapter(new StrategySpinnerAdapter(this, list));
-        strategySpinner.setOnItemSelectedListener (
-            new OnItemSelectedListener () {
-                @Override
-                public void onItemSelected (AdapterView<?> parent, View view,
-                                            int position, long id) {
-                    if (selectedStrategy != -1
-                          && selectedStrategy != position) {
-                        if (host == null) return;
-                        String text = searchText.getText().toString();
-                        if (text.trim().length() > 0)
-                          lookupWord(view);
-                    }
-                    selectedStrategy = position;
-                }
-
-                @Override
-                public void onNothingSelected (AdapterView<?> parent) { }
-            });
         return strategySpinner;
     }
 }
