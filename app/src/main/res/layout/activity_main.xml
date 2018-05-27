@@ -48,14 +48,25 @@
 
     <ImageButton
         android:id="@+id/dictionary_info_button"
-        android:contentDescription="@string/button_dictinfo"
+        android:contentDescription="@string/button_dictionary_information"
         android:src="@drawable/ic_info_outline"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/search_button"
+        android:layout_toStartOf="@+id/search_button"
+        android:layout_below="@+id/search_text"
+        android:onClick="getDictionaryInfo" />
+
+    <ImageButton
+        android:id="@+id/search_button"
+        android:contentDescription="@string/button_search"
+        android:src="@drawable/baseline_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/search_text"
-        android:onClick="getDictionaryInfo" />
+        android:onClick="lookupWord" />
 
     <org.lonestar.sdf.locke.apps.dictclient.ResultView
         android:id="@+id/result_view"
@@ -72,5 +83,4 @@
             android:freezesText="true" />
 
     </org.lonestar.sdf.locke.apps.dictclient.ResultView>
-
 </RelativeLayout>

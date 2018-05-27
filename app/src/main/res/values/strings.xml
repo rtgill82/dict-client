@@ -13,8 +13,9 @@
     <string name="button_yes">Yes</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_save">Save</string>
-    <string name="button_dictinfo">Dictionary Information</string>
+    <string name="button_dictionary_information">Dictionary Information</string>
     <string name="button_donate">Donate</string>
+    <string name="button_search">Search</string>
 
     <!-- MainActivity result strings -->
     <string name="result_definitions">No definitions found.</string>

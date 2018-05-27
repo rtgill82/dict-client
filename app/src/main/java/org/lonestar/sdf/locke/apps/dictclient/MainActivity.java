@@ -54,10 +54,12 @@ public class MainActivity extends Activity {
     private Spinner dictionarySpinner;
     private Spinner strategySpinner;
     private ImageButton infoButton;
+    private ImageButton searchButton;
 
     private int selectedDictionary = -1;
     private int selectedStrategy = -1;
     private boolean infoButtonState;
+    private boolean searchButtonState;
 
     @SuppressLint("NewApi")
     @Override
@@ -69,6 +71,7 @@ public class MainActivity extends Activity {
         dictionarySpinner = setupDictionarySpinner();
         strategySpinner = setupStrategySpinner();
         infoButton = findViewById(R.id.dictionary_info_button);
+        searchButton = findViewById(R.id.search_button);
 
         if (savedInstanceState != null) {
             selectedDictionary = savedInstanceState.getInt(SELECTED_DICTIONARY);
@@ -459,6 +462,8 @@ public class MainActivity extends Activity {
         strategySpinner.setEnabled(false);
         infoButtonState = infoButton.isEnabled();
         infoButton.setEnabled(false);
+        searchButtonState = searchButton.isEnabled();
+        searchButton.setEnabled(false);
     }
 
     private void enableInput() {
@@ -466,12 +471,21 @@ public class MainActivity extends Activity {
         dictionarySpinner.setEnabled(true);
         strategySpinner.setEnabled(true);
         infoButton.setEnabled(infoButtonState);
+        searchButton.setEnabled(searchButtonState);
     }
 
     private EditText setupSearchText() {
-        EditText searchText = findViewById(R.id.search_text);
+        final EditText searchText = findViewById(R.id.search_text);
+        final ImageButton searchButton = findViewById(R.id.search_button);
+        if (searchText.getText().length() == 0)
+          searchButton.setEnabled(false);
         searchText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (searchText.getText().length() > 0)
+                  searchButton.setEnabled(true);
+                else
+                  searchButton.setEnabled(false);
+
                 switch (keyCode) {
                   case KeyEvent.KEYCODE_DPAD_CENTER:
                   case KeyEvent.KEYCODE_ENTER:
@@ -530,7 +544,7 @@ public class MainActivity extends Activity {
                         if (host == null) return;
                         String text = searchText.getText().toString();
                         if (text.trim().length() > 0)
-                          lookupWord(searchText);
+                          lookupWord(view);
                     }
                     selectedStrategy = position;
                 }
