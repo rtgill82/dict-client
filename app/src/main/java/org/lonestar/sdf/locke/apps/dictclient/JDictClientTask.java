@@ -10,6 +10,7 @@ package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
@@ -30,7 +31,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
     private ProgressDialog progressDialog;
 
     private static final Map<JDictClientRequest.JDictClientCommand,String> messages =
-      new EnumMap<JDictClientRequest.JDictClientCommand,String>(JDictClientRequest.JDictClientCommand.class);
+      new EnumMap<>(JDictClientRequest.JDictClientCommand.class);
 
     public JDictClientTask(MainActivity context, JDictClientRequest request) {
         super();
@@ -68,7 +69,8 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
               case MATCH:
                 return new JDictClientResult(
                     request,
-                    getMatches(request.getWord(), request.getStrategy())
+                    getMatches(request.getWord(), request.getDictionary(),
+                               request.getStrategy())
                 );
               case DICT_INFO:
                 return new JDictClientResult(
@@ -157,13 +159,16 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
         return definitions;
     }
 
-    private List<Match> getMatches(String word, Strategy strategy)
+    private List<Match> getMatches(String word, Dictionary dictionary,
+                                   Strategy strategy)
           throws Exception {
         Host host = request.getHost();
         JDictClient dictClient =
           JDictClient.connect(host.getHostName(), host.getPort());
 
-        List <Match> matches = dictClient.match(strategy.getStrategy(), word);
+        List <Match> matches = dictClient.match(strategy.getStrategy(),
+                                                word,
+                                                dictionary.getDatabase());
         dictClient.close();
         return matches;
     }

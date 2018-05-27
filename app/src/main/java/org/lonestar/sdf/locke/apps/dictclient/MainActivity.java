@@ -289,7 +289,7 @@ public class MainActivity extends Activity {
         String word = searchText.getText().toString();
         if (!(word.isEmpty())) {
             if (!strategy.getStrategy().equals("define")) {
-                executeTask(JDictClientRequest.MATCH(host, strategy, word));
+                executeTask(JDictClientRequest.MATCH(host, strategy, dict, word));
             } else {
                 if (dict != null)
                   executeTask(JDictClientRequest.DEFINE(host, dict, word));

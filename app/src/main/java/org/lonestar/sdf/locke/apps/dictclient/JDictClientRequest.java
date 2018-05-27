@@ -55,6 +55,13 @@ class JDictClientRequest {
                                       strategy, word);
     }
 
+    public static JDictClientRequest MATCH(Host host, Strategy strategy,
+                                           Dictionary dictionary,
+                                           String word) {
+        return new JDictClientRequest(host, JDictClientCommand.MATCH,
+                                      dictionary, strategy, word);
+    }
+
     public static JDictClientRequest DEFINE(Host host, Dictionary dictionary,
                                             String word) {
         return new JDictClientRequest(host, JDictClientCommand.DEFINE,
