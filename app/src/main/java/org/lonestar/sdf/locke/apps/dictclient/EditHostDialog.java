@@ -79,6 +79,7 @@ public class EditHostDialog extends DialogFragment {
                         return;
                     }
 
+                    host.setUserDefined(true);
                     host.setHostName(editHostName.getText().toString());
                     host.setDescription(editDescription.getText()
                                                        .toString());
