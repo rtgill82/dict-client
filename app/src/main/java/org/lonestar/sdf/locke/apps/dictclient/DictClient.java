@@ -19,6 +19,7 @@ public class DictClient extends Application {
     private Host currentHost;
     private HostCache cache;
     private OnSharedPreferenceChangeListener listener;
+    private OnHostChangedListener onHostChangedListener;
 
     @Override
     public void onCreate() {
@@ -49,6 +50,10 @@ public class DictClient extends Application {
         preferences.registerOnSharedPreferenceChangeListener(listener);
     }
 
+    public void setOnHostChangedListener(OnHostChangedListener listener) {
+        onHostChangedListener = listener;
+    }
+
     public Host getDefaultHost() {
         return DatabaseManager.getInstance().getDefaultHost(this);
     }
@@ -63,13 +68,19 @@ public class DictClient extends Application {
 
     public void setCurrentHost(Host host) {
         /* Ensure new host is not the same as the old one. */
-        if (currentHost == null || currentHost.getId() != host.getId())
-          currentHost = findCachedHost(host.getId(), host);
+        if (currentHost == null || currentHost.getId() != host.getId()) {
+            currentHost = findCachedHost(host.getId(), host);
+            if (onHostChangedListener != null)
+              onHostChangedListener.onHostChanged(currentHost);
+        }
     }
 
     public void setCurrentHostById(int hostId) {
-        if (currentHost == null || currentHost.getId() != hostId)
-          currentHost = findCachedHost(hostId, null);
+        if (currentHost == null || currentHost.getId() != hostId) {
+            currentHost = findCachedHost(hostId, null);
+            if (onHostChangedListener != null)
+              onHostChangedListener.onHostChanged(currentHost);
+        }
     }
 
     private Host findCachedHost(int hostId, Host defaultHost) {
@@ -82,5 +93,9 @@ public class DictClient extends Application {
             cache.add(defaultHost);
         }
         return host;
+    }
+
+    public static abstract class OnHostChangedListener {
+        public abstract void onHostChanged(Host host);
     }
 }

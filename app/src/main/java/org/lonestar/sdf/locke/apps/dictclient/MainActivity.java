@@ -62,6 +62,7 @@ public class MainActivity extends Activity {
     private int selectedStrategy = -1;
     private boolean infoButtonState;
     private boolean searchButtonState;
+    private boolean hostChanged;
 
     @SuppressLint("NewApi")
     @Override
@@ -74,6 +75,16 @@ public class MainActivity extends Activity {
         strategySpinner = setupStrategySpinner();
         infoButton = findViewById(R.id.dictionary_info_button);
         searchButton = findViewById(R.id.search_button);
+
+        DictClient app = (DictClient) getApplication();
+        app.setOnHostChangedListener(
+          new DictClient.OnHostChangedListener() {
+              @Override
+              public void onHostChanged(Host host) {
+                  hostChanged = true;
+              }
+          }
+        );
 
         if (savedInstanceState != null) {
             selectedDictionary = savedInstanceState.getInt(SELECTED_DICTIONARY);
@@ -128,6 +139,14 @@ public class MainActivity extends Activity {
             } else {
                 setDictionarySpinnerData(dictionaries);
                 setStrategySpinnerData(strategies);
+            }
+
+            if (hostChanged) {
+                history.clear();
+                invalidateOptionsMenu();
+                searchText.setText("");
+                resultView.setText("");
+                hostChanged = false;
             }
 
             setTitle(host.getHostName());
