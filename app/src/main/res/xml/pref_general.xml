@@ -14,6 +14,7 @@
     <EditTextPreference
         android:key="@string/pref_key_cache_time"
         android:title="@string/pref_title_cache_time"
+        android:summary="@string/pref_summary_cache_time"
         android:defaultValue="@string/pref_value_cache_time"
         android:singleLine="true"
         android:numeric="integer" />
