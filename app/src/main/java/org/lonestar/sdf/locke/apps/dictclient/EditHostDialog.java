@@ -64,35 +64,42 @@ public class EditHostDialog extends DialogFragment {
         builder.setTitle(getTitle())
           .setNegativeButton(getString(R.string.button_cancel), null)
           .setPositiveButton(getString(R.string.button_save),
-              new DialogInterface.OnClickListener() {
-                  public void onClick(DialogInterface dialog, int which) {
-                      if (host == null)
-                        host = new Host();
-
-                      String portText = editPort.getText().toString();
-                      if (portText.length() > 0)
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    if (host == null) host = new Host();
+                    String portText = editPort.getText().toString();
+                    if (portText.trim().length() > 0) {
                         host.setPort(Integer.parseInt(portText));
+                    }
 
-                      host.setHostName(editHostName.getText().toString());
-                      host.setDescription(editDescription.getText()
-                                                         .toString());
+                    String hostText = editHostName.getText().toString();
+                    if (hostText.trim().length() == 0) {
+                        ErrorDialog.show(getActivity(),
+                          getString(R.string.error_host_name_required));
+                        return;
+                    }
 
-                      try {
-                          DatabaseManager.getInstance().saveHost(host);
-                      } catch (SQLException e) {
-                          ErrorDialog.show(getActivity(), e.getMessage());
-                      }
-                      fragment.refreshHostList();
-                  }
-              }).setView(layout);
+                    host.setHostName(editHostName.getText().toString());
+                    host.setDescription(editDescription.getText()
+                                                       .toString());
+
+                    try {
+                        DatabaseManager.getInstance().saveHost(host);
+                    } catch (SQLException e) {
+                        ErrorDialog.show(getActivity(), e.getMessage());
+                    }
+                    fragment.refreshHostList();
+                }
+            }).setView(layout);
         return builder.create();
     }
 
     public String getTitle() {
-        if (host == null)
-          return getActivity().getString(R.string.dialog_add_title);
-        else
-          return getActivity().getString(R.string.dialog_edit_title);
+        if (host == null) {
+            return getActivity().getString(R.string.dialog_add_title);
+        } else {
+            return getActivity().getString(R.string.dialog_edit_title);
+        }
     }
 
     public void setDictionaryHost(Host host) {

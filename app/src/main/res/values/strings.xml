@@ -44,7 +44,8 @@
     <string name="menu_delete_host">Delete Host</string>
 
     <!-- Host management error messages -->
-    <string name="message_host_readonly">The selected host is not modifiable.</string>
+    <string name="error_host_readonly">The selected host is not modifiable.</string>
+    <string name="error_host_name_required">Host Name is required.</string>
 
     <!-- EditHostDialog Strings -->
     <string name="dialog_edit_tag">EditDictionaryHostDialog</string>

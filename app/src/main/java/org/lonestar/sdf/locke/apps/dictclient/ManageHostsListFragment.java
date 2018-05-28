@@ -139,7 +139,7 @@ public class ManageHostsListFragment extends ListFragment {
 
         if (!host.isUserDefined())
           ErrorDialog.show(this.getActivity(),
-                           getString(R.string.message_host_readonly));
+                           getString(R.string.error_host_readonly));
         else
           EditHostDialog.show(this, host);
     }
