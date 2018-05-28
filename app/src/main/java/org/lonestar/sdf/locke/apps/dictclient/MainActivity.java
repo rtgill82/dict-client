@@ -79,10 +79,10 @@ public class MainActivity extends Activity {
         searchButton = findViewById(R.id.search_button);
 
         DictClient app = (DictClient) getApplication();
-        app.setOnHostChangedListener(
-          new DictClient.OnHostChangedListener() {
+        app.setOnHostChangeListener(
+          new DictClient.OnHostChangeListener() {
               @Override
-              public void onHostChanged(Host host) {
+              public void onHostChange(Host host) {
                   hostChanged = true;
               }
           }
