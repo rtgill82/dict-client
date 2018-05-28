@@ -11,6 +11,7 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -60,6 +61,7 @@ public class MainActivity extends Activity {
 
     private int selectedDictionary = -1;
     private int selectedStrategy = -1;
+    private boolean wordWrap;
     private boolean infoButtonState;
     private boolean searchButtonState;
     private boolean hostChanged;
@@ -119,14 +121,22 @@ public class MainActivity extends Activity {
         super.onResume();
         DictClient app = (DictClient) getApplication();
         host = app.getCurrentHost();
+        SharedPreferences preferences =
+          PreferenceManager.getDefaultSharedPreferences(this);
+
+        wordWrap = preferences.getBoolean(
+          getString(R.string.pref_key_word_wrap),
+          getResources().getBoolean(R.bool.pref_value_word_wrap)
+        );
 
         if (host != null) {
             List dictionaries = host.getDictionaries();
             List strategies = host.getStrategies();
             int cacheTime = Integer.parseInt(
-                PreferenceManager.getDefaultSharedPreferences(this)
-                  .getString(getString(R.string.pref_key_cache_time),
-                             getString(R.string.pref_value_cache_time))
+              preferences.getString(getString(
+                R.string.pref_key_cache_time),
+                getString(R.string.pref_value_cache_time)
+              )
             );
 
             Calendar expireTime = Calendar.getInstance();
@@ -395,7 +405,7 @@ public class MainActivity extends Activity {
         setSelectedDictionary(entry.getDictionary());
         setSelectedStrategy(strategy);
         if (strategy.getStrategy().equals("define"))
-          resultView.setWordWrap(false);
+          resultView.setWordWrap(wordWrap);
         else
           resultView.setWordWrap(true);
         searchText.setText(entry.getWord());
@@ -403,7 +413,7 @@ public class MainActivity extends Activity {
     }
 
     private CharSequence displayDefinitions(List<Definition> definitions) {
-        resultView.setWordWrap(false);
+        resultView.setWordWrap(wordWrap);
         if (definitions == null)
           resultView.setText(getString(R.string.result_definitions));
         else {
