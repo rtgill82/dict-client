@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -59,6 +60,8 @@ public class MainActivity extends Activity {
     private ImageButton infoButton;
     private ImageButton searchButton;
 
+    private OnSharedPreferenceChangeListener preferenceChangeListener;
+
     private int selectedDictionary = -1;
     private int selectedStrategy = -1;
     private boolean wordWrap;
@@ -87,6 +90,27 @@ public class MainActivity extends Activity {
               }
           }
         );
+
+        preferenceChangeListener =
+          new OnSharedPreferenceChangeListener() {
+              public void onSharedPreferenceChanged(
+                SharedPreferences preferences,
+                String key
+              ) {
+                  String prefKey = getString(R.string.pref_key_word_wrap);
+                  boolean value =
+                    getResources().getBoolean(R.bool.pref_value_word_wrap);
+                  if (key.equals(prefKey)) {
+                      wordWrap = preferences.getBoolean(prefKey, value);
+                      resultView.setWordWrap(wordWrap);
+                      resultView.invalidate();
+                  }
+              }
+          };
+        PreferenceManager.getDefaultSharedPreferences(this)
+          .registerOnSharedPreferenceChangeListener(
+            preferenceChangeListener
+          );
 
         if (savedInstanceState != null) {
             selectedDictionary = savedInstanceState.getInt(SELECTED_DICTIONARY);
@@ -133,8 +157,8 @@ public class MainActivity extends Activity {
             List dictionaries = host.getDictionaries();
             List strategies = host.getStrategies();
             int cacheTime = Integer.parseInt(
-              preferences.getString(getString(
-                R.string.pref_key_cache_time),
+              preferences.getString(
+                getString(R.string.pref_key_cache_time),
                 getString(R.string.pref_value_cache_time)
               )
             );

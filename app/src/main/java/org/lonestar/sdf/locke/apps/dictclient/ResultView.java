@@ -51,6 +51,14 @@ class ResultView extends NestedScrollView {
     }
 
     @Override
+    public void invalidate() {
+        super.invalidate();
+        resultTextView.restoreTextSize();
+        if (!wordWrap)
+          resultTextView.scaleToFitWidth();
+    }
+
+    @Override
     public void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         resultTextView.restoreTextSize();
