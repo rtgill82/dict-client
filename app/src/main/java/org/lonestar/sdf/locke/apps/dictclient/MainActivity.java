@@ -13,8 +13,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -479,13 +481,27 @@ public class MainActivity extends Activity {
         final ImageButton searchButton = findViewById(R.id.search_button);
         if (searchText.getText().length() == 0)
           searchButton.setEnabled(false);
+        searchText.addTextChangedListener(
+            new TextWatcher () {
+                @Override
+                public void onTextChanged(CharSequence s, int start,
+                                          int before, int count) {
+                    if (s.toString().trim().length() > 0)
+                      searchButton.setEnabled(true);
+                    else
+                      searchButton.setEnabled(false);
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start,
+                                              int before, int count) { }
+
+                @Override
+                public void afterTextChanged(Editable s) { }
+            }
+        );
         searchText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (searchText.getText().length() > 0)
-                  searchButton.setEnabled(true);
-                else
-                  searchButton.setEnabled(false);
-
                 switch (keyCode) {
                   case KeyEvent.KEYCODE_DPAD_CENTER:
                   case KeyEvent.KEYCODE_ENTER:
