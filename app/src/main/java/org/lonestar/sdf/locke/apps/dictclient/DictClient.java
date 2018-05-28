@@ -18,7 +18,7 @@ public class DictClient extends Application {
 
     private Host currentHost;
     private HostCache cache;
-    private OnSharedPreferenceChangeListener listener;
+    private OnSharedPreferenceChangeListener preferenceChangeListener;
     private OnHostChangedListener onHostChangedListener;
 
     @Override
@@ -31,11 +31,11 @@ public class DictClient extends Application {
         currentHost = getDefaultHost();
         cache.add(currentHost);
 
-        listener =
+        preferenceChangeListener =
           new SharedPreferences.OnSharedPreferenceChangeListener() {
               public void onSharedPreferenceChanged(
-                  SharedPreferences preferences,
-                  String key
+                SharedPreferences preferences,
+                String key
               ) {
                   if (key.equals(getString(R.string.pref_key_default_host))) {
                       int hostId = Integer.parseInt(preferences
@@ -47,7 +47,9 @@ public class DictClient extends Application {
 
         SharedPreferences preferences =
           PreferenceManager.getDefaultSharedPreferences(this);
-        preferences.registerOnSharedPreferenceChangeListener(listener);
+        preferences.registerOnSharedPreferenceChangeListener(
+          preferenceChangeListener
+        );
     }
 
     public void setOnHostChangedListener(OnHostChangedListener listener) {
