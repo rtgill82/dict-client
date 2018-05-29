@@ -8,13 +8,11 @@
     <CheckBoxPreference
         android:key="@string/pref_key_word_wrap"
         android:title="@string/pref_title_word_wrap"
-        android:summary="@string/pref_summary_word_wrap"
         android:defaultValue="@bool/pref_value_word_wrap" />
 
     <EditTextPreference
         android:key="@string/pref_key_cache_time"
         android:title="@string/pref_title_cache_time"
-        android:summary="@string/pref_summary_cache_time"
         android:defaultValue="@string/pref_value_cache_time"
         android:singleLine="true"
         android:numeric="integer" />
