@@ -11,6 +11,7 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
 public class DictClient extends Application {
@@ -57,7 +58,14 @@ public class DictClient extends Application {
     }
 
     public Host getDefaultHost() {
-        return DatabaseManager.getInstance().getDefaultHost(this);
+        SharedPreferences preferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        Resources resources = this.getResources();
+        int hostId = Integer.parseInt(preferences.getString(
+                resources.getString(R.string.pref_key_default_host),
+                resources.getString(R.string.pref_value_default_host))
+        );
+        return (Host) DatabaseManager.find(Host.class, hostId);
     }
 
     public void useDefaultHost() {
@@ -89,8 +97,7 @@ public class DictClient extends Application {
         Host host = cache.getHostById(hostId);
         if (host == null) {
             if (defaultHost == null)
-              defaultHost = DatabaseManager.getInstance()
-                                           .getHostById(hostId);
+              defaultHost = (Host) DatabaseManager.find(Host.class, hostId);
             host = defaultHost;
             cache.add(defaultHost);
         }

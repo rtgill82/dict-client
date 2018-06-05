@@ -8,17 +8,24 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
+import android.database.CursorWrapper;
+
+import com.j256.ormlite.android.AndroidDatabaseResults;
+import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("unused")
 @DatabaseTable(tableName = "hosts")
-class Host {
+class Host extends ModelBase {
     @DatabaseField(generatedId = true, columnName = "_id")
     private Integer id;
     @DatabaseField(canBeNull = false, uniqueIndexName = "host_port_idx")
@@ -140,6 +147,41 @@ class Host {
 
     public void setStrategies(List<Strategy> list) {
         strategies = list;
+    }
+
+    public static CursorWrapper cursorWrapper(CloseableIterator iterator) {
+        AndroidDatabaseResults results =
+          (AndroidDatabaseResults) iterator.getRawResults();
+        return new HostCursor(results.getRawCursor());
+    }
+
+    @Override
+    public boolean delete() throws SQLException {
+        if (isReadonly()) {
+            return false;
+        } else if (!isUserDefined()) {
+            setHidden(true);
+            return save();
+        } else {
+            return super.delete();
+        }
+    }
+
+    @Override
+    public boolean save() throws SQLException {
+        if (getId() == null) {
+            Map<String, Object> map = new HashMap();
+            map.put("host_name", getHostName());
+            map.put("port", getPort());
+            if (!getDao().queryForFieldValues(map).isEmpty()) {
+                SQLException exception =
+                        new SQLException("The host " + getHostName() + ":"
+                                + getPort().toString()
+                                + " already exists.");
+                throw exception;
+            }
+        }
+        return super.save();
     }
 
     @Override

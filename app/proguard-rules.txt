@@ -5,9 +5,7 @@
 -keep class javax.** { *; }
 -keep class org.slf4j.** { *; }
 -keep class org.lonestar.sdf.locke.apps.dictclient.DatabaseRevision { *; }
--keep class org.lonestar.sdf.locke.apps.dictclient.Dictionary { *; }
--keep class org.lonestar.sdf.locke.apps.dictclient.Host { *; }
--keep class org.lonestar.sdf.locke.apps.dictclient.Strategy { *; }
+-keep class * extends org.lonestar.sdf.locke.apps.dictclient.ModelBase { *; }
 -keeppackagenames org.lonestar.sdf.locke.libs.dict
 
 -assumenosideeffects class android.util.Log {

@@ -23,6 +23,10 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
 public class ManageHostsListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,7 +96,10 @@ public class ManageHostsListFragment extends ListFragment {
     }
 
     public void refreshHostList() {
-        HostCursor cursor = DatabaseManager.getInstance().getHostList();
+        Map map = new HashMap();
+        map.put("hidden", false);
+        HostCursor cursor = (HostCursor)
+          DatabaseManager.find(Host.class, map);
         ManageHostCursorAdapter ca =
           new ManageHostCursorAdapter(this.getActivity(), cursor, 0);
         setListAdapter(ca);
@@ -114,22 +121,26 @@ public class ManageHostsListFragment extends ListFragment {
 
     private void deleteSelectedHosts() {
         SparseBooleanArray selected = getListView().getCheckedItemPositions();
-        Host defaultHost = DatabaseManager.getInstance()
-          .getDefaultHost(this.getActivity());
+        Host defaultHost = ((DictClient) getActivity().getApplication())
+                                                      .getDefaultHost();
 
-        for (int i = 0; i < selected.size(); i++) {
-            int pos = selected.keyAt(i);
-            getListView().setItemChecked(pos, false);
-            Host host = getHostAtPosition(pos);
-            if (host.getId() == defaultHost.getId()) {
-                SharedPreferences prefs = PreferenceManager
-                  .getDefaultSharedPreferences(this.getActivity());
-                prefs.edit().putString(
-                    getString(R.string.pref_key_default_host),
-                    getString(R.string.pref_value_default_host)
-                ).commit();
+        try {
+            for (int i = 0; i < selected.size(); i++) {
+                int pos = selected.keyAt(i);
+                getListView().setItemChecked(pos, false);
+                Host host = getHostAtPosition(pos);
+                if (host.getId() == defaultHost.getId()) {
+                    SharedPreferences prefs = PreferenceManager
+                            .getDefaultSharedPreferences(this.getActivity());
+                    prefs.edit().putString(
+                            getString(R.string.pref_key_default_host),
+                            getString(R.string.pref_value_default_host)
+                    ).commit();
+                }
+                host.delete();
             }
-            DatabaseManager.getInstance().deleteHost(host);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         refreshHostList();
     }

@@ -9,29 +9,28 @@
 package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.j256.ormlite.android.AndroidDatabaseResults;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.stmt.PreparedDelete;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -84,96 +83,36 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public Host getDefaultHost(Context context) {
-        SharedPreferences prefs =
-          PreferenceManager.getDefaultSharedPreferences(context);
-        Resources resources = context.getResources();
-        int hostId = Integer.parseInt(prefs.getString(
-            resources.getString(R.string.pref_key_default_host),
-            resources.getString(R.string.pref_value_default_host))
-        );
-
-        Host host;
+    public static Object find(Class<? extends ModelBase> clazz, Integer id) {
         try {
-            Dao<Host, Integer> dao = instance.getDao(Host.class);
-            host = dao.queryForId(hostId);
-        } catch (SQLException e) {
-            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
-            throw new RuntimeException(e);
-        }
-        return host;
-    }
-
-    public Host getHostById(Integer id) {
-        try {
-            Dao<Host, Integer> dao;
-            dao = instance.getDao(Host.class);
+            Dao dao = instance.getDao(clazz);
             return dao.queryForId(id);
         } catch (SQLException e) {
-            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
             throw new RuntimeException(e);
         }
     }
 
-    public boolean deleteHost(Host host) {
+    public static CursorWrapper find(Class<? extends ModelBase> clazz, Map map) {
+        CloseableIterator iterator;
         try {
-            Dao<Host, Integer> dao = instance.getDao(Host.class);
-
-            // Ignore readonly hosts
-            if (host.isReadonly())
-              return true;
-
-            // Remove preconfigured hosts from list
-            else if (!host.isUserDefined()) {
-                host.setHidden(true);
-                return saveHost(host);
+            Dao dao = instance.getDao(clazz);
+            QueryBuilder qb = dao.queryBuilder();
+            Where where = qb.where();
+            for (Object key : map.keySet()) {
+                where = where.eq(key.toString(), map.get(key));
             }
-
-            // Otherwise delete from database
-            else
-              return (dao.deleteById(host.getId()) == 1);
+            iterator = dao.iterator(where.prepare());
         } catch (SQLException e) {
-            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
             throw new RuntimeException(e);
         }
-    }
 
-    public HostCursor getHostList() {
-        CloseableIterator<Host> iterator;
         try {
-            Dao<Host, Integer> dao = instance.getDao(Host.class);
-            QueryBuilder<Host, Integer> qb = dao.queryBuilder();
-            iterator = dao.iterator(qb.where().eq("hidden", false)
-                                    .prepare());
-        } catch(SQLException e) {
-            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
+            Method method =
+              clazz.getMethod("cursorWrapper", CloseableIterator.class);
+            return (CursorWrapper) method.invoke(null, iterator);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        AndroidDatabaseResults results =
-          (AndroidDatabaseResults) iterator.getRawResults();
-        return new HostCursor(results.getRawCursor());
-    }
-
-    public boolean saveHost(Host host)
-          throws SQLException {
-        Dao<Host, Integer> dao = getDao(Host.class);
-
-        if (host.getId() == null) {
-            Map<String, Object> map = new HashMap();
-            map.put("host_name", host.getHostName());
-            map.put("port", host.getPort());
-            if (!dao.queryForFieldValues(map).isEmpty()) {
-                SQLException exception =
-                  new SQLException("The host " + host.getHostName() + ":"
-                                   + host.getPort().toString()
-                                   + " already exists.");
-                throw exception;
-            }
-        }
-
-        Dao.CreateOrUpdateStatus status = dao.createOrUpdate(host);
-        return (status.isCreated() | status.isUpdated());
     }
 
     public List<Dictionary> getDictionaries(Host host) {

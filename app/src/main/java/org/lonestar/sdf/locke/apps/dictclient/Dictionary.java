@@ -13,7 +13,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @SuppressWarnings("unused")
 @DatabaseTable(tableName = "dictionaries")
-class Dictionary {
+class Dictionary extends ModelBase {
     @DatabaseField(canBeNull = false, foreign = true)
     private Host host;
     @DatabaseField(canBeNull = false)
