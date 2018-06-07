@@ -185,20 +185,20 @@ class Host extends ModelBase {
     }
 
     @Override
-    public boolean save() throws SQLException {
+    public int create() throws SQLException {
         if (getId() == null) {
             Map<String, Object> map = new HashMap();
             map.put("host_name", getHostName());
             map.put("port", getPort());
             if (!getDao().queryForFieldValues(map).isEmpty()) {
                 SQLException exception =
-                        new SQLException("The host " + getHostName() + ":"
-                                + getPort().toString()
-                                + " already exists.");
+                  new SQLException("The host " + getHostName() + ":"
+                                   + getPort().toString()
+                                   + " already exists.");
                 throw exception;
             }
         }
-        return super.save();
+        return super.create();
     }
 
     @Override
