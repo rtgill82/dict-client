@@ -124,8 +124,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
         JDictClient dictClient =
           JDictClient.connect(host.getHostName(), host.getPort());
 
-        List<Strategy> strategies = new ArrayList<Strategy>();
-        strategies.add(Strategy.DEFINE);
+        List<Strategy> strategies = new ArrayList<>();
         strategies.addAll(
             ClassConvert.convertStrategyList(dictClient.getStrategies(),
                                              host)

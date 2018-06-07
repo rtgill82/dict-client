@@ -26,7 +26,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused")
@@ -51,8 +50,8 @@ class Host extends BaseModel {
 
     @ForeignCollectionField(eager = true)
     private ForeignCollection<Dictionary> dictionaries;
-
-    private List<Strategy> strategies;
+    @ForeignCollectionField(eager = true)
+    private ForeignCollection<Strategy> strategies;
 
     public Host() {
         this(null, null, JDictClient.DEFAULT_PORT);
@@ -143,10 +142,10 @@ class Host extends BaseModel {
 
     public void setDictionaries(Collection<Dictionary> list) {
         Dao dao = dictionaries.getDao();
-        DeleteBuilder db = dao.deleteBuilder();
+        DeleteBuilder deleteBuilder = dao.deleteBuilder();
         try {
-            db.where().eq("host_id", getId());
-            dao.delete(db.prepare());
+            deleteBuilder.where().eq("host_id", getId());
+            dao.delete(deleteBuilder.prepare());
             dictionaries.refreshCollection();
             dictionaries.addAll(list);
             setLastRefresh(Calendar.getInstance().getTime());
@@ -156,14 +155,21 @@ class Host extends BaseModel {
         }
     }
 
-    public List<Strategy> getStrategies() {
-        if (strategies == null)
-            strategies = DatabaseManager.getInstance().getStrategies(this);
+    public Collection<Strategy> getStrategies() {
         return strategies;
     }
 
-    public void setStrategies(List<Strategy> list) {
-        strategies = list;
+    public void setStrategies(Collection<Strategy> list) {
+        Dao dao = strategies.getDao();
+        DeleteBuilder deleteBuilder = dao.deleteBuilder();
+        try {
+            deleteBuilder.where().eq("host_id", getId());
+            dao.delete(deleteBuilder.prepare());
+            strategies.refreshCollection();
+            strategies.addAll(list);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static CursorWrapper cursorWrapper(CloseableIterator iterator) {

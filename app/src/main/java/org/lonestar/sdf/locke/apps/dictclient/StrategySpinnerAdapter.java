@@ -16,15 +16,19 @@ import android.view.ViewGroup;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 class StrategySpinnerAdapter implements SpinnerAdapter {
     private Context context;
     private List<Strategy> data;
 
-    public StrategySpinnerAdapter(Context context, List<Strategy> data) {
+    public StrategySpinnerAdapter(Context context, Collection<Strategy> data) {
         this.context = context;
-        this.data = data;
+        this.data = (data == null) ? new ArrayList<Strategy>() :
+                                     new ArrayList<>(data);
+        this.data.add(0, Strategy.DEFINE);
     }
 
     @Override

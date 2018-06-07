@@ -35,8 +35,6 @@ import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.Match;
 
 import java.net.UnknownHostException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
@@ -157,7 +155,7 @@ public class MainActivity extends Activity {
 
         if (host != null) {
             Collection dictionaries = host.getDictionaries();
-            List strategies = host.getStrategies();
+            Collection strategies = host.getStrategies();
             int cacheTime = Integer.parseInt(
               preferences.getString(
                 getString(R.string.pref_key_cache_time),
@@ -323,7 +321,6 @@ public class MainActivity extends Activity {
             Host host = request.getHost();
             host.setDictionaries(result.getDictionaries());
             host.setStrategies(result.getStrategies());
-            DatabaseManager.getInstance().saveStrategies(host);
             setDictionarySpinnerData(result.getDictionaries());
             setStrategySpinnerData(result.getStrategies());
             break;
@@ -378,7 +375,7 @@ public class MainActivity extends Activity {
         dictionarySpinner.setAdapter(new DictionarySpinnerAdapter(this, list));
     }
 
-    public void setStrategySpinnerData(List<Strategy> list) {
+    public void setStrategySpinnerData(Collection<Strategy> list) {
         strategySpinner.setAdapter(new StrategySpinnerAdapter(this, list));
     }
 
@@ -601,9 +598,7 @@ public class MainActivity extends Activity {
 
     private Spinner setupStrategySpinner() {
         final Spinner strategySpinner = findViewById(R.id.strategy_spinner);
-        ArrayList<Strategy> list = new ArrayList<>();
-        list.add(Strategy.DEFINE);
-        strategySpinner.setAdapter(new StrategySpinnerAdapter(this, list));
+        strategySpinner.setAdapter(new StrategySpinnerAdapter(this, null));
         return strategySpinner;
     }
 }

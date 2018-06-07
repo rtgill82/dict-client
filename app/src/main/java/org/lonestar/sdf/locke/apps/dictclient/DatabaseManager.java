@@ -17,8 +17,6 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.misc.TransactionManager;
-import com.j256.ormlite.stmt.PreparedDelete;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
@@ -29,11 +27,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 class DatabaseManager extends OrmLiteSqliteOpenHelper {
     final private static String DATABASE_NAME    = "dict-client.db";
@@ -111,61 +105,6 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
               clazz.getMethod("cursorWrapper", CloseableIterator.class);
             return (CursorWrapper) method.invoke(null, iterator);
         } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public List<Strategy> getStrategies(Host host) {
-        try {
-            ArrayList<Strategy> strategies = null;
-            Dao<Strategy, Void> dictDao =
-                    DatabaseManager.getInstance().getDao(Strategy.class);
-            List<Strategy> dbstrats = dictDao.queryForEq("host_id", host);
-
-            if (dbstrats.size() > 0) {
-                strategies = new ArrayList<>();
-                strategies.add(Strategy.DEFINE);
-                strategies.addAll(dbstrats);
-            }
-            return strategies;
-        }
-        catch (SQLException e) {
-            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void saveStrategies(final Host host) {
-        try {
-            final Dao<Strategy, Void> stratDao = getDao(Strategy.class);
-
-            // Delete all old dictionaries first
-            PreparedDelete<Strategy> statement = (PreparedDelete<Strategy>)
-                    stratDao.deleteBuilder().where().eq("host_id", host).prepare();
-            stratDao.delete(statement);
-            getWritableDatabase().execSQL("VACUUM");
-
-            /*
-             * Save new dictionaries, but rollback if there's not enough disk
-             * space. This should force the dictionaries to be refreshed on
-             * every usage when the disk is full.
-             */
-            TransactionManager.callInTransaction(connectionSource,
-                    new Callable<Void>() {
-                        public Void call() throws Exception {
-                            Dao<Host, Integer> hostDao = getDao(Host.class);
-                            for (Strategy strat : host.getStrategies()) {
-                                if (strat.getHost() != null)
-                                  stratDao.create(strat);
-                            }
-                            host.setLastRefresh(Calendar.getInstance()
-                                    .getTime());
-                            hostDao.update(host);
-                            return null;
-                        }
-                    });
-        } catch (SQLException e) {
-            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
             throw new RuntimeException(e);
         }
     }
