@@ -31,7 +31,7 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 @DatabaseTable(tableName = "hosts")
-class Host extends ModelBase {
+class Host extends BaseModel {
     @DatabaseField(generatedId = true, columnName = "_id")
     private Integer id;
     @DatabaseField(canBeNull = false, uniqueIndexName = "host_port_idx")

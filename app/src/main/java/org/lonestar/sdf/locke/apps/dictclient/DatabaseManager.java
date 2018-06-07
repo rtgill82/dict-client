@@ -83,7 +83,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public static Object find(Class<? extends ModelBase> clazz, Integer id) {
+    public static Object find(Class<? extends BaseModel> clazz, Integer id) {
         try {
             Dao dao = instance.getDao(clazz);
             return dao.queryForId(id);
@@ -92,7 +92,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public static CursorWrapper find(Class<? extends ModelBase> clazz, Map map) {
+    public static CursorWrapper find(Class<? extends BaseModel> clazz, Map map) {
         CloseableIterator iterator;
         try {
             Dao dao = instance.getDao(clazz);

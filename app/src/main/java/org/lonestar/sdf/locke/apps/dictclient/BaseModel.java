@@ -13,7 +13,7 @@ import android.database.CursorWrapper;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.misc.BaseDaoEnabled;
 
-class ModelBase extends BaseDaoEnabled {
+class BaseModel extends BaseDaoEnabled {
     public static CursorWrapper cursorWrapper(CloseableIterator iterator) {
         throw new UnsupportedOperationException();
     }

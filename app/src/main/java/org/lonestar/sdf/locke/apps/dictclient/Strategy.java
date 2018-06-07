@@ -12,7 +12,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "strategies")
-class Strategy extends ModelBase {
+class Strategy extends BaseModel {
     @DatabaseField(canBeNull = false, foreign = true)
     private Host host;
     @DatabaseField(canBeNull = false)
