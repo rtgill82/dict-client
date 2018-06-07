@@ -198,9 +198,8 @@ class Host extends BaseModel {
             map.put("port", getPort());
             if (!getDao().queryForFieldValues(map).isEmpty()) {
                 SQLException exception =
-                  new SQLException("The host " + getHostName() + ":"
-                                   + getPort().toString()
-                                   + " already exists.");
+                  new SQLException("The host " + toString() +
+                                   " already exists.");
                 throw exception;
             }
         }
