@@ -85,6 +85,7 @@ public class EditHostDialog extends DialogFragment {
                                                        .toString());
 
                     try {
+                        host.setDao(DatabaseManager.getInstance().getDao(Host.class));
                         host.save();
                     } catch (SQLException e) {
                         ErrorDialog.show(getActivity(), e.getMessage());

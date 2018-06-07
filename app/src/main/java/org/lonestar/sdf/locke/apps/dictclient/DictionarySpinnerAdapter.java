@@ -17,15 +17,18 @@ import android.view.ViewGroup;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 class DictionarySpinnerAdapter implements SpinnerAdapter {
     private Context context;
     private List<Dictionary> data;
 
-    public DictionarySpinnerAdapter(Context context, List<Dictionary> data) {
+    public DictionarySpinnerAdapter(Context context, Collection<Dictionary> data) {
         this.context = context;
-        this.data = data;
+        this.data = new ArrayList<>(data);
+        this.data.add(0, Dictionary.ALL_DICTIONARIES);
     }
 
     @Override

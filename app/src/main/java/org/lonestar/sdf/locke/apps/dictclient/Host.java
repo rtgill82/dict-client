@@ -12,12 +12,18 @@ import android.database.CursorWrapper;
 
 import com.j256.ormlite.android.AndroidDatabaseResults;
 import com.j256.ormlite.dao.CloseableIterator;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.table.DatabaseTable;
 
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +49,9 @@ class Host extends ModelBase {
     @DatabaseField(defaultValue = "false")
     private boolean hidden;
 
-    private List<Dictionary> dictionaries;
+    @ForeignCollectionField(eager = true)
+    private ForeignCollection<Dictionary> dictionaries;
+
     private List<Strategy> strategies;
 
     public Host() {
@@ -129,14 +137,23 @@ class Host extends ModelBase {
         this.hidden = hidden;
     }
 
-    public List<Dictionary> getDictionaries() {
-        if (dictionaries == null)
-          dictionaries = DatabaseManager.getInstance().getDictionaries(this);
+    public Collection<Dictionary> getDictionaries() {
         return dictionaries;
     }
 
-    public void setDictionaries(List<Dictionary> list) {
-        dictionaries = list;
+    public void setDictionaries(Collection<Dictionary> list) {
+        Dao dao = dictionaries.getDao();
+        DeleteBuilder db = dao.deleteBuilder();
+        try {
+            db.where().eq("host_id", getId());
+            dao.delete(db.prepare());
+            dictionaries.refreshCollection();
+            dictionaries.addAll(list);
+            setLastRefresh(Calendar.getInstance().getTime());
+            update();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<Strategy> getStrategies() {
@@ -156,12 +173,12 @@ class Host extends ModelBase {
     }
 
     @Override
-    public boolean delete() throws SQLException {
+    public int delete() throws SQLException {
         if (isReadonly()) {
-            return false;
+            return 0;
         } else if (!isUserDefined()) {
             setHidden(true);
-            return save();
+            return update();
         } else {
             return super.delete();
         }

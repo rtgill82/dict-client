@@ -13,8 +13,6 @@ import android.database.CursorWrapper;
 
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 
-import java.util.Date;
-
 class HostCursor extends CursorWrapper {
     private Cursor cursor;
 
@@ -24,12 +22,7 @@ class HostCursor extends CursorWrapper {
     }
 
     public Host getDictionaryHost() {
-        Host host = new Host(getId(), getHostName(), getPort());
-        host.setDescription(getDescription());
-        host.setLastRefresh(getLastRefresh());
-        host.setReadonly(isReadonly());
-        host.setUserDefined(isUserDefined());
-        return host;
+        return (Host) DatabaseManager.find(Host.class, getId());
     }
 
     public Integer getId() {
@@ -40,26 +33,12 @@ class HostCursor extends CursorWrapper {
         return (cursor.getString(cursor.getColumnIndexOrThrow("host_name")));
     }
 
-    public Integer getPort() {
-        return (cursor.getInt(cursor.getColumnIndexOrThrow("port")));
-    }
-
     public String getDescription() {
         return (cursor.getString(cursor.getColumnIndexOrThrow("description")));
     }
 
     public boolean isReadonly() {
         return (cursor.getInt(cursor.getColumnIndexOrThrow("readonly")) != 0);
-    }
-
-    public boolean isUserDefined() {
-        return (cursor.getInt(cursor.getColumnIndexOrThrow("user_defined")) != 0);
-    }
-
-    public Date getLastRefresh() {
-        return (new Date(
-            cursor.getLong(cursor.getColumnIndexOrThrow("last_refresh"))
-        ));
     }
 
     public String getString(int columnIndex) {

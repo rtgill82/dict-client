@@ -115,61 +115,6 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public List<Dictionary> getDictionaries(Host host) {
-        try {
-            ArrayList<Dictionary> dictionaries = null;
-            Dao<Dictionary, Void> dictDao =
-              DatabaseManager.getInstance().getDao(Dictionary.class);
-            List<Dictionary> dbdicts = dictDao.queryForEq("host_id", host);
-
-            if (dbdicts.size() > 0) {
-                dictionaries = new ArrayList<>();
-                dictionaries.add(Dictionary.ALL_DICTIONARIES);
-                dictionaries.addAll(dbdicts);
-            }
-            return dictionaries;
-        }
-        catch (SQLException e) {
-            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void saveDictionaries(final Host host) {
-        try {
-            final Dao<Dictionary, Void> dictDao = getDao(Dictionary.class);
-
-            // Delete all old dictionaries first
-            PreparedDelete<Dictionary> statement = (PreparedDelete<Dictionary>)
-              dictDao.deleteBuilder().where().eq("host_id", host).prepare();
-            dictDao.delete(statement);
-            getWritableDatabase().execSQL("VACUUM");
-
-            /*
-             * Save new dictionaries, but rollback if there's not enough disk
-             * space. This should force the dictionaries to be refreshed on
-             * every usage when the disk is full.
-             */
-            TransactionManager.callInTransaction(connectionSource,
-                new Callable<Void>() {
-                    public Void call() throws Exception {
-                        Dao<Host, Integer> hostDao = getDao(Host.class);
-                        for (Dictionary dict : host.getDictionaries()) {
-                            if (dict.getHost() != null)
-                              dictDao.create(dict);
-                        }
-                        host.setLastRefresh(Calendar.getInstance()
-                                                    .getTime());
-                        hostDao.update(host);
-                        return null;
-                    }
-                });
-        } catch (SQLException e) {
-            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
-            throw new RuntimeException(e);
-        }
-    }
-
     public List<Strategy> getStrategies(Host host) {
         try {
             ArrayList<Strategy> strategies = null;

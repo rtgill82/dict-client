@@ -35,8 +35,10 @@ import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.Match;
 
 import java.net.UnknownHostException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -154,7 +156,7 @@ public class MainActivity extends Activity {
         );
 
         if (host != null) {
-            List dictionaries = host.getDictionaries();
+            Collection dictionaries = host.getDictionaries();
             List strategies = host.getStrategies();
             int cacheTime = Integer.parseInt(
               preferences.getString(
@@ -167,7 +169,7 @@ public class MainActivity extends Activity {
             expireTime.setTime(host.getLastRefresh());
             expireTime.add(Calendar.DATE, cacheTime);
 
-            if (dictionaries == null ||
+            if (dictionaries.isEmpty() ||
                   expireTime.before(Calendar.getInstance())) {
                 refreshDictionaries();
             } else {
@@ -321,7 +323,6 @@ public class MainActivity extends Activity {
             Host host = request.getHost();
             host.setDictionaries(result.getDictionaries());
             host.setStrategies(result.getStrategies());
-            DatabaseManager.getInstance().saveDictionaries(host);
             DatabaseManager.getInstance().saveStrategies(host);
             setDictionarySpinnerData(result.getDictionaries());
             setStrategySpinnerData(result.getStrategies());
@@ -373,7 +374,7 @@ public class MainActivity extends Activity {
         return (entry != null);
     }
 
-    public void setDictionarySpinnerData(List<Dictionary> list) {
+    public void setDictionarySpinnerData(Collection<Dictionary> list) {
         dictionarySpinner.setAdapter(new DictionarySpinnerAdapter(this, list));
     }
 

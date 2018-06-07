@@ -10,7 +10,6 @@ package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
@@ -110,8 +109,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
         JDictClient dictClient =
           JDictClient.connect(host.getHostName(), host.getPort());
 
-        List<Dictionary> dictionaries = new ArrayList<Dictionary>();
-        dictionaries.add(Dictionary.ALL_DICTIONARIES);
+        List<Dictionary> dictionaries = new ArrayList<>();
         dictionaries.addAll(
             ClassConvert.convertDictionaryList(dictClient.getDictionaries(),
                                                host)
