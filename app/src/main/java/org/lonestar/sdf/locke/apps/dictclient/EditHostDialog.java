@@ -55,7 +55,7 @@ public class EditHostDialog extends DialogFragment {
         editDescription = layout.findViewById(R.id.edit_description);
 
         if (host != null) {
-            editHostName.setText(host.getHostName());
+            editHostName.setText(host.getName());
             editPort.setText(host.getPort().toString());
             editDescription.setText(host.getDescription().toString());
         }
@@ -80,7 +80,7 @@ public class EditHostDialog extends DialogFragment {
                     }
 
                     host.setUserDefined(true);
-                    host.setHostName(editHostName.getText().toString());
+                    host.setName(editHostName.getText().toString());
                     host.setDescription(editDescription.getText()
                                                        .toString());
 

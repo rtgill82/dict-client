@@ -21,9 +21,9 @@ import java.util.List;
 class Host {
     @DatabaseField(generatedId = true, columnName = "_id")
     private Integer id;
-    @DatabaseField(canBeNull = false, uniqueIndexName = "host_port_idx")
-    private String host_name;
-    @DatabaseField(canBeNull = false, uniqueIndexName = "host_port_idx", defaultValue = "2628")
+    @DatabaseField(canBeNull = false, uniqueIndexName = "name_port_idx")
+    private String name;
+    @DatabaseField(canBeNull = false, uniqueIndexName = "name_port_idx", defaultValue = "2628")
     private Integer port;
     @DatabaseField()
     private String description;
@@ -43,17 +43,17 @@ class Host {
         this(null, null, JDictClient.DEFAULT_PORT);
     }
 
-    public Host(String hostName) {
-        this(null, hostName, JDictClient.DEFAULT_PORT);
+    public Host(String name) {
+        this(null, name, JDictClient.DEFAULT_PORT);
     }
 
-    public Host(String hostName, Integer port) {
-        this(null, hostName, port);
+    public Host(String name, Integer port) {
+        this(null, name, port);
     }
 
-    public Host(Integer id, String hostName, Integer port) {
+    public Host(Integer id, String name, Integer port) {
         this.id = id;
-        this.host_name = hostName;
+        this.name = name;
         this.port = port;
         this.last_refresh = new Date();
     }
@@ -66,12 +66,12 @@ class Host {
         this.id = id;
     }
 
-    public String getHostName() {
-        return host_name;
+    public String getName() {
+        return name;
     }
 
-    public void setHostName(String hostName) {
-        this.host_name = hostName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getPort() {
@@ -145,8 +145,8 @@ class Host {
     @Override
     public String toString() {
         if (port != JDictClient.DEFAULT_PORT)
-          return host_name + ":" + port;
+          return name + ":" + port;
         else
-          return host_name;
+          return name;
     }
 }

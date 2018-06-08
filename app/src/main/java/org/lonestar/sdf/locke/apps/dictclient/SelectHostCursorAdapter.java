@@ -42,7 +42,7 @@ class SelectHostCursorAdapter extends CursorAdapter {
     }
 
     private String createItem(Cursor cursor) {
-        String host = cursor.getString(cursor.getColumnIndex("host_name"));
+        String host = cursor.getString(cursor.getColumnIndex("name"));
         Integer port = cursor.getInt(cursor.getColumnIndex("port"));
         String description =
           cursor.getString(cursor.getColumnIndex("description"));

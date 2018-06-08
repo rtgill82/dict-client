@@ -107,7 +107,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
           throws Exception {
         Host host = request.getHost();
         JDictClient dictClient =
-          JDictClient.connect(host.getHostName(), host.getPort());
+          JDictClient.connect(host.getName(), host.getPort());
 
         List<Dictionary> dictionaries = new ArrayList<Dictionary>();
         dictionaries.add(Dictionary.ALL_DICTIONARIES);
@@ -123,7 +123,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
           throws Exception {
         Host host = request.getHost();
         JDictClient dictClient =
-          JDictClient.connect(host.getHostName(), host.getPort());
+          JDictClient.connect(host.getName(), host.getPort());
 
         List<Strategy> strategies = new ArrayList<Strategy>();
         strategies.add(Strategy.DEFINE);
@@ -146,7 +146,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
           throws Exception {
         Host host = request.getHost();
         JDictClient dictClient =
-          JDictClient.connect(host.getHostName(), host.getPort());
+          JDictClient.connect(host.getName(), host.getPort());
 
         List<Definition> definitions;
         if (dictionary != null && dictionary.getName() != null)
@@ -163,7 +163,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
           throws Exception {
         Host host = request.getHost();
         JDictClient dictClient =
-          JDictClient.connect(host.getHostName(), host.getPort());
+          JDictClient.connect(host.getName(), host.getPort());
 
         List <Match> matches = dictClient.match(strategy.getName(),
                                                 word,
@@ -175,7 +175,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
     private String getDictionaryInfo(Dictionary dictionary)
           throws Exception {
         Host host = request.getHost();
-        JDictClient dictClient = JDictClient.connect(host.getHostName(),
+        JDictClient dictClient = JDictClient.connect(host.getName(),
                                                      host.getPort());
         String dictInfo =
           dictClient.getDictionaryInfo(dictionary.getName());
