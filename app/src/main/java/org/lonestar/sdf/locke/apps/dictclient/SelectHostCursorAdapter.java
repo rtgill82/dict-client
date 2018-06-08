@@ -18,7 +18,7 @@ import android.widget.CheckedTextView;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import org.lonestar.sdf.locke.libs.dict.JDictClient;
+import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 
 class SelectHostCursorAdapter extends CursorAdapter {
     public SelectHostCursorAdapter(Context context, Cursor cursor, int flags) {

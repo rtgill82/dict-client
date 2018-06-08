@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.CursorAdapter;
 
-import org.lonestar.sdf.locke.libs.dict.JDictClient;
+import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 
 class ManageHostCursorAdapter extends CursorAdapter {
     private Drawable checkMarkDrawable;

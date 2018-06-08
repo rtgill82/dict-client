@@ -20,7 +20,7 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import org.lonestar.sdf.locke.libs.dict.JDictClient;
+import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 
 import java.sql.SQLException;
 

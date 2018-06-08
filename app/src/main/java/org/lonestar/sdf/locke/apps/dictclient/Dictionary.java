@@ -29,11 +29,11 @@ class Dictionary extends BaseModel {
 
     public Dictionary(
         Host host,
-        org.lonestar.sdf.locke.libs.dict.Dictionary dictionary
+        org.lonestar.sdf.locke.libs.jdictclient.Database database
     ) {
         this.host = host;
-        this.database = dictionary.getDatabase();
-        this.description = dictionary.getDescription();
+        this.database = database.getName();
+        this.description = database.getDescription();
     }
 
     public Host getHost() {

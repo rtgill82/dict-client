@@ -31,8 +31,8 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
-import org.lonestar.sdf.locke.libs.dict.Definition;
-import org.lonestar.sdf.locke.libs.dict.Match;
+import org.lonestar.sdf.locke.libs.jdictclient.Definition;
+import org.lonestar.sdf.locke.libs.jdictclient.Match;
 
 import java.net.UnknownHostException;
 import java.util.Calendar;
@@ -444,7 +444,7 @@ public class MainActivity extends Activity {
             for (Definition definition : definitions) {
                 stringBuilder.append(Html.fromHtml(
                     "<b>" +
-                        definition.getDictionary().getDescription() +
+                        definition.getDatabase().getDescription() +
                         "</b><br>"
                 ));
                 stringBuilder.append(DefinitionParser.parse(definition));
@@ -492,7 +492,7 @@ public class MainActivity extends Activity {
             LinkedList<String> list = new LinkedList<>();
             map.put(dictionary, list);
             for (Match match : matches) {
-                if (dictionary.getDatabase().equals(match.getDictionary()))
+                if (dictionary.getDatabase().equals(match.getDatabase()))
                   list.add(match.getWord());
             }
             if (list.size() == 0)

@@ -8,8 +8,8 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
-import org.lonestar.sdf.locke.libs.dict.Definition;
-import org.lonestar.sdf.locke.libs.dict.Match;
+import org.lonestar.sdf.locke.libs.jdictclient.Definition;
+import org.lonestar.sdf.locke.libs.jdictclient.Match;
 
 import java.util.List;
 

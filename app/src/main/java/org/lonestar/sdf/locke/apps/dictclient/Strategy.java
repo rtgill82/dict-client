@@ -28,7 +28,7 @@ class Strategy extends BaseModel {
     }
 
     public Strategy(Host host,
-                    org.lonestar.sdf.locke.libs.dict.Strategy strategy) {
+                    org.lonestar.sdf.locke.libs.jdictclient.Strategy strategy) {
         this.host = host;
         this.strategy = strategy.getName();
         this.description = strategy.getDescription();
