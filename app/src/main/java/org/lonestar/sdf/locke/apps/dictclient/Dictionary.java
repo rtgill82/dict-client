@@ -17,7 +17,7 @@ class Dictionary extends BaseModel {
     @DatabaseField(canBeNull = false, foreign = true)
     private Host host;
     @DatabaseField(canBeNull = false)
-    private String database;
+    private String name;
     @DatabaseField(canBeNull = false)
     private String description;
 
@@ -32,7 +32,7 @@ class Dictionary extends BaseModel {
         org.lonestar.sdf.locke.libs.jdictclient.Database database
     ) {
         this.host = host;
-        this.database = database.getName();
+        this.name = database.getName();
         this.description = database.getDescription();
     }
 
@@ -40,8 +40,8 @@ class Dictionary extends BaseModel {
         return host;
     }
 
-    public String getDatabase() {
-        return database;
+    public String getName() {
+        return name;
     }
 
     public String getDescription() {

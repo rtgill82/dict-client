@@ -341,7 +341,7 @@ public class MainActivity extends Activity {
         Dictionary dict = (Dictionary) dictionarySpinner.getSelectedItem();
         String word = searchText.getText().toString();
         if (!(word.isEmpty())) {
-            if (!strategy.getStrategy().equals("define")) {
+            if (!strategy.getName().equals("define")) {
                 executeTask(JDictClientRequest.MATCH(host, strategy, dict, word));
             } else {
                 if (dict != null)
@@ -380,14 +380,14 @@ public class MainActivity extends Activity {
     }
 
     public void setSelectedDictionary(Dictionary dictionary) {
-        if (dictionary == null || dictionary.getDatabase() == null)
+        if (dictionary == null || dictionary.getName() == null)
           selectedDictionary = 0;
         else {
             SpinnerAdapter adapter = dictionarySpinner.getAdapter();
             for (int i = 0; i < adapter.getCount(); i++) {
                 Dictionary item = (Dictionary) adapter.getItem(i);
-                if (item.getDatabase() == null) continue;
-                if (item.getDatabase().equals(dictionary.getDatabase())) {
+                if (item.getName() == null) continue;
+                if (item.getName().equals(dictionary.getName())) {
                     selectedDictionary = i;
                     break;
                 }
@@ -403,7 +403,7 @@ public class MainActivity extends Activity {
             SpinnerAdapter adapter = strategySpinner.getAdapter();
             for (int i = 0; i < adapter.getCount(); i++) {
                 Strategy item = (Strategy) adapter.getItem(i);
-                if (item.getStrategy().equals(strategy.getStrategy())) {
+                if (item.getName().equals(strategy.getName())) {
                     selectedStrategy = i;
                     break;
                 }
@@ -426,7 +426,7 @@ public class MainActivity extends Activity {
         Strategy strategy = entry.getStrategy();
         setSelectedDictionary(entry.getDictionary());
         setSelectedStrategy(strategy);
-        if (strategy.getStrategy().equals("define"))
+        if (strategy.getName().equals("define"))
           resultView.setWordWrap(wordWrap);
         else
           resultView.setWordWrap(true);
@@ -492,7 +492,7 @@ public class MainActivity extends Activity {
             LinkedList<String> list = new LinkedList<>();
             map.put(dictionary, list);
             for (Match match : matches) {
-                if (dictionary.getDatabase().equals(match.getDatabase()))
+                if (dictionary.getName().equals(match.getDatabase()))
                   list.add(match.getWord());
             }
             if (list.size() == 0)
@@ -580,7 +580,7 @@ public class MainActivity extends Activity {
                 Dictionary currentDictionary = (Dictionary)
                   parent.getSelectedItem();
 
-                if (currentDictionary.getDatabase() != null)
+                if (currentDictionary.getName() != null)
                   button.setEnabled(true);
                 else
                   button.setEnabled(false);

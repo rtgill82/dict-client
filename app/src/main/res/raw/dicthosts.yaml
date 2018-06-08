@@ -1,6 +1,6 @@
 ---
 !!org.lonestar.sdf.locke.apps.dictclient.DatabaseRevision
-version: 1
+version: 2
 add_hosts:
   - !!org.lonestar.sdf.locke.apps.dictclient.Host
     id: 1

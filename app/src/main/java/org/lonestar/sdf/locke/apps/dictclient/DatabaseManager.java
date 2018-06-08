@@ -31,7 +31,7 @@ import java.util.Map;
 
 class DatabaseManager extends OrmLiteSqliteOpenHelper {
     final private static String DATABASE_NAME    = "dict-client.db";
-    final private static int    DATABASE_VERSION = 1;
+    final private static int    DATABASE_VERSION = 2;
 
     private static DatabaseManager instance = null;
     private Context context;
@@ -68,9 +68,13 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource cs,
                           int oldVersion, int newVersion) {
-        Resources resources = this.context.getResources();
         try {
-            loadData(resources, db, cs, oldVersion, newVersion);
+            if (oldVersion < 2) {
+                TableUtils.dropTable(cs, Dictionary.class, false);
+                TableUtils.createTable(cs, Dictionary.class);
+                TableUtils.dropTable(cs, Strategy.class, false);
+                TableUtils.createTable(cs, Strategy.class);
+            }
         } catch (SQLException e) {
             Log.e("DatabaseManager", "SQLException caught: " + e.toString());
             throw new RuntimeException(e);

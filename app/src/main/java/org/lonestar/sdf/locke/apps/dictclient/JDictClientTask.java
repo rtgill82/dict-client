@@ -147,8 +147,8 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
           JDictClient.connect(host.getHostName(), host.getPort());
 
         List<Definition> definitions;
-        if (dictionary != null && dictionary.getDatabase() != null)
-          definitions = dictClient.define(word, dictionary.getDatabase());
+        if (dictionary != null && dictionary.getName() != null)
+          definitions = dictClient.define(word, dictionary.getName());
         else
           definitions = dictClient.define(word);
 
@@ -164,8 +164,8 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
           JDictClient.connect(host.getHostName(), host.getPort());
 
         List <Match> matches = dictClient.match(word,
-                                                strategy.getStrategy(),
-                                                dictionary.getDatabase());
+                                                strategy.getName(),
+                                                dictionary.getName());
         dictClient.close();
         return matches;
     }
@@ -176,7 +176,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
         JDictClient dictClient = JDictClient.connect(host.getHostName(),
                                                      host.getPort());
         String dictInfo =
-          dictClient.getDatabaseInfo(dictionary.getDatabase());
+          dictClient.getDatabaseInfo(dictionary.getName());
         dictClient.close();
         return dictInfo;
     }

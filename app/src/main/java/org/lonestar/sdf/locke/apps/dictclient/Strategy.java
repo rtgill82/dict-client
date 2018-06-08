@@ -16,21 +16,21 @@ class Strategy extends BaseModel {
     @DatabaseField(canBeNull = false, foreign = true)
     private Host host;
     @DatabaseField(canBeNull = false)
-    private String strategy;
+    private String name;
     @DatabaseField(canBeNull = false)
     private String description;
 
     public static final Strategy DEFINE = new Strategy();
 
     public Strategy() {
-        strategy = "define";
+        name = "define";
         description = "Define the entered word";
     }
 
     public Strategy(Host host,
                     org.lonestar.sdf.locke.libs.jdictclient.Strategy strategy) {
         this.host = host;
-        this.strategy = strategy.getName();
+        this.name = strategy.getName();
         this.description = strategy.getDescription();
     }
 
@@ -38,8 +38,8 @@ class Strategy extends BaseModel {
         return host;
     }
 
-    public String getStrategy() {
-        return strategy;
+    public String getName() {
+        return name;
     }
 
     public String getDescription() {
