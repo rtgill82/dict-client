@@ -10,7 +10,6 @@ package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
@@ -150,8 +149,8 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
           JDictClient.connect(host.getHostName(), host.getPort());
 
         List<Definition> definitions;
-        if (dictionary != null && dictionary.getDatabase() != null)
-          definitions = dictClient.define(dictionary.getDatabase(), word);
+        if (dictionary != null && dictionary.getName() != null)
+          definitions = dictClient.define(dictionary.getName(), word);
         else
           definitions = dictClient.define(word);
 
@@ -166,9 +165,9 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
         JDictClient dictClient =
           JDictClient.connect(host.getHostName(), host.getPort());
 
-        List <Match> matches = dictClient.match(strategy.getStrategy(),
+        List <Match> matches = dictClient.match(strategy.getName(),
                                                 word,
-                                                dictionary.getDatabase());
+                                                dictionary.getName());
         dictClient.close();
         return matches;
     }
@@ -179,7 +178,7 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
         JDictClient dictClient = JDictClient.connect(host.getHostName(),
                                                      host.getPort());
         String dictInfo =
-          dictClient.getDictionaryInfo(dictionary.getDatabase());
+          dictClient.getDictionaryInfo(dictionary.getName());
         dictClient.close();
         return dictInfo;
     }

@@ -17,7 +17,7 @@ class Dictionary {
     @DatabaseField(canBeNull = false, foreign = true)
     private Host host;
     @DatabaseField(canBeNull = false)
-    private String database;
+    private String name;
     @DatabaseField(canBeNull = false)
     private String description;
 
@@ -32,7 +32,7 @@ class Dictionary {
         org.lonestar.sdf.locke.libs.dict.Dictionary dictionary
     ) {
         this.host = host;
-        this.database = dictionary.getDatabase();
+        this.name = dictionary.getDatabase();
         this.description = dictionary.getDescription();
     }
 
@@ -40,8 +40,8 @@ class Dictionary {
         return host;
     }
 
-    public String getDatabase() {
-        return database;
+    public String getName() {
+        return name;
     }
 
     public String getDescription() {

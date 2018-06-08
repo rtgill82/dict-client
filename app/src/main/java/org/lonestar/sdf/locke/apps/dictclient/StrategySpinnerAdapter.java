@@ -51,7 +51,7 @@ class StrategySpinnerAdapter implements SpinnerAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         TextView v = new TextView(context.getApplicationContext());
         v.setTextColor(Color.BLACK);
-        v.setText(data.get(position).getStrategy());
+        v.setText(data.get(position).getName());
         return v;
     }
 
