@@ -31,7 +31,7 @@ import java.util.Map;
 
 class DatabaseManager extends OrmLiteSqliteOpenHelper {
     final private static String DATABASE_NAME    = "dict-client.db";
-    final private static int    DATABASE_VERSION = 2;
+    final private static int    DATABASE_VERSION = 3;
 
     private static DatabaseManager instance = null;
     private Context context;
@@ -74,6 +74,15 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
                 TableUtils.createTable(cs, Dictionary.class);
                 TableUtils.dropTable(cs, Strategy.class, false);
                 TableUtils.createTable(cs, Strategy.class);
+            }
+
+            if (oldVersion < 3) {
+                db.execSQL("ALTER TABLE hosts RENAME TO tmp_hosts;");
+                TableUtils.createTable(cs, Host.class);
+                db.execSQL("INSERT INTO hosts (_id, name, port, description, last_refresh, readonly, user_defined, hidden) " +
+                           "SELECT _id, host_name, port, description, last_refresh, readonly, user_defined, hidden " +
+                           "FROM tmp_hosts;");
+                db.execSQL("DROP TABLE tmp_hosts;");
             }
         } catch (SQLException e) {
             Log.e("DatabaseManager", "SQLException caught: " + e.toString());

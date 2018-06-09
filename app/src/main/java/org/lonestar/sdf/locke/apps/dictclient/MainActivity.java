@@ -183,7 +183,7 @@ public class MainActivity extends Activity {
                 hostChanged = false;
             }
 
-            setTitle(host.getHostName());
+            setTitle(host.getName());
             dictionarySpinner.setSelection(selectedDictionary);
             strategySpinner.setSelection(selectedStrategy);
         }

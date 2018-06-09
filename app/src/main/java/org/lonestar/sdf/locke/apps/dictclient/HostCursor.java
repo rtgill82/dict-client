@@ -30,7 +30,7 @@ class HostCursor extends CursorWrapper {
     }
 
     public String getHostName() {
-        return (cursor.getString(cursor.getColumnIndexOrThrow("host_name")));
+        return (cursor.getString(cursor.getColumnIndexOrThrow("name")));
     }
 
     public String getDescription() {
