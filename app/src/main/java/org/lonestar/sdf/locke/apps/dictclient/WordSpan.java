@@ -51,8 +51,8 @@ class WordSpan extends ClickableSpan {
             searchText.setText(word);
             searchText.selectAll();
             setDefineStrategy(activity);
-            new JDictClientTask(activity,
-                                JDictClientRequest.DEFINE(host, dictionary, word))
+            new ClientTask(activity,
+                           ClientRequest.DEFINE(host, word, dictionary))
               .execute();
         }
     }
@@ -67,10 +67,10 @@ class WordSpan extends ClickableSpan {
         SpannableStringBuilder spannedString = new SpannableStringBuilder();
         spannedString.append(word);
         spannedString.setSpan(
-            this,
-            spannedString.length() - word.length(),
-            spannedString.length(),
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+          this,
+          spannedString.length() - word.length(),
+          spannedString.length(),
+          Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         );
         return spannedString;
     }

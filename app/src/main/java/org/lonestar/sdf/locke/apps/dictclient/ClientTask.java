@@ -20,19 +20,19 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.lonestar.sdf.locke.apps.dictclient.JDictClientRequest.JDictClientCommand.*;
+import static org.lonestar.sdf.locke.apps.dictclient.ClientRequest.ClientCommand.*;
 
-class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
+class ClientTask extends AsyncTask<Void,Void,ClientResult> {
     private MainActivity context;
-    private JDictClientRequest request;
+    private ClientRequest request;
     private Exception exception;
 
     private ProgressDialog progressDialog;
 
-    private static final Map<JDictClientRequest.JDictClientCommand,String> messages =
-      new EnumMap<>(JDictClientRequest.JDictClientCommand.class);
+    private static final Map<ClientRequest.ClientCommand,String>
+      messages = new EnumMap<>(ClientRequest.ClientCommand.class);
 
-    public JDictClientTask(MainActivity context, JDictClientRequest request) {
+    public ClientTask(MainActivity context, ClientRequest request) {
         super();
         this.context = context;
         this.request = request;
@@ -49,38 +49,38 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
     protected void onPreExecute() {
         if (request.displayWaitMessage()) {
             progressDialog = ProgressDialog.show(
-                context,
-                "Waiting",
-                messages.get(request.getCommand()),
-                true
+              context,
+              "Waiting",
+              messages.get(request.getCommand()),
+              true
             );
         }
     }
 
-    protected JDictClientResult doInBackground(Void... voids) {
+    protected ClientResult doInBackground(Void... voids) {
         try {
             switch (request.getCommand()) {
               case DEFINE:
-                return new JDictClientResult(
-                    request,
-                    getDefinitions(request.getWord(), request.getDictionary())
+                return new ClientResult(
+                  request,
+                  getDefinitions(request.getWord(), request.getDictionary())
                 );
               case MATCH:
-                return new JDictClientResult(
-                    request,
-                    getMatches(request.getWord(), request.getDictionary(),
-                               request.getStrategy())
-                );
-              case DICT_INFO:
-                return new JDictClientResult(
-                    request,
-                    getDictionaryInfo(request.getDictionary())
+                return new ClientResult(
+                  request,
+                  getMatches(request.getWord(), request.getDictionary(),
+                             request.getStrategy())
                 );
               case DICT_LIST:
-                return new JDictClientResult(
-                    request,
-                    getDictionaries(),
-                    getStrategies()
+                return new ClientResult(
+                  request,
+                  getDictionaries(),
+                  getStrategies()
+                );
+              case DICT_INFO:
+                return new ClientResult(
+                  request,
+                  getDictionaryInfo(request.getDictionary())
                 );
               default:
                 break;
@@ -97,62 +97,61 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
     }
 
     @Override
-    protected void onPostExecute(JDictClientResult result) {
-        if (progressDialog != null)
-          progressDialog.dismiss();
+    protected void onPostExecute(ClientResult result) {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
         context.onTaskFinished(result, exception);
     }
 
-    private List<Dictionary> getDictionaries()
-          throws Exception {
+    private List<Dictionary> getDictionaries() throws Exception {
         Host host = request.getHost();
-        JDictClient dictClient =
+        JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
 
         List<Dictionary> dictionaries = new ArrayList<>();
         dictionaries.addAll(
-            ClassConvert.convertDictionaryList(dictClient.getDictionaries(),
-                                               host)
+          ClassConvert.convertDictionaryList(client.getDictionaries(), host)
         );
-        dictClient.close();
+        client.close();
         return dictionaries;
     }
 
     private List<Strategy> getStrategies()
           throws Exception {
         Host host = request.getHost();
-        JDictClient dictClient =
+        JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
 
         List<Strategy> strategies = new ArrayList<>();
         strategies.addAll(
-            ClassConvert.convertStrategyList(dictClient.getStrategies(),
-                                             host)
+          ClassConvert.convertStrategyList(client.getStrategies(), host)
         );
-        dictClient.close();
+        client.close();
         return strategies;
     }
 
     @Override
-    protected void onCancelled(JDictClientResult result) {
-        if (progressDialog != null)
-          progressDialog.dismiss();
+    protected void onCancelled(ClientResult result) {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
-    private List<Definition> getDefinitions(String word,
-                                            Dictionary dictionary)
+    private List<Definition> getDefinitions(String word, Dictionary dictionary)
           throws Exception {
         Host host = request.getHost();
-        JDictClient dictClient =
+        JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
 
         List<Definition> definitions;
-        if (dictionary != null && dictionary.getName() != null)
-          definitions = dictClient.define(word, dictionary.getName());
-        else
-          definitions = dictClient.define(word);
+        if (dictionary != null && dictionary.getName() != null) {
+            definitions = client.define(word, dictionary.getName());
+        } else {
+            definitions = client.define(word);
+        }
 
-        dictClient.close();
+        client.close();
         return definitions;
     }
 
@@ -160,24 +159,24 @@ class JDictClientTask extends AsyncTask<Void,Void,JDictClientResult> {
                                    Strategy strategy)
           throws Exception {
         Host host = request.getHost();
-        JDictClient dictClient =
+        JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
 
-        List <Match> matches = dictClient.match(word,
-                                                strategy.getName(),
-                                                dictionary.getName());
-        dictClient.close();
+        List <Match> matches = client.match(word,
+                                            strategy.getName(),
+                                            dictionary.getName());
+        client.close();
         return matches;
     }
 
     private String getDictionaryInfo(Dictionary dictionary)
           throws Exception {
         Host host = request.getHost();
-        JDictClient dictClient = JDictClient.connect(host.getName(),
-                                                     host.getPort());
-        String dictInfo =
-          dictClient.getDatabaseInfo(dictionary.getName());
-        dictClient.close();
+        JDictClient client =
+          JDictClient.connect(host.getName(), host.getPort());
+
+        String dictInfo = client.getDatabaseInfo(dictionary.getName());
+        client.close();
         return dictInfo;
     }
 }

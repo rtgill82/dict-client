@@ -13,16 +13,16 @@ import org.lonestar.sdf.locke.libs.jdictclient.Match;
 
 import java.util.List;
 
-class JDictClientResult {
-    private final JDictClientRequest request;
+class ClientResult {
+    private final ClientRequest request;
     private final List<Definition> definitions;
     private final List<Dictionary> dictionaries;
     private final List<Strategy> strategies;
     private final List<Match> matches;
     private final String dictionaryInfo;
 
-    private JDictClientResult(JDictClientRequest request, List<?> list1,
-                              List<?> list2, String dictionaryInfo) {
+    private ClientResult(ClientRequest request, List<?> list1,
+                         List<?> list2, String dictionaryInfo) {
         this.request = request;
         this.dictionaryInfo = dictionaryInfo;
 
@@ -54,22 +54,20 @@ class JDictClientResult {
         }
     }
 
-    public JDictClientResult(JDictClientRequest request, List<?> list) {
+    public ClientResult(ClientRequest request, List<?> list) {
         this(request, list, null, null);
     }
 
-    public JDictClientResult(JDictClientRequest request,
-                             String dictionaryInfo) {
+    public ClientResult(ClientRequest request, String dictionaryInfo) {
         this(request, null, null, dictionaryInfo);
     }
 
-    public JDictClientResult(JDictClientRequest request,
-                             List<Dictionary> dictionaries,
-                             List<Strategy> strategies) {
+    public ClientResult(ClientRequest request, List<Dictionary> dictionaries,
+                        List<Strategy> strategies) {
         this(request, dictionaries, strategies, null);
     }
 
-    public JDictClientRequest getRequest() {
+    public ClientRequest getRequest() {
         return request;
     }
 

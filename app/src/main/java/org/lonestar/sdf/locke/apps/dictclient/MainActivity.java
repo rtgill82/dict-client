@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
 
     private Host host;
     private DefinitionHistory history = DefinitionHistory.getInstance();
-    private JDictClientTask runningTask;
+    private ClientTask runningTask;
 
     private ResultView resultView;
     private EditText searchText;
@@ -270,7 +270,7 @@ public class MainActivity extends Activity {
         selectedStrategy = savedInstanceState.getInt(SELECTED_STRATEGY);
     }
 
-    public void onTaskFinished(JDictClientResult result,
+    public void onTaskFinished(ClientResult result,
                                Exception exception) {
         enableInput();
         if (exception != null) {
@@ -283,7 +283,7 @@ public class MainActivity extends Activity {
             return;
         }
 
-        JDictClientRequest request = result.getRequest();
+        ClientRequest request = result.getRequest();
         runningTask = null;
 
         CharSequence text;
@@ -342,12 +342,12 @@ public class MainActivity extends Activity {
         String word = searchText.getText().toString();
         if (!(word.isEmpty())) {
             if (!strategy.getName().equals("define")) {
-                executeTask(JDictClientRequest.MATCH(host, strategy, dict, word));
+                executeTask(ClientRequest.MATCH(host, word, dict, strategy));
             } else {
                 if (dict != null)
-                  executeTask(JDictClientRequest.DEFINE(host, dict, word));
+                  executeTask(ClientRequest.DEFINE(host, word, dict));
                 else
-                  executeTask(JDictClientRequest.DEFINE(host, word));
+                  executeTask(ClientRequest.DEFINE(host, word));
             }
         }
     }
@@ -356,7 +356,7 @@ public class MainActivity extends Activity {
         Dictionary dictionary = (Dictionary)
           dictionarySpinner.getSelectedItem();
         searchText.setText("");
-        executeTask(JDictClientRequest.DICT_INFO(host, dictionary));
+        executeTask(ClientRequest.DICT_INFO(host, dictionary));
     }
 
     public boolean traverseHistory(DefinitionHistory.Direction direction) {
@@ -412,14 +412,14 @@ public class MainActivity extends Activity {
         strategySpinner.setSelection(selectedStrategy);
     }
 
-    private void executeTask(JDictClientRequest request) {
+    private void executeTask(ClientRequest request) {
         disableInput();
-        runningTask = new JDictClientTask(this, request);
+        runningTask = new ClientTask(this, request);
         runningTask.execute();
     }
 
     private void refreshDictionaries() {
-        executeTask(JDictClientRequest.DICT_LIST(host));
+        executeTask(ClientRequest.DICT_LIST(host));
     }
 
     private void displayHistoryEntry(HistoryEntry entry) {
