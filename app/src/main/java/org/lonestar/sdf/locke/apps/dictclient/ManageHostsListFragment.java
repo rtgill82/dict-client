@@ -21,9 +21,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class ManageHostsListFragment extends ListFragment {
+    ManageHostCursorAdapter ca;
+    ArrayList<Boolean> toggles;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +77,6 @@ public class ManageHostsListFragment extends ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ListView listView = getListView();
         listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
-
         listView.setOnItemLongClickListener(
             new AbsListView.OnItemLongClickListener() {
                 public boolean onItemLongClick(AdapterView<?> parent,
@@ -80,11 +86,11 @@ public class ManageHostsListFragment extends ListFragment {
                 }
             }
         );
-
         listView.setOnItemClickListener(
             new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int pos, long id) {
+                    toggles.set(pos, ((CheckedTextView) view).isChecked());
                     getActivity().invalidateOptionsMenu();
                 }
             }
@@ -93,8 +99,9 @@ public class ManageHostsListFragment extends ListFragment {
 
     public void refreshHostList() {
         HostCursor cursor = DatabaseManager.getInstance().getHostList();
-        ManageHostCursorAdapter ca =
-          new ManageHostCursorAdapter(this.getActivity(), cursor, 0);
+        ca = new ManageHostCursorAdapter(this.getActivity(), cursor, 0);
+        toggles = new ArrayList<>(Collections.nCopies(ca.getCount(), false));
+        ca.setToggleList(toggles);
         setListAdapter(ca);
     }
 
