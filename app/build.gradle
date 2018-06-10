@@ -28,6 +28,7 @@ android {
 dependencies {
     implementation project(':jdict-client')
     implementation 'com.android.billingclient:billing:1.0'
+    implementation 'com.android.support:appcompat-v7:27.+'
     implementation 'com.android.support:support-v4:27.+'
     implementation 'com.github.bmoliveira:snake-yaml:v1.18-android'
     implementation 'com.j256.ormlite:ormlite-android:5.0'
