@@ -38,6 +38,11 @@ public class ManageHostsListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         refreshHostList();
     }
 
@@ -101,6 +106,7 @@ public class ManageHostsListFragment extends ListFragment {
     }
 
     public void refreshHostList() {
+        getListView().clearChoices();
         Map map = new HashMap();
         map.put("hidden", false);
         HostCursor cursor = (HostCursor) DatabaseManager.find(Host.class, map);
@@ -128,25 +134,27 @@ public class ManageHostsListFragment extends ListFragment {
         SparseBooleanArray selected = getListView().getCheckedItemPositions();
         Host defaultHost = ((DictClient) getActivity().getApplication())
                                                       .getDefaultHost();
-
         try {
             for (int i = 0; i < selected.size(); i++) {
                 int pos = selected.keyAt(i);
-                getListView().setItemChecked(pos, false);
-                Host host = getHostAtPosition(pos);
-                if (host.getId() == defaultHost.getId()) {
-                    SharedPreferences prefs = PreferenceManager
-                            .getDefaultSharedPreferences(this.getActivity());
-                    prefs.edit().putString(
-                            getString(R.string.pref_key_default_host),
-                            getString(R.string.pref_value_default_host)
-                    ).commit();
+                if (selected.get(pos, false)) {
+                    getListView().setItemChecked(pos, false);
+                    Host host = getHostAtPosition(pos);
+                    if (host.getId() == defaultHost.getId()) {
+                        SharedPreferences prefs = PreferenceManager
+                          .getDefaultSharedPreferences(this.getActivity());
+                        prefs.edit().putString(
+                          getString(R.string.pref_key_default_host),
+                          getString(R.string.pref_value_default_host)
+                        ).commit();
+                    }
+                    host.delete();
                 }
-                host.delete();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        getActivity().invalidateOptionsMenu();
         refreshHostList();
     }
 
