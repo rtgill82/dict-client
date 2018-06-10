@@ -35,6 +35,11 @@ public class ManageHostsListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         refreshHostList();
     }
 
@@ -98,6 +103,7 @@ public class ManageHostsListFragment extends ListFragment {
     }
 
     public void refreshHostList() {
+        getListView().clearChoices();
         HostCursor cursor = DatabaseManager.getInstance().getHostList();
         ca = new ManageHostCursorAdapter(this.getActivity(), cursor, 0);
         toggles = new ArrayList<>(Collections.nCopies(ca.getCount(), false));
@@ -126,18 +132,21 @@ public class ManageHostsListFragment extends ListFragment {
 
         for (int i = 0; i < selected.size(); i++) {
             int pos = selected.keyAt(i);
-            getListView().setItemChecked(pos, false);
-            Host host = getHostAtPosition(pos);
-            if (host.getId() == defaultHost.getId()) {
-                SharedPreferences prefs = PreferenceManager
-                  .getDefaultSharedPreferences(this.getActivity());
-                prefs.edit().putString(
-                    getString(R.string.pref_key_default_host),
-                    getString(R.string.pref_value_default_host)
-                ).commit();
+            if (selected.get(pos, false)) {
+                getListView().setItemChecked(pos, false);
+                Host host = getHostAtPosition(pos);
+                if (host.getId() == defaultHost.getId()) {
+                    SharedPreferences prefs = PreferenceManager
+                      .getDefaultSharedPreferences(this.getActivity());
+                    prefs.edit().putString(
+                      getString(R.string.pref_key_default_host),
+                      getString(R.string.pref_value_default_host)
+                    ).commit();
+                }
+                DatabaseManager.getInstance().deleteHost(host);
             }
-            DatabaseManager.getInstance().deleteHost(host);
         }
+        getActivity().invalidateOptionsMenu();
         refreshHostList();
     }
 
