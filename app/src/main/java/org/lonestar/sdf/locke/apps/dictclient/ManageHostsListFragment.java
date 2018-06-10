@@ -21,13 +21,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ManageHostsListFragment extends ListFragment {
+    ManageHostCursorAdapter ca;
+    ArrayList<Boolean> toggles;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +80,6 @@ public class ManageHostsListFragment extends ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ListView listView = getListView();
         listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
-
         listView.setOnItemLongClickListener(
             new AbsListView.OnItemLongClickListener() {
                 public boolean onItemLongClick(AdapterView<?> parent,
@@ -84,11 +89,11 @@ public class ManageHostsListFragment extends ListFragment {
                 }
             }
         );
-
         listView.setOnItemClickListener(
             new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int pos, long id) {
+                    toggles.set(pos, ((CheckedTextView) view).isChecked());
                     getActivity().invalidateOptionsMenu();
                 }
             }
@@ -98,10 +103,10 @@ public class ManageHostsListFragment extends ListFragment {
     public void refreshHostList() {
         Map map = new HashMap();
         map.put("hidden", false);
-        HostCursor cursor = (HostCursor)
-          DatabaseManager.find(Host.class, map);
-        ManageHostCursorAdapter ca =
-          new ManageHostCursorAdapter(this.getActivity(), cursor, 0);
+        HostCursor cursor = (HostCursor) DatabaseManager.find(Host.class, map);
+        ca = new ManageHostCursorAdapter(this.getActivity(), cursor, 0);
+        toggles = new ArrayList<>(Collections.nCopies(ca.getCount(), false));
+        ca.setToggleList(toggles);
         setListAdapter(ca);
     }
 

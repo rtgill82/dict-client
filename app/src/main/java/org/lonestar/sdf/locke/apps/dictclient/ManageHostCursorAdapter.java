@@ -15,43 +15,57 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.CursorAdapter;
 
 import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 
+import java.util.ArrayList;
+
 class ManageHostCursorAdapter extends CursorAdapter {
-    private Drawable checkMarkDrawable;
+    private LayoutInflater inflater;
+    private ArrayList<Boolean> toggles;
 
     public ManageHostCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-        checkMarkDrawable =
-          context.getResources()
-                 .getDrawable(R.drawable.checkbox_background);
+        inflater = LayoutInflater.from(context);
+    }
+
+    public void setToggleList(ArrayList<Boolean> list) {
+        toggles = list;
+        notifyDataSetChanged();
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         HostCursor hostCursor = (HostCursor) cursor;
-        LayoutInflater inflater = LayoutInflater.from(context);
-        CheckedTextView textView = (CheckedTextView)
+        CompatCheckedTextView textView = (CompatCheckedTextView)
           inflater.inflate(R.layout.list_item_host, null);
-        textView.setText(Html.fromHtml(createItem(hostCursor)));
-        if (hostCursor.isReadonly()) {
-            textView.setCheckMarkDrawable(null);
+        CheckMarkHolder holder = new CheckMarkHolder();
+        holder.checkMark = textView.getCheckMarkDrawable();
+        textView.setTag(holder);
+        return setupListItemView(textView, hostCursor);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        CompatCheckedTextView textView;
+        HostCursor cursor = (HostCursor) getItem(position);
+        if (convertView != null) {
+            textView = (CompatCheckedTextView) convertView;
+            setupListItemView(textView, cursor);
+        } else {
+            Context context = parent.getContext();
+            textView = (CompatCheckedTextView)
+              newView(context, cursor, parent);
         }
         return textView;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        CheckedTextView textView = (CheckedTextView) view;
-        textView.setText(Html.fromHtml(createItem(cursor)));
-        textView.setCheckMarkDrawable(checkMarkDrawable);
+        CompatCheckedTextView textView = (CompatCheckedTextView) view;
         HostCursor hostCursor = (HostCursor) cursor;
-        if (hostCursor.isReadonly()) {
-            textView.setCheckMarkDrawable(null);
-        }
+        setupListItemView(textView, hostCursor);
     }
 
     @Override
@@ -75,5 +89,24 @@ class ManageHostCursorAdapter extends CursorAdapter {
             itemText += "<br><i>" + description + "</i>";
         }
         return itemText;
+    }
+
+    private CompatCheckedTextView setupListItemView(
+      CompatCheckedTextView view,
+      HostCursor cursor
+    ) {
+        CheckMarkHolder holder = (CheckMarkHolder) view.getTag();
+        view.setText(Html.fromHtml(createItem(cursor)));
+        view.setCheckMarkDrawable(holder.checkMark);
+        view.setChecked(false);
+        view.setChecked(toggles.get(cursor.getPosition()));
+        if (cursor.isReadonly()) {
+            view.setCheckMarkDrawable(null);
+        }
+        return view;
+    }
+
+    private class CheckMarkHolder {
+        Drawable checkMark;
     }
 }
