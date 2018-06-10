@@ -10,10 +10,10 @@ package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.AppCompatCheckedTextView;
 import android.util.AttributeSet;
-import android.widget.CheckedTextView;
 
-class CompatCheckedTextView extends CheckedTextView {
+class CompatCheckedTextView extends AppCompatCheckedTextView {
     private Drawable checkMarkDrawable;
 
     public CompatCheckedTextView(Context context, AttributeSet attrs) {
