@@ -120,7 +120,12 @@ public class ManageHostsListFragment extends ListFragment {
         ListView view = getListView();
         int itemCount = view.getCheckedItemCount();
         if (itemCount == 1) {
-            int pos = view.getCheckedItemPositions().keyAt(0);
+            int pos = -1;
+            SparseBooleanArray checkedItems = view.getCheckedItemPositions();
+            for (int i = 0; i < checkedItems.size(); i++) {
+                pos = checkedItems.keyAt(i);
+                if (checkedItems.get(i) == true) break;
+            }
             Host host = getHostAtPosition(pos);
             showConfirmDeleteDialog("Are you sure you want to delete " +
                                     host.toString() + "?");
