@@ -66,6 +66,7 @@ class Host extends BaseModel {
     }
 
     public Host(Integer id, String name, Integer port) {
+        super();
         this.id = id;
         this.name = name;
         this.port = port;

@@ -13,8 +13,18 @@ import android.database.CursorWrapper;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.misc.BaseDaoEnabled;
 
+import java.sql.SQLException;
+
 class BaseModel extends BaseDaoEnabled {
     public static CursorWrapper cursorWrapper(CloseableIterator iterator) {
         throw new UnsupportedOperationException();
+    }
+
+    public BaseModel() {
+        try {
+            setDao(DatabaseManager.getInstance().getDao(this.getClass()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
