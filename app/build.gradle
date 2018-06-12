@@ -15,12 +15,14 @@ android {
         applicationId "org.lonestar.sdf.locke.apps.dictclient"
         minSdkVersion 14
         targetSdkVersion 27
+        resConfigs "en"
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+              'proguard-rules.txt'
         }
     }
 }
