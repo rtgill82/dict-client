@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ManageHostsListFragment extends ListFragment {
-    ManageHostCursorAdapter ca;
+    ManageHostsCursorAdapter ca;
     ArrayList<Boolean> toggles;
 
     @Override
@@ -110,7 +110,7 @@ public class ManageHostsListFragment extends ListFragment {
         Map map = new HashMap();
         map.put("hidden", false);
         HostCursor cursor = (HostCursor) DatabaseManager.find(Host.class, map);
-        ca = new ManageHostCursorAdapter(this.getActivity(), cursor, 0);
+        ca = new ManageHostsCursorAdapter(this.getActivity(), cursor, 0);
         toggles = new ArrayList<>(Collections.nCopies(ca.getCount(), false));
         ca.setToggleList(toggles);
         setListAdapter(ca);

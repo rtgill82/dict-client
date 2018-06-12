@@ -19,11 +19,11 @@ import android.widget.CursorAdapter;
 
 import java.util.ArrayList;
 
-class ManageHostCursorAdapter extends CursorAdapter {
+class ManageHostsCursorAdapter extends CursorAdapter {
     private LayoutInflater inflater;
     private ArrayList<Boolean> toggles;
 
-    public ManageHostCursorAdapter(Context context, Cursor c, int flags) {
+    public ManageHostsCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         inflater = LayoutInflater.from(context);
     }
