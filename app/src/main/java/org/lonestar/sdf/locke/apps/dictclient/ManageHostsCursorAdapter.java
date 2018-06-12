@@ -15,11 +15,10 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 
 import java.util.ArrayList;
 
-class ManageHostsCursorAdapter extends CursorAdapter {
+class ManageHostsCursorAdapter extends HostCursorAdapter {
     private LayoutInflater inflater;
     private ArrayList<Boolean> toggles;
 
@@ -45,21 +44,6 @@ class ManageHostsCursorAdapter extends CursorAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        CompatCheckedTextView textView;
-        HostCursor cursor = (HostCursor) getItem(position);
-        if (convertView != null) {
-            textView = (CompatCheckedTextView) convertView;
-            setupItemView(textView, cursor);
-        } else {
-            Context context = parent.getContext();
-            textView = (CompatCheckedTextView)
-              newView(context, cursor, parent);
-        }
-        return textView;
-    }
-
-    @Override
     public void bindView(View view, Context context, Cursor cursor) {
         CompatCheckedTextView textView = (CompatCheckedTextView) view;
         HostCursor hostCursor = (HostCursor) cursor;
@@ -70,18 +54,6 @@ class ManageHostsCursorAdapter extends CursorAdapter {
     public boolean isEnabled(int position) {
         HostCursor hostCursor = (HostCursor) getItem(position);
         return !hostCursor.isReadonly();
-    }
-
-    private String buildItemText(HostCursor cursor) {
-        String host = cursor.getHostName();
-        String description =
-          cursor.getString(cursor.getColumnIndex("description"));
-
-        String itemText = "<b>" + host + "</b>";
-        if (description.length() > 0) {
-            itemText += "<br><i>" + description + "</i>";
-        }
-        return itemText;
     }
 
     private CompatCheckedTextView setupItemView(
