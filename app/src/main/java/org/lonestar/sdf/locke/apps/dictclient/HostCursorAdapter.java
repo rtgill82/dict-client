@@ -18,8 +18,8 @@ import android.widget.CheckedTextView;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-class SelectHostCursorAdapter extends CursorAdapter {
-    public SelectHostCursorAdapter(Context context, Cursor cursor, int flags) {
+class HostCursorAdapter extends CursorAdapter {
+    public HostCursorAdapter(Context context, Cursor cursor, int flags) {
         super(context, cursor, flags);
     }
 

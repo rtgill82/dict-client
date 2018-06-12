@@ -23,8 +23,7 @@ public class SelectHostActivity extends ListActivity {
         Map<String, Object> map = new HashMap();
         map.put("hidden", false);
         HostCursor cursor = (HostCursor) DatabaseManager.find(Host.class, map);
-        SelectHostCursorAdapter ca =
-          new SelectHostCursorAdapter(this, cursor, 0);
+        HostCursorAdapter ca = new HostCursorAdapter(this, cursor, 0);
         getListView().setAdapter(ca);
     }
 
