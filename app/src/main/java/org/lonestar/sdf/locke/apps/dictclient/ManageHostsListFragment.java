@@ -171,7 +171,7 @@ public class ManageHostsListFragment extends ListFragment {
     private Host getHostAtPosition(int pos) {
         if (pos == -1) return null;
         return ((HostCursor) getListAdapter().getItem(pos))
-          .getDictionaryHost();
+          .getHost();
     }
 
     private void showConfirmDeleteDialog(String message) {

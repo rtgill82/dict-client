@@ -23,15 +23,16 @@ public class SelectHostActivity extends ListActivity {
         Map<String, Object> map = new HashMap();
         map.put("hidden", false);
         HostCursor cursor = (HostCursor) DatabaseManager.find(Host.class, map);
-        SelectHostCursorAdapter ca = new SelectHostCursorAdapter(this, cursor, 0);
+        SelectHostCursorAdapter ca =
+          new SelectHostCursorAdapter(this, cursor, 0);
         getListView().setAdapter(ca);
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
-        HostCursor c = (HostCursor) l.getItemAtPosition(pos);
+        HostCursor cursor = (HostCursor) l.getItemAtPosition(pos);
         DictClient app = (DictClient) getApplication();
-        app.setCurrentHost(c.getDictionaryHost());
+        app.setCurrentHost(cursor.getHost());
         finish();
     }
 }

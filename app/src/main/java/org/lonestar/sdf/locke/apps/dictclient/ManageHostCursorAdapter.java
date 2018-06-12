@@ -17,8 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
-import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
-
 import java.util.ArrayList;
 
 class ManageHostCursorAdapter extends CursorAdapter {
@@ -43,7 +41,7 @@ class ManageHostCursorAdapter extends CursorAdapter {
         CheckMarkHolder holder = new CheckMarkHolder();
         holder.checkMark = textView.getCheckMarkDrawable();
         textView.setTag(holder);
-        return setupListItemView(textView, hostCursor);
+        return setupItemView(textView, hostCursor);
     }
 
     @Override
@@ -52,7 +50,7 @@ class ManageHostCursorAdapter extends CursorAdapter {
         HostCursor cursor = (HostCursor) getItem(position);
         if (convertView != null) {
             textView = (CompatCheckedTextView) convertView;
-            setupListItemView(textView, cursor);
+            setupItemView(textView, cursor);
         } else {
             Context context = parent.getContext();
             textView = (CompatCheckedTextView)
@@ -65,7 +63,7 @@ class ManageHostCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         CompatCheckedTextView textView = (CompatCheckedTextView) view;
         HostCursor hostCursor = (HostCursor) cursor;
-        setupListItemView(textView, hostCursor);
+        setupItemView(textView, hostCursor);
     }
 
     @Override
@@ -74,29 +72,24 @@ class ManageHostCursorAdapter extends CursorAdapter {
         return !hostCursor.isReadonly();
     }
 
-    private String createItem(Cursor cursor) {
-        String host = cursor.getString(cursor.getColumnIndex("name"));
-        Integer port = cursor.getInt(cursor.getColumnIndex("port"));
+    private String buildItemText(HostCursor cursor) {
+        String host = cursor.getHostName();
         String description =
           cursor.getString(cursor.getColumnIndex("description"));
 
-        String itemText = "<b>" + host;
-        if (port != JDictClient.DEFAULT_PORT) {
-            itemText += ":" + port.toString();
-        }
-        itemText += "</b>";
+        String itemText = "<b>" + host + "</b>";
         if (description.length() > 0) {
             itemText += "<br><i>" + description + "</i>";
         }
         return itemText;
     }
 
-    private CompatCheckedTextView setupListItemView(
+    private CompatCheckedTextView setupItemView(
       CompatCheckedTextView view,
       HostCursor cursor
     ) {
         CheckMarkHolder holder = (CheckMarkHolder) view.getTag();
-        view.setText(Html.fromHtml(createItem(cursor)));
+        view.setText(Html.fromHtml(buildItemText(cursor)));
         view.setCheckMarkDrawable(holder.checkMark);
         view.setChecked(false);
         view.setChecked(toggles.get(cursor.getPosition()));

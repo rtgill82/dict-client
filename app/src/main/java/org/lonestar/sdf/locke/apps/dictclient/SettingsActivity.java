@@ -175,7 +175,7 @@ public class SettingsActivity extends PreferenceActivity {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 entries[i] = cursor.getHostName();
-                entryValues[i] = cursor.getId().toString();
+                entryValues[i] = Integer.toString(cursor.getId());
                 i = i + 1;
                 cursor.moveToNext();
             }
