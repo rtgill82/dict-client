@@ -158,7 +158,7 @@ public class ManageHostsListFragment extends ListFragment {
                         prefs.edit().putString(
                           getString(R.string.pref_key_default_host),
                           getString(R.string.pref_value_default_host)
-                        ).commit();
+                        ).apply();
                     }
                     host.delete();
                 }
