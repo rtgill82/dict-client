@@ -16,6 +16,7 @@ import com.j256.ormlite.misc.BaseDaoEnabled;
 import java.sql.SQLException;
 
 class BaseModel extends BaseDaoEnabled {
+    @SuppressWarnings("unused")
     public static CursorWrapper cursorWrapper(CloseableIterator iterator) {
         throw new UnsupportedOperationException();
     }

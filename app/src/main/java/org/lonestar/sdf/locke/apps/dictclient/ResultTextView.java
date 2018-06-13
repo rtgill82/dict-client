@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
@@ -24,7 +25,7 @@ import java.io.StringReader;
 
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
 
-public class ResultTextView extends TextView {
+public class ResultTextView extends AppCompatTextView {
     private static final String SUPER_STATE = "SUPER_STATE";
     private static final String TEXT_SIZE = "TEXT_SIZE";
     private final float origTextSize = getTextSize();
