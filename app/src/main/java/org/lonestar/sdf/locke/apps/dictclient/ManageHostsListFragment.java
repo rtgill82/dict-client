@@ -24,11 +24,13 @@ import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ManageHostsListFragment extends ListFragment {
     ManageHostsCursorAdapter ca;
@@ -107,9 +109,18 @@ public class ManageHostsListFragment extends ListFragment {
 
     public void refreshHostList() {
         getListView().clearChoices();
-        Map map = new HashMap();
-        map.put("hidden", false);
-        HostCursor cursor = (HostCursor) DatabaseManager.find(Host.class, map);
+        PreparedQuery query;
+        try {
+            Dao dao = DatabaseManager.getInstance().getDao(Host.class);
+            QueryBuilder qb = dao.queryBuilder();
+            query =
+              qb.where().eq("hidden", false)
+                  .and().eq("readonly", false)
+                  .prepare();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        HostCursor cursor = (HostCursor) DatabaseManager.find(Host.class, query);
         ca = new ManageHostsCursorAdapter(this.getActivity(), cursor, 0);
         toggles = new ArrayList<>(Collections.nCopies(ca.getCount(), false));
         ca.setToggleList(toggles);

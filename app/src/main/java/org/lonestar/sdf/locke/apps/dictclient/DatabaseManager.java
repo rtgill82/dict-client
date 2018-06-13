@@ -17,8 +17,8 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -27,7 +27,6 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
-import java.util.Map;
 
 class DatabaseManager extends OrmLiteSqliteOpenHelper {
     final private static String DATABASE_NAME    = "dict-client.db";
@@ -99,23 +98,36 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public static CursorWrapper find(Class<? extends BaseModel> clazz, Map map) {
+    public static CursorWrapper find(Class<? extends BaseModel> clazz,
+                                     PreparedQuery query) {
         CloseableIterator iterator;
         try {
             Dao dao = instance.getDao(clazz);
-            QueryBuilder qb = dao.queryBuilder();
-            Where where = qb.where();
-            for (Object key : map.keySet()) {
-                where = where.eq(key.toString(), map.get(key));
-            }
-            iterator = dao.iterator(where.prepare());
+            iterator = dao.iterator(query);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return wrapCursor(clazz, iterator);
+    }
 
+    public static CursorWrapper find(Class<? extends BaseModel> clazz,
+                                     String fieldName, Object value) {
+        CloseableIterator iterator;
         try {
-            Method method =
-              clazz.getMethod("cursorWrapper", CloseableIterator.class);
+            QueryBuilder qb = instance.getDao(clazz).queryBuilder();
+            PreparedQuery query = qb.where().eq(fieldName, value).prepare();
+            iterator = instance.getDao(clazz).iterator(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return wrapCursor(clazz, iterator);
+    }
+
+    private static CursorWrapper wrapCursor(Class clazz,
+                                            CloseableIterator iterator) {
+        try {
+            Method method = clazz.getMethod("cursorWrapper",
+                                            CloseableIterator.class);
             return (CursorWrapper) method.invoke(null, iterator);
         } catch (Exception e) {
             throw new RuntimeException(e);

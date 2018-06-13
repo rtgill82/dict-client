@@ -13,16 +13,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class SelectHostActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Map<String, Object> map = new HashMap();
-        map.put("hidden", false);
-        HostCursor cursor = (HostCursor) DatabaseManager.find(Host.class, map);
+        HostCursor cursor = (HostCursor)
+          DatabaseManager.find(Host.class, "hidden", false);
         HostCursorAdapter ca = new HostCursorAdapter(this, cursor, 0);
         getListView().setAdapter(ca);
     }

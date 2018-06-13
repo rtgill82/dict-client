@@ -21,9 +21,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SettingsActivity extends PreferenceActivity {
     /**
@@ -163,11 +161,8 @@ public class SettingsActivity extends PreferenceActivity {
         private void bindDefaultHostPreferences() {
             final ListPreference defaultHostPreference = (ListPreference)
               findPreference(getString(R.string.pref_key_default_host));
-
-            Map<String, Object> map = new HashMap();
-            map.put("hidden", false);
             HostCursor cursor = (HostCursor)
-              DatabaseManager.find(Host.class, map);
+              DatabaseManager.find(Host.class, "hidden", false);
             CharSequence[] entries = new CharSequence[cursor.getCount()];
             CharSequence[] entryValues = new CharSequence[cursor.getCount()];
 
