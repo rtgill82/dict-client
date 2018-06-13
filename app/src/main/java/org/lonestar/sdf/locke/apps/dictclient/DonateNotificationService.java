@@ -102,10 +102,9 @@ public class DonateNotificationService extends Service {
     private static PendingIntent buildIntent(Context context, boolean donate) {
         Intent intent = new Intent(context, DonateNotificationService.class);
         intent.putExtra(DONATE_ACTION, donate);
-        PendingIntent pendingIntent = PendingIntent.getService(
-            context, (int) System.currentTimeMillis(), intent, FLAG_ONE_SHOT
+        return PendingIntent.getService(
+          context, (int) System.currentTimeMillis(), intent, FLAG_ONE_SHOT
         );
-        return pendingIntent;
     }
 
     public IBinder onBind(Intent intent) {

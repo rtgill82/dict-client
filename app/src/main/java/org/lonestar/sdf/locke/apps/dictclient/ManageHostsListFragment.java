@@ -152,7 +152,7 @@ public class ManageHostsListFragment extends ListFragment {
                 if (selected.get(pos, false)) {
                     getListView().setItemChecked(pos, false);
                     Host host = getHostAtPosition(pos);
-                    if (host.getId() == defaultHost.getId()) {
+                    if (host.getId().equals(defaultHost.getId())) {
                         SharedPreferences prefs = PreferenceManager
                           .getDefaultSharedPreferences(this.getActivity());
                         prefs.edit().putString(

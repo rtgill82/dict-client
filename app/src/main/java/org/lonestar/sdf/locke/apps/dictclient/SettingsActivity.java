@@ -28,7 +28,7 @@ public class SettingsActivity extends PreferenceActivity {
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static Preference.OnPreferenceChangeListener
+    final private static Preference.OnPreferenceChangeListener
       sBindPreferenceSummaryToValueListener =
         new Preference.OnPreferenceChangeListener() {
             @Override
@@ -50,8 +50,8 @@ public class SettingsActivity extends PreferenceActivity {
                             ? listPreference.getEntries()[index]
                             : null);
 
-                } else if (preference.getKey() ==
-                           context.getString(R.string.pref_key_cache_time)) {
+                } else if (preference.getKey()
+                    .equals(context.getString(R.string.pref_key_cache_time))) {
                     // Display days as the unit for the cache_time preference.
                     preference.setSummary(stringValue + " days");
                 } else {
@@ -93,11 +93,6 @@ public class SettingsActivity extends PreferenceActivity {
             PreferenceManager
                 .getDefaultSharedPreferences(preference.getContext())
                 .getString(preference.getKey(), ""));
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     /**

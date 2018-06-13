@@ -15,6 +15,7 @@ import org.lonestar.sdf.locke.libs.jdictclient.Definition;
 import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 import org.lonestar.sdf.locke.libs.jdictclient.Match;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -23,10 +24,10 @@ import java.util.Map;
 import static org.lonestar.sdf.locke.apps.dictclient.ClientRequest.ClientCommand.*;
 
 class ClientTask extends AsyncTask<Void,Void,ClientResult> {
-    private MainActivity context;
-    private ClientRequest request;
-    private Exception exception;
+    final private WeakReference<MainActivity> context;
+    final private ClientRequest request;
 
+    private Exception exception;
     private ProgressDialog progressDialog;
 
     private static final Map<ClientRequest.ClientCommand,String>
@@ -34,7 +35,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
 
     public ClientTask(MainActivity context, ClientRequest request) {
         super();
-        this.context = context;
+        this.context = new WeakReference<>(context);
         this.request = request;
 
         if (messages.isEmpty()) {
@@ -49,7 +50,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
     protected void onPreExecute() {
         if (request.displayWaitMessage()) {
             progressDialog = ProgressDialog.show(
-              context,
+              context.get(),
               "Waiting",
               messages.get(request.getCommand()),
               true
@@ -101,16 +102,14 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
-        context.onTaskFinished(result, exception);
+        context.get().onTaskFinished(result, exception);
     }
 
     private List<Dictionary> getDictionaries() throws Exception {
         Host host = request.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
-
-        List<Dictionary> dictionaries = new ArrayList<>();
-        dictionaries.addAll(
+        List<Dictionary> dictionaries = new ArrayList<>(
           ClassConvert.convertDictionaryList(client.getDictionaries(), host)
         );
         client.close();
@@ -122,9 +121,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
         Host host = request.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
-
-        List<Strategy> strategies = new ArrayList<>();
-        strategies.addAll(
+        List<Strategy> strategies = new ArrayList<>(
           ClassConvert.convertStrategyList(client.getStrategies(), host)
         );
         client.close();

@@ -12,19 +12,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
 class ManageHostsCursorAdapter extends HostCursorAdapter {
-    private LayoutInflater inflater;
     private ArrayList<Boolean> toggles;
 
     public ManageHostsCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-        inflater = LayoutInflater.from(context);
     }
 
     public void setToggleList(ArrayList<Boolean> list) {
@@ -36,7 +33,7 @@ class ManageHostsCursorAdapter extends HostCursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         HostCursor hostCursor = (HostCursor) cursor;
         CompatCheckedTextView textView = (CompatCheckedTextView)
-          inflater.inflate(R.layout.list_item_host, null);
+          View.inflate(context, R.layout.list_item_host, null);
         CheckMarkHolder holder = new CheckMarkHolder();
         holder.checkMark = textView.getCheckMarkDrawable();
         textView.setTag(holder);
@@ -56,10 +53,8 @@ class ManageHostsCursorAdapter extends HostCursorAdapter {
         return !hostCursor.isReadonly();
     }
 
-    private CompatCheckedTextView setupItemView(
-      CompatCheckedTextView view,
-      HostCursor cursor
-    ) {
+    private CompatCheckedTextView setupItemView(CompatCheckedTextView view,
+                                                HostCursor cursor) {
         CheckMarkHolder holder = (CheckMarkHolder) view.getTag();
         view.setText(Html.fromHtml(buildItemText(cursor)));
         view.setCheckMarkDrawable(holder.checkMark);

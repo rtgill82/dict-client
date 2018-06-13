@@ -11,7 +11,6 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
@@ -25,9 +24,8 @@ class HostCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(context);
         CheckedTextView view = (CheckedTextView)
-          inflater.inflate(R.layout.list_item_host, null);
+          View.inflate(context, R.layout.list_item_host, null);
         HostCursor hostCursor = (HostCursor) cursor;
         view.setText(Html.fromHtml(buildItemText(hostCursor)));
         view.setCheckMarkDrawable(null);

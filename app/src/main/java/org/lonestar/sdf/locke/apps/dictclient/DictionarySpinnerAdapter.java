@@ -22,8 +22,8 @@ import java.util.Collection;
 import java.util.List;
 
 class DictionarySpinnerAdapter implements SpinnerAdapter {
-    private Context context;
-    private List<Dictionary> data;
+    final private Context context;
+    final private List<Dictionary> data;
 
     public DictionarySpinnerAdapter(Context context, Collection<Dictionary> data) {
         this.context = context;

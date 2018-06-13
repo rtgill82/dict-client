@@ -21,8 +21,8 @@ import java.util.Collection;
 import java.util.List;
 
 class StrategySpinnerAdapter implements SpinnerAdapter {
-    private Context context;
-    private List<Strategy> data;
+    final private Context context;
+    final private List<Strategy> data;
 
     public StrategySpinnerAdapter(Context context, Collection<Strategy> data) {
         this.context = context;

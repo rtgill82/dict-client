@@ -121,6 +121,7 @@ class Host extends BaseModel {
         this.readonly = readonly;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isUserDefined() {
         return user_defined;
     }
@@ -198,10 +199,8 @@ class Host extends BaseModel {
             map.put("name", getName());
             map.put("port", getPort());
             if (!getDao().queryForFieldValues(map).isEmpty()) {
-                SQLException exception =
-                  new SQLException("The host " + toString() +
-                                   " already exists.");
-                throw exception;
+                throw new SQLException("The host " + toString() +
+                                       " already exists.");
             }
         }
         return super.create();

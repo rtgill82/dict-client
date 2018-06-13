@@ -19,8 +19,10 @@ public class DictClient extends Application {
 
     private Host currentHost;
     private HostCache cache;
-    private OnSharedPreferenceChangeListener preferenceChangeListener;
     private OnHostChangeListener onHostChangeListener;
+
+    @SuppressWarnings("FieldCanBeLocal")
+    private OnSharedPreferenceChangeListener preferenceChangeListener;
 
     @Override
     public void onCreate() {
@@ -68,17 +70,13 @@ public class DictClient extends Application {
         return (Host) DatabaseManager.find(Host.class, hostId);
     }
 
-    public void useDefaultHost() {
-        setCurrentHost(getDefaultHost());
-    }
-
     public Host getCurrentHost() {
         return currentHost;
     }
 
     public void setCurrentHost(Host host) {
         /* Ensure new host is not the same as the old one. */
-        if (currentHost == null || currentHost.getId() != host.getId()) {
+        if (currentHost == null || !currentHost.getId().equals(host.getId())) {
             currentHost = findCachedHost(host.getId(), host);
             if (onHostChangeListener != null)
               onHostChangeListener.onHostChange(currentHost);

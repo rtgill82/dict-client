@@ -16,10 +16,10 @@ package org.lonestar.sdf.locke.apps.dictclient;
  *
  */
 class HistoryEntry {
-    private String word;
-    private Dictionary dictionary;
-    private Strategy strategy;
-    private CharSequence text;
+    final private String word;
+    final private Dictionary dictionary;
+    final private Strategy strategy;
+    final private CharSequence text;
 
     public HistoryEntry(String word, Dictionary dictionary,
                         Strategy strategy, CharSequence text) {

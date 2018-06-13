@@ -30,7 +30,7 @@ public class DonateDialog extends DialogFragment {
     final private static String DONATION3 = "donation3";
 
     private static DonateDialog instance;
-    private DonationFlowListenerImpl callbacks =
+    final private DonationFlowListenerImpl callbacks =
       new DonationFlowListenerImpl();
 
     public static void show(Activity activity) {
@@ -99,7 +99,6 @@ public class DonateDialog extends DialogFragment {
                     }
                 });
             button.setVisibility(View.VISIBLE);
-            return;
         }
     }
 

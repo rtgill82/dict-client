@@ -20,7 +20,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -48,9 +48,9 @@ public class AboutDialog extends DialogFragment {
             throw new RuntimeException(e);
         }
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        TextView textView = (TextView) inflater.inflate(R.layout.dialog_about,
-                                                        null);
+        TextView textView = (TextView) View.inflate(context,
+                                                    R.layout.dialog_about,
+                                                    null);
         textView.setText(Html.fromHtml(html));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

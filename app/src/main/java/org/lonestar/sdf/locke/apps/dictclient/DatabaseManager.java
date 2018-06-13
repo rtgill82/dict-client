@@ -33,7 +33,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
     final private static int    DATABASE_VERSION = 3;
 
     private static DatabaseManager instance = null;
-    private Context context;
+    final private Context context;
 
     private DatabaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

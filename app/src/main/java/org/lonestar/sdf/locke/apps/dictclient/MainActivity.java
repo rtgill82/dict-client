@@ -46,11 +46,12 @@ import static org.lonestar.sdf.locke.apps.dictclient.DonateNotificationService.D
 import static org.lonestar.sdf.locke.apps.dictclient.DonateNotificationService.DONATE_SEEN;
 
 public class MainActivity extends Activity {
-    private static final String SELECTED_DICTIONARY = "SELECTED_DICTIONARY";
-    private static final String SELECTED_STRATEGY = "SELECTED_STRATEGY";
+    final private static String SELECTED_DICTIONARY = "SELECTED_DICTIONARY";
+    final private static String SELECTED_STRATEGY = "SELECTED_STRATEGY";
+
+    final private DefinitionHistory history = DefinitionHistory.getInstance();
 
     private Host host;
-    private DefinitionHistory history = DefinitionHistory.getInstance();
     private ClientTask runningTask;
 
     private ResultView resultView;
@@ -60,6 +61,7 @@ public class MainActivity extends Activity {
     private ImageButton infoButton;
     private ImageButton searchButton;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private OnSharedPreferenceChangeListener preferenceChangeListener;
 
     private int selectedDictionary = -1;

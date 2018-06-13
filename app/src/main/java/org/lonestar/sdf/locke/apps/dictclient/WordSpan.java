@@ -18,8 +18,8 @@ import android.view.View;
 import android.widget.EditText;
 
 class WordSpan extends ClickableSpan {
-    private String word;
-    private Dictionary dictionary;
+    final private String word;
+    final private Dictionary dictionary;
 
     public WordSpan(String word, Dictionary dictionary) {
         this.word = word.replace("\n", "").replaceAll("\\s+", " ");

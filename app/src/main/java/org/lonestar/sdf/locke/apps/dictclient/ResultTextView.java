@@ -17,7 +17,6 @@ import android.support.v7.widget.AppCompatTextView;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;

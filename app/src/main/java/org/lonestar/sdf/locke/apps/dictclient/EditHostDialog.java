@@ -16,7 +16,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
@@ -45,9 +45,9 @@ public class EditHostDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
         RelativeLayout layout = (RelativeLayout)
-          inflater.inflate(R.layout.dialog_edit_dictionary_host, null);
+          View.inflate(getActivity(), R.layout.dialog_edit_dictionary_host,
+                       null);
 
         editHostName = layout.findViewById(R.id.edit_host_name);
         editPort = layout.findViewById(R.id.edit_port);
@@ -57,7 +57,7 @@ public class EditHostDialog extends DialogFragment {
         if (host != null) {
             editHostName.setText(host.getName());
             editPort.setText(host.getPort().toString());
-            editDescription.setText(host.getDescription().toString());
+            editDescription.setText(host.getDescription());
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

@@ -19,7 +19,7 @@ import java.util.Collection;
  *
  */
 class DefinitionHistory extends ArrayList<HistoryEntry> {
-    public enum Direction { BACK, FORWARD };
+    public enum Direction { BACK, FORWARD }
 
     /** Instance for singleton class. */
     static private DefinitionHistory instance;

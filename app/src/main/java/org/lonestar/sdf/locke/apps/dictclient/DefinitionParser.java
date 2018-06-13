@@ -25,7 +25,7 @@ final class DefinitionParser {
             char c = defString.charAt(i);
 
             if (c == '{') {
-                if (inBraces != true) {
+                if (!inBraces) {
                     spannedString.append(defString.substring(bracePos, i));
                     bracePos = i;
                 }
@@ -33,7 +33,7 @@ final class DefinitionParser {
             }
 
             if (c == '}') {
-                if (inBraces == true) {
+                if (inBraces) {
                     String word = defString.substring(bracePos + 1, i);
                     spannedString.append(word);
                     spannedString.setSpan(

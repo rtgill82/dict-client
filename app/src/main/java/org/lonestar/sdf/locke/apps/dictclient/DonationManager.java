@@ -32,8 +32,9 @@ class DonationManager implements PurchasesUpdatedListener {
     private static final String TAG = "DONATIONMANAGER";
     private static DonationManager instance;
 
-    private Context context;
-    private SharedPreferences preferences;
+    final private Context context;
+    final private SharedPreferences preferences;
+
     private BillingClient billingClient;
     private boolean donated;
     private boolean serviceConnected;
@@ -41,10 +42,9 @@ class DonationManager implements PurchasesUpdatedListener {
 
     private DonationFlowListener donationFlowListener;
 
-    static public DonationManager initialize(Context context) {
+    static public void initialize(Context context) {
         if (instance == null)
           instance = new DonationManager(context);
-        return instance;
     }
 
     static public DonationManager getInstance() {
