@@ -49,8 +49,8 @@ class DictStratListResponseHandler implements ResponseHandler {
 
     public Pair<?, ?> getResults() {
         return new Pair<>(
-          ClassConvert.convertDictionaryList(databases, host),
-          ClassConvert.convertStrategyList(strategies, host)
+          ListConverter.convertDictionaryList(databases, host),
+          ListConverter.convertStrategyList(strategies, host)
         );
     }
 }

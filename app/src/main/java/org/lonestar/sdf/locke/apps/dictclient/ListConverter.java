@@ -15,7 +15,7 @@ import java.util.List;
  * Convert JDictClient Dictionaries into Dictionaries internally used by
  * Dict-Client Application.
  */
-class ClassConvert {
+class ListConverter {
     public static List<Dictionary> convertDictionaryList(
         List<org.lonestar.sdf.locke.libs.jdictclient.Database> databases,
         Host host
