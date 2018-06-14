@@ -11,12 +11,12 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
+import org.lonestar.sdf.locke.libs.jdictclient.Command;
 import org.lonestar.sdf.locke.libs.jdictclient.Definition;
 import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 import org.lonestar.sdf.locke.libs.jdictclient.Match;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +41,8 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
         if (messages.isEmpty()) {
             messages.put(DEFINE, context.getString(R.string.task_define));
             messages.put(MATCH, context.getString(R.string.task_match));
+            messages.put(DICT_STRAT_LIST, context.getString(R.string.task_dict_list));
             messages.put(DICT_INFO, context.getString(R.string.task_dict_info));
-            messages.put(DICT_LIST, context.getString(R.string.task_dict_list));
         }
     }
 
@@ -72,11 +72,13 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
                   getMatches(request.getWord(), request.getDictionary(),
                              request.getStrategy())
                 );
-              case DICT_LIST:
+              case DICT_STRAT_LIST:
+                Pair<List<Dictionary>, List<Strategy>> results =
+                  getDictionariesAndStrategies();
                 return new ClientResult(
                   request,
-                  getDictionaries(),
-                  getStrategies()
+                  results.t,
+                  results.u
                 );
               case DICT_INFO:
                 return new ClientResult(
@@ -105,27 +107,19 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
         context.get().onTaskFinished(result, exception);
     }
 
-    private List<Dictionary> getDictionaries() throws Exception {
+    private Pair<List<Dictionary>, List<Strategy>>
+    getDictionariesAndStrategies() throws Exception {
         Host host = request.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
-        List<Dictionary> dictionaries = new ArrayList<>(
-          ClassConvert.convertDictionaryList(client.getDictionaries(), host)
-        );
+        Command.Builder builder = new Command.Builder(Command.Type.OTHER)
+                                    .setCommandString("SHOW DB\nSHOW STRAT");
+        DictStratListResponseHandler handler =
+          new DictStratListResponseHandler(host);
+        builder.setResponseHandler(handler);
+        builder.build().execute(client.getConnection());
         client.close();
-        return dictionaries;
-    }
-
-    private List<Strategy> getStrategies()
-          throws Exception {
-        Host host = request.getHost();
-        JDictClient client =
-          JDictClient.connect(host.getName(), host.getPort());
-        List<Strategy> strategies = new ArrayList<>(
-          ClassConvert.convertStrategyList(client.getStrategies(), host)
-        );
-        client.close();
-        return strategies;
+        return (Pair<List<Dictionary>, List<Strategy>>) handler.getResults();
     }
 
     @Override
@@ -140,14 +134,12 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
         Host host = request.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
-
         List<Definition> definitions;
         if (dictionary != null && dictionary.getName() != null) {
             definitions = client.define(word, dictionary.getName());
         } else {
             definitions = client.define(word);
         }
-
         client.close();
         return definitions;
     }
@@ -158,7 +150,6 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
         Host host = request.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
-
         List <Match> matches = client.match(word,
                                             strategy.getName(),
                                             dictionary.getName());
@@ -171,7 +162,6 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
         Host host = request.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
-
         String dictInfo = client.getDatabaseInfo(dictionary.getName());
         client.close();
         return dictInfo;

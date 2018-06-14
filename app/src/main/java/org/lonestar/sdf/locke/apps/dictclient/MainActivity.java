@@ -319,7 +319,7 @@ public class MainActivity extends Activity {
             displayDictionaryInfo(result.getDictionaryInfo());
             break;
 
-          case DICT_LIST:
+          case DICT_STRAT_LIST:
             Host host = request.getHost();
             host.setDictionaries(result.getDictionaries());
             host.setStrategies(result.getStrategies());

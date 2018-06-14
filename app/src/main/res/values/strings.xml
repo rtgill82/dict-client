@@ -26,7 +26,7 @@
     <string name="task_define">Looking up word...</string>
     <string name="task_match">Searching for matches...</string>
     <string name="task_dict_info">Retrieving dictionary information...</string>
-    <string name="task_dict_list">Retrieving available dictionaries...</string>
+    <string name="task_dict_list">Retrieving available dictionaries and strategies...</string>
 
     <!-- MainActivity Menus -->
     <string name="menu_back">Back</string>

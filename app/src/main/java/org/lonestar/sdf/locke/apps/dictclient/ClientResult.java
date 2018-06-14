@@ -39,7 +39,7 @@ class ClientResult {
             strategies = null;
             matches = (List<Match>) list1;
             break;
-          case DICT_LIST:
+          case DICT_STRAT_LIST:
             dictionaries = (List<Dictionary>) list1;
             definitions = null;
             strategies = (List<Strategy>) list2;

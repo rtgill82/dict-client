@@ -12,7 +12,7 @@ class ClientRequest {
     public enum ClientCommand {
         DEFINE,
         MATCH,
-        DICT_LIST,
+        DICT_STRAT_LIST,
         DICT_INFO
     }
 
@@ -57,7 +57,7 @@ class ClientRequest {
     }
 
     public static ClientRequest DICT_LIST(Host host) {
-        return new ClientRequest(host, ClientCommand.DICT_LIST,
+        return new ClientRequest(host, ClientCommand.DICT_STRAT_LIST,
                                  null, null, null);
     }
 
