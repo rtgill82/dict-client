@@ -23,7 +23,7 @@ import java.util.Map;
 
 import static org.lonestar.sdf.locke.apps.dictclient.ClientRequest.ClientCommand.*;
 
-class ClientTask extends AsyncTask<Void,Void,ClientResult> {
+class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
     final private WeakReference<MainActivity> context;
     final private ClientRequest request;
 
@@ -58,16 +58,16 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
         }
     }
 
-    protected ClientResult doInBackground(Void... voids) {
+    protected Result doInBackground(Void... voids) {
         try {
             switch (request.getCommand()) {
               case DEFINE:
-                return new ClientResult(
+                return new Result(
                   request,
                   getDefinitions(request.getWord(), request.getDictionary())
                 );
               case MATCH:
-                return new ClientResult(
+                return new Result(
                   request,
                   getMatches(request.getWord(), request.getDictionary(),
                              request.getStrategy())
@@ -75,13 +75,13 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
               case DICT_STRAT_LIST:
                 Pair<List<Dictionary>, List<Strategy>> results =
                   getDictionariesAndStrategies();
-                return new ClientResult(
+                return new Result(
                   request,
                   results.t,
                   results.u
                 );
               case DICT_INFO:
-                return new ClientResult(
+                return new Result(
                   request,
                   getDictionaryInfo(request.getDictionary())
                 );
@@ -92,7 +92,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
             if (!(e instanceof NullPointerException)) {
                 exception = e;
             } else {
-                throw(NullPointerException) e;
+                throw (NullPointerException) e;
             }
         }
 
@@ -100,7 +100,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
     }
 
     @Override
-    protected void onPostExecute(ClientResult result) {
+    protected void onPostExecute(Result result) {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
@@ -123,7 +123,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
     }
 
     @Override
-    protected void onCancelled(ClientResult result) {
+    protected void onCancelled(Result result) {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
@@ -165,5 +165,84 @@ class ClientTask extends AsyncTask<Void,Void,ClientResult> {
         String dictInfo = client.getDatabaseInfo(dictionary.getName());
         client.close();
         return dictInfo;
+    }
+
+    public class Result {
+        private final ClientRequest request;
+        private final List<Definition> definitions;
+        private final List<Dictionary> dictionaries;
+        private final List<Strategy> strategies;
+        private final List<Match> matches;
+        private final String dictionaryInfo;
+
+        private Result(ClientRequest request, List<?> list1,
+                       List<?> list2, String dictionaryInfo) {
+            this.request = request;
+            this.dictionaryInfo = dictionaryInfo;
+
+            switch (this.request.getCommand()) {
+                case DEFINE:
+                    definitions = (List<Definition>) list1;
+                    dictionaries = null;
+                    strategies = null;
+                    matches = null;
+                    break;
+                case MATCH:
+                    definitions = null;
+                    dictionaries = null;
+                    strategies = null;
+                    matches = (List<Match>) list1;
+                    break;
+                case DICT_STRAT_LIST:
+                    dictionaries = (List<Dictionary>) list1;
+                    definitions = null;
+                    strategies = (List<Strategy>) list2;
+                    matches = null;
+                    break;
+                default:
+                    definitions = null;
+                    dictionaries = null;
+                    strategies = null;
+                    matches = null;
+                    break;
+            }
+        }
+
+        public Result(ClientRequest request, List<?> list) {
+            this(request, list, null, null);
+        }
+
+        public Result(ClientRequest request, String dictionaryInfo) {
+            this(request, null, null, dictionaryInfo);
+        }
+
+        public Result(ClientRequest request, List<Dictionary> dictionaries,
+                      List<Strategy> strategies) {
+            this(request, dictionaries, strategies, null);
+        }
+
+        public ClientRequest getRequest() {
+            return request;
+        }
+
+        public List<Dictionary> getDictionaries() {
+            return dictionaries;
+        }
+
+        public List<Definition> getDefinitions() {
+            return definitions;
+        }
+
+        public List<Match> getMatches() {
+            return matches;
+        }
+
+        public List<Strategy> getStrategies() {
+            return strategies;
+        }
+
+        public String getDictionaryInfo() {
+            return dictionaryInfo;
+        }
     }
 }

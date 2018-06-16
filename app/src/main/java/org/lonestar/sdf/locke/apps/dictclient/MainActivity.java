@@ -272,7 +272,7 @@ public class MainActivity extends Activity {
         selectedStrategy = savedInstanceState.getInt(SELECTED_STRATEGY);
     }
 
-    public void onTaskFinished(ClientResult result,
+    public void onTaskFinished(ClientTask.Result result,
                                Exception exception) {
         enableInput();
         if (exception != null) {
