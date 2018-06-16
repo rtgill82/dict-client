@@ -285,7 +285,7 @@ public class MainActivity extends Activity {
             return;
         }
 
-        ClientRequest request = result.getRequest();
+        ClientTask.Request request = result.getRequest();
         runningTask = null;
 
         CharSequence text;
@@ -344,12 +344,12 @@ public class MainActivity extends Activity {
         String word = searchText.getText().toString();
         if (!(word.isEmpty())) {
             if (!strategy.getName().equals("define")) {
-                executeTask(ClientRequest.MATCH(host, word, dict, strategy));
+                executeTask(ClientTask.MATCH(host, word, dict, strategy));
             } else {
                 if (dict != null)
-                  executeTask(ClientRequest.DEFINE(host, word, dict));
+                  executeTask(ClientTask.DEFINE(host, word, dict));
                 else
-                  executeTask(ClientRequest.DEFINE(host, word));
+                  executeTask(ClientTask.DEFINE(host, word));
             }
         }
     }
@@ -358,7 +358,7 @@ public class MainActivity extends Activity {
         Dictionary dictionary = (Dictionary)
           dictionarySpinner.getSelectedItem();
         searchText.setText("");
-        executeTask(ClientRequest.DICT_INFO(host, dictionary));
+        executeTask(ClientTask.DICT_INFO(host, dictionary));
     }
 
     public boolean traverseHistory(DefinitionHistory.Direction direction) {
@@ -414,14 +414,14 @@ public class MainActivity extends Activity {
         strategySpinner.setSelection(selectedStrategy);
     }
 
-    private void executeTask(ClientRequest request) {
+    private void executeTask(ClientTask.Request request) {
         disableInput();
         runningTask = new ClientTask(this, request);
         runningTask.execute();
     }
 
     private void refreshDictionaries() {
-        executeTask(ClientRequest.DICT_LIST(host));
+        executeTask(ClientTask.DICT_LIST(host));
     }
 
     private void displayHistoryEntry(HistoryEntry entry) {

@@ -52,7 +52,7 @@ class WordSpan extends ClickableSpan {
             searchText.selectAll();
             setDefineStrategy(activity);
             new ClientTask(activity,
-                           ClientRequest.DEFINE(host, word, dictionary))
+                           ClientTask.DEFINE(host, word, dictionary))
               .execute();
         }
     }

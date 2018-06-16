@@ -21,19 +21,26 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.lonestar.sdf.locke.apps.dictclient.ClientRequest.ClientCommand.*;
+import static org.lonestar.sdf.locke.apps.dictclient.ClientTask.ClientCommand.*;
 
 class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
+    public enum ClientCommand {
+        DEFINE,
+        MATCH,
+        DICT_STRAT_LIST,
+        DICT_INFO
+    }
+
     final private WeakReference<MainActivity> context;
-    final private ClientRequest request;
+    final private Request request;
 
     private Exception exception;
     private ProgressDialog progressDialog;
 
-    private static final Map<ClientRequest.ClientCommand,String>
-      messages = new EnumMap<>(ClientRequest.ClientCommand.class);
+    private static final Map<ClientCommand,String>
+      messages = new EnumMap<>(ClientCommand.class);
 
-    public ClientTask(MainActivity context, ClientRequest request) {
+    public ClientTask(MainActivity context, Request request) {
         super();
         this.context = new WeakReference<>(context);
         this.request = request;
@@ -44,6 +51,30 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
             messages.put(DICT_STRAT_LIST, context.getString(R.string.task_dict_list));
             messages.put(DICT_INFO, context.getString(R.string.task_dict_info));
         }
+    }
+
+    public static Request DEFINE(Host host, String word) {
+        return new Request(host, ClientCommand.DEFINE, word, new Dictionary());
+    }
+
+    public static Request DEFINE(Host host, String word,
+                                 Dictionary dictionary) {
+        return new Request(host, ClientCommand.DEFINE, word, dictionary);
+    }
+
+    public static Request MATCH(Host host, String word, Dictionary dictionary,
+                                Strategy strategy) {
+        return new Request(host, ClientCommand.MATCH, word,
+                           dictionary, strategy);
+    }
+
+    public static Request DICT_LIST(Host host) {
+        return new Request(host, ClientCommand.DICT_STRAT_LIST,
+                           null, null, null);
+    }
+
+    public static Request DICT_INFO(Host host, Dictionary dictionary) {
+        return new Request(host, ClientCommand.DICT_INFO, null, dictionary);
     }
 
     @Override
@@ -167,15 +198,63 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         return dictInfo;
     }
 
+    public static class Request {
+        private final Host host;
+        private final ClientCommand command;
+        private final Dictionary dictionary;
+        private final Strategy strategy;
+        private final String word;
+
+        boolean displayWaitMessage = true;
+
+        private Request(Host host, ClientCommand command, String word,
+                        Dictionary dictionary, Strategy strategy) {
+            this.host = host;
+            this.command = command;
+            this.word = word;
+            this.dictionary = dictionary;
+            this.strategy = strategy;
+        }
+
+        private Request(Host host, ClientCommand command, String word,
+                              Dictionary dictionary) {
+            this(host, command, word, dictionary, null);
+        }
+
+        public boolean displayWaitMessage() {
+            return this.displayWaitMessage;
+        }
+
+        public Host getHost() {
+            return host;
+        }
+
+        public ClientCommand getCommand() {
+            return command;
+        }
+
+        public Dictionary getDictionary() {
+            return dictionary;
+        }
+
+        public Strategy getStrategy() {
+            return strategy;
+        }
+
+        public String getWord() {
+            return word;
+        }
+    }
+
     public class Result {
-        private final ClientRequest request;
+        private final Request request;
         private final List<Definition> definitions;
         private final List<Dictionary> dictionaries;
         private final List<Strategy> strategies;
         private final List<Match> matches;
         private final String dictionaryInfo;
 
-        private Result(ClientRequest request, List<?> list1,
+        private Result(Request request, List<?> list1,
                        List<?> list2, String dictionaryInfo) {
             this.request = request;
             this.dictionaryInfo = dictionaryInfo;
@@ -208,20 +287,20 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
             }
         }
 
-        public Result(ClientRequest request, List<?> list) {
+        public Result(Request request, List<?> list) {
             this(request, list, null, null);
         }
 
-        public Result(ClientRequest request, String dictionaryInfo) {
+        public Result(Request request, String dictionaryInfo) {
             this(request, null, null, dictionaryInfo);
         }
 
-        public Result(ClientRequest request, List<Dictionary> dictionaries,
+        public Result(Request request, List<Dictionary> dictionaries,
                       List<Strategy> strategies) {
             this(request, dictionaries, strategies, null);
         }
 
-        public ClientRequest getRequest() {
+        public Request getRequest() {
             return request;
         }
 
