@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -35,6 +36,7 @@ import org.lonestar.sdf.locke.libs.jdictclient.Definition;
 import org.lonestar.sdf.locke.libs.jdictclient.Match;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
@@ -373,8 +375,13 @@ public class MainActivity extends Activity {
         return (entry != null);
     }
 
-    public void setDictionarySpinnerData(Collection<Dictionary> list) {
-        dictionarySpinner.setAdapter(new DictionarySpinnerAdapter(this, list));
+    public void setDictionarySpinnerData(Collection<Dictionary> collection) {
+        ArrayList list = new ArrayList(collection);
+        list.add(0, Dictionary.ALL_DICTIONARIES);
+        ArrayAdapter adapter = new ArrayAdapter(
+          this, android.R.layout.simple_spinner_item, list
+        );
+        dictionarySpinner.setAdapter(adapter);
     }
 
     public void setStrategySpinnerData(Collection<Strategy> list) {
