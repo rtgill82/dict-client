@@ -67,26 +67,6 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource cs,
                           int oldVersion, int newVersion) {
-        try {
-            if (oldVersion < 2) {
-                TableUtils.dropTable(cs, Dictionary.class, false);
-                TableUtils.createTable(cs, Dictionary.class);
-                TableUtils.dropTable(cs, Strategy.class, false);
-                TableUtils.createTable(cs, Strategy.class);
-            }
-
-            if (oldVersion < 3) {
-                db.execSQL("ALTER TABLE hosts RENAME TO tmp_hosts;");
-                TableUtils.createTable(cs, Host.class);
-                db.execSQL("INSERT INTO hosts (_id, name, port, description, last_refresh, readonly, user_defined, hidden) " +
-                           "SELECT _id, host_name, port, description, last_refresh, readonly, user_defined, hidden " +
-                           "FROM tmp_hosts;");
-                db.execSQL("DROP TABLE tmp_hosts;");
-            }
-        } catch (SQLException e) {
-            Log.e("DatabaseManager", "SQLException caught: " + e.toString());
-            throw new RuntimeException(e);
-        }
     }
 
     public static Object find(Class<? extends BaseModel> clazz, Integer id) {
