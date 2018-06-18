@@ -376,16 +376,20 @@ public class MainActivity extends Activity {
     }
 
     public void setDictionarySpinnerData(Collection<Dictionary> collection) {
-        ArrayList list = new ArrayList(collection);
+        ArrayList<Dictionary> list = new ArrayList<>(collection);
         list.add(0, Dictionary.ALL_DICTIONARIES);
-        ArrayAdapter adapter = new ArrayAdapter(
+        ArrayAdapter<Dictionary> adapter = new ArrayAdapter<>(
           this, android.R.layout.simple_spinner_item, list
         );
         dictionarySpinner.setAdapter(adapter);
     }
 
-    public void setStrategySpinnerData(Collection<Strategy> list) {
-        strategySpinner.setAdapter(new StrategySpinnerAdapter(this, list));
+    public void setStrategySpinnerData(Collection<Strategy> collection) {
+        ArrayList<Strategy> list = new ArrayList<>(collection);
+        strategySpinner.setAdapter(
+          new StrategySpinnerAdapter(
+            this, android.R.layout.simple_spinner_item, list
+          ));
     }
 
     public void setSelectedDictionary(Dictionary dictionary) {
@@ -607,7 +611,11 @@ public class MainActivity extends Activity {
 
     private Spinner setupStrategySpinner() {
         final Spinner strategySpinner = findViewById(R.id.strategy_spinner);
-        strategySpinner.setAdapter(new StrategySpinnerAdapter(this, null));
+        strategySpinner.setAdapter(
+          new StrategySpinnerAdapter(
+            this, android.R.layout.simple_spinner_item,
+            new ArrayList<Strategy>()
+          ));
         return strategySpinner;
     }
 }

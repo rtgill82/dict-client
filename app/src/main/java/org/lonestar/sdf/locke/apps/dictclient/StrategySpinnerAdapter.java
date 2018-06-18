@@ -9,87 +9,26 @@
 package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.content.Context;
-import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SpinnerAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-class StrategySpinnerAdapter implements SpinnerAdapter {
-    final private Context context;
-    final private List<Strategy> data;
-
-    public StrategySpinnerAdapter(Context context, Collection<Strategy> data) {
-        this.context = context;
-        this.data = (data == null) ? new ArrayList<Strategy>() :
-                                     new ArrayList<>(data);
-        this.data.add(0, Strategy.DEFINE);
-    }
-
-    @Override
-    public int getCount() {
-        return data.size();
-    }
-
-    @Override
-    public Strategy getItem(int position) {
-        return data.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return android.R.layout.simple_spinner_dropdown_item;
+class StrategySpinnerAdapter extends ArrayAdapter<Strategy> {
+    public StrategySpinnerAdapter(Context context, int resource, List<Strategy> objects) {
+        super(context, resource, objects);
+        objects.add(0, Strategy.DEFINE);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        TextView v = new TextView(context.getApplicationContext());
-        v.setTextColor(Color.BLACK);
-        v.setText(data.get(position).getName());
-        return v;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return data.isEmpty();
-    }
-
-    @Override
-    public void registerDataSetObserver(DataSetObserver observer) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void unregisterDataSetObserver(DataSetObserver observer) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public View getDropDownView(int position, View convertView,
-                                ViewGroup parent) {
-        TextView v = new TextView(context.getApplicationContext());
-        v.setTextColor(Color.BLACK);
-        v.setText(data.get(position).getDescription());
-        return v;
+        if (convertView == null) {
+            convertView = super.getView(position, convertView, parent);
+        }
+        TextView view = (TextView) convertView;
+        view.setText(getItem(position).getName());
+        return view;
     }
 }
