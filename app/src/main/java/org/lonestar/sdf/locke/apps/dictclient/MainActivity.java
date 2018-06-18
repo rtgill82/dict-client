@@ -180,6 +180,8 @@ public class MainActivity extends Activity {
             }
 
             if (hostChanged) {
+                searchButtonState = false;
+                searchButton.setEnabled(false);
                 history.clear();
                 invalidateOptionsMenu();
                 searchText.setText("");
