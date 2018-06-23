@@ -17,25 +17,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 class DictStratListResponseHandler implements ResponseHandler {
-    final private Host host;
-    final private ArrayList<Database> databases;
-    final private ArrayList<Strategy> strategies;
+    final private Host mHost;
+    final private ArrayList<Database> mDatabases;
+    final private ArrayList<Strategy> mStrategies;
 
     public DictStratListResponseHandler(Host host) {
-        this.host = host;
-        databases = new ArrayList<>();
-        strategies = new ArrayList<>();
+        mHost = host;
+        mDatabases = new ArrayList<>();
+        mStrategies = new ArrayList<>();
     }
 
     @Override
     public boolean handle(Response response) {
         switch (response.getStatus()) {
           case 110:
-            databases.addAll((List<Database>) response.getData());
+            mDatabases.addAll((List<Database>) response.getData());
             break;
 
           case 111:
-            strategies.addAll((List<Strategy>) response.getData());
+            mStrategies.addAll((List<Strategy>) response.getData());
             break;
 
           case 250:
@@ -49,8 +49,8 @@ class DictStratListResponseHandler implements ResponseHandler {
 
     public Pair<?, ?> getResults() {
         return new Pair<>(
-          ListConverter.convertDictionaryList(databases, host),
-          ListConverter.convertStrategyList(strategies, host)
+          ListConverter.convertDictionaryList(mDatabases, mHost),
+          ListConverter.convertStrategyList(mStrategies, mHost)
         );
     }
 }

@@ -22,10 +22,10 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
     public enum Direction { BACK, FORWARD }
 
     /** Instance for singleton class. */
-    static private DefinitionHistory instance;
+    static private DefinitionHistory sInstance;
 
     /** The current position in the history list. */
-    private int currentPos = -1;
+    private int mCurrentPos = -1;
 
     /**
      * Default constructor.
@@ -41,7 +41,7 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
      */
     private DefinitionHistory(Collection<? extends HistoryEntry> c) {
         super(c);
-        currentPos = c.size() - 1;
+        mCurrentPos = c.size() - 1;
     }
 
     /**
@@ -51,8 +51,8 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
      */
     @SuppressWarnings("unused")
     static public void initialize(Collection<? extends HistoryEntry> c) {
-        if (instance == null)
-          instance = new DefinitionHistory(c);
+        if (sInstance == null)
+          sInstance = new DefinitionHistory(c);
     }
 
     /**
@@ -60,10 +60,9 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
      *
      */
     static public DefinitionHistory getInstance() {
-        if (instance == null)
-          instance = new DefinitionHistory();
-
-        return instance;
+        if (sInstance == null)
+          sInstance = new DefinitionHistory();
+        return sInstance;
     }
 
     /**
@@ -72,15 +71,15 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
      */
     public HistoryEntry back() {
         HistoryEntry rv = null;
-        if (currentPos > 0) {
-            currentPos -= 1;
-            rv = this.get(currentPos);
+        if (mCurrentPos > 0) {
+            mCurrentPos -= 1;
+            rv = this.get(mCurrentPos);
         }
         return rv;
     }
 
     public boolean canGoBack() {
-        return (currentPos > 0);
+        return (mCurrentPos > 0);
     }
 
     /**
@@ -89,15 +88,15 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
      */
     public HistoryEntry forward() {
         HistoryEntry rv = null;
-        if (currentPos < this.size() - 1) {
-            currentPos += 1;
-            rv = this.get(currentPos);
+        if (mCurrentPos < this.size() - 1) {
+            mCurrentPos += 1;
+            rv = this.get(mCurrentPos);
         }
         return rv;
     }
 
     public boolean canGoForward() {
-        return (currentPos < (this.size() - 1));
+        return (mCurrentPos < (this.size() - 1));
     }
 
     /**
@@ -107,7 +106,7 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
     @Override
     public boolean add(HistoryEntry entry) {
         clearToEnd();
-        currentPos += 1;
+        mCurrentPos += 1;
         return super.add(entry);
     }
 
@@ -117,8 +116,8 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
      */
     @Override
     public void add(int index, HistoryEntry entry) {
-        if (index <= currentPos)
-          currentPos += 1;
+        if (index <= mCurrentPos)
+          mCurrentPos += 1;
         super.add(index, entry);
     }
 
@@ -129,7 +128,7 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
     @Override
     public boolean addAll(Collection<? extends HistoryEntry> c) {
         clearToEnd();
-        currentPos += c.size() - 1;
+        mCurrentPos += c.size() - 1;
         return super.addAll(c);
     }
 
@@ -139,8 +138,8 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
      */
     @Override
     public boolean addAll(int index, Collection<? extends HistoryEntry> c) {
-        if (index <= currentPos)
-          currentPos += c.size() - 1;
+        if (index <= mCurrentPos)
+          mCurrentPos += c.size() - 1;
         return super.addAll(index, c);
     }
 
@@ -150,7 +149,7 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
      */
     @Override
     public void clear() {
-        currentPos = -1;
+        mCurrentPos = -1;
         super.clear();
     }
 
@@ -164,9 +163,9 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
         HistoryEntry rv = super.remove(index);
 
         if (this.size() == 0)
-          currentPos = -1;
-        else if (rv != null && currentPos > 0 && index <= currentPos)
-          currentPos -= 1;
+          mCurrentPos = -1;
+        else if (rv != null && mCurrentPos > 0 && index <= mCurrentPos)
+          mCurrentPos -= 1;
         return rv;
     }
 
@@ -180,8 +179,8 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
         int index = this.indexOf(o);
         boolean rv = super.remove(o);
 
-        if (rv && currentPos > 0 && index <= currentPos)
-          currentPos -= 1;
+        if (rv && mCurrentPos > 0 && index <= mCurrentPos)
+          mCurrentPos -= 1;
         return rv;
     }
 
@@ -192,12 +191,12 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
      */
     @Override
     public boolean removeAll(Collection<?> c) {
-        HistoryEntry entry = this.get(currentPos);
+        HistoryEntry entry = this.get(mCurrentPos);
 
         while (true) {
-            if (c.contains(entry) && currentPos > 0) {
-                currentPos -= 1;
-                entry = this.get(currentPos);
+            if (c.contains(entry) && mCurrentPos > 0) {
+                mCurrentPos -= 1;
+                entry = this.get(mCurrentPos);
                 continue;
             }
             break;
@@ -211,10 +210,10 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
      */
     @Override
     protected void removeRange(int fromIndex, int toIndex) {
-        if (currentPos > toIndex)
-          currentPos = currentPos - (toIndex - fromIndex);
-        else if (currentPos > fromIndex)
-          currentPos = fromIndex;
+        if (mCurrentPos > toIndex)
+          mCurrentPos = mCurrentPos - (toIndex - fromIndex);
+        else if (mCurrentPos > fromIndex)
+          mCurrentPos = fromIndex;
         super.removeRange(fromIndex, toIndex);
     }
 
@@ -223,7 +222,7 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
      *
      */
     private void clearToEnd() {
-        for (int i = this.size() - 1; i > currentPos; i--)
+        for (int i = this.size() - 1; i > mCurrentPos; i--)
           super.remove(i);
     }
 }

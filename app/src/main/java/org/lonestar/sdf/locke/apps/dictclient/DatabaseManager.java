@@ -32,27 +32,27 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
     final private static String DATABASE_NAME    = "dict-client.db";
     final private static int    DATABASE_VERSION = 3;
 
-    private static DatabaseManager instance = null;
-    final private Context context;
+    private static DatabaseManager sInstance = null;
+    final private Context mContext;
 
     private DatabaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
+        mContext = context;
     }
 
     static public void initialize(Context context) {
-        if (instance == null)
-          instance = new DatabaseManager(context);
+        if (sInstance == null)
+          sInstance = new DatabaseManager(context);
     }
 
     static public DatabaseManager getInstance() {
-        return instance;
+        return sInstance;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public void onCreate(SQLiteDatabase db, ConnectionSource cs) {
-        Resources resources = this.context.getResources();
+        Resources resources = mContext.getResources();
         try {
             TableUtils.createTable(cs, Host.class);
             TableUtils.createTable(cs, Dictionary.class);
@@ -71,7 +71,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
 
     public static Object find(Class<? extends BaseModel> clazz, Integer id) {
         try {
-            Dao dao = instance.getDao(clazz);
+            Dao dao = sInstance.getDao(clazz);
             return dao.queryForId(id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -82,7 +82,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
                                      PreparedQuery query) {
         CloseableIterator iterator;
         try {
-            Dao dao = instance.getDao(clazz);
+            Dao dao = sInstance.getDao(clazz);
             iterator = dao.iterator(query);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -94,9 +94,9 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
                                      String fieldName, Object value) {
         CloseableIterator iterator;
         try {
-            QueryBuilder qb = instance.getDao(clazz).queryBuilder();
+            QueryBuilder qb = sInstance.getDao(clazz).queryBuilder();
             PreparedQuery query = qb.where().eq(fieldName, value).prepare();
-            iterator = instance.getDao(clazz).iterator(query);
+            iterator = sInstance.getDao(clazz).iterator(query);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

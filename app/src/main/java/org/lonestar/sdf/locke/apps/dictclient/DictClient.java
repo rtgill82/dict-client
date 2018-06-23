@@ -17,24 +17,24 @@ import android.preference.PreferenceManager;
 public class DictClient extends Application {
     public static final String CHANNEL = "dict-client";
 
-    private Host currentHost;
-    private HostCache cache;
-    private OnHostChangeListener onHostChangeListener;
+    private Host mCurrentHost;
+    private HostCache mCache;
+    private OnHostChangeListener mOnHostChangeListener;
 
     @SuppressWarnings("FieldCanBeLocal")
-    private OnSharedPreferenceChangeListener preferenceChangeListener;
+    private OnSharedPreferenceChangeListener mPreferenceChangeListener;
 
     @Override
     public void onCreate() {
         super.onCreate();
         DatabaseManager.initialize(getApplicationContext());
         DonationManager.initialize(getApplicationContext());
-        cache = new HostCache();
+        mCache = new HostCache();
 
-        currentHost = getDefaultHost();
-        cache.add(currentHost);
+        mCurrentHost = getDefaultHost();
+        mCache.add(mCurrentHost);
 
-        preferenceChangeListener =
+        mPreferenceChangeListener =
           new SharedPreferences.OnSharedPreferenceChangeListener() {
               public void onSharedPreferenceChanged(
                 SharedPreferences preferences,
@@ -51,18 +51,18 @@ public class DictClient extends Application {
         SharedPreferences preferences =
           PreferenceManager.getDefaultSharedPreferences(this);
         preferences.registerOnSharedPreferenceChangeListener(
-          preferenceChangeListener
+          mPreferenceChangeListener
         );
     }
 
     public void setOnHostChangeListener(OnHostChangeListener listener) {
-        onHostChangeListener = listener;
+        mOnHostChangeListener = listener;
     }
 
     public Host getDefaultHost() {
         SharedPreferences preferences =
                 PreferenceManager.getDefaultSharedPreferences(this);
-        Resources resources = this.getResources();
+        Resources resources = getResources();
         int hostId = Integer.parseInt(preferences.getString(
                 resources.getString(R.string.pref_key_default_host),
                 resources.getString(R.string.pref_value_default_host))
@@ -71,33 +71,34 @@ public class DictClient extends Application {
     }
 
     public Host getCurrentHost() {
-        return currentHost;
+        return mCurrentHost;
     }
 
     public void setCurrentHost(Host host) {
         /* Ensure new host is not the same as the old one. */
-        if (currentHost == null || !currentHost.getId().equals(host.getId())) {
-            currentHost = findCachedHost(host.getId(), host);
-            if (onHostChangeListener != null)
-              onHostChangeListener.onHostChange(currentHost);
+        if (mCurrentHost == null
+              || !mCurrentHost.getId().equals(host.getId())) {
+            mCurrentHost = findCachedHost(host.getId(), host);
+            if (mOnHostChangeListener != null)
+              mOnHostChangeListener.onHostChange(mCurrentHost);
         }
     }
 
     public void setCurrentHostById(int hostId) {
-        if (currentHost == null || currentHost.getId() != hostId) {
-            currentHost = findCachedHost(hostId, null);
-            if (onHostChangeListener != null)
-              onHostChangeListener.onHostChange(currentHost);
+        if (mCurrentHost == null || mCurrentHost.getId() != hostId) {
+            mCurrentHost = findCachedHost(hostId, null);
+            if (mOnHostChangeListener != null)
+              mOnHostChangeListener.onHostChange(mCurrentHost);
         }
     }
 
     private Host findCachedHost(int hostId, Host defaultHost) {
-        Host host = cache.getHostById(hostId);
+        Host host = mCache.getHostById(hostId);
         if (host == null) {
             if (defaultHost == null)
               defaultHost = (Host) DatabaseManager.find(Host.class, hostId);
             host = defaultHost;
-            cache.add(defaultHost);
+            mCache.add(defaultHost);
         }
         return host;
     }

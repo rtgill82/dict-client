@@ -29,15 +29,15 @@ public class DonateDialog extends DialogFragment {
     final private static String DONATION2 = "donation2";
     final private static String DONATION3 = "donation3";
 
-    private static DonateDialog instance;
-    final private DonationFlowListenerImpl callbacks =
+    private static DonateDialog sInstance;
+    final private DonationFlowListenerImpl mCallbacks =
       new DonationFlowListenerImpl();
 
     public static void show(Activity activity) {
         // Only show one donate dialog at a time.
-        if (instance == null) {
-            instance = new DonateDialog();
-            instance.show(activity.getFragmentManager(),
+        if (sInstance == null) {
+            sInstance = new DonateDialog();
+            sInstance.show(activity.getFragmentManager(),
                           activity.getString(R.string.title_donate));
         }
     }
@@ -64,7 +64,7 @@ public class DonateDialog extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        instance = null;
+        sInstance = null;
     }
 
     private void setupDonationButton(ViewGroup viewGroup, int button_id,
@@ -74,7 +74,7 @@ public class DonateDialog extends DialogFragment {
               new View.OnClickListener() {
                   public void onClick(View view) {
                       DonationManager.getInstance()
-                                     .makeDonation(sku, callbacks);
+                                     .makeDonation(sku, mCallbacks);
                   }
           });
     }

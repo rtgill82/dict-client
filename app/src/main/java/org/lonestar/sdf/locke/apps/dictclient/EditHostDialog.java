@@ -25,11 +25,11 @@ import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 import java.sql.SQLException;
 
 public class EditHostDialog extends DialogFragment {
-    private Host host;
-    private ManageHostsListFragment fragment;
-    private EditText editHostName;
-    private EditText editPort;
-    private EditText editDescription;
+    private Host mHost;
+    private ManageHostsListFragment mFragment;
+    private EditText mEditHostName;
+    private EditText mEditPort;
+    private EditText mEditDescription;
 
     public static void show(ManageHostsListFragment fragment) {
         EditHostDialog.show(fragment, null);
@@ -49,15 +49,15 @@ public class EditHostDialog extends DialogFragment {
           View.inflate(getActivity(), R.layout.dialog_edit_dictionary_host,
                        null);
 
-        editHostName = layout.findViewById(R.id.edit_host_name);
-        editPort = layout.findViewById(R.id.edit_port);
-        editPort.setText(Integer.toString(JDictClient.DEFAULT_PORT));
-        editDescription = layout.findViewById(R.id.edit_description);
+        mEditHostName = layout.findViewById(R.id.edit_host_name);
+        mEditPort = layout.findViewById(R.id.edit_port);
+        mEditPort.setText(Integer.toString(JDictClient.DEFAULT_PORT));
+        mEditDescription = layout.findViewById(R.id.edit_description);
 
-        if (host != null) {
-            editHostName.setText(host.getName());
-            editPort.setText(host.getPort().toString());
-            editDescription.setText(host.getDescription());
+        if (mHost != null) {
+            mEditHostName.setText(mHost.getName());
+            mEditPort.setText(mHost.getPort().toString());
+            mEditDescription.setText(mHost.getDescription());
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -66,37 +66,37 @@ public class EditHostDialog extends DialogFragment {
           .setPositiveButton(getString(R.string.button_save),
             new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    if (host == null) host = new Host();
-                    String portText = editPort.getText().toString();
+                    if (mHost == null) mHost = new Host();
+                    String portText = mEditPort.getText().toString();
                     if (portText.trim().length() > 0) {
-                        host.setPort(Integer.parseInt(portText));
+                        mHost.setPort(Integer.parseInt(portText));
                     }
 
-                    String hostText = editHostName.getText().toString();
+                    String hostText = mEditHostName.getText().toString();
                     if (hostText.trim().length() == 0) {
                         ErrorDialog.show(getActivity(),
                           getString(R.string.error_host_name_required));
                         return;
                     }
 
-                    host.setUserDefined(true);
-                    host.setName(editHostName.getText().toString());
-                    host.setDescription(editDescription.getText()
-                                                       .toString());
+                    mHost.setUserDefined(true);
+                    mHost.setName(mEditHostName.getText().toString());
+                    mHost.setDescription(mEditDescription.getText()
+                                                         .toString());
 
                     try {
-                        host.create();
+                        mHost.create();
                     } catch (SQLException e) {
                         ErrorDialog.show(getActivity(), e.getMessage());
                     }
-                    fragment.refreshHostList();
+                    mFragment.refreshHostList();
                 }
             }).setView(layout);
         return builder.create();
     }
 
     public String getTitle() {
-        if (host == null) {
+        if (mHost == null) {
             return getActivity().getString(R.string.dialog_add_title);
         } else {
             return getActivity().getString(R.string.dialog_edit_title);
@@ -104,10 +104,10 @@ public class EditHostDialog extends DialogFragment {
     }
 
     public void setDictionaryHost(Host host) {
-        this.host = host;
+        mHost = host;
     }
 
     public void setManageHostsListFragment(ManageHostsListFragment fragment) {
-        this.fragment = fragment;
+        mFragment = fragment;
     }
 }

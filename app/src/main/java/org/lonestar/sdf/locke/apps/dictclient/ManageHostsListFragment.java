@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ManageHostsListFragment extends ListFragment {
-    ManageHostsCursorAdapter ca;
-    ArrayList<Boolean> toggles;
+    ManageHostsCursorAdapter mCursorAdapter;
+    ArrayList<Boolean> mToggles;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,7 +100,7 @@ public class ManageHostsListFragment extends ListFragment {
             new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int pos, long id) {
-                    toggles.set(pos, ((CheckedTextView) view).isChecked());
+                    mToggles.set(pos, ((CheckedTextView) view).isChecked());
                     getActivity().invalidateOptionsMenu();
                 }
             }
@@ -120,11 +120,15 @@ public class ManageHostsListFragment extends ListFragment {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        HostCursor cursor = (HostCursor) DatabaseManager.find(Host.class, query);
-        ca = new ManageHostsCursorAdapter(this.getActivity(), cursor, 0);
-        toggles = new ArrayList<>(Collections.nCopies(ca.getCount(), false));
-        ca.setToggleList(toggles);
-        setListAdapter(ca);
+        HostCursor cursor = (HostCursor)
+          DatabaseManager.find(Host.class, query);
+        mCursorAdapter =
+          new ManageHostsCursorAdapter(getActivity(), cursor, 0);
+        mToggles = new ArrayList<>(Collections.nCopies(
+                                    mCursorAdapter.getCount(),
+                                    false));
+        mCursorAdapter.setToggleList(mToggles);
+        setListAdapter(mCursorAdapter);
     }
 
     private void confirmDeleteSelectedHosts() {
@@ -154,7 +158,7 @@ public class ManageHostsListFragment extends ListFragment {
                     Host host = getHostAtPosition(pos);
                     if (host.getId().equals(defaultHost.getId())) {
                         SharedPreferences prefs = PreferenceManager
-                          .getDefaultSharedPreferences(this.getActivity());
+                          .getDefaultSharedPreferences(getActivity());
                         prefs.edit().putString(
                           getString(R.string.pref_key_default_host),
                           getString(R.string.pref_value_default_host)
@@ -174,7 +178,7 @@ public class ManageHostsListFragment extends ListFragment {
         final Host host = getHostAtPosition(pos);
 
         if (!host.isUserDefined())
-          ErrorDialog.show(this.getActivity(),
+          ErrorDialog.show(getActivity(),
                            getString(R.string.error_host_readonly));
         else
           EditHostDialog.show(this, host);

@@ -31,25 +31,25 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         DICT_INFO
     }
 
-    final private WeakReference<MainActivity> context;
-    final private Request request;
+    final private WeakReference<MainActivity> mContext;
+    final private Request mRequest;
 
-    private Exception exception;
-    private ProgressDialog progressDialog;
+    private Exception mException;
+    private ProgressDialog mProgressDialog;
 
     private static final Map<ClientCommand,String>
-      messages = new EnumMap<>(ClientCommand.class);
+      sMessages = new EnumMap<>(ClientCommand.class);
 
     public ClientTask(MainActivity context, Request request) {
         super();
-        this.context = new WeakReference<>(context);
-        this.request = request;
+        mContext = new WeakReference<>(context);
+        mRequest = request;
 
-        if (messages.isEmpty()) {
-            messages.put(DEFINE, context.getString(R.string.task_define));
-            messages.put(MATCH, context.getString(R.string.task_match));
-            messages.put(DICT_STRAT_LIST, context.getString(R.string.task_dict_list));
-            messages.put(DICT_INFO, context.getString(R.string.task_dict_info));
+        if (sMessages.isEmpty()) {
+            sMessages.put(DEFINE, context.getString(R.string.task_define));
+            sMessages.put(MATCH, context.getString(R.string.task_match));
+            sMessages.put(DICT_STRAT_LIST, context.getString(R.string.task_dict_list));
+            sMessages.put(DICT_INFO, context.getString(R.string.task_dict_info));
         }
     }
 
@@ -79,11 +79,11 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
 
     @Override
     protected void onPreExecute() {
-        if (request.displayWaitMessage()) {
-            progressDialog = ProgressDialog.show(
-              context.get(),
+        if (mRequest.displayWaitMessage()) {
+            mProgressDialog = ProgressDialog.show(
+              mContext.get(),
               "Waiting",
-              messages.get(request.getCommand()),
+              sMessages.get(mRequest.getCommand()),
               true
             );
         }
@@ -91,37 +91,37 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
 
     protected Result doInBackground(Void... voids) {
         try {
-            switch (request.getCommand()) {
+            switch (mRequest.getCommand()) {
               case DEFINE:
                 return new Result(
-                  request,
-                  getDefinitions(request.getWord(), request.getDictionary())
+                  mRequest,
+                  getDefinitions(mRequest.getWord(), mRequest.getDictionary())
                 );
               case MATCH:
                 return new Result(
-                  request,
-                  getMatches(request.getWord(), request.getDictionary(),
-                             request.getStrategy())
+                  mRequest,
+                  getMatches(mRequest.getWord(), mRequest.getDictionary(),
+                             mRequest.getStrategy())
                 );
               case DICT_STRAT_LIST:
                 Pair<List<Dictionary>, List<Strategy>> results =
                   getDictionariesAndStrategies();
                 return new Result(
-                  request,
+                  mRequest,
                   results.t,
                   results.u
                 );
               case DICT_INFO:
                 return new Result(
-                  request,
-                  getDictionaryInfo(request.getDictionary())
+                  mRequest,
+                  getDictionaryInfo(mRequest.getDictionary())
                 );
               default:
                 break;
             }
         } catch (Exception e) {
             if (!(e instanceof NullPointerException)) {
-                exception = e;
+                mException = e;
             } else {
                 throw (NullPointerException) e;
             }
@@ -132,15 +132,15 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
 
     @Override
     protected void onPostExecute(Result result) {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
         }
-        context.get().onTaskFinished(result, exception);
+        mContext.get().onTaskFinished(result, mException);
     }
 
     private Pair<List<Dictionary>, List<Strategy>>
     getDictionariesAndStrategies() throws Exception {
-        Host host = request.getHost();
+        Host host = mRequest.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
         Command.Builder builder = new Command.Builder(Command.Type.OTHER)
@@ -155,14 +155,14 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
 
     @Override
     protected void onCancelled(Result result) {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
         }
     }
 
     private List<Definition> getDefinitions(String word, Dictionary dictionary)
           throws Exception {
-        Host host = request.getHost();
+        Host host = mRequest.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
         List<Definition> definitions;
@@ -178,7 +178,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
     private List<Match> getMatches(String word, Dictionary dictionary,
                                    Strategy strategy)
           throws Exception {
-        Host host = request.getHost();
+        Host host = mRequest.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
         List <Match> matches = client.match(word,
@@ -190,7 +190,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
 
     private String getDictionaryInfo(Dictionary dictionary)
           throws Exception {
-        Host host = request.getHost();
+        Host host = mRequest.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
         String dictInfo = client.getDatabaseInfo(dictionary.getName());
@@ -217,7 +217,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         }
 
         private Request(Host host, ClientCommand command, String word,
-                              Dictionary dictionary) {
+                        Dictionary dictionary) {
             this(host, command, word, dictionary, null);
         }
 
@@ -260,30 +260,30 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
             this.dictionaryInfo = dictionaryInfo;
 
             switch (this.request.getCommand()) {
-                case DEFINE:
-                    definitions = (List<Definition>) list1;
-                    dictionaries = null;
-                    strategies = null;
-                    matches = null;
-                    break;
-                case MATCH:
-                    definitions = null;
-                    dictionaries = null;
-                    strategies = null;
-                    matches = (List<Match>) list1;
-                    break;
-                case DICT_STRAT_LIST:
-                    dictionaries = (List<Dictionary>) list1;
-                    definitions = null;
-                    strategies = (List<Strategy>) list2;
-                    matches = null;
-                    break;
-                default:
-                    definitions = null;
-                    dictionaries = null;
-                    strategies = null;
-                    matches = null;
-                    break;
+              case DEFINE:
+                definitions = (List<Definition>) list1;
+                dictionaries = null;
+                strategies = null;
+                matches = null;
+                break;
+              case MATCH:
+                definitions = null;
+                dictionaries = null;
+                strategies = null;
+                matches = (List<Match>) list1;
+                break;
+              case DICT_STRAT_LIST:
+                dictionaries = (List<Dictionary>) list1;
+                definitions = null;
+                strategies = (List<Strategy>) list2;
+                matches = null;
+                break;
+              default:
+                definitions = null;
+                dictionaries = null;
+                strategies = null;
+                matches = null;
+                break;
             }
         }
 

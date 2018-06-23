@@ -18,14 +18,14 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 class ManageHostsCursorAdapter extends HostCursorAdapter {
-    private ArrayList<Boolean> toggles;
+    private ArrayList<Boolean> mToggles;
 
     public ManageHostsCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
     public void setToggleList(ArrayList<Boolean> list) {
-        toggles = list;
+        mToggles = list;
         notifyDataSetChanged();
     }
 
@@ -59,7 +59,7 @@ class ManageHostsCursorAdapter extends HostCursorAdapter {
         view.setText(Html.fromHtml(buildItemText(cursor)));
         view.setCheckMarkDrawable(holder.checkMark);
         view.setChecked(false);
-        view.setChecked(toggles.get(cursor.getPosition()));
+        view.setChecked(mToggles.get(cursor.getPosition()));
         if (cursor.isReadonly()) {
             view.setCheckMarkDrawable(null);
         }

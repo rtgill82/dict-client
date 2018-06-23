@@ -14,7 +14,7 @@ import android.support.v7.widget.AppCompatCheckedTextView;
 import android.util.AttributeSet;
 
 class CompatCheckedTextView extends AppCompatCheckedTextView {
-    private Drawable drawable;
+    private Drawable mDrawable;
 
     public CompatCheckedTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -23,11 +23,11 @@ class CompatCheckedTextView extends AppCompatCheckedTextView {
     @Override
     public void setCheckMarkDrawable(Drawable d) {
         super.setCheckMarkDrawable(d);
-        drawable = d;
+        mDrawable = d;
     }
 
     @Override
     public Drawable getCheckMarkDrawable() {
-        return drawable;
+        return mDrawable;
     }
 }

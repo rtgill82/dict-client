@@ -16,32 +16,32 @@ package org.lonestar.sdf.locke.apps.dictclient;
  *
  */
 class HistoryEntry {
-    final private String word;
-    final private Dictionary dictionary;
-    final private Strategy strategy;
-    final private CharSequence text;
+    final private String mWord;
+    final private Dictionary mDictionary;
+    final private Strategy mStrategy;
+    final private CharSequence mText;
 
     public HistoryEntry(String word, Dictionary dictionary,
                         Strategy strategy, CharSequence text) {
-        this.word = word;
-        this.dictionary = dictionary;
-        this.strategy = strategy;
-        this.text = text;
+        mWord = word;
+        mDictionary = dictionary;
+        mStrategy = strategy;
+        mText = text;
     }
 
     public String getWord() {
-        return word;
+        return mWord;
     }
 
     public Dictionary getDictionary() {
-        return dictionary;
+        return mDictionary;
     }
 
     public Strategy getStrategy() {
-        return strategy;
+        return mStrategy;
     }
 
     public CharSequence getText () {
-        return text;
+        return mText;
     }
 }

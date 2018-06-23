@@ -18,12 +18,12 @@ import android.view.View;
 import android.widget.EditText;
 
 class WordSpan extends ClickableSpan {
-    final private String word;
-    final private Dictionary dictionary;
+    final private String mWord;
+    final private Dictionary mDictionary;
 
     public WordSpan(String word, Dictionary dictionary) {
-        this.word = word.replace("\n", "").replaceAll("\\s+", " ");
-        this.dictionary = dictionary;
+        mWord = word.replace("\n", "").replaceAll("\\s+", " ");
+        mDictionary = dictionary;
     }
 
     public WordSpan(String word) {
@@ -47,12 +47,12 @@ class WordSpan extends ClickableSpan {
             DictClient app = (DictClient) activity.getApplication();
             EditText searchText = activity.findViewById(R.id.search_text);
             Host host = app.getCurrentHost();
-            setSelectedDictionary(activity, dictionary);
-            searchText.setText(word);
+            setSelectedDictionary(activity, mDictionary);
+            searchText.setText(mWord);
             searchText.selectAll();
             setDefineStrategy(activity);
             new ClientTask(activity,
-                           ClientTask.DEFINE(host, word, dictionary))
+                           ClientTask.DEFINE(host, mWord, mDictionary))
               .execute();
         }
     }
@@ -65,10 +65,10 @@ class WordSpan extends ClickableSpan {
 
     public CharSequence toCharSequence() {
         SpannableStringBuilder spannedString = new SpannableStringBuilder();
-        spannedString.append(word);
+        spannedString.append(mWord);
         spannedString.setSpan(
           this,
-          spannedString.length() - word.length(),
+          spannedString.length() - mWord.length(),
           spannedString.length(),
           Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         );
