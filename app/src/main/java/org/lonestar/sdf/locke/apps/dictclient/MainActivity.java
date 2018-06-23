@@ -365,18 +365,6 @@ public class MainActivity extends Activity {
         executeTask(ClientTask.DICT_INFO(mHost, dictionary));
     }
 
-    public boolean traverseHistory(DefinitionHistory.Direction direction) {
-        HistoryEntry entry;
-        if (DefinitionHistory.Direction.BACK == direction)
-          entry = mHistory.back();
-        else
-          entry = mHistory.forward();
-        if (entry != null)
-          displayHistoryEntry(entry);
-        invalidateOptionsMenu();
-        return (entry != null);
-    }
-
     public void setDictionarySpinnerData(Collection<Dictionary> collection) {
         ArrayList<Dictionary> list = new ArrayList<>(collection);
         list.add(0, Dictionary.ALL_DICTIONARIES);
@@ -435,6 +423,18 @@ public class MainActivity extends Activity {
 
     private void refreshDictionaries() {
         executeTask(ClientTask.DICT_LIST(mHost));
+    }
+
+    private boolean traverseHistory(DefinitionHistory.Direction direction) {
+        HistoryEntry entry;
+        if (DefinitionHistory.Direction.BACK == direction)
+            entry = mHistory.back();
+        else
+            entry = mHistory.forward();
+        if (entry != null)
+            displayHistoryEntry(entry);
+        invalidateOptionsMenu();
+        return (entry != null);
     }
 
     private void displayHistoryEntry(HistoryEntry entry) {
