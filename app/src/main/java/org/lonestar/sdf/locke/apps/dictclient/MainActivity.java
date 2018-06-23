@@ -503,7 +503,7 @@ public class MainActivity extends Activity {
         Adapter adapter = mDictionarySpinner.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
             Dictionary dictionary = (Dictionary) adapter.getItem(i);
-            if (dictionary.getHost() == null) continue;
+            if (dictionary == Dictionary.ALL_DICTIONARIES) continue;
             LinkedList<String> list = new LinkedList<>();
             map.put(dictionary, list);
             for (Match match : matches) {
