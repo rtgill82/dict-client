@@ -45,14 +45,10 @@ class WordSpan extends ClickableSpan {
 
         if (activity != null) {
             DictClient app = (DictClient) activity.getApplication();
-            EditText searchText = activity.findViewById(R.id.search_text);
             Host host = app.getCurrentHost();
-            setSelectedDictionary(activity, mDictionary);
-            searchText.setText(mWord);
-            searchText.selectAll();
-            setDefineStrategy(activity);
             new ClientTask(activity,
-                           ClientTask.DEFINE(host, mWord, mDictionary))
+                           ClientTask.DEFINE(host, mWord, mDictionary),
+                           activity.getOnTaskFinishedHandler(true))
               .execute();
         }
     }
@@ -73,14 +69,5 @@ class WordSpan extends ClickableSpan {
           Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         );
         return spannedString;
-    }
-
-    private void setSelectedDictionary(MainActivity activity,
-                                       Dictionary dictionary) {
-        activity.setSelectedDictionary(dictionary);
-    }
-
-    private void setDefineStrategy(MainActivity activity) {
-        activity.setSelectedStrategy(null);
     }
 }

@@ -34,6 +34,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
 
     final private WeakReference<MainActivity> mContext;
     final private Request mRequest;
+    final private OnTaskFinishedHandler mHandler;
 
     private Exception mException;
     private ProgressDialog mProgressDialog;
@@ -41,10 +42,12 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
     private static final Map<ClientCommand,String>
       sMessages = new EnumMap<>(ClientCommand.class);
 
-    public ClientTask(MainActivity context, Request request) {
+    public ClientTask(MainActivity context, Request request,
+                      OnTaskFinishedHandler handler) {
         super();
         mContext = new WeakReference<>(context);
         mRequest = request;
+        mHandler = handler;
 
         if (sMessages.isEmpty()) {
             sMessages.put(DEFINE, context.getString(R.string.task_define));
@@ -131,7 +134,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
         }
-        mContext.get().onTaskFinished(result, mException);
+        mHandler.onTaskFinished(result, mException);
     }
 
     private Pair<List<Dictionary>, List<Strategy>>
@@ -240,6 +243,10 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         public String getWord() {
             return word;
         }
+    }
+
+    public interface OnTaskFinishedHandler {
+        void onTaskFinished(Result result, Exception exception);
     }
 
     public class Result {
