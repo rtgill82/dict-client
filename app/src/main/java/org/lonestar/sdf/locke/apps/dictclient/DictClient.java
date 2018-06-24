@@ -22,7 +22,8 @@ public class DictClient extends Application {
     private OnHostChangeListener mOnHostChangeListener;
 
     @SuppressWarnings("FieldCanBeLocal")
-    private OnSharedPreferenceChangeListener mPreferenceChangeListener;
+    private final OnSharedPreferenceChangeListener mPreferenceChangeListener =
+      createOnSharedPreferenceChangeListener();
 
     @Override
     public void onCreate() {
@@ -30,29 +31,12 @@ public class DictClient extends Application {
         DatabaseManager.initialize(getApplicationContext());
         DonationManager.initialize(getApplicationContext());
         mCache = new HostCache();
-
         mCurrentHost = getDefaultHost();
         mCache.add(mCurrentHost);
-
-        mPreferenceChangeListener =
-          new SharedPreferences.OnSharedPreferenceChangeListener() {
-              public void onSharedPreferenceChanged(
-                SharedPreferences preferences,
-                String key
-              ) {
-                  if (key.equals(getString(R.string.pref_key_default_host))) {
-                      int hostId = Integer.parseInt(preferences
-                                                    .getString(key, "1"));
-                      setCurrentHostById(hostId);
-                  }
-              }
-          };
-
-        SharedPreferences preferences =
-          PreferenceManager.getDefaultSharedPreferences(this);
-        preferences.registerOnSharedPreferenceChangeListener(
-          mPreferenceChangeListener
-        );
+        PreferenceManager.getDefaultSharedPreferences(this)
+          .registerOnSharedPreferenceChangeListener(
+            mPreferenceChangeListener
+          );
     }
 
     public void setOnHostChangeListener(OnHostChangeListener listener) {
@@ -61,11 +45,11 @@ public class DictClient extends Application {
 
     public Host getDefaultHost() {
         SharedPreferences preferences =
-                PreferenceManager.getDefaultSharedPreferences(this);
+          PreferenceManager.getDefaultSharedPreferences(this);
         Resources resources = getResources();
         int hostId = Integer.parseInt(preferences.getString(
-                resources.getString(R.string.pref_key_default_host),
-                resources.getString(R.string.pref_value_default_host))
+          resources.getString(R.string.pref_key_default_host),
+          resources.getString(R.string.pref_value_default_host))
         );
         return (Host) DatabaseManager.find(Host.class, hostId);
     }
@@ -76,12 +60,11 @@ public class DictClient extends Application {
 
     public void setCurrentHost(Host host) {
         /* Ensure new host is not the same as the old one. */
-        if (mCurrentHost == null
-              || !mCurrentHost.getId().equals(host.getId())) {
-            mCurrentHost = findCachedHost(host.getId(), host);
-            if (mOnHostChangeListener != null)
-              mOnHostChangeListener.onHostChange(mCurrentHost);
-        }
+        if (mCurrentHost != null && mCurrentHost.getId().equals(host.getId()))
+          return;
+        mCurrentHost = findCachedHost(host.getId(), host);
+        if (mOnHostChangeListener != null)
+          mOnHostChangeListener.onHostChange(mCurrentHost);
     }
 
     public void setCurrentHostById(int hostId) {
@@ -98,9 +81,23 @@ public class DictClient extends Application {
             if (defaultHost == null)
               defaultHost = (Host) DatabaseManager.find(Host.class, hostId);
             host = defaultHost;
-            mCache.add(defaultHost);
+            mCache.add(host);
         }
         return host;
+    }
+
+    private OnSharedPreferenceChangeListener
+    createOnSharedPreferenceChangeListener() {
+        return new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(
+              SharedPreferences preferences, String key
+            ) {
+                if (key.equals(getString(R.string.pref_key_default_host))) {
+                    int hostId = Integer.parseInt(preferences
+                                                  .getString(key, "1"));
+                    setCurrentHostById(hostId);
+                }
+              }};
     }
 
     public static abstract class OnHostChangeListener {
