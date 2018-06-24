@@ -16,6 +16,7 @@ import org.lonestar.sdf.locke.libs.jdictclient.Definition;
 import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 import org.lonestar.sdf.locke.libs.jdictclient.Match;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.EnumMap;
 import java.util.List;
@@ -119,14 +120,9 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
               default:
                 break;
             }
-        } catch (Exception e) {
-            if (!(e instanceof NullPointerException)) {
-                mException = e;
-            } else {
-                throw (NullPointerException) e;
-            }
+        } catch (IOException e) {
+            mException = e;
         }
-
         return null;
     }
 
@@ -139,7 +135,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
     }
 
     private Pair<List<Dictionary>, List<Strategy>>
-    getDictionariesAndStrategies() throws Exception {
+    getDictionariesAndStrategies() throws IOException {
         Host host = mRequest.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
@@ -161,7 +157,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
     }
 
     private List<Definition> getDefinitions(String word, Dictionary dictionary)
-          throws Exception {
+          throws IOException {
         Host host = mRequest.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
@@ -177,7 +173,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
 
     private List<Match> getMatches(String word, Dictionary dictionary,
                                    Strategy strategy)
-          throws Exception {
+          throws IOException {
         Host host = mRequest.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
@@ -189,7 +185,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
     }
 
     private String getDictionaryInfo(Dictionary dictionary)
-          throws Exception {
+          throws IOException {
         Host host = mRequest.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
