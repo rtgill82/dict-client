@@ -64,7 +64,8 @@ public class MainActivity extends Activity {
     private ImageButton mSearchButton;
 
     @SuppressWarnings("FieldCanBeLocal")
-    private OnSharedPreferenceChangeListener mPreferenceChangeListener;
+    private OnSharedPreferenceChangeListener mPreferenceChangeListener =
+      createOnSharedPreferenceChangeListener();
 
     private int mSelectedDictionary = -1;
     private int mSelectedStrategy = -1;
@@ -95,25 +96,9 @@ public class MainActivity extends Activity {
           }
         );
 
-        mPreferenceChangeListener =
-          new OnSharedPreferenceChangeListener() {
-              public void onSharedPreferenceChanged(
-                SharedPreferences preferences,
-                String key
-              ) {
-                  String prefKey = getString(R.string.pref_key_word_wrap);
-                  boolean value =
-                    getResources().getBoolean(R.bool.pref_value_word_wrap);
-                  if (key.equals(prefKey)) {
-                      mWordWrap = preferences.getBoolean(prefKey, value);
-                      mResultView.setWordWrap(mWordWrap);
-                      mResultView.invalidate();
-                  }
-              }
-          };
         PreferenceManager.getDefaultSharedPreferences(this)
           .registerOnSharedPreferenceChangeListener(
-                  mPreferenceChangeListener
+            mPreferenceChangeListener
           );
 
         if (savedInstanceState != null) {
@@ -210,15 +195,17 @@ public class MainActivity extends Activity {
             backButton.setEnabled(false);
             forwardButton.setEnabled(false);
         } else {
-            if (mHistory.canGoBack())
-              backButton.setEnabled(true);
-            else
-              backButton.setEnabled(false);
+            if (mHistory.canGoBack()) {
+                backButton.setEnabled(true);
+            } else {
+                backButton.setEnabled(false);
+            }
 
-            if (mHistory.canGoForward())
-              forwardButton.setEnabled(true);
-            else
-              forwardButton.setEnabled(false);
+            if (mHistory.canGoForward()) {
+                forwardButton.setEnabled(true);
+            } else {
+                forwardButton.setEnabled(false);
+            }
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -338,22 +325,25 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (!traverseHistory(DefinitionHistory.Direction.BACK))
-          super.onBackPressed();
+        if (!traverseHistory(DefinitionHistory.Direction.BACK)) {
+            super.onBackPressed();
+        }
     }
 
     public void lookupWord(View view) {
-        Strategy strategy = (Strategy) mStrategySpinner.getSelectedItem();
-        Dictionary dict = (Dictionary) mDictionarySpinner.getSelectedItem();
         String word = mSearchText.getText().toString();
-        if (!(word.isEmpty())) {
-            if (!strategy.getName().equals("define")) {
-                executeTask(ClientTask.MATCH(mHost, word, dict, strategy));
+        if (word.isEmpty()) return;
+
+        Strategy strategy = (Strategy) mStrategySpinner.getSelectedItem();
+        Dictionary dictionary = (Dictionary)
+          mDictionarySpinner.getSelectedItem();
+        if (!strategy.getName().equals("define")) {
+            executeTask(ClientTask.MATCH(mHost, word, dictionary, strategy));
+        } else {
+            if (dictionary != null) {
+                executeTask(ClientTask.DEFINE(mHost, word, dictionary));
             } else {
-                if (dict != null)
-                  executeTask(ClientTask.DEFINE(mHost, word, dict));
-                else
-                  executeTask(ClientTask.DEFINE(mHost, word));
+                executeTask(ClientTask.DEFINE(mHost, word));
             }
         }
     }
@@ -383,13 +373,13 @@ public class MainActivity extends Activity {
     }
 
     public void setSelectedDictionary(Dictionary dictionary) {
-        if (dictionary == null || dictionary.getName() == null)
-          mSelectedDictionary = 0;
-        else {
+        if (dictionary == null || dictionary == Dictionary.ALL_DICTIONARIES) {
+            mSelectedDictionary = 0;
+        } else {
             SpinnerAdapter adapter = mDictionarySpinner.getAdapter();
             for (int i = 0; i < adapter.getCount(); i++) {
                 Dictionary item = (Dictionary) adapter.getItem(i);
-                if (item.getName() == null) continue;
+                if (item == Dictionary.ALL_DICTIONARIES) continue;
                 if (item.getName().equals(dictionary.getName())) {
                     mSelectedDictionary = i;
                     break;
@@ -400,9 +390,9 @@ public class MainActivity extends Activity {
     }
 
     public void setSelectedStrategy(Strategy strategy) {
-        if (strategy == null)
-          mSelectedStrategy = 0;
-        else {
+        if (strategy == null) {
+            mSelectedStrategy = 0;
+        } else {
             SpinnerAdapter adapter = mStrategySpinner.getAdapter();
             for (int i = 0; i < adapter.getCount(); i++) {
                 Strategy item = (Strategy) adapter.getItem(i);
@@ -427,12 +417,14 @@ public class MainActivity extends Activity {
 
     private boolean traverseHistory(DefinitionHistory.Direction direction) {
         HistoryEntry entry;
-        if (DefinitionHistory.Direction.BACK == direction)
+        if (DefinitionHistory.Direction.BACK == direction) {
             entry = mHistory.back();
-        else
+        } else {
             entry = mHistory.forward();
-        if (entry != null)
+        }
+        if (entry != null) {
             displayHistoryEntry(entry);
+        }
         invalidateOptionsMenu();
         return (entry != null);
     }
@@ -441,26 +433,26 @@ public class MainActivity extends Activity {
         Strategy strategy = entry.getStrategy();
         setSelectedDictionary(entry.getDictionary());
         setSelectedStrategy(strategy);
-        if (strategy.getName().equals("define"))
-          mResultView.setWordWrap(mWordWrap);
-        else
-          mResultView.setWordWrap(true);
+        if (strategy.getName().equals("define")) {
+            mResultView.setWordWrap(mWordWrap);
+        } else {
+            mResultView.setWordWrap(true);
+        }
         mSearchText.setText(entry.getWord());
         mResultView.setText(entry.getText());
     }
 
     private CharSequence displayDefinitions(List<Definition> definitions) {
         mResultView.setWordWrap(mWordWrap);
-        if (definitions == null)
-          mResultView.setText(getString(R.string.result_definitions));
-        else {
+        if (definitions == null) {
+            mResultView.setText(getString(R.string.result_definitions));
+        } else {
             SpannableStringBuilder stringBuilder =
               new SpannableStringBuilder();
             for (Definition definition : definitions) {
                 stringBuilder.append(Html.fromHtml(
-                    "<b>" +
-                        definition.getDatabase().getDescription() +
-                        "</b><br>"
+                  "<b>" + definition.getDatabase().getDescription() +
+                  "</b><br>"
                 ));
                 stringBuilder.append(DefinitionParser.parse(definition));
                 stringBuilder.append("\n");
@@ -472,23 +464,22 @@ public class MainActivity extends Activity {
 
     private CharSequence displayMatches(List<Match> matches) {
         mResultView.setWordWrap(true);
-        if (matches == null)
-          mResultView.setText(getString(R.string.result_matches));
-        else {
+        if (matches == null) {
+            mResultView.setText(getString(R.string.result_matches));
+        } else {
             Map<Dictionary, List<String>> map = buildMatchMap(matches);
             SpannableStringBuilder stringBuilder =
               new SpannableStringBuilder();
             for (Dictionary dictionary : map.keySet()) {
                 List<String> list = map.get(dictionary);
                 stringBuilder.append(Html.fromHtml(
-                        "<b>" + dictionary.getDescription() + "</b><br>"
+                      "<b>" + dictionary.getDescription() + "</b><br>"
                     ));
                 int i = 0; int count = list.size();
                 for (String word : list) {
                     stringBuilder.append(new WordSpan(word, dictionary)
                                                      .toCharSequence());
-                    if (i != count - 1)
-                      stringBuilder.append(", ");
+                    if (i != count - 1) stringBuilder.append(", ");
                     i += 1;
                 }
                 stringBuilder.append(Html.fromHtml("<br><br>"));
@@ -507,21 +498,24 @@ public class MainActivity extends Activity {
             LinkedList<String> list = new LinkedList<>();
             map.put(dictionary, list);
             for (Match match : matches) {
-                if (dictionary.getName().equals(match.getDatabase()))
-                  list.add(match.getWord());
+                if (dictionary.getName().equals(match.getDatabase())) {
+                    list.add(match.getWord());
+                }
             }
-            if (list.size() == 0)
-              map.remove(dictionary);
+            if (list.size() == 0) {
+                map.remove(dictionary);
+            }
         }
         return map;
     }
 
     private void displayDictionaryInfo(String dictionaryInfo) {
         mResultView.setText("");
-        if (dictionaryInfo == null)
-          mResultView.setText(getString(R.string.result_dict_info));
-        else
-          mResultView.setText(dictionaryInfo);
+        if (dictionaryInfo == null) {
+            mResultView.setText(getString(R.string.result_dict_info));
+        } else {
+            mResultView.setText(dictionaryInfo);
+        }
     }
 
     private void disableInput() {
@@ -542,6 +536,23 @@ public class MainActivity extends Activity {
         mSearchButton.setEnabled(mSearchButtonState);
     }
 
+    private OnSharedPreferenceChangeListener
+    createOnSharedPreferenceChangeListener() {
+        return new OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(
+              SharedPreferences preferences, String key
+            ) {
+                  String prefKey = getString(R.string.pref_key_word_wrap);
+                  boolean value =
+                    getResources().getBoolean(R.bool.pref_value_word_wrap);
+                  if (key.equals(prefKey)) {
+                      mWordWrap = preferences.getBoolean(prefKey, value);
+                      mResultView.setWordWrap(mWordWrap);
+                      mResultView.invalidate();
+                  }
+              }};
+    }
+
     private EditText setupSearchText() {
         final EditText searchText = findViewById(R.id.search_text);
         final ImageButton searchButton = findViewById(R.id.search_button);
@@ -552,10 +563,11 @@ public class MainActivity extends Activity {
                 @Override
                 public void onTextChanged(CharSequence s, int start,
                                           int before, int count) {
-                    if (s.toString().trim().length() > 0)
-                      searchButton.setEnabled(true);
-                    else
-                      searchButton.setEnabled(false);
+                    if (s.toString().trim().length() > 0) {
+                        searchButton.setEnabled(true);
+                    } else {
+                        searchButton.setEnabled(false);
+                    }
                 }
 
                 @Override
@@ -590,15 +602,15 @@ public class MainActivity extends Activity {
             public void onItemSelected(AdapterView<?> parent, View
                                        selectedItemView, int position,
                                        long id) {
-                ImageButton button =
-                  findViewById(R.id.dictionary_info_button);
+                ImageButton button = findViewById(R.id.dictionary_info_button);
                 Dictionary currentDictionary = (Dictionary)
                   parent.getSelectedItem();
 
-                if (currentDictionary.getName() != null)
-                  button.setEnabled(true);
-                else
-                  button.setEnabled(false);
+                if (currentDictionary.getName() != null) {
+                    button.setEnabled(true);
+                } else {
+                    button.setEnabled(false);
+                }
             }
 
             @Override
