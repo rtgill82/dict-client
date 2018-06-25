@@ -10,7 +10,6 @@ package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,12 +49,12 @@ class DictionarySpinnerAdapter implements SpinnerAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        TextView v = new TextView(context.getApplicationContext());
-        v.setTextColor(Color.BLACK);
-        v.setText(data.get(position).getDescription());
-        v.setMaxLines(1);
-        v.setEllipsize(TextUtils.TruncateAt.END);
-        return v;
+        TextView view = new TextView(context.getApplicationContext());
+        view.setText(data.get(position).getDescription());
+        view.setMaxLines(1);
+        view.setEllipsize(TextUtils.TruncateAt.END);
+        setViewPadding(view);
+        return view;
     }
 
     @Override
@@ -86,6 +85,12 @@ class DictionarySpinnerAdapter implements SpinnerAdapter {
     @Override
     public View getDropDownView(int position, View convertView,
                                 ViewGroup parent) {
-        return this.getView(position, convertView, parent);
+        return getView(position, convertView, parent);
+    }
+
+    private void setViewPadding(View view) {
+        int pad = (int) context.getResources()
+                               .getDimension(R.dimen.view_padding);
+        view.setPadding(pad, pad, pad, pad);
     }
 }

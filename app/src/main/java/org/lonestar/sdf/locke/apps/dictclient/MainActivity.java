@@ -9,12 +9,12 @@
 package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
@@ -45,7 +45,7 @@ import java.util.Map;
 import static org.lonestar.sdf.locke.apps.dictclient.DonateNotificationService.DONATE_ACTION;
 import static org.lonestar.sdf.locke.apps.dictclient.DonateNotificationService.DONATE_SEEN;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     private static final String SELECTED_DICTIONARY = "SELECTED_DICTIONARY";
     private static final String SELECTED_STRATEGY = "SELECTED_STRATEGY";
 

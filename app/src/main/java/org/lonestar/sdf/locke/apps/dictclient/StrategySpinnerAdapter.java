@@ -10,7 +10,6 @@ package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SpinnerAdapter;
@@ -49,10 +48,10 @@ class StrategySpinnerAdapter implements SpinnerAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        TextView v = new TextView(context.getApplicationContext());
-        v.setTextColor(Color.BLACK);
-        v.setText(data.get(position).getName());
-        return v;
+        TextView view = new TextView(context.getApplicationContext());
+        view.setText(data.get(position).getName());
+        setViewPadding(view);
+        return view;
     }
 
     @Override
@@ -83,9 +82,15 @@ class StrategySpinnerAdapter implements SpinnerAdapter {
     @Override
     public View getDropDownView(int position, View convertView,
                                 ViewGroup parent) {
-        TextView v = new TextView(context.getApplicationContext());
-        v.setTextColor(Color.BLACK);
-        v.setText(data.get(position).getDescription());
-        return v;
+        TextView view = new TextView(context.getApplicationContext());
+        view.setText(data.get(position).getDescription());
+        setViewPadding(view);
+        return view;
+    }
+
+    private void setViewPadding(View view) {
+        int pad = (int) context.getResources()
+                               .getDimension(R.dimen.view_padding);
+        view.setPadding(pad, pad, pad, pad);
     }
 }
