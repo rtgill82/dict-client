@@ -15,7 +15,6 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
-import android.widget.EditText;
 
 class WordSpan extends ClickableSpan {
     final private String mWord;

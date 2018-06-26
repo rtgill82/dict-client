@@ -11,8 +11,12 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+
+import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 
 public class DictClient extends Application {
     public static final String CHANNEL = "dict-client";
@@ -30,6 +34,7 @@ public class DictClient extends Application {
         super.onCreate();
         DatabaseManager.initialize(getApplicationContext());
         DonationManager.initialize(getApplicationContext());
+        JDictClient.setClientString(buildClientString());
         mCache = new HostCache();
         mCurrentHost = getDefaultHost();
         mCache.add(mCurrentHost);
@@ -73,6 +78,21 @@ public class DictClient extends Application {
             if (mOnHostChangeListener != null)
               mOnHostChangeListener.onHostChange(mCurrentHost);
         }
+    }
+
+    public String getVersionString() {
+        try {
+            PackageInfo pInfo = getPackageManager()
+              .getPackageInfo(getPackageName(), 0);
+            return pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String buildClientString() {
+        String name = getString(R.string.app_name);
+        return name + " " + getVersionString();
     }
 
     private Host findCachedHost(int hostId, Host defaultHost) {
