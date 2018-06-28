@@ -51,7 +51,7 @@
     <ImageButton
         android:id="@+id/dictionary_info_button"
         android:contentDescription="@string/button_dictionary_information"
-        android:src="@drawable/ic_info_outline"
+        android:src="@drawable/outline_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/search_button"
