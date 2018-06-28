@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -61,6 +63,15 @@ public class AboutDialog extends DialogFragment {
         return builder.create();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        AlertDialog dialog = (AlertDialog) getDialog();
+        Button button = dialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+        ViewGroup.LayoutParams layoutParams = button.getLayoutParams();
+        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        button.setLayoutParams(layoutParams);
+    }
 
     private String replaceVersion(Activity activity, String html) {
         DictClient app = (DictClient) activity.getApplication();

@@ -8,9 +8,9 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
-import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -19,7 +19,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class HelpActivity extends Activity {
+public class HelpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
