@@ -29,7 +29,9 @@ public class SelectHostActivity extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Host host = (Host) parent.getItemAtPosition(position);
+                HostCursor cursor = (HostCursor)
+                  parent.getItemAtPosition(position);
+                Host host = cursor.getHost();
                 DictClient app = (DictClient) getApplication();
                 app.setCurrentHost(host);
                 finish();
