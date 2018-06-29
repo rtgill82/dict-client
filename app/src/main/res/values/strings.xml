@@ -31,6 +31,7 @@
     <!-- MainActivity Menus -->
     <string name="menu_back">Back</string>
     <string name="menu_forward">Forward</string>
+    <string name="menu_share">Share</string>
     <string name="menu_host_select">Select Host</string>
     <string name="menu_refresh_dictionaries">Refresh Dictionaries</string>
     <string name="menu_settings">Settings</string>
