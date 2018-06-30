@@ -32,6 +32,7 @@
 -keep class org.slf4j.Logger
 -keep class org.slf4j.LoggerFactory
 
+-keep class android.support.v7.widget.ShareActionProvider { *; }
 -keep class com.j256.ormlite.field.DataType { *; }
 -keep class * extends org.lonestar.sdf.locke.apps.dictclient.BaseModel { *; }
 -keep class org.lonestar.sdf.locke.apps.dictclient.DatabaseRevision { *; }
