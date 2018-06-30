@@ -14,7 +14,9 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
@@ -222,6 +224,17 @@ public class MainActivity extends AppCompatActivity {
           case R.id.menu_forward:
             traverseHistory(DefinitionHistory.Direction.FORWARD);
             break;
+
+          case R.id.menu_share:
+            ShareActionProvider provider =
+              (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT,
+                            mResultView.getText().toString());
+            provider.setShareIntent(intent);
+            break;
+
 
           case R.id.menu_host_select:
             startActivity(new Intent(this, SelectHostActivity.class));
