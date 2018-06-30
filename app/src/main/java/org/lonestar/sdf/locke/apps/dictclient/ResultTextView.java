@@ -37,7 +37,6 @@ public class ResultTextView extends AppCompatTextView {
         // links and scrolling.
         setMovementMethod(LinkMovementMethod.getInstance());
         setHighlightColor(Color.BLUE);
-        setTextIsSelectable(true);
     }
 
     public void restoreTextSize() {
