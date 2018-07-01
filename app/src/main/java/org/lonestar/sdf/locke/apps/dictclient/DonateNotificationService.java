@@ -21,7 +21,6 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
-import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 import static android.app.PendingIntent.FLAG_ONE_SHOT;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static org.lonestar.sdf.locke.apps.dictclient.DictClient.CHANNEL;
@@ -65,7 +64,7 @@ public class DonateNotificationService extends Service {
             NotificationChannel channel = new NotificationChannel(
                 CHANNEL,
                 context.getString(R.string.app_name),
-                IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_DEFAULT
               );
             notificationManager.createNotificationChannel(channel);
         }

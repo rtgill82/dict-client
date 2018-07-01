@@ -25,7 +25,7 @@ class StrategySpinnerAdapter extends ArrayAdapter<Strategy> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = super.getView(position, convertView, parent);
+            convertView = super.getView(position, null, parent);
         }
         TextView view = (TextView) convertView;
         view.setText(getItem(position).getName());

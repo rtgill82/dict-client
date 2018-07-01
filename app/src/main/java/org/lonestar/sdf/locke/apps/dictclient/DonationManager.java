@@ -29,7 +29,7 @@ import static com.android.billingclient.api.BillingClient.BillingResponse.*;
 import static com.android.billingclient.api.BillingClient.SkuType.INAPP;
 
 class DonationManager implements PurchasesUpdatedListener {
-    private static final String TAG = "DONATIONMANAGER";
+    private static final String TAG = "DONATION_MANAGER";
     private static DonationManager sInstance;
 
     final private Context mContext;

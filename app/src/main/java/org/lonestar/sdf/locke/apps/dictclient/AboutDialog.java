@@ -40,6 +40,7 @@ public class AboutDialog extends DialogFragment {
 
         try {
             byte[] buffer = new byte[stream.available()];
+            //noinspection ResultOfMethodCallIgnored
             stream.read(buffer);
             html = new String(buffer);
         } catch (IOException e) {

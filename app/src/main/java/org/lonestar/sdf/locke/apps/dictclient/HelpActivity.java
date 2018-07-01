@@ -36,6 +36,7 @@ public class HelpActivity extends AppCompatActivity {
         InputStream stream = resources.openRawResource(R.raw.help);
         try {
             byte[] buffer = new byte[stream.available()];
+            //noinspection ResultOfMethodCallIgnored
             stream.read(buffer);
             html = new String(buffer);
         } catch (IOException e) {
