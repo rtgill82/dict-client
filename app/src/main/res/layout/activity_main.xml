@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -51,24 +52,24 @@
     <ImageButton
         android:id="@+id/dictionary_info_button"
         android:contentDescription="@string/button_dictionary_information"
-        android:src="@drawable/outline_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/search_button"
         android:layout_toStartOf="@+id/search_button"
         android:layout_below="@+id/search_text"
-        android:onClick="getDictionaryInfo" />
+        android:onClick="getDictionaryInfo"
+        app:srcCompat="@drawable/outline_info" />
 
     <ImageButton
         android:id="@+id/search_button"
         android:contentDescription="@string/button_search"
-        android:src="@drawable/baseline_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/search_text"
-        android:onClick="lookupWord" />
+        android:onClick="lookupWord"
+        app:srcCompat="@drawable/baseline_search" />
 
     <org.lonestar.sdf.locke.apps.dictclient.ResultView
         android:id="@+id/result_view"

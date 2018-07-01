@@ -8,12 +8,12 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
-import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;

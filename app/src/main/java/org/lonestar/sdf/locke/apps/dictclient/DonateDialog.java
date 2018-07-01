@@ -38,7 +38,7 @@ public class DonateDialog extends DialogFragment {
         if (sInstance == null) {
             sInstance = new DonateDialog();
             sInstance.show(activity.getFragmentManager(),
-                          activity.getString(R.string.title_donate));
+                           activity.getString(R.string.title_donate));
         }
     }
 
