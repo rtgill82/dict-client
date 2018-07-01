@@ -18,8 +18,8 @@ class ResultView extends NestedScrollView {
     private static final String SUPER_STATE = "SUPER_STATE";
     private static final String WORD_WRAP = "WORD_WRAP";
 
-    private ResultTextView resultTextView;
-    private boolean wordWrap;
+    private ResultTextView mResultTextView;
+    private boolean mWordWrap;
 
     public ResultView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -28,14 +28,14 @@ class ResultView extends NestedScrollView {
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
-        resultTextView = findViewById(R.id.result_text_view);
+        mResultTextView = findViewById(R.id.result_text_view);
     }
 
     @Override
     public Parcelable onSaveInstanceState() {
         Bundle bundle = new Bundle();
         bundle.putParcelable(SUPER_STATE, super.onSaveInstanceState());
-        bundle.putBoolean(WORD_WRAP, wordWrap);
+        bundle.putBoolean(WORD_WRAP, mWordWrap);
         return bundle;
     }
 
@@ -53,32 +53,32 @@ class ResultView extends NestedScrollView {
     @Override
     public void invalidate() {
         super.invalidate();
-        resultTextView.restoreTextSize();
-        if (!wordWrap)
-          resultTextView.scaleToFitWidth();
+        mResultTextView.restoreTextSize();
+        if (!mWordWrap)
+          mResultTextView.scaleToFitWidth();
     }
 
     @Override
     public void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        resultTextView.restoreTextSize();
-        if (!wordWrap)
-          resultTextView.scaleToFitWidth();
+        mResultTextView.restoreTextSize();
+        if (!mWordWrap)
+          mResultTextView.scaleToFitWidth();
     }
 
     public CharSequence getText() {
-        return resultTextView.getText();
+        return mResultTextView.getText();
     }
 
     public void setText(CharSequence text) {
-        resultTextView.setText(text);
-        resultTextView.restoreTextSize();
-        if (!wordWrap)
-          resultTextView.scaleToFitWidth();
+        mResultTextView.setText(text);
+        mResultTextView.restoreTextSize();
+        if (!mWordWrap)
+          mResultTextView.scaleToFitWidth();
         scrollTo(0, 0);
     }
 
     public void setWordWrap(boolean value) {
-        wordWrap = value;
+        mWordWrap = value;
     }
 }

@@ -11,35 +11,35 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 
-import org.lonestar.sdf.locke.libs.dict.Definition;
+import org.lonestar.sdf.locke.libs.jdictclient.Definition;
 
 final class DefinitionParser {
     public static CharSequence parse(Definition definition) {
-        String defString = definition.getDefinition();
-        SpannableStringBuilder spannedString = new SpannableStringBuilder();
+        String string = definition.getDefinition();
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
         boolean inBraces = false;
         int bracePos = 0;
 
         int i = 0;
-        for (int n = defString.length(); i < n; i++) {
-            char c = defString.charAt(i);
+        for (int n = string.length(); i < n; i++) {
+            char c = string.charAt(i);
 
             if (c == '{') {
-                if (inBraces != true) {
-                    spannedString.append(defString.substring(bracePos, i));
+                if (!inBraces) {
+                    stringBuilder.append(string.substring(bracePos, i));
                     bracePos = i;
                 }
                 inBraces = true;
             }
 
             if (c == '}') {
-                if (inBraces == true) {
-                    String word = defString.substring(bracePos + 1, i);
-                    spannedString.append(word);
-                    spannedString.setSpan(
+                if (inBraces) {
+                    String word = string.substring(bracePos + 1, i);
+                    stringBuilder.append(word);
+                    stringBuilder.setSpan(
                         new WordSpan(word),
-                        spannedString.length() - word.length(),
-                        spannedString.length(),
+                        stringBuilder.length() - word.length(),
+                        stringBuilder.length(),
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                     );
                     bracePos = i + 1;
@@ -48,8 +48,8 @@ final class DefinitionParser {
             }
         }
 
-        spannedString.append(defString.substring(bracePos, i));
-        return spannedString;
+        stringBuilder.append(string.substring(bracePos, i));
+        return stringBuilder;
     }
 
     private DefinitionParser() {

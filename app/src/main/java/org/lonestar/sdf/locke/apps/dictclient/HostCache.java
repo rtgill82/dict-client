@@ -14,15 +14,10 @@ import java.util.LinkedList;
 class HostCache extends LinkedList<Host> {
     public Host getHostById(Integer id) {
         for (Host item : this) {
-            if (item.getId() == id)
+            if (item.getId().equals(id))
               return item;
         }
         return null;
-    }
-
-    public Host addHost(Host host) {
-        add(host);
-        return getHostById(host.getId());
     }
 
     @Override

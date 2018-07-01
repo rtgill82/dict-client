@@ -11,66 +11,34 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import org.lonestar.sdf.locke.libs.dict.JDictClient;
-
-import java.util.Date;
+import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 
 class HostCursor extends CursorWrapper {
-    private Cursor cursor;
-
     public HostCursor(Cursor cursor) {
         super(cursor);
-        this.cursor = cursor;
     }
 
-    public Host getDictionaryHost() {
-        Host host = new Host(getId(), getHostName(), getPort());
-        host.setDescription(getDescription());
-        host.setLastRefresh(getLastRefresh());
-        host.setReadonly(isReadonly());
-        host.setUserDefined(isUserDefined());
-        return host;
+    public Host getHost() {
+        return (Host) DatabaseManager.find(Host.class, getId());
     }
 
-    public Integer getId() {
+    public int getId() {
+        Cursor cursor = getWrappedCursor();
         return (cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
     }
 
     public String getHostName() {
-        return (cursor.getString(cursor.getColumnIndexOrThrow("name")));
-    }
-
-    public Integer getPort() {
-        return (cursor.getInt(cursor.getColumnIndexOrThrow("port")));
-    }
-
-    public String getDescription() {
-        return (cursor.getString(cursor.getColumnIndexOrThrow("description")));
+        Cursor cursor = getWrappedCursor();
+        int port = cursor.getInt(cursor.getColumnIndexOrThrow("port"));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+        if (port != JDictClient.DEFAULT_PORT) {
+            name = name + ":" + Integer.toString(port);
+        }
+        return name;
     }
 
     public boolean isReadonly() {
+        Cursor cursor = getWrappedCursor();
         return (cursor.getInt(cursor.getColumnIndexOrThrow("readonly")) != 0);
-    }
-
-    public boolean isUserDefined() {
-        return (cursor.getInt(cursor.getColumnIndexOrThrow("user_defined")) != 0);
-    }
-
-    public Date getLastRefresh() {
-        return (new Date(
-            cursor.getLong(cursor.getColumnIndexOrThrow("last_refresh"))
-        ));
-    }
-
-    public String getString(int columnIndex) {
-        if (cursor.getColumnName(columnIndex).equals("port")) {
-            if (cursor.getInt(columnIndex) == JDictClient.DEFAULT_PORT) {
-                return "";
-            } else {
-                return ":" + cursor.getString(columnIndex);
-            }
-        } else {
-            return cursor.getString(columnIndex);
-        }
     }
 }

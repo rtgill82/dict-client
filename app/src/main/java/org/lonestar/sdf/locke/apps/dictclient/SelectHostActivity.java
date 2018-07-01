@@ -8,25 +8,34 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
-import android.app.ListActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
-public class SelectHostActivity extends ListActivity {
+public class SelectHostActivity extends AppCompatActivity {
+    private ListView mListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HostCursor cursor = DatabaseManager.getInstance().getHostList();
-        SelectHostCursorAdapter ca = new SelectHostCursorAdapter(this, cursor, 0);
-        getListView().setAdapter(ca);
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int pos, long id) {
-        HostCursor c = (HostCursor) l.getItemAtPosition(pos);
-        DictClient app = (DictClient) getApplication();
-        app.setCurrentHost(c.getDictionaryHost());
-        finish();
+        HostCursor cursor = (HostCursor)
+          DatabaseManager.find(Host.class, "hidden", false);
+        HostCursorAdapter ca = new HostCursorAdapter(this, cursor, 0);
+        mListView = new ListView(this);
+        setContentView(mListView);
+        mListView.setAdapter(ca);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                HostCursor cursor = (HostCursor)
+                  parent.getItemAtPosition(position);
+                Host host = cursor.getHost();
+                DictClient app = (DictClient) getApplication();
+                app.setCurrentHost(host);
+                finish();
+            }
+        });
     }
 }

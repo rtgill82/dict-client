@@ -8,17 +8,29 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
+import android.database.CursorWrapper;
+
+import com.j256.ormlite.android.AndroidDatabaseResults;
+import com.j256.ormlite.dao.CloseableIterator;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.table.DatabaseTable;
 
-import org.lonestar.sdf.locke.libs.dict.JDictClient;
+import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("unused")
 @DatabaseTable(tableName = "hosts")
-class Host {
+class Host extends BaseModel {
     @DatabaseField(generatedId = true, columnName = "_id")
     private Integer id;
     @DatabaseField(canBeNull = false, uniqueIndexName = "name_port_idx")
@@ -36,8 +48,10 @@ class Host {
     @DatabaseField(defaultValue = "false")
     private boolean hidden;
 
-    private List<Dictionary> dictionaries;
-    private List<Strategy> strategies;
+    @ForeignCollectionField(eager = true)
+    private ForeignCollection<Dictionary> dictionaries;
+    @ForeignCollectionField(eager = true)
+    private ForeignCollection<Strategy> strategies;
 
     public Host() {
         this(null, null, JDictClient.DEFAULT_PORT);
@@ -52,6 +66,7 @@ class Host {
     }
 
     public Host(Integer id, String name, Integer port) {
+        super();
         this.id = id;
         this.name = name;
         this.port = port;
@@ -106,6 +121,7 @@ class Host {
         this.readonly = readonly;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isUserDefined() {
         return user_defined;
     }
@@ -122,24 +138,72 @@ class Host {
         this.hidden = hidden;
     }
 
-    public List<Dictionary> getDictionaries() {
-        if (dictionaries == null)
-          dictionaries = DatabaseManager.getInstance().getDictionaries(this);
+    public Collection<Dictionary> getDictionaries() {
         return dictionaries;
     }
 
-    public void setDictionaries(List<Dictionary> list) {
-        dictionaries = list;
+    public void setDictionaries(Collection<Dictionary> list) {
+        Dao dao = dictionaries.getDao();
+        DeleteBuilder deleteBuilder = dao.deleteBuilder();
+        try {
+            deleteBuilder.where().eq("host_id", getId());
+            dao.delete(deleteBuilder.prepare());
+            dictionaries.refreshCollection();
+            dictionaries.addAll(list);
+            setLastRefresh(Calendar.getInstance().getTime());
+            update();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public List<Strategy> getStrategies() {
-        if (strategies == null)
-            strategies = DatabaseManager.getInstance().getStrategies(this);
+    public Collection<Strategy> getStrategies() {
         return strategies;
     }
 
-    public void setStrategies(List<Strategy> list) {
-        strategies = list;
+    public void setStrategies(Collection<Strategy> list) {
+        Dao dao = strategies.getDao();
+        DeleteBuilder deleteBuilder = dao.deleteBuilder();
+        try {
+            deleteBuilder.where().eq("host_id", getId());
+            dao.delete(deleteBuilder.prepare());
+            strategies.refreshCollection();
+            strategies.addAll(list);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static CursorWrapper cursorWrapper(CloseableIterator iterator) {
+        AndroidDatabaseResults results =
+          (AndroidDatabaseResults) iterator.getRawResults();
+        return new HostCursor(results.getRawCursor());
+    }
+
+    @Override
+    public int delete() throws SQLException {
+        if (isReadonly()) {
+            return 0;
+        } else if (!isUserDefined()) {
+            setHidden(true);
+            return update();
+        } else {
+            return super.delete();
+        }
+    }
+
+    @Override
+    public int create() throws SQLException {
+        if (getId() == null) {
+            Map<String, Object> map = new HashMap();
+            map.put("name", getName());
+            map.put("port", getPort());
+            if (!getDao().queryForFieldValues(map).isEmpty()) {
+                throw new SQLException("The host " + toString() +
+                                       " already exists.");
+            }
+        }
+        return super.create();
     }
 
     @Override

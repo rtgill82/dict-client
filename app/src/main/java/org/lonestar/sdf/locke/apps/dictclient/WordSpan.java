@@ -15,15 +15,14 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
-import android.widget.EditText;
 
 class WordSpan extends ClickableSpan {
-    private String word;
-    private Dictionary dictionary;
+    final private String mWord;
+    final private Dictionary mDictionary;
 
     public WordSpan(String word, Dictionary dictionary) {
-        this.word = word.replace("\n", "").replaceAll("\\s+", " ");
-        this.dictionary = dictionary;
+        mWord = word.replace("\n", "").replaceAll("\\s+", " ");
+        mDictionary = dictionary;
     }
 
     public WordSpan(String word) {
@@ -45,14 +44,10 @@ class WordSpan extends ClickableSpan {
 
         if (activity != null) {
             DictClient app = (DictClient) activity.getApplication();
-            EditText searchText = activity.findViewById(R.id.search_text);
             Host host = app.getCurrentHost();
-            setSelectedDictionary(activity, dictionary);
-            searchText.setText(word);
-            searchText.selectAll();
-            setDefineStrategy(activity);
-            new JDictClientTask(activity,
-                                JDictClientRequest.DEFINE(host, dictionary, word))
+            new ClientTask(activity,
+                           ClientTask.DEFINE(host, mWord, mDictionary),
+                           activity.getOnTaskFinishedHandler(true))
               .execute();
         }
     }
@@ -65,22 +60,13 @@ class WordSpan extends ClickableSpan {
 
     public CharSequence toCharSequence() {
         SpannableStringBuilder spannedString = new SpannableStringBuilder();
-        spannedString.append(word);
+        spannedString.append(mWord);
         spannedString.setSpan(
-            this,
-            spannedString.length() - word.length(),
-            spannedString.length(),
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+          this,
+          spannedString.length() - mWord.length(),
+          spannedString.length(),
+          Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         );
         return spannedString;
-    }
-
-    private void setSelectedDictionary(MainActivity activity,
-                                       Dictionary dictionary) {
-        activity.setSelectedDictionary(dictionary);
-    }
-
-    private void setDefineStrategy(MainActivity activity) {
-        activity.setSelectedStrategy(null);
     }
 }

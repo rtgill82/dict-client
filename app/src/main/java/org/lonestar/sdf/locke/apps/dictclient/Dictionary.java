@@ -13,7 +13,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @SuppressWarnings("unused")
 @DatabaseTable(tableName = "dictionaries")
-class Dictionary {
+class Dictionary extends BaseModel {
     @DatabaseField(canBeNull = false, foreign = true)
     private Host host;
     @DatabaseField(canBeNull = false)
@@ -29,11 +29,11 @@ class Dictionary {
 
     public Dictionary(
         Host host,
-        org.lonestar.sdf.locke.libs.dict.Dictionary dictionary
+        org.lonestar.sdf.locke.libs.jdictclient.Database database
     ) {
         this.host = host;
-        this.name = dictionary.getDatabase();
-        this.description = dictionary.getDescription();
+        this.name = database.getName();
+        this.description = database.getDescription();
     }
 
     public Host getHost() {
@@ -45,6 +45,11 @@ class Dictionary {
     }
 
     public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String toString() {
         return description;
     }
 }

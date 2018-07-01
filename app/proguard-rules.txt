@@ -1,14 +1,46 @@
--dontwarn com.j256.ormlite.**
--dontwarn javax.**
--dontwarn org.slf4j.**
--keep class com.j256.ormlite.** { *; }
--keep class javax.** { *; }
--keep class org.slf4j.** { *; }
+-dontwarn javax.persistence.Basic
+-dontwarn javax.persistence.Column
+-dontwarn javax.persistence.Entity
+-dontwarn javax.persistence.Enumerated
+-dontwarn javax.persistence.EnumType
+-dontwarn javax.persistence.FetchType
+-dontwarn javax.persistence.GeneratedValue
+-dontwarn javax.persistence.Id
+-dontwarn javax.persistence.JoinColumn
+-dontwarn javax.persistence.ManyToOne
+-dontwarn javax.persistence.OneToOne
+-dontwarn javax.persistence.Table
+-dontwarn javax.persistence.Version
+-dontwarn javax.xml.bind.annotation.adapters.HexBinaryAdapter
+-dontwarn org.slf4j.Logger
+-dontwarn org.slf4j.LoggerFactory
+
+-keep class javax.persistence.Basic
+-keep class javax.persistence.Column
+-keep class javax.persistence.Entity
+-keep class javax.persistence.Enumerated
+-keep class javax.persistence.EnumType
+-keep class javax.persistence.FetchType
+-keep class javax.persistence.GeneratedValue
+-keep class javax.persistence.Id
+-keep class javax.persistence.JoinColumn
+-keep class javax.persistence.ManyToOne
+-keep class javax.persistence.OneToOne
+-keep class javax.persistence.Table
+-keep class javax.persistence.Version
+-keep class javax.xml.bind.annotation.adapters.HexBinaryAdapter
+-keep class org.slf4j.Logger
+-keep class org.slf4j.LoggerFactory
+
+-keep class android.support.v7.widget.ShareActionProvider { *; }
+-keep class com.j256.ormlite.field.DataType { *; }
+-keep class * extends org.lonestar.sdf.locke.apps.dictclient.BaseModel { *; }
 -keep class org.lonestar.sdf.locke.apps.dictclient.DatabaseRevision { *; }
--keep class org.lonestar.sdf.locke.apps.dictclient.Dictionary { *; }
--keep class org.lonestar.sdf.locke.apps.dictclient.Host { *; }
--keep class org.lonestar.sdf.locke.apps.dictclient.Strategy { *; }
--keeppackagenames org.lonestar.sdf.locke.libs.dict
+-keeppackagenames org.lonestar.sdf.locke.libs.jdictclient
+
+-keepclassmembers class * extends org.lonestar.sdf.locke.libs.jdictclient.Element {
+  public <init>(java.lang.String, java.lang.String);
+}
 
 -assumenosideeffects class android.util.Log {
     public static boolean isLoggable(java.lang.String, int);

@@ -29,11 +29,13 @@
 
     <Spinner
         android:id="@+id/strategy_spinner"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/search_text"
+        android:layout_width="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/search_text"
+        android:layout_alignBottom="@+id/search_text"
+        android:layout_centerVertical="true" />
 
     <Spinner
         android:id="@+id/dictionary_spinner"
@@ -49,7 +51,7 @@
     <ImageButton
         android:id="@+id/dictionary_info_button"
         android:contentDescription="@string/button_dictionary_information"
-        android:src="@drawable/ic_info_outline"
+        android:src="@drawable/outline_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/search_button"

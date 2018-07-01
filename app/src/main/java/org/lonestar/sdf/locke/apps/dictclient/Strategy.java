@@ -12,7 +12,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "strategies")
-class Strategy {
+class Strategy extends BaseModel {
     @DatabaseField(canBeNull = false, foreign = true)
     private Host host;
     @DatabaseField(canBeNull = false)
@@ -28,7 +28,7 @@ class Strategy {
     }
 
     public Strategy(Host host,
-                    org.lonestar.sdf.locke.libs.dict.Strategy strategy) {
+                    org.lonestar.sdf.locke.libs.jdictclient.Strategy strategy) {
         this.host = host;
         this.name = strategy.getName();
         this.description = strategy.getDescription();
@@ -43,6 +43,11 @@ class Strategy {
     }
 
     public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String toString() {
         return description;
     }
 }

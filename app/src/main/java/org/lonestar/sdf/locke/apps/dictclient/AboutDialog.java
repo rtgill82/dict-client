@@ -12,15 +12,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
@@ -37,26 +34,25 @@ public class AboutDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String html;
-        Context context = getActivity();
-        Resources resources = context.getResources();
+        Activity activity = getActivity();
+        Resources resources = activity.getResources();
         InputStream stream = resources.openRawResource(R.raw.about);
 
         try {
             byte[] buffer = new byte[stream.available()];
             stream.read(buffer);
             html = new String(buffer);
-            html = replaceVersion(context, html);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        TextView textView = (TextView) inflater.inflate(R.layout.dialog_about,
-                                                        null);
-        textView.setText(Html.fromHtml(html));
+        TextView textView = (TextView) View.inflate(activity,
+                                                    R.layout.dialog_about,
+                                                    null);
+        textView.setText(Html.fromHtml(replaceVersion(activity, html)));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(context.getString(R.string.title_about))
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(activity.getString(R.string.title_about))
                .setView(textView)
                .setNeutralButton(getString(R.string.button_donate),
                  new DialogInterface.OnClickListener() {
@@ -77,15 +73,9 @@ public class AboutDialog extends DialogFragment {
         button.setLayoutParams(layoutParams);
     }
 
-    private String replaceVersion(Context context, String html) {
-        try {
-            PackageInfo pInfo = context.getPackageManager()
-              .getPackageInfo(context.getPackageName(), 0);
-            String version = pInfo.versionName;
-            html = html.replaceAll("@VERSION@", version);
-        } catch (PackageManager.NameNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return html;
+    private String replaceVersion(Activity activity, String html) {
+        DictClient app = (DictClient) activity.getApplication();
+        String version = app.getVersionString();
+        return html.replaceAll("@VERSION@", version);
     }
 }

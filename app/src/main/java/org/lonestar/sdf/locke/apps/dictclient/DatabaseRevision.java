@@ -23,7 +23,7 @@ class DatabaseRevision {
     private List<Host> remove_hosts;
 
     public Integer getVersion() {
-        return this.version;
+        return version;
     }
 
     public void setVersion(Integer version) {
@@ -31,17 +31,17 @@ class DatabaseRevision {
     }
 
     public void setAddHosts(List<Host> hosts) {
-        this.add_hosts = hosts;
+        add_hosts = hosts;
     }
 
     public void setRemoveHosts(List<Host> hosts) {
-        this.remove_hosts = hosts;
+        remove_hosts = hosts;
     }
 
     public void commit(SQLiteDatabase db, ConnectionSource cs)
           throws SQLException {
-        if (db.getVersion() < this.version) {
-            db.setVersion(this.version);
+        if (db.getVersion() < version) {
+            db.setVersion(version);
             Dao<Host, Integer> hostDao = DaoManager.createDao(cs, Host.class);
             Dao<Dictionary, Void> dictDao =
               DaoManager.createDao(cs, Dictionary.class);

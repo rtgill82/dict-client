@@ -16,19 +16,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import java.util.List;
 
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends AppCompatPreferenceActivity {
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static Preference.OnPreferenceChangeListener
+    final private static Preference.OnPreferenceChangeListener
       sBindPreferenceSummaryToValueListener =
         new Preference.OnPreferenceChangeListener() {
             @Override
@@ -50,8 +49,8 @@ public class SettingsActivity extends PreferenceActivity {
                             ? listPreference.getEntries()[index]
                             : null);
 
-                } else if (preference.getKey() ==
-                           context.getString(R.string.pref_key_cache_time)) {
+                } else if (preference.getKey()
+                    .equals(context.getString(R.string.pref_key_cache_time))) {
                     // Display days as the unit for the cache_time preference.
                     preference.setSummary(stringValue + " days");
                 } else {
@@ -93,11 +92,6 @@ public class SettingsActivity extends PreferenceActivity {
             PreferenceManager
                 .getDefaultSharedPreferences(preference.getContext())
                 .getString(preference.getKey(), ""));
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     /**
@@ -161,9 +155,8 @@ public class SettingsActivity extends PreferenceActivity {
         private void bindDefaultHostPreferences() {
             final ListPreference defaultHostPreference = (ListPreference)
               findPreference(getString(R.string.pref_key_default_host));
-
-            DatabaseManager dm = DatabaseManager.getInstance();
-            HostCursor cursor = dm.getHostList();
+            HostCursor cursor = (HostCursor)
+              DatabaseManager.find(Host.class, "hidden", false);
             CharSequence[] entries = new CharSequence[cursor.getCount()];
             CharSequence[] entryValues = new CharSequence[cursor.getCount()];
 
@@ -171,15 +164,15 @@ public class SettingsActivity extends PreferenceActivity {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 entries[i] = cursor.getHostName();
-                entryValues[i] = cursor.getId().toString();
+                entryValues[i] = Integer.toString(cursor.getId());
                 i = i + 1;
                 cursor.moveToNext();
             }
+            Host defaultHost = ((DictClient) getActivity().getApplication())
+                                                          .getDefaultHost();
             defaultHostPreference.setEntries(entries);
             defaultHostPreference.setEntryValues(entryValues);
-            defaultHostPreference.setValue(
-                dm.getDefaultHost(this.getActivity()).getId().toString()
-            );
+            defaultHostPreference.setValue(defaultHost.getId().toString());
         }
     }
 }

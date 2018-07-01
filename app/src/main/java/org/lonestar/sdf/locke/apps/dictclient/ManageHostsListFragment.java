@@ -24,12 +24,17 @@ import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class ManageHostsListFragment extends ListFragment {
-    ManageHostCursorAdapter ca;
-    ArrayList<Boolean> toggles;
+    ManageHostsCursorAdapter mCursorAdapter;
+    ArrayList<Boolean> mToggles;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,7 +100,7 @@ public class ManageHostsListFragment extends ListFragment {
             new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int pos, long id) {
-                    toggles.set(pos, ((CheckedTextView) view).isChecked());
+                    mToggles.set(pos, ((CheckedTextView) view).isChecked());
                     getActivity().invalidateOptionsMenu();
                 }
             }
@@ -104,24 +109,35 @@ public class ManageHostsListFragment extends ListFragment {
 
     public void refreshHostList() {
         getListView().clearChoices();
-        HostCursor cursor = DatabaseManager.getInstance().getHostList();
-        ca = new ManageHostCursorAdapter(this.getActivity(), cursor, 0);
-        toggles = new ArrayList<>(Collections.nCopies(ca.getCount(), false));
-        ca.setToggleList(toggles);
-        setListAdapter(ca);
+        PreparedQuery query;
+        try {
+            Dao dao = DatabaseManager.getInstance().getDao(Host.class);
+            QueryBuilder qb = dao.queryBuilder();
+            query =
+              qb.where().eq("hidden", false)
+                  .and().eq("readonly", false)
+                  .prepare();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        HostCursor cursor = (HostCursor)
+          DatabaseManager.find(Host.class, query);
+        mCursorAdapter =
+          new ManageHostsCursorAdapter(getActivity(), cursor, 0);
+        mToggles = new ArrayList<>(Collections.nCopies(
+                                    mCursorAdapter.getCount(),
+                                    false));
+        mCursorAdapter.setToggleList(mToggles);
+        setListAdapter(mCursorAdapter);
     }
 
     private void confirmDeleteSelectedHosts() {
         ListView view = getListView();
         int itemCount = view.getCheckedItemCount();
         if (itemCount == 1) {
-            int pos = -1;
             SparseBooleanArray checkedItems = view.getCheckedItemPositions();
-            for (int i = 0; i < checkedItems.size(); i++) {
-                pos = checkedItems.keyAt(i);
-                if (checkedItems.get(i) == true) break;
-            }
-            Host host = getHostAtPosition(pos);
+            int index = checkedItems.indexOfValue(true);
+            Host host = getHostAtPosition(checkedItems.keyAt(index));
             showConfirmDeleteDialog("Are you sure you want to delete " +
                                     host.toString() + "?");
         } else if (itemCount > 1) {
@@ -132,24 +148,27 @@ public class ManageHostsListFragment extends ListFragment {
 
     private void deleteSelectedHosts() {
         SparseBooleanArray selected = getListView().getCheckedItemPositions();
-        Host defaultHost = DatabaseManager.getInstance()
-          .getDefaultHost(this.getActivity());
-
-        for (int i = 0; i < selected.size(); i++) {
-            int pos = selected.keyAt(i);
-            if (selected.get(pos, false)) {
-                getListView().setItemChecked(pos, false);
-                Host host = getHostAtPosition(pos);
-                if (host.getId() == defaultHost.getId()) {
-                    SharedPreferences prefs = PreferenceManager
-                      .getDefaultSharedPreferences(this.getActivity());
-                    prefs.edit().putString(
-                      getString(R.string.pref_key_default_host),
-                      getString(R.string.pref_value_default_host)
-                    ).commit();
+        Host defaultHost = ((DictClient) getActivity().getApplication())
+                                                      .getDefaultHost();
+        try {
+            for (int i = 0; i < selected.size(); i++) {
+                int pos = selected.keyAt(i);
+                if (selected.get(pos, false)) {
+                    getListView().setItemChecked(pos, false);
+                    Host host = getHostAtPosition(pos);
+                    if (host.getId().equals(defaultHost.getId())) {
+                        SharedPreferences prefs = PreferenceManager
+                          .getDefaultSharedPreferences(getActivity());
+                        prefs.edit().putString(
+                          getString(R.string.pref_key_default_host),
+                          getString(R.string.pref_value_default_host)
+                        ).apply();
+                    }
+                    host.delete();
                 }
-                DatabaseManager.getInstance().deleteHost(host);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         getActivity().invalidateOptionsMenu();
         refreshHostList();
@@ -159,7 +178,7 @@ public class ManageHostsListFragment extends ListFragment {
         final Host host = getHostAtPosition(pos);
 
         if (!host.isUserDefined())
-          ErrorDialog.show(this.getActivity(),
+          ErrorDialog.show(getActivity(),
                            getString(R.string.error_host_readonly));
         else
           EditHostDialog.show(this, host);
@@ -168,7 +187,7 @@ public class ManageHostsListFragment extends ListFragment {
     private Host getHostAtPosition(int pos) {
         if (pos == -1) return null;
         return ((HostCursor) getListAdapter().getItem(pos))
-          .getDictionaryHost();
+          .getHost();
     }
 
     private void showConfirmDeleteDialog(String message) {

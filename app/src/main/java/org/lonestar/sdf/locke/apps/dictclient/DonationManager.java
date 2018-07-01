@@ -30,54 +30,54 @@ import static com.android.billingclient.api.BillingClient.SkuType.INAPP;
 
 class DonationManager implements PurchasesUpdatedListener {
     private static final String TAG = "DONATIONMANAGER";
-    private static DonationManager instance;
+    private static DonationManager sInstance;
 
-    private Context context;
-    private SharedPreferences preferences;
-    private BillingClient billingClient;
-    private boolean donated;
-    private boolean serviceConnected;
-    private int retries;
+    final private Context mContext;
+    final private SharedPreferences mPreferences;
 
-    private DonationFlowListener donationFlowListener;
+    private BillingClient mBillingClient;
+    private boolean mDonated;
+    private boolean mServiceConnected;
+    private int mRetries;
 
-    static public DonationManager initialize(Context context) {
-        if (instance == null)
-          instance = new DonationManager(context);
-        return instance;
+    private DonationFlowListener mDonationFlowListener;
+
+    static public void initialize(Context context) {
+        if (sInstance == null)
+          sInstance = new DonationManager(context);
     }
 
     static public DonationManager getInstance() {
-        if (instance == null)
+        if (sInstance == null)
           throw new RuntimeException(DonationManager.class.getSimpleName()
                                      + " not initialized.");
 
-        return instance;
+        return sInstance;
     }
 
     private DonationManager(final Context context) {
-        this.context = context;
+        mContext = context;
         final String keyDonated = context.getString(R.string.pref_key_donated);
         boolean valueDonated = context.getResources()
                                       .getBoolean(R.bool.pref_value_donated);
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.registerOnSharedPreferenceChangeListener(
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mPreferences.registerOnSharedPreferenceChangeListener(
                 new SharedPreferences.OnSharedPreferenceChangeListener() {
                     public void onSharedPreferenceChanged(
                             SharedPreferences preferences,
                             String key
                     ) {
                         if (key.equals(keyDonated))
-                          donated = preferences.getBoolean(key, false);
+                          mDonated = preferences.getBoolean(key, false);
                     }
                 }
         );
-        donated = preferences.getBoolean(keyDonated, valueDonated);
+        mDonated = mPreferences.getBoolean(keyDonated, valueDonated);
     }
 
     public void makeDonation(final String sku, DonationFlowListener listener) {
-        this.donationFlowListener = listener;
-        this.billingClient = buildBillingClient();
+        mDonationFlowListener = listener;
+        mBillingClient = buildBillingClient();
 
         queryPurchases(
             new PurchaseHistoryResponseListener() {
@@ -88,7 +88,7 @@ class DonationManager implements PurchasesUpdatedListener {
                 ) {
                     handleBillingFlowResponse(code);
                     if (code == OK) {
-                        billingClient = buildBillingClient();
+                        mBillingClient = buildBillingClient();
                         consumeAndPurchase(sku, purchases);
                     }
                 }
@@ -98,12 +98,12 @@ class DonationManager implements PurchasesUpdatedListener {
 
     public void checkDonations(final Context context,
                                final OnHasDonatedListener listener) {
-        if (donated) {
+        if (mDonated) {
             listener.hasDonated(true);
             return;
         }
 
-        billingClient = buildBillingClient();
+        mBillingClient = buildBillingClient();
         queryPurchases(
             new PurchaseHistoryResponseListener() {
                 @Override
@@ -116,7 +116,7 @@ class DonationManager implements PurchasesUpdatedListener {
                         if (purchases != null && purchases.size() > 0)
                           applyDonation(context, true);
                     }
-                    listener.hasDonated(donated);
+                    listener.hasDonated(mDonated);
                 }
             });
     }
@@ -125,7 +125,7 @@ class DonationManager implements PurchasesUpdatedListener {
         executeServiceRequest(
             new Runnable() {
                 public void run() {
-                    billingClient.queryPurchaseHistoryAsync(INAPP, l);
+                    mBillingClient.queryPurchaseHistoryAsync(INAPP, l);
                 }
             }
         );
@@ -148,8 +148,8 @@ class DonationManager implements PurchasesUpdatedListener {
                             .setSku(sku)
                             .setType(INAPP);
 
-                    billingClient.launchBillingFlow(
-                      donationFlowListener.getActivity(),
+                    mBillingClient.launchBillingFlow(
+                      mDonationFlowListener.getActivity(),
                       builder.build()
                     );
                 }
@@ -162,7 +162,7 @@ class DonationManager implements PurchasesUpdatedListener {
         executeServiceRequest(
             new Runnable() {
                 public void run() {
-                    billingClient.consumeAsync(purchase.getPurchaseToken(),
+                    mBillingClient.consumeAsync(purchase.getPurchaseToken(),
                         new ConsumeResponseListener() {
                             @Override
                             public void onConsumeResponse(
@@ -172,7 +172,7 @@ class DonationManager implements PurchasesUpdatedListener {
                                 handleBillingFlowResponse(code);
                                 if ((code == OK || code == ITEM_NOT_OWNED)
                                       && repurchase) {
-                                    billingClient = buildBillingClient();
+                                    mBillingClient = buildBillingClient();
                                     makePurchase (purchase.getSku ());
                                 }
                             }
@@ -196,8 +196,8 @@ class DonationManager implements PurchasesUpdatedListener {
     }
 
     private void applyDonation(Context context, boolean donated) {
-        this.donated = donated;
-        preferences.edit()
+        mDonated = donated;
+        mPreferences.edit()
           .putBoolean(context.getString(R.string.pref_key_donated), donated)
           .apply();
     }
@@ -213,25 +213,25 @@ class DonationManager implements PurchasesUpdatedListener {
             break;
 
           case ITEM_UNAVAILABLE:
-            if (donationFlowListener != null)
-              donationFlowListener.onItemUnavailable();
+            if (mDonationFlowListener != null)
+              mDonationFlowListener.onItemUnavailable();
             Log.e(TAG, "Item Unavailable");
             break;
 
           case SERVICE_UNAVAILABLE:
-            if (donationFlowListener != null)
-              donationFlowListener.onServiceUnavailable();
+            if (mDonationFlowListener != null)
+              mDonationFlowListener.onServiceUnavailable();
             break;
 
           case ERROR:
-            if (donationFlowListener != null)
-              donationFlowListener.onError();
+            if (mDonationFlowListener != null)
+              mDonationFlowListener.onError();
             Log.w(TAG, "Unexpected error");
             break;
 
           case BILLING_UNAVAILABLE:
-            if (donationFlowListener != null)
-              donationFlowListener.onBillingUnavailable();
+            if (mDonationFlowListener != null)
+              mDonationFlowListener.onBillingUnavailable();
             Log.w(TAG, "Billing API unavailable");
             break;
 
@@ -246,29 +246,29 @@ class DonationManager implements PurchasesUpdatedListener {
     }
 
     private void startServiceConnection(final Runnable runnable) {
-        billingClient.startConnection(
+        mBillingClient.startConnection(
             new BillingClientStateListener() {
                 @Override
                 public void onBillingSetupFinished(@BillingResponse int code) {
                   switch (code) {
                     case OK:
-                      serviceConnected = true;
+                      mServiceConnected = true;
                       Log.i(TAG, "Service connected");
                       if (runnable != null)
                         runnable.run();
                       break;
 
                     case SERVICE_DISCONNECTED:
-                      if (retries >= 3) {
+                      if (mRetries >= 3) {
                           Log.i(TAG, "Service disconnected, giving up");
-                          retries = 0;
-                          if (donationFlowListener != null)
-                            donationFlowListener.onServiceUnavailable();
+                          mRetries = 0;
+                          if (mDonationFlowListener != null)
+                            mDonationFlowListener.onServiceUnavailable();
                           break;
                       }
                       Log.i(TAG, "Service disconnected, retrying");
-                      retries += 1;
-                      billingClient.startConnection(this);
+                      mRetries += 1;
+                      mBillingClient.startConnection(this);
                       break;
 
                     case BILLING_UNAVAILABLE:
@@ -282,21 +282,21 @@ class DonationManager implements PurchasesUpdatedListener {
 
                 @Override
                 public void onBillingServiceDisconnected() {
-                    serviceConnected = false;
+                    mServiceConnected = false;
                 }
             });
     }
 
     private void executeServiceRequest(Runnable runnable) {
-        if (serviceConnected)
+        if (mServiceConnected)
           runnable.run();
         else
           startServiceConnection(runnable);
     }
 
     private void endConnection() {
-        serviceConnected = false;
-        billingClient.endConnection();
+        mServiceConnected = false;
+        mBillingClient.endConnection();
     }
 
     @Override
@@ -304,15 +304,15 @@ class DonationManager implements PurchasesUpdatedListener {
         handleBillingFlowResponse(code);
         if (code == OK) {
             Log.i(TAG, "Purchases updated");
-            applyDonation(context, true);
-            if (donationFlowListener != null)
-              donationFlowListener.onPurchasesUpdated();
+            applyDonation(mContext, true);
+            if (mDonationFlowListener != null)
+              mDonationFlowListener.onPurchasesUpdated();
         }
 
     }
 
     private BillingClient buildBillingClient() {
-        return BillingClient.newBuilder(context)
+        return BillingClient.newBuilder(mContext)
                             .setListener(this)
                             .build();
     }

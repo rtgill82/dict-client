@@ -15,12 +15,14 @@ android {
         applicationId "org.lonestar.sdf.locke.apps.dictclient"
         minSdkVersion 14
         targetSdkVersion 27
+        resConfigs "en"
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+              'proguard-rules.txt'
         }
     }
 }
@@ -30,7 +32,7 @@ dependencies {
     implementation 'com.android.billingclient:billing:1.0'
     implementation 'com.android.support:appcompat-v7:27.+'
     implementation 'com.android.support:support-v4:27.+'
-    implementation 'com.github.bmoliveira:snake-yaml:v1.18-android'
-    implementation 'com.j256.ormlite:ormlite-android:5.0'
-    implementation 'com.j256.ormlite:ormlite-core:5.0'
+    implementation 'com.j256.ormlite:ormlite-android:5.1'
+    implementation 'com.j256.ormlite:ormlite-core:5.1'
+    implementation 'org.yaml:snakeyaml:1.21:android'
 }
