@@ -33,11 +33,11 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
     final private static int    DATABASE_VERSION = 3;
 
     private static DatabaseManager sInstance = null;
-    final private Context mContext;
+    final private Resources mResources;
 
     private DatabaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        mContext = context;
+        mResources = context.getResources();
     }
 
     static public void initialize(Context context) {
@@ -52,12 +52,11 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
     @Override
     @SuppressWarnings("unchecked")
     public void onCreate(SQLiteDatabase db, ConnectionSource cs) {
-        Resources resources = mContext.getResources();
         try {
             TableUtils.createTable(cs, Host.class);
             TableUtils.createTable(cs, Dictionary.class);
             TableUtils.createTable(cs, Strategy.class);
-            loadData(resources, db, cs, 0, DATABASE_VERSION);
+            loadData(mResources, db, cs, 0, DATABASE_VERSION);
         } catch (SQLException e) {
             Log.e("DatabaseManager", "SQLException caught: " + e.toString());
             throw new RuntimeException(e);
