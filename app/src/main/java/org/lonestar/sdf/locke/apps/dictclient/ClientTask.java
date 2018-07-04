@@ -144,8 +144,8 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
           JDictClient.connect(host.getName(), host.getPort());
         Command.Builder builder = new Command.Builder(Command.Type.OTHER)
                                     .setCommandString("SHOW DB\nSHOW STRAT");
-        DictStratListResponseHandler handler =
-          new DictStratListResponseHandler(host);
+        DictStrategyListResponseHandler handler =
+          new DictStrategyListResponseHandler(host);
         builder.setResponseHandler(handler);
         builder.build().execute(client.getConnection());
         client.close();
