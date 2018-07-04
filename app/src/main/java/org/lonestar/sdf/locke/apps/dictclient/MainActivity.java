@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         app.setOnHostChangeListener(
           new DictClient.OnHostChangeListener() {
               @Override
-              public void onHostChange(Host host) {
+              public void onHostChange() {
                   mHostChanged = true;
               }
           }
