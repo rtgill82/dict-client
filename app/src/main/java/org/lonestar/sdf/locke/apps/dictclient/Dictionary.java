@@ -21,7 +21,7 @@ class Dictionary extends BaseModel {
     @DatabaseField(canBeNull = false)
     private String description;
 
-    public static final Dictionary ALL_DICTIONARIES = new Dictionary();
+    public static final Dictionary DEFAULT = new Dictionary();
 
     public Dictionary() {
         description = "All Dictionaries";

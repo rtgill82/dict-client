@@ -326,13 +326,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setSelectedDictionary(Dictionary dictionary) {
-        if (dictionary == null || dictionary == Dictionary.ALL_DICTIONARIES) {
+        if (dictionary == null || dictionary == Dictionary.DEFAULT) {
             mSelectedDictionary = 0;
         } else {
             SpinnerAdapter adapter = mDictionarySpinner.getAdapter();
             for (int i = 0; i < adapter.getCount(); i++) {
                 Dictionary item = (Dictionary) adapter.getItem(i);
-                if (item == Dictionary.ALL_DICTIONARIES) continue;
+                if (item == Dictionary.DEFAULT) continue;
                 if (item.getName().equals(dictionary.getName())) {
                     mSelectedDictionary = i;
                     break;
@@ -360,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setDictionarySpinnerData(Collection<Dictionary> collection) {
         ArrayList<Dictionary> list = new ArrayList<>(collection);
-        list.add(0, Dictionary.ALL_DICTIONARIES);
+        list.add(0, Dictionary.DEFAULT);
         ArrayAdapter<Dictionary> adapter = new ArrayAdapter<>(
           this, android.R.layout.simple_spinner_item, list
         );
@@ -454,7 +454,7 @@ public class MainActivity extends AppCompatActivity {
         Adapter adapter = mDictionarySpinner.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
             Dictionary dictionary = (Dictionary) adapter.getItem(i);
-            if (dictionary == Dictionary.ALL_DICTIONARIES) continue;
+            if (dictionary == Dictionary.DEFAULT) continue;
             LinkedList<String> list = new LinkedList<>();
             map.put(dictionary, list);
             for (Match match : matches) {
@@ -564,7 +564,7 @@ public class MainActivity extends AppCompatActivity {
                 Dictionary currentDictionary = (Dictionary)
                   parent.getSelectedItem();
 
-                if (currentDictionary != Dictionary.ALL_DICTIONARIES) {
+                if (currentDictionary != Dictionary.DEFAULT) {
                     button.setEnabled(true);
                 } else {
                     button.setEnabled(false);

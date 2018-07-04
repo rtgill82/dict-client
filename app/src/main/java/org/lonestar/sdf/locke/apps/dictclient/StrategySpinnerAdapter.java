@@ -21,7 +21,7 @@ class StrategySpinnerAdapter extends ArrayAdapter<Strategy> {
     public StrategySpinnerAdapter(Context context, int resource,
                                   List<Strategy> objects) {
         super(context, resource, objects);
-        objects.add(0, Strategy.DEFINE);
+        objects.add(0, Strategy.DEFAULT);
     }
 
     @NonNull
