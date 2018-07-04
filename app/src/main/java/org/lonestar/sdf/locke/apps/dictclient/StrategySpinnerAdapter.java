@@ -9,6 +9,7 @@
 package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -17,13 +18,16 @@ import android.widget.TextView;
 import java.util.List;
 
 class StrategySpinnerAdapter extends ArrayAdapter<Strategy> {
-    public StrategySpinnerAdapter(Context context, int resource, List<Strategy> objects) {
+    public StrategySpinnerAdapter(Context context, int resource,
+                                  List<Strategy> objects) {
         super(context, resource, objects);
         objects.add(0, Strategy.DEFINE);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView,
+                        @NonNull ViewGroup parent) {
         if (convertView == null) {
             convertView = super.getView(position, null, parent);
         }
