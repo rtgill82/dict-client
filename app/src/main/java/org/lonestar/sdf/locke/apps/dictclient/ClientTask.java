@@ -83,14 +83,12 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
 
     @Override
     protected void onPreExecute() {
-        if (mRequest.displayWaitMessage()) {
-            mProgressDialog = ProgressDialog.show(
-              mContext.get(),
-              "Waiting",
-              sMessages.get(mRequest.getCommand()),
-              true
-            );
-        }
+        mProgressDialog = ProgressDialog.show(
+          mContext.get(),
+          "Waiting",
+          sMessages.get(mRequest.getCommand()),
+          true
+        );
     }
 
     protected Result doInBackground(Void... voids) {
@@ -205,8 +203,6 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         private final Strategy strategy;
         private final String word;
 
-        private final boolean displayWaitMessage = true;
-
         private Request(Host host, ClientCommand command, String word,
                         Dictionary dictionary, Strategy strategy) {
             this.host = host;
@@ -219,10 +215,6 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         private Request(Host host, ClientCommand command, String word,
                         Dictionary dictionary) {
             this(host, command, word, dictionary, null);
-        }
-
-        boolean displayWaitMessage() {
-            return this.displayWaitMessage;
         }
 
         public Host getHost() {
