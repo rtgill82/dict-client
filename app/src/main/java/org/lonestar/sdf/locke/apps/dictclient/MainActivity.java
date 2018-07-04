@@ -642,7 +642,7 @@ public class MainActivity extends AppCompatActivity {
                 displayDictionaryInfo(result.getDictionaryInfo());
                 break;
 
-              case DICT_STRAT_LIST:
+              case DICT_STRATEGY_LIST:
                 Host host = request.getHost();
                 host.setDictionaries(result.getDictionaries());
                 host.setStrategies(result.getStrategies());

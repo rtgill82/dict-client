@@ -28,7 +28,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
     public enum ClientCommand {
         DEFINE,
         MATCH,
-        DICT_STRAT_LIST,
+        DICT_STRATEGY_LIST,
         DICT_INFO
     }
 
@@ -52,7 +52,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         if (sMessages.isEmpty()) {
             sMessages.put(DEFINE, context.getString(R.string.task_define));
             sMessages.put(MATCH, context.getString(R.string.task_match));
-            sMessages.put(DICT_STRAT_LIST, context.getString(R.string.task_dict_list));
+            sMessages.put(DICT_STRATEGY_LIST, context.getString(R.string.task_dict_list));
             sMessages.put(DICT_INFO, context.getString(R.string.task_dict_info));
         }
     }
@@ -73,7 +73,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
     }
 
     public static Request DICT_LIST(Host host) {
-        return new Request(host, ClientCommand.DICT_STRAT_LIST,
+        return new Request(host, ClientCommand.DICT_STRATEGY_LIST,
                            null, null, null);
     }
 
@@ -107,7 +107,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
                   getMatches(mRequest.getWord(), mRequest.getDictionary(),
                              mRequest.getStrategy())
                 );
-              case DICT_STRAT_LIST:
+              case DICT_STRATEGY_LIST:
                 Pair<List<Dictionary>, List<Strategy>> results =
                   getDictionariesAndStrategies();
                 return new Result(
@@ -275,7 +275,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
                 strategies = null;
                 matches = (List<Match>) list1;
                 break;
-              case DICT_STRAT_LIST:
+              case DICT_STRATEGY_LIST:
                 dictionaries = (List<Dictionary>) list1;
                 definitions = null;
                 strategies = (List<Strategy>) list2;
