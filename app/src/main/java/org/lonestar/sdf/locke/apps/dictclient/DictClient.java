@@ -33,7 +33,6 @@ public class DictClient extends Application {
     public void onCreate() {
         super.onCreate();
         DatabaseManager.initialize(getApplicationContext());
-        DonationManager.initialize(getApplicationContext());
         JDictClient.setClientString(buildClientString());
         mCache = new HostCache();
         mCurrentHost = getDefaultHost();

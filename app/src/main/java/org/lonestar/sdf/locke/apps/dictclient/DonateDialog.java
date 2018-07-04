@@ -73,8 +73,8 @@ public class DonateDialog extends DialogFragment {
           .setOnClickListener(
               new View.OnClickListener() {
                   public void onClick(View view) {
-                      DonationManager.getInstance()
-                                     .makeDonation(sku, mCallbacks);
+                      new DonationManager(getActivity())
+                          .makeDonation(sku, mCallbacks);
                   }
           });
     }

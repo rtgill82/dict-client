@@ -31,7 +31,8 @@ public class DonateNotificationService extends Service {
     public static final String DONATE_SEEN = "DONATE_SEEN";
 
     public static void start(final Context context) {
-        DonationManager.getInstance().checkDonations(context,
+        DonationManager donationManager = new DonationManager(context);
+        donationManager.checkDonations(context,
             new OnHasDonatedListener() {
                 public void hasDonated(boolean donated) {
                     if (!donated)

@@ -30,7 +30,6 @@ import static com.android.billingclient.api.BillingClient.SkuType.INAPP;
 
 class DonationManager implements PurchasesUpdatedListener {
     private static final String TAG = "DONATION_MANAGER";
-    private static DonationManager sInstance;
 
     final private Context mContext;
     final private SharedPreferences mPreferences;
@@ -42,20 +41,7 @@ class DonationManager implements PurchasesUpdatedListener {
 
     private DonationFlowListener mDonationFlowListener;
 
-    static public void initialize(Context context) {
-        if (sInstance == null)
-          sInstance = new DonationManager(context);
-    }
-
-    static public DonationManager getInstance() {
-        if (sInstance == null)
-          throw new RuntimeException(DonationManager.class.getSimpleName()
-                                     + " not initialized.");
-
-        return sInstance;
-    }
-
-    private DonationManager(final Context context) {
+    public DonationManager(Context context) {
         mContext = context;
         final String keyDonated = context.getString(R.string.pref_key_donated);
         boolean valueDonated = context.getResources()
@@ -308,7 +294,6 @@ class DonationManager implements PurchasesUpdatedListener {
             if (mDonationFlowListener != null)
               mDonationFlowListener.onPurchasesUpdated();
         }
-
     }
 
     private BillingClient buildBillingClient() {
