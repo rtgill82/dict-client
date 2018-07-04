@@ -40,7 +40,7 @@ class HostCursorAdapter extends CursorAdapter {
         textView.setText(Html.fromHtml(itemText));
     }
 
-    protected String buildItemText(HostCursor cursor) {
+    String buildItemText(HostCursor cursor) {
         String host = cursor.getHostName();
         String description =
           cursor.getString(cursor.getColumnIndex("description"));

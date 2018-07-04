@@ -21,7 +21,7 @@ class BaseModel extends BaseDaoEnabled {
         throw new UnsupportedOperationException();
     }
 
-    public BaseModel() {
+    BaseModel() {
         try {
             setDao(DatabaseManager.getInstance().getDao(this.getClass()));
         } catch (SQLException e) {

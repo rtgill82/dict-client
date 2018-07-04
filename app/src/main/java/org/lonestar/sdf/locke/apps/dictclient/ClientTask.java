@@ -221,7 +221,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
             this(host, command, word, dictionary, null);
         }
 
-        public boolean displayWaitMessage() {
+        boolean displayWaitMessage() {
             return this.displayWaitMessage;
         }
 
@@ -291,16 +291,16 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
             }
         }
 
-        public Result(Request request, List<?> list) {
+        Result(Request request, List<?> list) {
             this(request, list, null, null);
         }
 
-        public Result(Request request, String dictionaryInfo) {
+        Result(Request request, String dictionaryInfo) {
             this(request, null, null, dictionaryInfo);
         }
 
-        public Result(Request request, List<Dictionary> dictionaries,
-                      List<Strategy> strategies) {
+        Result(Request request, List<Dictionary> dictionaries,
+               List<Strategy> strategies) {
             this(request, dictionaries, strategies, null);
         }
 

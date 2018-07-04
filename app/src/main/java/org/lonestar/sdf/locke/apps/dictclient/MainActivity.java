@@ -594,7 +594,7 @@ public class MainActivity extends AppCompatActivity {
     public class OnTaskFinishedHandler implements
       ClientTask.OnTaskFinishedHandler {
         private final boolean mSetFields;
-        public OnTaskFinishedHandler (boolean setFields) {
+        OnTaskFinishedHandler (boolean setFields) {
             mSetFields = setFields;
         }
 
