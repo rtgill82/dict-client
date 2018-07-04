@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ManageHostsListFragment extends ListFragment {
-    ManageHostsCursorAdapter mCursorAdapter;
-    ArrayList<Boolean> mToggles;
+    private ManageHostsCursorAdapter mCursorAdapter;
+    private ArrayList<Boolean> mToggles;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
