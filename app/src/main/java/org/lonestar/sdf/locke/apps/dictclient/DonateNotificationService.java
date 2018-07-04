@@ -67,6 +67,7 @@ public class DonateNotificationService extends Service {
                 context.getString(R.string.app_name),
                 NotificationManager.IMPORTANCE_DEFAULT
               );
+            //noinspection ConstantConditions
             notificationManager.createNotificationChannel(channel);
         }
 
@@ -95,7 +96,7 @@ public class DonateNotificationService extends Service {
               .setDeleteIntent(passIntent)
               .addAction(0, buttonDonate, donateIntent)
               .addAction(0, buttonPass, passIntent);
-
+        //noinspection ConstantConditions
         notificationManager.notify(0, builder.build());
     }
 
@@ -114,6 +115,7 @@ public class DonateNotificationService extends Service {
     private void closeNotification() {
         NotificationManager notificationManager =
           (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        //noinspection ConstantConditions
         notificationManager.cancel(0);
     }
 

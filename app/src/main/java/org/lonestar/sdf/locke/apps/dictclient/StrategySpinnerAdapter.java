@@ -32,6 +32,7 @@ class StrategySpinnerAdapter extends ArrayAdapter<Strategy> {
             convertView = super.getView(position, null, parent);
         }
         TextView view = (TextView) convertView;
+        //noinspection ConstantConditions
         view.setText(getItem(position).getName());
         return view;
     }

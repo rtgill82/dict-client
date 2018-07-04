@@ -138,6 +138,7 @@ public class ManageHostsListFragment extends ListFragment {
             SparseBooleanArray checkedItems = view.getCheckedItemPositions();
             int index = checkedItems.indexOfValue(true);
             Host host = getHostAtPosition(checkedItems.keyAt(index));
+            //noinspection ConstantConditions
             showConfirmDeleteDialog("Are you sure you want to delete " +
                                     host.toString() + "?");
         } else if (itemCount > 1) {
@@ -156,6 +157,7 @@ public class ManageHostsListFragment extends ListFragment {
                 if (selected.get(pos, false)) {
                     getListView().setItemChecked(pos, false);
                     Host host = getHostAtPosition(pos);
+                    //noinspection ConstantConditions
                     if (host.getId().equals(defaultHost.getId())) {
                         SharedPreferences prefs = PreferenceManager
                           .getDefaultSharedPreferences(getActivity());
@@ -176,7 +178,7 @@ public class ManageHostsListFragment extends ListFragment {
 
     private void editSelectedHost(int pos) {
         final Host host = getHostAtPosition(pos);
-
+        //noinspection ConstantConditions
         if (!host.isUserDefined())
           ErrorDialog.show(getActivity(),
                            getString(R.string.error_host_readonly));
