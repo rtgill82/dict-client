@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ManageHostsListFragment extends ListFragment {
-    private ManageHostsCursorAdapter mCursorAdapter;
     private ArrayList<Boolean> mToggles;
 
     @Override
@@ -122,13 +121,13 @@ public class ManageHostsListFragment extends ListFragment {
         }
         HostCursor cursor = (HostCursor)
           DatabaseManager.find(Host.class, query);
-        mCursorAdapter =
+        ManageHostsCursorAdapter cursorAdapter =
           new ManageHostsCursorAdapter(getActivity(), cursor, 0);
         mToggles = new ArrayList<>(Collections.nCopies(
-                                    mCursorAdapter.getCount(),
+                                    cursorAdapter.getCount(),
                                     false));
-        mCursorAdapter.setToggleList(mToggles);
-        setListAdapter(mCursorAdapter);
+        cursorAdapter.setToggleList(mToggles);
+        setListAdapter(cursorAdapter);
     }
 
     private void confirmDeleteSelectedHosts() {
