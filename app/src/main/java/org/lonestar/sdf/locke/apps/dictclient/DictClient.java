@@ -71,7 +71,7 @@ public class DictClient extends Application {
           mOnHostChangeListener.onHostChange(mCurrentHost);
     }
 
-    public void setCurrentHostById(int hostId) {
+    private void setCurrentHostById(int hostId) {
         if (mCurrentHost == null || mCurrentHost.getId() != hostId) {
             mCurrentHost = findCachedHost(hostId, null);
             if (mOnHostChangeListener != null)

@@ -97,7 +97,7 @@ public class EditHostDialog extends DialogFragment {
         return builder.create();
     }
 
-    public String getTitle() {
+    private String getTitle() {
         if (mHost == null) {
             return getActivity().getString(R.string.dialog_add_title);
         } else {
@@ -105,11 +105,11 @@ public class EditHostDialog extends DialogFragment {
         }
     }
 
-    public void setDictionaryHost(Host host) {
+    private void setDictionaryHost(Host host) {
         mHost = host;
     }
 
-    public void setManageHostsListFragment(ManageHostsListFragment fragment) {
+    private void setManageHostsListFragment(ManageHostsListFragment fragment) {
         mFragment = fragment;
     }
 }
