@@ -122,7 +122,7 @@ class DonationManager implements PurchasesUpdatedListener {
         if (purchase == null)
           makePurchase(sku);
         else
-          consumePurchase(purchase, true);
+          consumePurchase(purchase);
     }
 
     private void makePurchase(final String sku) {
@@ -143,8 +143,7 @@ class DonationManager implements PurchasesUpdatedListener {
         );
     }
 
-    private void consumePurchase(final Purchase purchase,
-                                 final boolean repurchase) {
+    private void consumePurchase(final Purchase purchase) {
         executeServiceRequest(
             new Runnable() {
                 public void run() {
@@ -156,8 +155,7 @@ class DonationManager implements PurchasesUpdatedListener {
                               String token
                             ) {
                                 handleBillingFlowResponse(code);
-                                if ((code == OK || code == ITEM_NOT_OWNED)
-                                      && repurchase) {
+                                if ((code == OK || code == ITEM_NOT_OWNED)) {
                                     mBillingClient = buildBillingClient();
                                     makePurchase (purchase.getSku ());
                                 }
