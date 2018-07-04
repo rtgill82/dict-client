@@ -100,7 +100,7 @@ class DonationManager implements PurchasesUpdatedListener {
                     handleBillingFlowResponse(code);
                     if (code == OK) {
                         if (purchases != null && purchases.size() > 0)
-                          applyDonation(context, true);
+                          applyDonation(context);
                     }
                     listener.hasDonated(mDonated);
                 }
@@ -179,10 +179,10 @@ class DonationManager implements PurchasesUpdatedListener {
         return rv;
     }
 
-    private void applyDonation(Context context, boolean donated) {
-        mDonated = donated;
+    private void applyDonation(Context context) {
+        mDonated = true;
         mPreferences.edit()
-          .putBoolean(context.getString(R.string.pref_key_donated), donated)
+          .putBoolean(context.getString(R.string.pref_key_donated), true)
           .apply();
     }
 
@@ -288,7 +288,7 @@ class DonationManager implements PurchasesUpdatedListener {
         handleBillingFlowResponse(code);
         if (code == OK) {
             Log.i(TAG, "Purchases updated");
-            applyDonation(mContext, true);
+            applyDonation(mContext);
             if (mDonationFlowListener != null)
               mDonationFlowListener.onPurchasesUpdated();
         }
