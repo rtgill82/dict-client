@@ -11,6 +11,7 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -43,6 +44,7 @@ public class EditHostDialog extends DialogFragment {
                     fragment.getString(R.string.dialog_edit_tag));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         RelativeLayout layout = (RelativeLayout)
