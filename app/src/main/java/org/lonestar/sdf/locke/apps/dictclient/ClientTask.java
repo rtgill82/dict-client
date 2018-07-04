@@ -205,7 +205,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         private final Strategy strategy;
         private final String word;
 
-        boolean displayWaitMessage = true;
+        private final boolean displayWaitMessage = true;
 
         private Request(Host host, ClientCommand command, String word,
                         Dictionary dictionary, Strategy strategy) {

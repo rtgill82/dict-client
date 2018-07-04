@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton mSearchButton;
 
     @SuppressWarnings("FieldCanBeLocal")
-    private OnSharedPreferenceChangeListener mPreferenceChangeListener =
+    private final OnSharedPreferenceChangeListener mPreferenceChangeListener =
       createOnSharedPreferenceChangeListener();
 
     private int mSelectedDictionary = -1;
