@@ -113,6 +113,7 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void loadData(Resources resources, SQLiteDatabase db,
                           ConnectionSource cs, int oldVersion, int newVersion)
           throws SQLException {
