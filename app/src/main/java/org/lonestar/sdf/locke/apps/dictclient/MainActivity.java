@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void lookupWord(View view) {
+    public void lookupWord(@SuppressWarnings("unused") View view) {
         String word = mSearchText.getText().toString();
         if (word.isEmpty()) return;
 
@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void getDictionaryInfo(View view) {
+    public void getDictionaryInfo(@SuppressWarnings("unused") View view) {
         Dictionary dictionary = (Dictionary)
           mDictionarySpinner.getSelectedItem();
         mSearchText.setText("");
