@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 mHistory.clear();
                 invalidateOptionsMenu();
                 mSearchText.setText("");
-                setResultViewText("");
+                setResultViewText("", mWordWrap);
                 mHostChanged = false;
             }
 
@@ -327,8 +327,9 @@ public class MainActivity extends AppCompatActivity {
         mShareActionProvider.setShareIntent(intent);
     }
 
-    private void setResultViewText(CharSequence text) {
+    private void setResultViewText(CharSequence text, boolean wordWrap) {
         setShareIntent(text);
+        mResultView.setWordWrap(wordWrap);
         mResultView.setText(text);
     }
 
@@ -400,60 +401,51 @@ public class MainActivity extends AppCompatActivity {
         Strategy strategy = entry.getStrategy();
         setSelectedDictionary(entry.getDictionary());
         setSelectedStrategy(strategy);
-        if (strategy.getName().equals("define")) {
-            mResultView.setWordWrap(mWordWrap);
-        } else {
-            mResultView.setWordWrap(true);
+        boolean wordWrap = true;
+        if (strategy == Strategy.DEFAULT) {
+            wordWrap = mWordWrap;
         }
         mSearchText.setText(entry.getWord());
-        setResultViewText(entry.getText());
+        setResultViewText(entry.getText(), wordWrap);
     }
 
-    private CharSequence displayDefinitions(List<Definition> definitions) {
-        mResultView.setWordWrap(mWordWrap);
-        if (definitions == null) {
-            setResultViewText(getString(R.string.result_definitions));
-        } else {
-            SpannableStringBuilder stringBuilder =
-              new SpannableStringBuilder();
-            for (Definition definition : definitions) {
-                stringBuilder.append(Html.fromHtml(
-                  "<b>" + definition.getDatabase().getDescription() +
-                  "</b><br>"
-                ));
-                stringBuilder.append(DefinitionParser.parse(definition));
-                stringBuilder.append("\n");
-            }
-            setResultViewText(stringBuilder);
+    private CharSequence formatDefinitions(List<Definition> definitions) {
+        if (definitions == null)  {
+            return getString(R.string.result_definitions);
         }
-        return mResultView.getText();
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
+        for (Definition definition : definitions) {
+            stringBuilder.append(Html.fromHtml(
+              "<b>" + definition.getDatabase().getDescription() +
+              "</b><br>"
+            ));
+            stringBuilder.append(DefinitionParser.parse(definition));
+            stringBuilder.append("\n");
+        }
+        return stringBuilder;
     }
 
-    private CharSequence displayMatches(List<Match> matches) {
-        mResultView.setWordWrap(true);
+    private CharSequence formatMatches(List<Match> matches) {
         if (matches == null) {
-            setResultViewText(getString(R.string.result_matches));
-        } else {
-            Map<Dictionary, List<String>> map = buildMatchMap(matches);
-            SpannableStringBuilder stringBuilder =
-              new SpannableStringBuilder();
-            for (Dictionary dictionary : map.keySet()) {
-                List<String> list = map.get(dictionary);
-                stringBuilder.append(Html.fromHtml(
-                      "<b>" + dictionary.getDescription() + "</b><br>"
-                    ));
-                int i = 0; int count = list.size();
-                for (String word : list) {
-                    stringBuilder.append(new WordSpan(word, dictionary)
-                                                     .toCharSequence());
-                    if (i != count - 1) stringBuilder.append(", ");
-                    i += 1;
-                }
-                stringBuilder.append(Html.fromHtml("<br><br>"));
-            }
-            setResultViewText(stringBuilder);
+            return getString(R.string.result_matches);
         }
-        return mResultView.getText();
+        Map<Dictionary, List<String>> map = buildMatchMap(matches);
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
+        for (Dictionary dictionary : map.keySet()) {
+            List<String> list = map.get(dictionary);
+            stringBuilder.append(Html.fromHtml(
+              "<b>" + dictionary.getDescription() + "</b><br>"
+            ));
+            int i = 0; int count = list.size();
+            for (String word : list) {
+                stringBuilder.append(new WordSpan(word, dictionary)
+                                                 .toCharSequence());
+                if (i != count - 1) stringBuilder.append(", ");
+                i += 1;
+            }
+            stringBuilder.append(Html.fromHtml("<br><br>"));
+        }
+        return stringBuilder;
     }
 
     private Map<Dictionary, List<String>> buildMatchMap(List<Match> matches) {
@@ -476,13 +468,11 @@ public class MainActivity extends AppCompatActivity {
         return map;
     }
 
-    private void displayDictionaryInfo(String dictionaryInfo) {
-        setResultViewText("");
+    private CharSequence formatDictionaryInfo(String dictionaryInfo) {
         if (dictionaryInfo == null) {
-            setResultViewText(getString(R.string.result_dict_info));
-        } else {
-            setResultViewText(dictionaryInfo);
+            return getString(R.string.result_dict_info);
         }
+        return dictionaryInfo;
     }
 
     private void disableInput() {
@@ -622,7 +612,7 @@ public class MainActivity extends AppCompatActivity {
             HistoryEntry entry;
             switch (request.getCommand()) {
               case DEFINE:
-                text = displayDefinitions(result.getDefinitions());
+                text = formatDefinitions(result.getDefinitions());
                 entry = new HistoryEntry(
                   request.getWord(),
                   ((Dictionary) mDictionarySpinner.getSelectedItem()),
@@ -630,11 +620,12 @@ public class MainActivity extends AppCompatActivity {
                   text
                 );
                 mHistory.add(entry);
+                setResultViewText(text, mWordWrap);
                 invalidateOptionsMenu();
                 break;
 
               case MATCH:
-                text = displayMatches(result.getMatches());
+                text = formatMatches(result.getMatches());
                 entry = new HistoryEntry(
                   request.getWord(),
                   ((Dictionary) mDictionarySpinner.getSelectedItem()),
@@ -642,11 +633,13 @@ public class MainActivity extends AppCompatActivity {
                   text
                 );
                 mHistory.add(entry);
+                setResultViewText(text, true);
                 invalidateOptionsMenu();
                 break;
 
               case DICT_INFO:
-                displayDictionaryInfo(result.getDictionaryInfo());
+                text = formatDictionaryInfo(result.getDictionaryInfo());
+                setResultViewText(text, mWordWrap);
                 break;
 
               case DICT_STRATEGY_LIST:
