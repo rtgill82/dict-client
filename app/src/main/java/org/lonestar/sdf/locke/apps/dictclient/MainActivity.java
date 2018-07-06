@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private Spinner mStrategySpinner;
     private ImageButton mInfoButton;
     private ImageButton mSearchButton;
+    private ShareActionProvider mShareActionProvider;
 
     @SuppressWarnings("FieldCanBeLocal")
     private final OnSharedPreferenceChangeListener mPreferenceChangeListener =
@@ -174,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 mHistory.clear();
                 invalidateOptionsMenu();
                 mSearchText.setText("");
-                mResultView.setText("");
+                setResultViewText("");
                 mHostChanged = false;
             }
 
@@ -186,7 +187,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+
         getMenuInflater().inflate(R.menu.activity_main, menu);
+        MenuItem item = menu.findItem(R.id.menu_share);
+        mShareActionProvider = (ShareActionProvider)
+          MenuItemCompat.getActionProvider(item);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -224,17 +230,6 @@ public class MainActivity extends AppCompatActivity {
           case R.id.menu_forward:
             traverseHistory(DefinitionHistory.Direction.FORWARD);
             break;
-
-          case R.id.menu_share:
-            ShareActionProvider provider =
-              (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_TEXT,
-                            mResultView.getText().toString());
-            provider.setShareIntent(intent);
-            break;
-
 
           case R.id.menu_host_select:
             startActivity(new Intent(this, SelectHostActivity.class));
@@ -325,6 +320,18 @@ public class MainActivity extends AppCompatActivity {
         executeTask(ClientTask.DICT_LIST(mHost));
     }
 
+    private void setShareIntent(CharSequence text) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, text.toString());
+        mShareActionProvider.setShareIntent(intent);
+    }
+
+    private void setResultViewText(CharSequence text) {
+        setShareIntent(text);
+        mResultView.setText(text);
+    }
+
     private void setSelectedDictionary(Dictionary dictionary) {
         if (dictionary == null || dictionary == Dictionary.DEFAULT) {
             mSelectedDictionary = 0;
@@ -399,13 +406,13 @@ public class MainActivity extends AppCompatActivity {
             mResultView.setWordWrap(true);
         }
         mSearchText.setText(entry.getWord());
-        mResultView.setText(entry.getText());
+        setResultViewText(entry.getText());
     }
 
     private CharSequence displayDefinitions(List<Definition> definitions) {
         mResultView.setWordWrap(mWordWrap);
         if (definitions == null) {
-            mResultView.setText(getString(R.string.result_definitions));
+            setResultViewText(getString(R.string.result_definitions));
         } else {
             SpannableStringBuilder stringBuilder =
               new SpannableStringBuilder();
@@ -417,7 +424,7 @@ public class MainActivity extends AppCompatActivity {
                 stringBuilder.append(DefinitionParser.parse(definition));
                 stringBuilder.append("\n");
             }
-            mResultView.setText(stringBuilder);
+            setResultViewText(stringBuilder);
         }
         return mResultView.getText();
     }
@@ -425,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
     private CharSequence displayMatches(List<Match> matches) {
         mResultView.setWordWrap(true);
         if (matches == null) {
-            mResultView.setText(getString(R.string.result_matches));
+            setResultViewText(getString(R.string.result_matches));
         } else {
             Map<Dictionary, List<String>> map = buildMatchMap(matches);
             SpannableStringBuilder stringBuilder =
@@ -444,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 stringBuilder.append(Html.fromHtml("<br><br>"));
             }
-            mResultView.setText(stringBuilder);
+            setResultViewText(stringBuilder);
         }
         return mResultView.getText();
     }
@@ -470,11 +477,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayDictionaryInfo(String dictionaryInfo) {
-        mResultView.setText("");
+        setResultViewText("");
         if (dictionaryInfo == null) {
-            mResultView.setText(getString(R.string.result_dict_info));
+            setResultViewText(getString(R.string.result_dict_info));
         } else {
-            mResultView.setText(dictionaryInfo);
+            setResultViewText(dictionaryInfo);
         }
     }
 
