@@ -28,7 +28,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
     public enum ClientCommand {
         DEFINE,
         MATCH,
-        DICT_STRAT_LIST,
+        DICT_STRATEGY_LIST,
         DICT_INFO
     }
 
@@ -52,7 +52,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         if (sMessages.isEmpty()) {
             sMessages.put(DEFINE, context.getString(R.string.task_define));
             sMessages.put(MATCH, context.getString(R.string.task_match));
-            sMessages.put(DICT_STRAT_LIST, context.getString(R.string.task_dict_list));
+            sMessages.put(DICT_STRATEGY_LIST, context.getString(R.string.task_dict_list));
             sMessages.put(DICT_INFO, context.getString(R.string.task_dict_info));
         }
     }
@@ -73,7 +73,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
     }
 
     public static Request DICT_LIST(Host host) {
-        return new Request(host, ClientCommand.DICT_STRAT_LIST,
+        return new Request(host, ClientCommand.DICT_STRATEGY_LIST,
                            null, null, null);
     }
 
@@ -83,14 +83,12 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
 
     @Override
     protected void onPreExecute() {
-        if (mRequest.displayWaitMessage()) {
-            mProgressDialog = ProgressDialog.show(
-              mContext.get(),
-              "Waiting",
-              sMessages.get(mRequest.getCommand()),
-              true
-            );
-        }
+        mProgressDialog = ProgressDialog.show(
+          mContext.get(),
+          "Waiting",
+          sMessages.get(mRequest.getCommand()),
+          true
+        );
     }
 
     protected Result doInBackground(Void... voids) {
@@ -107,7 +105,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
                   getMatches(mRequest.getWord(), mRequest.getDictionary(),
                              mRequest.getStrategy())
                 );
-              case DICT_STRAT_LIST:
+              case DICT_STRATEGY_LIST:
                 Pair<List<Dictionary>, List<Strategy>> results =
                   getDictionariesAndStrategies();
                 return new Result(
@@ -142,10 +140,11 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         Host host = mRequest.getHost();
         JDictClient client =
           JDictClient.connect(host.getName(), host.getPort());
+        //noinspection SpellCheckingInspection
         Command.Builder builder = new Command.Builder(Command.Type.OTHER)
                                     .setCommandString("SHOW DB\nSHOW STRAT");
-        DictStratListResponseHandler handler =
-          new DictStratListResponseHandler(host);
+        DictStrategyListResponseHandler handler =
+          new DictStrategyListResponseHandler(host);
         builder.setResponseHandler(handler);
         builder.build().execute(client.getConnection());
         client.close();
@@ -204,8 +203,6 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         private final Strategy strategy;
         private final String word;
 
-        boolean displayWaitMessage = true;
-
         private Request(Host host, ClientCommand command, String word,
                         Dictionary dictionary, Strategy strategy) {
             this.host = host;
@@ -218,10 +215,6 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         private Request(Host host, ClientCommand command, String word,
                         Dictionary dictionary) {
             this(host, command, word, dictionary, null);
-        }
-
-        public boolean displayWaitMessage() {
-            return this.displayWaitMessage;
         }
 
         public Host getHost() {
@@ -275,7 +268,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
                 strategies = null;
                 matches = (List<Match>) list1;
                 break;
-              case DICT_STRAT_LIST:
+              case DICT_STRATEGY_LIST:
                 dictionaries = (List<Dictionary>) list1;
                 definitions = null;
                 strategies = (List<Strategy>) list2;
@@ -290,16 +283,16 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
             }
         }
 
-        public Result(Request request, List<?> list) {
+        Result(Request request, List<?> list) {
             this(request, list, null, null);
         }
 
-        public Result(Request request, String dictionaryInfo) {
+        Result(Request request, String dictionaryInfo) {
             this(request, null, null, dictionaryInfo);
         }
 
-        public Result(Request request, List<Dictionary> dictionaries,
-                      List<Strategy> strategies) {
+        Result(Request request, List<Dictionary> dictionaries,
+               List<Strategy> strategies) {
             this(request, dictionaries, strategies, null);
         }
 

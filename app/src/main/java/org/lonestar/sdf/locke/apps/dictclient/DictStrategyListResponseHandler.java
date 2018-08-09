@@ -16,12 +16,12 @@ import org.lonestar.sdf.locke.libs.jdictclient.Strategy;
 import java.util.ArrayList;
 import java.util.List;
 
-class DictStratListResponseHandler implements ResponseHandler {
+class DictStrategyListResponseHandler implements ResponseHandler {
     final private Host mHost;
     final private ArrayList<Database> mDatabases;
     final private ArrayList<Strategy> mStrategies;
 
-    public DictStratListResponseHandler(Host host) {
+    public DictStrategyListResponseHandler(Host host) {
         mHost = host;
         mDatabases = new ArrayList<>();
         mStrategies = new ArrayList<>();

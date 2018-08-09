@@ -29,8 +29,7 @@ import static com.android.billingclient.api.BillingClient.BillingResponse.*;
 import static com.android.billingclient.api.BillingClient.SkuType.INAPP;
 
 class DonationManager implements PurchasesUpdatedListener {
-    private static final String TAG = "DONATIONMANAGER";
-    private static DonationManager sInstance;
+    private static final String TAG = "DONATION_MANAGER";
 
     final private Context mContext;
     final private SharedPreferences mPreferences;
@@ -42,20 +41,7 @@ class DonationManager implements PurchasesUpdatedListener {
 
     private DonationFlowListener mDonationFlowListener;
 
-    static public void initialize(Context context) {
-        if (sInstance == null)
-          sInstance = new DonationManager(context);
-    }
-
-    static public DonationManager getInstance() {
-        if (sInstance == null)
-          throw new RuntimeException(DonationManager.class.getSimpleName()
-                                     + " not initialized.");
-
-        return sInstance;
-    }
-
-    private DonationManager(final Context context) {
+    public DonationManager(Context context) {
         mContext = context;
         final String keyDonated = context.getString(R.string.pref_key_donated);
         boolean valueDonated = context.getResources()
@@ -114,7 +100,7 @@ class DonationManager implements PurchasesUpdatedListener {
                     handleBillingFlowResponse(code);
                     if (code == OK) {
                         if (purchases != null && purchases.size() > 0)
-                          applyDonation(context, true);
+                          applyDonation(context);
                     }
                     listener.hasDonated(mDonated);
                 }
@@ -136,7 +122,7 @@ class DonationManager implements PurchasesUpdatedListener {
         if (purchase == null)
           makePurchase(sku);
         else
-          consumePurchase(purchase, true);
+          consumePurchase(purchase);
     }
 
     private void makePurchase(final String sku) {
@@ -157,8 +143,7 @@ class DonationManager implements PurchasesUpdatedListener {
         );
     }
 
-    private void consumePurchase(final Purchase purchase,
-                                 final boolean repurchase) {
+    private void consumePurchase(final Purchase purchase) {
         executeServiceRequest(
             new Runnable() {
                 public void run() {
@@ -170,8 +155,7 @@ class DonationManager implements PurchasesUpdatedListener {
                               String token
                             ) {
                                 handleBillingFlowResponse(code);
-                                if ((code == OK || code == ITEM_NOT_OWNED)
-                                      && repurchase) {
+                                if ((code == OK || code == ITEM_NOT_OWNED)) {
                                     mBillingClient = buildBillingClient();
                                     makePurchase (purchase.getSku ());
                                 }
@@ -195,10 +179,10 @@ class DonationManager implements PurchasesUpdatedListener {
         return rv;
     }
 
-    private void applyDonation(Context context, boolean donated) {
-        mDonated = donated;
+    private void applyDonation(Context context) {
+        mDonated = true;
         mPreferences.edit()
-          .putBoolean(context.getString(R.string.pref_key_donated), donated)
+          .putBoolean(context.getString(R.string.pref_key_donated), true)
           .apply();
     }
 
@@ -304,11 +288,10 @@ class DonationManager implements PurchasesUpdatedListener {
         handleBillingFlowResponse(code);
         if (code == OK) {
             Log.i(TAG, "Purchases updated");
-            applyDonation(mContext, true);
+            applyDonation(mContext);
             if (mDonationFlowListener != null)
               mDonationFlowListener.onPurchasesUpdated();
         }
-
     }
 
     private BillingClient buildBillingClient() {

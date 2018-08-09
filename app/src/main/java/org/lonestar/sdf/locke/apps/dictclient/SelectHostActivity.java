@@ -15,18 +15,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class SelectHostActivity extends AppCompatActivity {
-    private ListView mListView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         HostCursor cursor = (HostCursor)
           DatabaseManager.find(Host.class, "hidden", false);
         HostCursorAdapter ca = new HostCursorAdapter(this, cursor, 0);
-        mListView = new ListView(this);
-        setContentView(mListView);
-        mListView.setAdapter(ca);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView listView = new ListView(this);
+        setContentView(listView);
+        listView.setAdapter(ca);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 HostCursor cursor = (HostCursor)

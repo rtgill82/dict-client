@@ -33,7 +33,6 @@ public class DictClient extends Application {
     public void onCreate() {
         super.onCreate();
         DatabaseManager.initialize(getApplicationContext());
-        DonationManager.initialize(getApplicationContext());
         JDictClient.setClientString(buildClientString());
         mCache = new HostCache();
         mCurrentHost = getDefaultHost();
@@ -69,14 +68,14 @@ public class DictClient extends Application {
           return;
         mCurrentHost = findCachedHost(host.getId(), host);
         if (mOnHostChangeListener != null)
-          mOnHostChangeListener.onHostChange(mCurrentHost);
+          mOnHostChangeListener.onHostChange();
     }
 
-    public void setCurrentHostById(int hostId) {
+    private void setCurrentHostById(int hostId) {
         if (mCurrentHost == null || mCurrentHost.getId() != hostId) {
             mCurrentHost = findCachedHost(hostId, null);
             if (mOnHostChangeListener != null)
-              mOnHostChangeListener.onHostChange(mCurrentHost);
+              mOnHostChangeListener.onHostChange();
         }
     }
 
@@ -121,6 +120,6 @@ public class DictClient extends Application {
     }
 
     public static abstract class OnHostChangeListener {
-        public abstract void onHostChange(Host host);
+        public abstract void onHostChange();
     }
 }

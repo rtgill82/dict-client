@@ -11,11 +11,12 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -43,6 +44,7 @@ public class EditHostDialog extends DialogFragment {
                     fragment.getString(R.string.dialog_edit_tag));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         RelativeLayout layout = (RelativeLayout)
@@ -95,7 +97,7 @@ public class EditHostDialog extends DialogFragment {
         return builder.create();
     }
 
-    public String getTitle() {
+    private String getTitle() {
         if (mHost == null) {
             return getActivity().getString(R.string.dialog_add_title);
         } else {
@@ -103,11 +105,11 @@ public class EditHostDialog extends DialogFragment {
         }
     }
 
-    public void setDictionaryHost(Host host) {
+    private void setDictionaryHost(Host host) {
         mHost = host;
     }
 
-    public void setManageHostsListFragment(ManageHostsListFragment fragment) {
+    private void setManageHostsListFragment(ManageHostsListFragment fragment) {
         mFragment = fragment;
     }
 }

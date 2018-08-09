@@ -64,9 +64,10 @@ public class MainActivity extends AppCompatActivity {
     private Spinner mStrategySpinner;
     private ImageButton mInfoButton;
     private ImageButton mSearchButton;
+    private ShareActionProvider mShareActionProvider;
 
     @SuppressWarnings("FieldCanBeLocal")
-    private OnSharedPreferenceChangeListener mPreferenceChangeListener =
+    private final OnSharedPreferenceChangeListener mPreferenceChangeListener =
       createOnSharedPreferenceChangeListener();
 
     private int mSelectedDictionary = -1;
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         app.setOnHostChangeListener(
           new DictClient.OnHostChangeListener() {
               @Override
-              public void onHostChange(Host host) {
+              public void onHostChange() {
                   mHostChanged = true;
               }
           }
@@ -174,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 mHistory.clear();
                 invalidateOptionsMenu();
                 mSearchText.setText("");
-                mResultView.setText("");
+                setResultViewText("", mWordWrap);
                 mHostChanged = false;
             }
 
@@ -186,7 +187,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+
         getMenuInflater().inflate(R.menu.activity_main, menu);
+        MenuItem item = menu.findItem(R.id.menu_share);
+        mShareActionProvider = (ShareActionProvider)
+          MenuItemCompat.getActionProvider(item);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -224,17 +230,6 @@ public class MainActivity extends AppCompatActivity {
           case R.id.menu_forward:
             traverseHistory(DefinitionHistory.Direction.FORWARD);
             break;
-
-          case R.id.menu_share:
-            ShareActionProvider provider =
-              (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_TEXT,
-                            mResultView.getText().toString());
-            provider.setShareIntent(intent);
-            break;
-
 
           case R.id.menu_host_select:
             startActivity(new Intent(this, SelectHostActivity.class));
@@ -285,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void lookupWord(View view) {
+    public void lookupWord(@SuppressWarnings("unused") View view) {
         String word = mSearchText.getText().toString();
         if (word.isEmpty()) return;
 
@@ -303,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void getDictionaryInfo(View view) {
+    public void getDictionaryInfo(@SuppressWarnings("unused") View view) {
         Dictionary dictionary = (Dictionary)
           mDictionarySpinner.getSelectedItem();
         mSearchText.setText("");
@@ -325,14 +320,27 @@ public class MainActivity extends AppCompatActivity {
         executeTask(ClientTask.DICT_LIST(mHost));
     }
 
+    private void setShareIntent(CharSequence text) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, text.toString());
+        mShareActionProvider.setShareIntent(intent);
+    }
+
+    private void setResultViewText(CharSequence text, boolean wordWrap) {
+        setShareIntent(text);
+        mResultView.setWordWrap(wordWrap);
+        mResultView.setText(text);
+    }
+
     private void setSelectedDictionary(Dictionary dictionary) {
-        if (dictionary == null || dictionary == Dictionary.ALL_DICTIONARIES) {
+        if (dictionary == null || dictionary == Dictionary.DEFAULT) {
             mSelectedDictionary = 0;
         } else {
             SpinnerAdapter adapter = mDictionarySpinner.getAdapter();
             for (int i = 0; i < adapter.getCount(); i++) {
                 Dictionary item = (Dictionary) adapter.getItem(i);
-                if (item == Dictionary.ALL_DICTIONARIES) continue;
+                if (item == Dictionary.DEFAULT) continue;
                 if (item.getName().equals(dictionary.getName())) {
                     mSelectedDictionary = i;
                     break;
@@ -360,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setDictionarySpinnerData(Collection<Dictionary> collection) {
         ArrayList<Dictionary> list = new ArrayList<>(collection);
-        list.add(0, Dictionary.ALL_DICTIONARIES);
+        list.add(0, Dictionary.DEFAULT);
         ArrayAdapter<Dictionary> adapter = new ArrayAdapter<>(
           this, android.R.layout.simple_spinner_item, list
         );
@@ -393,60 +401,51 @@ public class MainActivity extends AppCompatActivity {
         Strategy strategy = entry.getStrategy();
         setSelectedDictionary(entry.getDictionary());
         setSelectedStrategy(strategy);
-        if (strategy.getName().equals("define")) {
-            mResultView.setWordWrap(mWordWrap);
-        } else {
-            mResultView.setWordWrap(true);
+        boolean wordWrap = true;
+        if (strategy == Strategy.DEFAULT) {
+            wordWrap = mWordWrap;
         }
         mSearchText.setText(entry.getWord());
-        mResultView.setText(entry.getText());
+        setResultViewText(entry.getText(), wordWrap);
     }
 
-    private CharSequence displayDefinitions(List<Definition> definitions) {
-        mResultView.setWordWrap(mWordWrap);
-        if (definitions == null) {
-            mResultView.setText(getString(R.string.result_definitions));
-        } else {
-            SpannableStringBuilder stringBuilder =
-              new SpannableStringBuilder();
-            for (Definition definition : definitions) {
-                stringBuilder.append(Html.fromHtml(
-                  "<b>" + definition.getDatabase().getDescription() +
-                  "</b><br>"
-                ));
-                stringBuilder.append(DefinitionParser.parse(definition));
-                stringBuilder.append("\n");
-            }
-            mResultView.setText(stringBuilder);
+    private CharSequence formatDefinitions(List<Definition> definitions) {
+        if (definitions == null)  {
+            return getString(R.string.result_definitions);
         }
-        return mResultView.getText();
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
+        for (Definition definition : definitions) {
+            stringBuilder.append(Html.fromHtml(
+              "<b>" + definition.getDatabase().getDescription() +
+              "</b><br>"
+            ));
+            stringBuilder.append(DefinitionParser.parse(definition));
+            stringBuilder.append("\n");
+        }
+        return stringBuilder;
     }
 
-    private CharSequence displayMatches(List<Match> matches) {
-        mResultView.setWordWrap(true);
+    private CharSequence formatMatches(List<Match> matches) {
         if (matches == null) {
-            mResultView.setText(getString(R.string.result_matches));
-        } else {
-            Map<Dictionary, List<String>> map = buildMatchMap(matches);
-            SpannableStringBuilder stringBuilder =
-              new SpannableStringBuilder();
-            for (Dictionary dictionary : map.keySet()) {
-                List<String> list = map.get(dictionary);
-                stringBuilder.append(Html.fromHtml(
-                      "<b>" + dictionary.getDescription() + "</b><br>"
-                    ));
-                int i = 0; int count = list.size();
-                for (String word : list) {
-                    stringBuilder.append(new WordSpan(word, dictionary)
-                                                     .toCharSequence());
-                    if (i != count - 1) stringBuilder.append(", ");
-                    i += 1;
-                }
-                stringBuilder.append(Html.fromHtml("<br><br>"));
-            }
-            mResultView.setText(stringBuilder);
+            return getString(R.string.result_matches);
         }
-        return mResultView.getText();
+        Map<Dictionary, List<String>> map = buildMatchMap(matches);
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
+        for (Dictionary dictionary : map.keySet()) {
+            List<String> list = map.get(dictionary);
+            stringBuilder.append(Html.fromHtml(
+              "<b>" + dictionary.getDescription() + "</b><br>"
+            ));
+            int i = 0; int count = list.size();
+            for (String word : list) {
+                stringBuilder.append(new WordSpan(word, dictionary)
+                                                 .toCharSequence());
+                if (i != count - 1) stringBuilder.append(", ");
+                i += 1;
+            }
+            stringBuilder.append(Html.fromHtml("<br><br>"));
+        }
+        return stringBuilder;
     }
 
     private Map<Dictionary, List<String>> buildMatchMap(List<Match> matches) {
@@ -454,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
         Adapter adapter = mDictionarySpinner.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
             Dictionary dictionary = (Dictionary) adapter.getItem(i);
-            if (dictionary == Dictionary.ALL_DICTIONARIES) continue;
+            if (dictionary == Dictionary.DEFAULT) continue;
             LinkedList<String> list = new LinkedList<>();
             map.put(dictionary, list);
             for (Match match : matches) {
@@ -469,13 +468,11 @@ public class MainActivity extends AppCompatActivity {
         return map;
     }
 
-    private void displayDictionaryInfo(String dictionaryInfo) {
-        mResultView.setText("");
+    private CharSequence formatDictionaryInfo(String dictionaryInfo) {
         if (dictionaryInfo == null) {
-            mResultView.setText(getString(R.string.result_dict_info));
-        } else {
-            mResultView.setText(dictionaryInfo);
+            return getString(R.string.result_dict_info);
         }
+        return dictionaryInfo;
     }
 
     private void disableInput() {
@@ -564,7 +561,7 @@ public class MainActivity extends AppCompatActivity {
                 Dictionary currentDictionary = (Dictionary)
                   parent.getSelectedItem();
 
-                if (currentDictionary != Dictionary.ALL_DICTIONARIES) {
+                if (currentDictionary != Dictionary.DEFAULT) {
                     button.setEnabled(true);
                 } else {
                     button.setEnabled(false);
@@ -594,7 +591,7 @@ public class MainActivity extends AppCompatActivity {
     public class OnTaskFinishedHandler implements
       ClientTask.OnTaskFinishedHandler {
         private final boolean mSetFields;
-        public OnTaskFinishedHandler (boolean setFields) {
+        OnTaskFinishedHandler (boolean setFields) {
             mSetFields = setFields;
         }
 
@@ -615,7 +612,7 @@ public class MainActivity extends AppCompatActivity {
             HistoryEntry entry;
             switch (request.getCommand()) {
               case DEFINE:
-                text = displayDefinitions(result.getDefinitions());
+                text = formatDefinitions(result.getDefinitions());
                 entry = new HistoryEntry(
                   request.getWord(),
                   ((Dictionary) mDictionarySpinner.getSelectedItem()),
@@ -623,11 +620,12 @@ public class MainActivity extends AppCompatActivity {
                   text
                 );
                 mHistory.add(entry);
+                setResultViewText(text, mWordWrap);
                 invalidateOptionsMenu();
                 break;
 
               case MATCH:
-                text = displayMatches(result.getMatches());
+                text = formatMatches(result.getMatches());
                 entry = new HistoryEntry(
                   request.getWord(),
                   ((Dictionary) mDictionarySpinner.getSelectedItem()),
@@ -635,14 +633,16 @@ public class MainActivity extends AppCompatActivity {
                   text
                 );
                 mHistory.add(entry);
+                setResultViewText(text, true);
                 invalidateOptionsMenu();
                 break;
 
               case DICT_INFO:
-                displayDictionaryInfo(result.getDictionaryInfo());
+                text = formatDictionaryInfo(result.getDictionaryInfo());
+                setResultViewText(text, mWordWrap);
                 break;
 
-              case DICT_STRAT_LIST:
+              case DICT_STRATEGY_LIST:
                 Host host = request.getHost();
                 host.setDictionaries(result.getDictionaries());
                 host.setStrategies(result.getStrategies());

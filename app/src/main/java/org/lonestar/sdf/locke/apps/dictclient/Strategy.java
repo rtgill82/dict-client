@@ -20,7 +20,7 @@ class Strategy extends BaseModel {
     @DatabaseField(canBeNull = false)
     private String description;
 
-    public static final Strategy DEFINE = new Strategy();
+    public static final Strategy DEFAULT = new Strategy();
 
     public Strategy() {
         name = "define";

@@ -21,7 +21,6 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
-import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 import static android.app.PendingIntent.FLAG_ONE_SHOT;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static org.lonestar.sdf.locke.apps.dictclient.DictClient.CHANNEL;
@@ -32,7 +31,8 @@ public class DonateNotificationService extends Service {
     public static final String DONATE_SEEN = "DONATE_SEEN";
 
     public static void start(final Context context) {
-        DonationManager.getInstance().checkDonations(context,
+        DonationManager donationManager = new DonationManager(context);
+        donationManager.checkDonations(context,
             new OnHasDonatedListener() {
                 public void hasDonated(boolean donated) {
                     if (!donated)
@@ -65,8 +65,9 @@ public class DonateNotificationService extends Service {
             NotificationChannel channel = new NotificationChannel(
                 CHANNEL,
                 context.getString(R.string.app_name),
-                IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_DEFAULT
               );
+            //noinspection ConstantConditions
             notificationManager.createNotificationChannel(channel);
         }
 
@@ -95,7 +96,7 @@ public class DonateNotificationService extends Service {
               .setDeleteIntent(passIntent)
               .addAction(0, buttonDonate, donateIntent)
               .addAction(0, buttonPass, passIntent);
-
+        //noinspection ConstantConditions
         notificationManager.notify(0, builder.build());
     }
 
@@ -114,6 +115,7 @@ public class DonateNotificationService extends Service {
     private void closeNotification() {
         NotificationManager notificationManager =
           (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        //noinspection ConstantConditions
         notificationManager.cancel(0);
     }
 

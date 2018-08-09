@@ -9,12 +9,12 @@
 package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -40,6 +40,7 @@ public class AboutDialog extends DialogFragment {
 
         try {
             byte[] buffer = new byte[stream.available()];
+            //noinspection ResultOfMethodCallIgnored
             stream.read(buffer);
             html = new String(buffer);
         } catch (IOException e) {

@@ -38,7 +38,7 @@ public class DonateDialog extends DialogFragment {
         if (sInstance == null) {
             sInstance = new DonateDialog();
             sInstance.show(activity.getFragmentManager(),
-                          activity.getString(R.string.title_donate));
+                           activity.getString(R.string.title_donate));
         }
     }
 
@@ -73,8 +73,8 @@ public class DonateDialog extends DialogFragment {
           .setOnClickListener(
               new View.OnClickListener() {
                   public void onClick(View view) {
-                      DonationManager.getInstance()
-                                     .makeDonation(sku, mCallbacks);
+                      new DonationManager(getActivity())
+                          .makeDonation(sku, mCallbacks);
                   }
           });
     }
