@@ -143,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
           PreferenceManager.getDefaultSharedPreferences(this);
 
         mWordWrap = preferences.getBoolean(
-          getString(R.string.pref_key_word_wrap),
-          getResources().getBoolean(R.bool.pref_value_word_wrap)
+          getString(R.string.pref_key_line_wrap),
+          getResources().getBoolean(R.bool.pref_value_line_wrap)
         );
 
         if (mHost != null) {
@@ -499,9 +499,9 @@ public class MainActivity extends AppCompatActivity {
             public void onSharedPreferenceChanged(
               SharedPreferences preferences, String key
             ) {
-                  String prefKey = getString(R.string.pref_key_word_wrap);
+                  String prefKey = getString(R.string.pref_key_line_wrap);
                   boolean value =
-                    getResources().getBoolean(R.bool.pref_value_word_wrap);
+                    getResources().getBoolean(R.bool.pref_value_line_wrap);
                   if (key.equals(prefKey)) {
                       mWordWrap = preferences.getBoolean(prefKey, value);
                       mResultView.setWordWrap(mWordWrap);

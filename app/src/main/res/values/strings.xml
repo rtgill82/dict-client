@@ -90,8 +90,10 @@
     <string name="pref_key_default_host">default_host</string>
     <string name="pref_value_default_host">1</string>
 
-    <string name="pref_title_word_wrap">Word Wrap</string>
-    <string name="pref_key_word_wrap">word_wrap</string>
+    <string name="pref_title_line_wrap">Wrap Lines</string>
+    <string name="pref_key_line_wrap">line_wrap</string>
+    <string name="pref_line_wrap_summary_off">Attempt to scale results to fit screen width</string>
+    <string name="pref_line_wrap_summary_on">Wrap long lines at edge of screen</string>
 
     <string name="pref_title_cache_time">Dictionary Cache Timeout</string>
     <string name="pref_key_cache_time">cache_time</string>
