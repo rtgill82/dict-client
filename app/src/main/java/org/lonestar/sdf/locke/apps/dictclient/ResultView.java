@@ -25,13 +25,14 @@ class ResultView extends NestedScrollView {
 
     public ResultView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setInitialDisplayOption();
     }
 
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
         mResultTextView = findViewById(R.id.result_text_view);
+        setInitialDisplayOption();
+        updateDisplay();
     }
 
     @Override
@@ -95,7 +96,14 @@ class ResultView extends NestedScrollView {
 
     private void updateDisplay() {
         mResultTextView.restoreTextSize();
-        if (mDisplayOption == DisplayOption.FIT_WIDTH)
-          mResultTextView.scaleToFitWidth();
+        mResultTextView.setHorizontallyScrolling(false);
+        switch (mDisplayOption) {
+            case FIT_WIDTH:
+                mResultTextView.scaleToFitWidth();
+                break;
+            case SCROLL:
+                mResultTextView.setHorizontallyScrolling(true);
+                break;
+        }
     }
 }
