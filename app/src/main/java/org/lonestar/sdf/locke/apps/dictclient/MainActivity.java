@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int mSelectedDictionary = -1;
     private int mSelectedStrategy = -1;
-    private boolean mWordWrap;
+    private DisplayOption mDisplayOption;
     private boolean mInfoButtonState;
     private boolean mSearchButtonState;
     private boolean mHostChanged;
@@ -142,10 +142,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences =
           PreferenceManager.getDefaultSharedPreferences(this);
 
-        mWordWrap = preferences.getBoolean(
-          getString(R.string.pref_key_line_wrap),
-          getResources().getBoolean(R.bool.pref_value_line_wrap)
-        );
+        mDisplayOption = DisplayOption.valueOf(
+          preferences.getString(
+            getString(R.string.pref_key_display_option),
+            getResources().getString(R.string.pref_display_option_fit_width)
+          ));
 
         if (mHost != null) {
             Collection dictionaries = mHost.getDictionaries();
@@ -175,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 mHistory.clear();
                 invalidateOptionsMenu();
                 mSearchText.setText("");
-                setResultViewText("", mWordWrap);
+                setResultViewText("", mDisplayOption);
                 mHostChanged = false;
             }
 
@@ -327,9 +328,9 @@ public class MainActivity extends AppCompatActivity {
         mShareActionProvider.setShareIntent(intent);
     }
 
-    private void setResultViewText(CharSequence text, boolean wordWrap) {
+    private void setResultViewText(CharSequence text, DisplayOption displayOption) {
         setShareIntent(text);
-        mResultView.setWordWrap(wordWrap);
+        mResultView.setDisplayOption(displayOption);
         mResultView.setText(text);
     }
 
@@ -401,12 +402,17 @@ public class MainActivity extends AppCompatActivity {
         Strategy strategy = entry.getStrategy();
         setSelectedDictionary(entry.getDictionary());
         setSelectedStrategy(strategy);
-        boolean wordWrap = true;
+
+        // Default to LINE_WRAP DisplayOption
+        DisplayOption displayOption = DisplayOption.LINE_WRAP;
+
+        // Use user configured DisplayOption when looking up definitions.
         if (strategy == Strategy.DEFAULT) {
-            wordWrap = mWordWrap;
+            displayOption = mDisplayOption;
         }
+
         mSearchText.setText(entry.getWord());
-        setResultViewText(entry.getText(), wordWrap);
+        setResultViewText(entry.getText(), displayOption);
     }
 
     private CharSequence formatDefinitions(List<Definition> definitions) {
@@ -499,12 +505,14 @@ public class MainActivity extends AppCompatActivity {
             public void onSharedPreferenceChanged(
               SharedPreferences preferences, String key
             ) {
-                  String prefKey = getString(R.string.pref_key_line_wrap);
-                  boolean value =
-                    getResources().getBoolean(R.bool.pref_value_line_wrap);
+                  String prefKey = getString(R.string.pref_key_display_option);
+                  String value = getResources()
+                    .getString(R.string.pref_display_option_fit_width);
                   if (key.equals(prefKey)) {
-                      mWordWrap = preferences.getBoolean(prefKey, value);
-                      mResultView.setWordWrap(mWordWrap);
+                      mDisplayOption = DisplayOption.valueOf(
+                              preferences.getString(prefKey, value)
+                      );
+                      mResultView.setDisplayOption(mDisplayOption);
                       mResultView.invalidate();
                   }
               }};
@@ -620,7 +628,7 @@ public class MainActivity extends AppCompatActivity {
                   text
                 );
                 mHistory.add(entry);
-                setResultViewText(text, mWordWrap);
+                setResultViewText(text, mDisplayOption);
                 invalidateOptionsMenu();
                 break;
 
@@ -633,13 +641,13 @@ public class MainActivity extends AppCompatActivity {
                   text
                 );
                 mHistory.add(entry);
-                setResultViewText(text, true);
+                setResultViewText(text, DisplayOption.LINE_WRAP);
                 invalidateOptionsMenu();
                 break;
 
               case DICT_INFO:
                 text = formatDictionaryInfo(result.getDictionaryInfo());
-                setResultViewText(text, mWordWrap);
+                setResultViewText(text, mDisplayOption);
                 break;
 
               case DICT_STRATEGY_LIST:

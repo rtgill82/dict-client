@@ -137,6 +137,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 findPreference(getString(R.string.pref_key_default_host))
             );
             bindPreferenceSummaryToValue(
+                findPreference(getString(R.string.pref_key_display_option))
+            );
+            bindPreferenceSummaryToValue(
                 findPreference(getString(R.string.pref_key_cache_time))
             );
         }

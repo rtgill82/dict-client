@@ -5,12 +5,12 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
 
-    <SwitchPreference
-        android:key="@string/pref_key_line_wrap"
-        android:title="@string/pref_title_line_wrap"
-        android:summaryOff="@string/pref_line_wrap_summary_off"
-        android:summaryOn="@string/pref_line_wrap_summary_on"
-        android:defaultValue="@bool/pref_value_line_wrap" />
+    <ListPreference
+        android:key="@string/pref_key_display_option"
+        android:title="@string/pref_title_display_option"
+        android:entries="@array/pref_entries_display_options"
+        android:entryValues="@array/pref_entry_values_display_options"
+        android:defaultValue="@string/pref_display_option_fit_width" />
 
     <EditTextPreference
         android:key="@string/pref_key_cache_time"
