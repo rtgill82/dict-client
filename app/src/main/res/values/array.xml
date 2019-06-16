@@ -11,4 +11,10 @@
         <item>LINE_WRAP</item>
         <item>SCROLL</item>
     </string-array>
+
+    <string-array name="pref_entry_descriptions_display_options">
+        <item>Scale results to fit screen width.</item>
+        <item>Wrap lines at right edge of screen.</item>
+        <item>Enable horizontal scrolling.</item>
+    </string-array>
 </resources>
