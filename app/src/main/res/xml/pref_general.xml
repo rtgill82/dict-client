@@ -15,6 +15,13 @@
         android:defaultValue="@string/pref_display_option_fit_width" />
 
     <EditTextPreference
+        android:key="@string/pref_key_font_size"
+        android:title="@string/pref_title_font_size"
+        android:defaultValue="@string/pref_value_font_size"
+        android:singleLine="true"
+        android:numeric="integer" />
+
+    <EditTextPreference
         android:key="@string/pref_key_cache_time"
         android:title="@string/pref_title_cache_time"
         android:defaultValue="@string/pref_value_cache_time"

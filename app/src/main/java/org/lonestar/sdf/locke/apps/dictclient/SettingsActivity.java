@@ -48,7 +48,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         index >= 0
                             ? listPreference.getEntries()[index]
                             : null);
-
+                } else if (preference.getKey()
+                    .equals(context.getString(R.string.pref_key_font_size))) {
+                    //  Display sp as the unit for font_size preference.
+                    preference.setSummary(stringValue + "sp");
                 } else if (preference.getKey()
                     .equals(context.getString(R.string.pref_key_cache_time))) {
                     // Display days as the unit for the cache_time preference.
@@ -138,6 +141,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             );
             bindPreferenceSummaryToValue(
                 findPreference(getString(R.string.pref_key_display_option))
+            );
+            bindPreferenceSummaryToValue(
+                findPreference(getString(R.string.pref_key_font_size))
             );
             bindPreferenceSummaryToValue(
                 findPreference(getString(R.string.pref_key_cache_time))

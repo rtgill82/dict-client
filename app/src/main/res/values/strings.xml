@@ -94,6 +94,10 @@
     <string name="pref_key_display_option">display_option</string>
     <string name="pref_display_option_fit_width">FIT_WIDTH</string>
 
+    <string name="pref_title_font_size">Default Font Size</string>
+    <string name="pref_key_font_size">font_size</string>
+    <string name="pref_value_font_size">14</string>
+
     <string name="pref_title_cache_time">Dictionary Cache Timeout</string>
     <string name="pref_key_cache_time">cache_time</string>
     <string name="pref_value_cache_time">7</string>

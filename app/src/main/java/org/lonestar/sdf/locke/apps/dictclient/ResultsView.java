@@ -21,6 +21,7 @@ import android.text.Spannable;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -39,16 +40,17 @@ public class ResultsView extends AppCompatTextView {
     private boolean mScrolling = false;
     private DisplayOption mDisplayOption = DisplayOption.SCROLL;
 
-    private float mDefaultTextSize = getTextSize();
+    private Results mResults;
     private SharedPreferences mPrefs;
+    private float mDefaultTextSize;
     private GestureDetector mGestureDetector;
     private OnSharedPreferenceChangeListener mPrefListener;
-    private Results mResults;
 
     public ResultsView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mResults = new Results();
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        mDefaultTextSize = getDefaultTextSize();
         setMovementMethod(LinkMovementMethod.getInstance());
         initGestureDetector();
         initPreferenceChangeListener(context);
@@ -186,6 +188,15 @@ public class ResultsView extends AppCompatTextView {
         return (float) size;
     }
 
+    private float getDefaultTextSize() {
+        Context c = getContext();
+        String key = c.getString(R.string.pref_key_font_size);
+        String value = c.getString(R.string.pref_value_font_size);
+        float size = Integer.parseInt(mPrefs.getString(key, value));
+        setTextSize(size);
+        return getTextSize();
+    }
+
     private void saveState(Bundle outState) {
         outState.putFloat(TEXT_SIZE, getTextSize());
         outState.putInt(DISPLAY_OPTION, mDisplayOption.ordinal());
@@ -227,6 +238,15 @@ public class ResultsView extends AppCompatTextView {
                         preferences.getString(prefKey, value)
                     );
                     refresh();
+                }
+
+                prefKey = c.getString(R.string.pref_key_font_size);
+                value = c.getString(R.string.pref_value_font_size);
+                if (key.equals(prefKey)) {
+                    String size = preferences.getString(prefKey, value);
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP,
+                                (float) Integer.parseInt(size));
+                    mDefaultTextSize = getTextSize();
                 }
             }};
 
