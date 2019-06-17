@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2019 Robert Gill <locke@sdf.lonestar.org>
  * All rights reserved.
  *
  * This file is a part of DICT Client.
@@ -8,25 +8,29 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
-/**
- * Class containing the defined word and full definition text for use in
- * DefinitionHistory.
- *
- * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
- *
- */
-class HistoryEntry {
+class Results {
     final private String mWord;
     final private Dictionary mDictionary;
     final private Strategy mStrategy;
     final private CharSequence mText;
 
-    public HistoryEntry(String word, Dictionary dictionary,
-                        Strategy strategy, CharSequence text) {
+    public Results() {
+        this(null, null, null, "");
+    }
+
+    public Results(String word, Dictionary dictionary,
+                   Strategy strategy, CharSequence text) {
         mWord = word;
         mDictionary = dictionary;
         mStrategy = strategy;
         mText = text;
+    }
+
+    public boolean defaultStrategy() {
+        if (mStrategy == null || mStrategy == Strategy.DEFAULT)
+          return true;
+
+        return false;
     }
 
     public String getWord() {

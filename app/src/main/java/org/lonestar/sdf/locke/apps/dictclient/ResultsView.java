@@ -9,9 +9,12 @@
 package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.Selection;
 import android.text.Spannable;
@@ -28,37 +31,37 @@ import java.io.StringReader;
 
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
 
-public class ResultView extends AppCompatTextView {
+public class ResultsView extends AppCompatTextView {
     private static final String SUPER_STATE = "SUPER_STATE";
     private static final String TEXT_SIZE = "TEXT_SIZE";
     private static final String DISPLAY_OPTION = "DISPLAY_OPTION";
 
-    private final float mOrigTextSize = getTextSize();
     private boolean mScrolling = false;
     private DisplayOption mDisplayOption = DisplayOption.SCROLL;
 
+    private float mDefaultTextSize = getTextSize();
+    private SharedPreferences mPrefs;
     private GestureDetector mGestureDetector;
+    private OnSharedPreferenceChangeListener mPrefListener;
+    private Results mResults;
 
-    public ResultView(Context context, AttributeSet attrs) {
+    public ResultsView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mResults = new Results();
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         setMovementMethod(LinkMovementMethod.getInstance());
         initGestureDetector();
+        initPreferenceChangeListener(context);
     }
 
-    public void setDisplayOption(DisplayOption displayOption) {
-        mDisplayOption = displayOption;
-        restoreTextSize();
-        switch (mDisplayOption) {
-            case FIT_WIDTH:
-                scaleToFitWidth();
-                /* fall through */
-            case LINE_WRAP:
-                setHorizontallyScrolling(false);
-                break;
-            case SCROLL:
-                setHorizontallyScrolling(true);
-                break;
+    public void setResults(Results results) {
+        setText(results.getText());
+        if (!results.defaultStrategy()) {
+            mDisplayOption = DisplayOption.LINE_WRAP;
+            refresh();
         }
+        mResults = results;
+        refresh();
     }
 
     @Override
@@ -87,16 +90,20 @@ public class ResultView extends AppCompatTextView {
                             int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (changed)
-          setDisplayOption(mDisplayOption);
+          refresh();
     }
 
     @Override
     protected void onTextChanged(CharSequence text, int start,
                                  int lengthBefore, int lengthAfter) {
-        if (mDisplayOption == DisplayOption.FIT_WIDTH) {
-            restoreTextSize();
-            scaleToFitWidth();
-        }
+        if (mPrefs == null)
+          return;
+
+        Context c = getContext();
+        String key = c.getString(R.string.pref_key_display_option);
+        String value = c.getString(R.string.pref_display_option_fit_width);
+        mDisplayOption = DisplayOption.valueOf(mPrefs.getString(key, value));
+        refresh();
     }
 
     @Override
@@ -111,8 +118,26 @@ public class ResultView extends AppCompatTextView {
         return super.onTouchEvent(event);
     }
 
+    private void refresh() {
+        if (!mResults.defaultStrategy())
+          return;
+
+        restoreTextSize();
+        switch (mDisplayOption) {
+          case FIT_WIDTH:
+            scaleToFitWidth();
+            /* fall through */
+          case LINE_WRAP:
+            setHorizontallyScrolling(false);
+            break;
+          case SCROLL:
+            setHorizontallyScrolling(true);
+            break;
+        }
+    }
+
     private void restoreTextSize() {
-        setTextSize(COMPLEX_UNIT_PX, mOrigTextSize);
+        setTextSize(COMPLEX_UNIT_PX, mDefaultTextSize);
     }
 
     private void scaleToFitWidth() {
@@ -180,10 +205,31 @@ public class ResultView extends AppCompatTextView {
               public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                       float distanceX, float distanceY) {
                   mScrolling = true;
-                  Spannable text = (Spannable) ResultView.this.getText();
+                  Spannable text = (Spannable) ResultsView.this.getText();
                   Selection.removeSelection(text);
                   return true;
               }
           });
+    }
+
+    private void initPreferenceChangeListener(final Context c) {
+        mPrefListener = new OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(
+                SharedPreferences preferences, String key
+            ) {
+                String prefKey;
+                String value;
+
+                prefKey = c.getString(R.string.pref_key_display_option);
+                value = c.getString(R.string.pref_display_option_fit_width);
+                if (key.equals(prefKey)) {
+                    mDisplayOption = DisplayOption.valueOf(
+                        preferences.getString(prefKey, value)
+                    );
+                    refresh();
+                }
+            }};
+
+        mPrefs.registerOnSharedPreferenceChangeListener(mPrefListener);
     }
 }

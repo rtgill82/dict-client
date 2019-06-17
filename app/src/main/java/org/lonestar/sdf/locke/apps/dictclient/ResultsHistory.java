@@ -12,17 +12,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Singleton class for maintaining and navigating a history of looked up
- * Definitions.
+ * Singleton class for maintaining and navigating a history of search Results.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-class DefinitionHistory extends ArrayList<HistoryEntry> {
+class ResultsHistory extends ArrayList<Results> {
     public enum Direction { BACK, FORWARD }
 
     /** Instance for singleton class. */
-    static private DefinitionHistory sInstance;
+    static private ResultsHistory sInstance;
 
     /** The current position in the history list. */
     private int mCurrentPos = -1;
@@ -31,15 +30,15 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
      * Default constructor.
      *
      */
-    private DefinitionHistory() {
+    private ResultsHistory() {
         super();
     }
 
     /**
-     * Construct new DefinitionHistory from Collection.
+     * Construct new ResultsHistory from Collection.
      *
      */
-    private DefinitionHistory(Collection<? extends HistoryEntry> c) {
+    private ResultsHistory(Collection<? extends Results> c) {
         super(c);
         mCurrentPos = c.size() - 1;
     }
@@ -50,27 +49,27 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
      *
      */
     @SuppressWarnings("unused")
-    static public void initialize(Collection<? extends HistoryEntry> c) {
+    static public void initialize(Collection<? extends Results> c) {
         if (sInstance == null)
-          sInstance = new DefinitionHistory(c);
+          sInstance = new ResultsHistory(c);
     }
 
     /**
      * Get instance of singleton class.
      *
      */
-    static public DefinitionHistory getInstance() {
+    static public ResultsHistory getInstance() {
         if (sInstance == null)
-          sInstance = new DefinitionHistory();
+          sInstance = new ResultsHistory();
         return sInstance;
     }
 
     /**
-     * Return previous Definition in history list.
+     * Return previous Results in history list.
      *
      */
-    public HistoryEntry back() {
-        HistoryEntry rv = null;
+    public Results back() {
+        Results rv = null;
         if (mCurrentPos > 0) {
             mCurrentPos -= 1;
             rv = this.get(mCurrentPos);
@@ -83,11 +82,11 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
     }
 
     /**
-     * Return next Definition in history list.
+     * Return next Results in history list.
      *
      */
-    public HistoryEntry forward() {
-        HistoryEntry rv = null;
+    public Results forward() {
+        Results rv = null;
         if (mCurrentPos < this.size() - 1) {
             mCurrentPos += 1;
             rv = this.get(mCurrentPos);
@@ -100,51 +99,51 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
     }
 
     /**
-     * Appends definition after current history position.
+     * Appends Results entry after current history position.
      *
      */
     @Override
-    public boolean add(HistoryEntry entry) {
+    public boolean add(Results entry) {
         clearToEnd();
         mCurrentPos += 1;
         return super.add(entry);
     }
 
     /**
-     * Inserts definition at specified position in history.
+     * Inserts Results entry at specified position in history.
      *
      */
     @Override
-    public void add(int index, HistoryEntry entry) {
+    public void add(int index, Results entry) {
         if (index <= mCurrentPos)
           mCurrentPos += 1;
         super.add(index, entry);
     }
 
     /**
-     * Appends all definitions after the current history position.
+     * Appends all Results after the current history position.
      *
      */
     @Override
-    public boolean addAll(Collection<? extends HistoryEntry> c) {
+    public boolean addAll(Collection<? extends Results> c) {
         clearToEnd();
         mCurrentPos += c.size() - 1;
         return super.addAll(c);
     }
 
     /**
-     * Insert all definitions at specified position in history.
+     * Insert all Results at specified position in history.
      *
      */
     @Override
-    public boolean addAll(int index, Collection<? extends HistoryEntry> c) {
+    public boolean addAll(int index, Collection<? extends Results> c) {
         if (index <= mCurrentPos)
           mCurrentPos += c.size() - 1;
         return super.addAll(index, c);
     }
 
     /**
-     * Clears definition history.
+     * Clears Results history.
      *
      */
     @Override
@@ -154,13 +153,13 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
     }
 
     /**
-     * Removes the history entry at the specified position in the definition
+     * Removes the Results entry at the specified position in the definition
      * history.
      *
      */
     @Override
-    public HistoryEntry remove(int index) {
-        HistoryEntry rv = super.remove(index);
+    public Results remove(int index) {
+        Results rv = super.remove(index);
 
         if (this.size() == 0)
           mCurrentPos = -1;
@@ -170,7 +169,7 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
     }
 
     /**
-     * Removes first occurrence of the specified history entry from definition
+     * Removes first occurrence of the specified Results entry from definition
      * history.
      *
      */
@@ -185,13 +184,13 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
     }
 
     /**
-     * Remove all history entries from this history in the specified
+     * Remove all Results entries from this history in the specified
      * Collection.
      *
      */
     @Override
     public boolean removeAll(Collection<?> c) {
-        HistoryEntry entry = this.get(mCurrentPos);
+        Results entry = this.get(mCurrentPos);
 
         while (true) {
             if (c.contains(entry) && mCurrentPos > 0) {
@@ -205,7 +204,7 @@ class DefinitionHistory extends ArrayList<HistoryEntry> {
     }
 
     /**
-     * Remove all history entries specified between fromIndex and toIndex.
+     * Remove all Results entries specified between fromIndex and toIndex.
      *
      */
     @Override

@@ -71,8 +71,8 @@
         android:onClick="lookupWord"
         app:srcCompat="@drawable/baseline_search" />
 
-    <org.lonestar.sdf.locke.apps.dictclient.ResultView
-        android:id="@+id/result_view"
+    <org.lonestar.sdf.locke.apps.dictclient.ResultsView
+        android:id="@+id/results_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/dictionary_info_button"
