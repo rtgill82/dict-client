@@ -20,6 +20,8 @@ import android.text.Selection;
 import android.text.Spannable;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
+import android.text.method.MovementMethod;
+import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.GestureDetector;
@@ -37,8 +39,8 @@ public class ResultsView extends AppCompatTextView {
     private static final String TEXT_SIZE = "TEXT_SIZE";
     private static final String DISPLAY_OPTION = "DISPLAY_OPTION";
 
-    private boolean mScrolling = false;
     private DisplayOption mDisplayOption = DisplayOption.SCROLL;
+    private MovementMethod mLinkMethod = LinkMovementMethod.getInstance();
 
     private Results mResults;
     private SharedPreferences mPrefs;
@@ -51,7 +53,7 @@ public class ResultsView extends AppCompatTextView {
         mResults = new Results();
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         mDefaultTextSize = getDefaultTextSize();
-        setMovementMethod(LinkMovementMethod.getInstance());
+        setMovementMethod(ScrollingMovementMethod.getInstance());
         initGestureDetector();
         initPreferenceChangeListener(context);
     }
@@ -111,13 +113,11 @@ public class ResultsView extends AppCompatTextView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         mGestureDetector.onTouchEvent(event);
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            if (mScrolling == true) {
-                mScrolling = false;
-                return true;
-            }
-        }
         return super.onTouchEvent(event);
+    }
+
+    private boolean sendLinkClick(MotionEvent event) {
+        return mLinkMethod.onTouchEvent(this, (Spannable) getText(), event);
     }
 
     private void refresh() {
@@ -215,10 +215,19 @@ public class ResultsView extends AppCompatTextView {
               @Override
               public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                       float distanceX, float distanceY) {
-                  mScrolling = true;
                   Spannable text = (Spannable) ResultsView.this.getText();
                   Selection.removeSelection(text);
                   return true;
+              }
+
+              @Override
+              public boolean onDown(MotionEvent event) {
+                  return sendLinkClick(event);
+              }
+
+              @Override
+              public boolean onSingleTapUp(MotionEvent event) {
+                  return sendLinkClick(event);
               }
           });
     }
