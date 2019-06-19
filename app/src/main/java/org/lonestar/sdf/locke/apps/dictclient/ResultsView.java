@@ -72,6 +72,7 @@ public class ResultsView extends AppCompatTextView {
         }
         mResults = results;
         refresh();
+        scrollTo(0, 0);
     }
 
     @Override
