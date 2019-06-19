@@ -47,9 +47,9 @@ public class AboutDialog extends DialogFragment {
             throw new RuntimeException(e);
         }
 
-        TextView textView = (TextView) View.inflate(activity,
-                                                    R.layout.dialog_about,
-                                                    null);
+        int pad = (int) resources.getDimension(R.dimen.default_margins);
+        TextView textView = new TextView(activity);
+        textView.setPadding(pad, pad, pad, pad);
         textView.setText(Html.fromHtml(replaceVersion(activity, html)));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
