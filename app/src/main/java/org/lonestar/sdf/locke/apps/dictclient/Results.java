@@ -27,10 +27,8 @@ class Results {
     }
 
     public boolean defaultStrategy() {
-        if (mStrategy == null || mStrategy == Strategy.DEFAULT)
-          return true;
+        return mStrategy == null || mStrategy == Strategy.DEFAULT;
 
-        return false;
     }
 
     public String getWord() {
