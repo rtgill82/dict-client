@@ -27,6 +27,8 @@ import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
+import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,9 +38,11 @@ import static android.util.TypedValue.COMPLEX_UNIT_PX;
 
 public class ResultsView extends AppCompatTextView {
     private static final String SUPER_STATE = "SUPER_STATE";
-    private static final String TEXT_SIZE = "TEXT_SIZE";
     private static final String DISPLAY_OPTION = "DISPLAY_OPTION";
+    private static final String SCALE_FACTOR = "SCALE_FACTOR";
+    private static final String TEXT_SIZE = "TEXT_SIZE";
 
+    private float mScaleFactor = 1.0f;
     private DisplayOption mDisplayOption = DisplayOption.SCROLL;
     private MovementMethod mLinkMethod = LinkMovementMethod.getInstance();
 
@@ -46,6 +50,7 @@ public class ResultsView extends AppCompatTextView {
     private SharedPreferences mPrefs;
     private float mDefaultTextSize;
     private GestureDetector mGestureDetector;
+    private ScaleGestureDetector mScaleGestureDetector;
     private OnSharedPreferenceChangeListener mPrefListener;
 
     public ResultsView(Context context, AttributeSet attrs) {
@@ -55,6 +60,7 @@ public class ResultsView extends AppCompatTextView {
         mDefaultTextSize = getDefaultTextSize();
         setMovementMethod(ScrollingMovementMethod.getInstance());
         initGestureDetector();
+        initScaleGestureDetector();
         initPreferenceChangeListener(context);
     }
 
@@ -107,11 +113,13 @@ public class ResultsView extends AppCompatTextView {
         String key = c.getString(R.string.pref_key_display_option);
         String value = c.getString(R.string.pref_display_option_fit_width);
         mDisplayOption = DisplayOption.valueOf(mPrefs.getString(key, value));
+        restoreTextSize();
         refresh();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        mScaleGestureDetector.onTouchEvent(event);
         mGestureDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
@@ -124,9 +132,9 @@ public class ResultsView extends AppCompatTextView {
         if (!mResults.defaultStrategy())
           return;
 
-        restoreTextSize();
         switch (mDisplayOption) {
           case FIT_WIDTH:
+            restoreTextSize();
             scaleToFitWidth();
             /* fall through */
           case LINE_WRAP:
@@ -198,15 +206,17 @@ public class ResultsView extends AppCompatTextView {
     }
 
     private void saveState(Bundle outState) {
-        outState.putFloat(TEXT_SIZE, getTextSize());
         outState.putInt(DISPLAY_OPTION, mDisplayOption.ordinal());
+        outState.putFloat(SCALE_FACTOR, mScaleFactor);
+        outState.putFloat(TEXT_SIZE, getTextSize());
     }
 
     private void restoreState(Bundle savedInstanceState) {
-        float textSize = savedInstanceState.getFloat(TEXT_SIZE);
-        setTextSize(COMPLEX_UNIT_PX, textSize);
         int ordinal = savedInstanceState.getInt(DISPLAY_OPTION);
         mDisplayOption = DisplayOption.values()[ordinal];
+        mScaleFactor = savedInstanceState.getFloat(SCALE_FACTOR);
+        float textSize = savedInstanceState.getFloat(TEXT_SIZE);
+        setTextSize(COMPLEX_UNIT_PX, textSize);
     }
 
     private void initGestureDetector() {
@@ -226,8 +236,39 @@ public class ResultsView extends AppCompatTextView {
               }
 
               @Override
-              public boolean onSingleTapUp(MotionEvent event) {
+              public boolean onSingleTapConfirmed(MotionEvent event) {
+                  event.setAction(MotionEvent.ACTION_UP);
                   return sendLinkClick(event);
+              }
+
+              @Override
+              public boolean onDoubleTap(MotionEvent event) {
+                  restoreTextSize();
+                  return true;
+              }
+          });
+    }
+
+    private void initScaleGestureDetector() {
+        mScaleGestureDetector = new ScaleGestureDetector(this.getContext(),
+          new SimpleOnScaleGestureListener() {
+              @Override
+              public boolean onScale(ScaleGestureDetector detector) {
+                  if (mDisplayOption == DisplayOption.FIT_WIDTH)
+                    return true;
+
+                  float scaleFactor = mScaleFactor * detector.getScaleFactor();
+                  float textSize = mDefaultTextSize * scaleFactor;
+                  if (!withinRange(textSize, 2.0f, 80.0f))
+                    return true;
+
+                  mScaleFactor = scaleFactor;
+                  setTextSize(COMPLEX_UNIT_PX, textSize);
+                  return true;
+              }
+
+              private boolean withinRange(float value, float min, float max) {
+                  return (value >= min && value <= max);
               }
           });
     }
