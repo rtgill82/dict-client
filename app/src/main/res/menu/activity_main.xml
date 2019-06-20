@@ -5,14 +5,16 @@
         android:orderInCategory="10"
         android:title="@string/menu_back"
         android:enabled="false"
-        android:icon="@drawable/baseline_arrow_back"
+        android:icon="@drawable/baseline_arrow_back_black_24"
+        app:iconTint="@color/icon_disabled_tint"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_forward"
         android:orderInCategory="11"
         android:title="@string/menu_forward"
         android:enabled="false"
-        android:icon="@drawable/baseline_arrow_forward"
+        android:icon="@drawable/baseline_arrow_forward_black_24"
+        app:iconTint="@color/icon_disabled_tint"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_share"

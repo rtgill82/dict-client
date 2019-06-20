@@ -4,7 +4,8 @@
         android:id="@+id/menu_delete_host"
         android:orderInCategory="10"
         android:title="@string/menu_delete_host"
-        android:icon="@drawable/baseline_delete"
+        android:icon="@drawable/baseline_delete_black_24"
+        app:iconTint="@color/icon_disabled_tint"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_add_host"
