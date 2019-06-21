@@ -13,7 +13,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AlertDialog;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +22,8 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;

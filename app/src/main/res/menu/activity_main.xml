@@ -21,7 +21,7 @@
         android:orderInCategory="15"
         android:title="@string/menu_share"
         android:enabled="true"
-        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_host_select"

@@ -9,10 +9,11 @@
 package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SelectHostActivity extends AppCompatActivity {
     @Override
