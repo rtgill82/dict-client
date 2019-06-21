@@ -13,6 +13,9 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,8 +25,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
-
-import androidx.appcompat.app.AlertDialog;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -180,7 +181,7 @@ public class ManageHostsListFragment extends ListFragment {
         final Host host = getHostAtPosition(pos);
         //noinspection ConstantConditions
         if (!host.isUserDefined())
-          ErrorDialog.show(getActivity(),
+          ErrorDialog.show((AppCompatActivity) getActivity(),
                            getString(R.string.error_host_readonly));
         else
           EditHostDialog.show(this, host);

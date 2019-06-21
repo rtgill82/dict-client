@@ -10,7 +10,6 @@ package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -21,20 +20,22 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDialogFragment;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class AboutDialog extends DialogFragment {
-    public static void show(Activity activity) {
-        new AboutDialog().show(activity.getFragmentManager(),
+public class AboutDialog extends AppCompatDialogFragment {
+    public static void show(AppCompatActivity activity) {
+        new AboutDialog().show(activity.getSupportFragmentManager(),
                                activity.getString(R.string.title_about));
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String html;
-        Activity activity = getActivity();
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
         Resources resources = activity.getResources();
         InputStream stream = resources.openRawResource(R.raw.about);
 
@@ -58,7 +59,9 @@ public class AboutDialog extends DialogFragment {
                .setNeutralButton(getString(R.string.button_donate),
                  new DialogInterface.OnClickListener() {
                      public void onClick(DialogInterface dialog, int which) {
-                         DonateDialog.show(getActivity());
+                         AppCompatActivity activity =
+                           (AppCompatActivity) getActivity();
+                         DonateDialog.show(activity);
                      }
                  });
         return builder.create();
@@ -74,7 +77,7 @@ public class AboutDialog extends DialogFragment {
         button.setLayoutParams(layoutParams);
     }
 
-    private String replaceVersion(Activity activity, String html) {
+    private String replaceVersion(AppCompatActivity activity, String html) {
         DictClient app = (DictClient) activity.getApplication();
         String version = app.getVersionString();
         return html.replaceAll("@VERSION@", version);

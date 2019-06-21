@@ -10,7 +10,6 @@ package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -22,9 +21,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDialogFragment;
+
 import static org.lonestar.sdf.locke.apps.dictclient.DonationManager.DonationFlowListener;
 
-public class DonateDialog extends DialogFragment {
+public class DonateDialog extends AppCompatDialogFragment {
     final private static String DONATION1 = "donation1";
     final private static String DONATION2 = "donation2";
     final private static String DONATION3 = "donation3";
@@ -33,11 +35,11 @@ public class DonateDialog extends DialogFragment {
     final private DonationFlowListenerImpl mCallbacks =
       new DonationFlowListenerImpl();
 
-    public static void show(Activity activity) {
+    public static void show(AppCompatActivity activity) {
         // Only show one donate dialog at a time.
         if (sInstance == null) {
             sInstance = new DonateDialog();
-            sInstance.show(activity.getFragmentManager(),
+            sInstance.show(activity.getSupportFragmentManager(),
                            activity.getString(R.string.title_donate));
         }
     }
@@ -117,7 +119,7 @@ public class DonateDialog extends DialogFragment {
         @Override
         public void onPurchasesUpdated() {
             dismiss();
-            Activity activity = getActivity();
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
             MessageDialog.show(
                 activity,
                 activity.getString(R.string.dialog_title_thank_you),
@@ -127,7 +129,7 @@ public class DonateDialog extends DialogFragment {
 
         @Override
         public void onItemUnavailable() {
-            Activity activity = getActivity();
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
             ErrorDialog.show(
                 activity,
                 activity.getString(R.string.dialog_message_unavailable)
@@ -136,7 +138,7 @@ public class DonateDialog extends DialogFragment {
 
         @Override
         public void onServiceUnavailable() {
-            Activity activity = getActivity();
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
             ErrorDialog.show(
                 activity,
                 activity.getString(R.string.dialog_message_service_unavailable)
@@ -145,7 +147,7 @@ public class DonateDialog extends DialogFragment {
 
         @Override
         public void onError() {
-            Activity activity = getActivity();
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
             ErrorDialog.show(
                 activity,
                 activity.getString(R.string.dialog_message_unexpected_error)
@@ -154,7 +156,7 @@ public class DonateDialog extends DialogFragment {
 
         @Override
         public void onBillingUnavailable() {
-            Activity activity = getActivity();
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
             ErrorDialog.show(
                 activity,
                 activity.getString(R.string.dialog_message_billing_unavailable)
