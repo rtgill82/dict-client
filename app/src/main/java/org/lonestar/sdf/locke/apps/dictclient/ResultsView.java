@@ -245,7 +245,9 @@ public class ResultsView extends AppCompatTextView {
 
               @Override
               public boolean onDoubleTap(MotionEvent event) {
-                  restoreTextSize();
+                  if (mDisplayOption != DisplayOption.FIT_WIDTH)
+                    restoreTextSize();
+
                   return true;
               }
           });
