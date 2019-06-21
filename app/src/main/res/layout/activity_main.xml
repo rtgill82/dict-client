@@ -23,7 +23,8 @@
         android:imeOptions="actionSearch"
         android:inputType="text|textAutoCorrect|textAutoComplete"
         android:textSize="20sp"
-        android:maxLines="@integer/search_text_max_lines" >
+        android:maxLines="@integer/search_text_max_lines"
+        android:importantForAutofill="no">
 
         <requestFocus />
     </EditText>

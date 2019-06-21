@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/default_margins">
+    android:padding="@dimen/default_margins"
+    android:importantForAutofill="noExcludeDescendants">
 
     <EditText
         android:id="@+id/edit_host_name"
