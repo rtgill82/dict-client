@@ -148,6 +148,7 @@ public class ResultsView extends AppCompatTextView {
     }
 
     private void restoreTextSize() {
+        mScaleFactor = 1.0f;
         setTextSize(COMPLEX_UNIT_PX, mDefaultTextSize);
     }
 
