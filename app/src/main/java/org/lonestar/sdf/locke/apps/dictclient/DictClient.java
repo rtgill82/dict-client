@@ -8,6 +8,7 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -22,7 +23,8 @@ import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 public class DictClient extends Application {
     public static final String CHANNEL = "dict-client";
 
-    private static Context sContext;
+    @SuppressLint("StaticFieldLeak")
+    private static Context sContext;  // Refers to 'this'
     private static Host sCurrentHost;
 
     private HostCache mCache;
