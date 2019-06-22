@@ -43,6 +43,9 @@ public class ResultsView extends AppCompatTextView {
     private static final String SCALE_FACTOR = "SCALE_FACTOR";
     private static final String TEXT_SIZE = "TEXT_SIZE";
 
+    private final float MIN_TEXT_SIZE = 2.0f;
+    private final float MAX_TEXT_SIZE = 80.0f;
+
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final OnSharedPreferenceChangeListener mPrefListener;
 
@@ -267,7 +270,7 @@ public class ResultsView extends AppCompatTextView {
 
                   float scaleFactor = mScaleFactor * detector.getScaleFactor();
                   float textSize = mDefaultTextSize * scaleFactor;
-                  if (!withinRange(textSize, 2.0f, 80.0f))
+                  if (exceedsTextSizeLimits(textSize))
                     return true;
 
                   mScaleFactor = scaleFactor;
@@ -275,8 +278,8 @@ public class ResultsView extends AppCompatTextView {
                   return true;
               }
 
-              private boolean withinRange(float value, float min, float max) {
-                  return (value >= min && value <= max);
+              private boolean exceedsTextSizeLimits(float value) {
+                  return value < MIN_TEXT_SIZE || value > MAX_TEXT_SIZE;
               }
           });
     }
