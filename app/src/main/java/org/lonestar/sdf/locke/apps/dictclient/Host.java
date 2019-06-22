@@ -195,7 +195,7 @@ class Host extends BaseModel {
     @Override
     public int create() throws SQLException {
         if (getId() == null) {
-            Map<String, Object> map = new HashMap();
+            Map<String, Object> map = new HashMap<>();
             map.put("name", getName());
             map.put("port", getPort());
             if (!getDao().queryForFieldValues(map).isEmpty()) {
