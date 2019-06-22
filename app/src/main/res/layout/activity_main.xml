@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context=".MainActivity" >
 
-    <EditText
+    <org.lonestar.sdf.locke.apps.dictclient.SearchText
         android:id="@+id/search_text"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
         tools:ignore="UnusedAttribute">
 
         <requestFocus />
-    </EditText>
+    </org.lonestar.sdf.locke.apps.dictclient.SearchText>
 
     <Spinner
         android:id="@+id/strategy_spinner"
