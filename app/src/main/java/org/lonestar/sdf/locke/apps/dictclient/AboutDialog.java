@@ -8,7 +8,6 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
