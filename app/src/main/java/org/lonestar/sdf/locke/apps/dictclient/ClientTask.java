@@ -81,6 +81,13 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
         return new Request(host, ClientCommand.DICT_INFO, null, dictionary);
     }
 
+    public void dismiss() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
+
     @Override
     protected void onPreExecute() {
         mProgressDialog = ProgressDialog.show(
@@ -129,9 +136,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
 
     @Override
     protected void onPostExecute(Result result) {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-        }
+        dismiss();
         mHandler.onTaskFinished(result, mException);
     }
 
@@ -153,9 +158,7 @@ class ClientTask extends AsyncTask<Void,Void,ClientTask.Result> {
 
     @Override
     protected void onCancelled(Result result) {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-        }
+        dismiss();
     }
 
     private List<Definition> getDefinitions(String word, Dictionary dictionary)

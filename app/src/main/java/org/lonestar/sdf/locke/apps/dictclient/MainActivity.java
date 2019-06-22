@@ -107,7 +107,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
+        // FIXME: allow task to continue running on orientation switch
         if (mRunningTask != null) {
+            mRunningTask.dismiss();
             mRunningTask.cancel(true);
             mRunningTask = null;
         }
