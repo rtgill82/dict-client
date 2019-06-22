@@ -26,9 +26,9 @@ class Results {
         mText = text;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean defaultStrategy() {
         return mStrategy == null || mStrategy == Strategy.DEFAULT;
-
     }
 
     public String getWord() {
