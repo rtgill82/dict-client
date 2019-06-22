@@ -1,5 +1,6 @@
 package org.lonestar.sdf.locke.apps.dictclient;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Resources;
@@ -36,6 +37,7 @@ class CustomListPreference extends ListPreference {
         super.onPrepareDialogBuilder(builder);
     }
 
+    @SuppressLint("PrivateResource")
     private int getAlertDialogStyle(Context context) {
         int style;
         TypedArray a = context.obtainStyledAttributes(
