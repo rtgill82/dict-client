@@ -135,7 +135,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
-            bindDefaultHostPreferences();
             bindPreferenceSummaryToValue(
                 findPreference(getString(R.string.pref_key_default_host))
             );
@@ -159,29 +158,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
             return super.onOptionsItemSelected(item);
-        }
-
-        private void bindDefaultHostPreferences() {
-            final ListPreference defaultHostPreference = (ListPreference)
-              findPreference(getString(R.string.pref_key_default_host));
-            HostCursor cursor = (HostCursor)
-              DatabaseManager.find(Host.class, "hidden", false);
-            CharSequence[] entries = new CharSequence[cursor.getCount()];
-            CharSequence[] entryValues = new CharSequence[cursor.getCount()];
-
-            int i = 0;
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                entries[i] = cursor.getHostName();
-                entryValues[i] = Integer.toString(cursor.getId());
-                i = i + 1;
-                cursor.moveToNext();
-            }
-            Host defaultHost = ((DictClient) getActivity().getApplication())
-                                                          .getDefaultHost();
-            defaultHostPreference.setEntries(entries);
-            defaultHostPreference.setEntryValues(entryValues);
-            defaultHostPreference.setValue(defaultHost.getId().toString());
         }
     }
 }

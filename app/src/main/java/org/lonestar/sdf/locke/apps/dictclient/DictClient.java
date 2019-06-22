@@ -52,10 +52,10 @@ public class DictClient extends Application {
         mOnHostChangeListener = listener;
     }
 
-    public Host getDefaultHost() {
+    public static Host getDefaultHost() {
         SharedPreferences preferences =
-          PreferenceManager.getDefaultSharedPreferences(this);
-        Resources resources = getResources();
+          PreferenceManager.getDefaultSharedPreferences(sContext);
+        Resources resources = sContext.getResources();
         int hostId = Integer.parseInt(preferences.getString(
             resources.getString(R.string.pref_key_default_host),
             resources.getString(R.string.pref_value_default_host))

@@ -1,7 +1,7 @@
 <!--suppress AndroidElementNotAllowed -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <ListPreference
+    <org.lonestar.sdf.locke.apps.dictclient.DefaultHostListPreference
         android:key="@string/pref_key_default_host"
         android:title="@string/pref_title_default_host"
         android:negativeButtonText="@null"
