@@ -13,9 +13,9 @@ import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
 
 class CustomListPreference extends ListPreference {
-    private LayoutInflater mInflater;
-    private int mItemStyle;
-    private int mPad;
+    private final LayoutInflater mInflater;
+    private final int mItemStyle;
+    private final int mPad;
 
     private CharSequence[] mEntries;
     private CharSequence[] mEntryValues;
@@ -23,7 +23,7 @@ class CustomListPreference extends ListPreference {
     CustomListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         mInflater = LayoutInflater.from(context);
-        setAlertDialogStyle(context);
+        mItemStyle = getAlertDialogStyle(context);
         Resources resources = context.getResources();
         mPad = (int) resources.getDimension(R.dimen.default_margins);
     }
@@ -36,7 +36,8 @@ class CustomListPreference extends ListPreference {
         super.onPrepareDialogBuilder(builder);
     }
 
-    private void setAlertDialogStyle(Context context) {
+    private int getAlertDialogStyle(Context context) {
+        int style;
         TypedArray a = context.obtainStyledAttributes(
             null,
             R.styleable.AlertDialog,
@@ -45,13 +46,14 @@ class CustomListPreference extends ListPreference {
         );
 
         try {
-            mItemStyle = a.getResourceId(
+            style = a.getResourceId(
                 R.styleable.AlertDialog_singleChoiceItemLayout,
                 android.R.layout.select_dialog_singlechoice
             );
         } finally {
             a.recycle();
         }
+        return style;
     }
 
     CharSequence styleText(int position, CharSequence entry) {

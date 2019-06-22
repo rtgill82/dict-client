@@ -13,14 +13,14 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "strategies")
 class Strategy extends BaseModel {
+    public static final Strategy DEFAULT = new Strategy();
+
     @DatabaseField(canBeNull = false, foreign = true)
     private Host host;
     @DatabaseField(canBeNull = false)
-    private String name;
+    private final String name;
     @DatabaseField(canBeNull = false)
-    private String description;
-
-    public static final Strategy DEFAULT = new Strategy();
+    private final String description;
 
     public Strategy() {
         name = "define";

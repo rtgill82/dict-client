@@ -43,18 +43,19 @@ public class ResultsView extends AppCompatTextView {
     private static final String SCALE_FACTOR = "SCALE_FACTOR";
     private static final String TEXT_SIZE = "TEXT_SIZE";
 
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
+    private final OnSharedPreferenceChangeListener mPrefListener;
+
+    private final MovementMethod mLinkMethod = LinkMovementMethod.getInstance();
+    private final SharedPreferences mPrefs;
+    private final GestureDetector mGestureDetector;
+    private final ScaleGestureDetector mScaleGestureDetector;
+
     private float mScaleFactor = 1.0f;
     private DisplayOption mDisplayOption = DisplayOption.SCROLL;
-    private MovementMethod mLinkMethod = LinkMovementMethod.getInstance();
-
-    @SuppressWarnings("FieldCanBeLocal")
-    private OnSharedPreferenceChangeListener mPrefListener;
 
     private Results mResults;
-    private SharedPreferences mPrefs;
     private float mDefaultTextSize;
-    private GestureDetector mGestureDetector;
-    private ScaleGestureDetector mScaleGestureDetector;
 
     public ResultsView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -62,9 +63,9 @@ public class ResultsView extends AppCompatTextView {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         mDefaultTextSize = getDefaultTextSize();
         setMovementMethod(ScrollingMovementMethod.getInstance());
-        initGestureDetector();
-        initScaleGestureDetector();
-        initPreferenceChangeListener(context);
+        mGestureDetector = createGestureDetector();
+        mScaleGestureDetector = createScaleGestureDetector();
+        mPrefListener = createPreferenceChangeListener(context);
     }
 
     public void setResults(Results results) {
@@ -224,8 +225,8 @@ public class ResultsView extends AppCompatTextView {
         setTextSize(COMPLEX_UNIT_PX, textSize);
     }
 
-    private void initGestureDetector() {
-        mGestureDetector = new GestureDetector(this.getContext(),
+    private GestureDetector createGestureDetector() {
+        return new GestureDetector(this.getContext(),
           new SimpleOnGestureListener() {
               @Override
               public boolean onScroll(MotionEvent e1, MotionEvent e2,
@@ -256,8 +257,8 @@ public class ResultsView extends AppCompatTextView {
           });
     }
 
-    private void initScaleGestureDetector() {
-        mScaleGestureDetector = new ScaleGestureDetector(this.getContext(),
+    private ScaleGestureDetector createScaleGestureDetector() {
+        return new ScaleGestureDetector(this.getContext(),
           new SimpleOnScaleGestureListener() {
               @Override
               public boolean onScale(ScaleGestureDetector detector) {
@@ -280,8 +281,10 @@ public class ResultsView extends AppCompatTextView {
           });
     }
 
-    private void initPreferenceChangeListener(final Context c) {
-        mPrefListener = new OnSharedPreferenceChangeListener() {
+    private OnSharedPreferenceChangeListener
+    createPreferenceChangeListener(final Context c) {
+        OnSharedPreferenceChangeListener listener =
+          new OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(
                 SharedPreferences preferences, String key
             ) {
@@ -307,6 +310,7 @@ public class ResultsView extends AppCompatTextView {
                 }
             }};
 
-        mPrefs.registerOnSharedPreferenceChangeListener(mPrefListener);
+        mPrefs.registerOnSharedPreferenceChangeListener(listener);
+        return listener;
     }
 }
