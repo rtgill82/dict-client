@@ -150,8 +150,7 @@ public class ManageHostsListFragment extends ListFragment {
 
     private void deleteSelectedHosts() {
         SparseBooleanArray selected = getListView().getCheckedItemPositions();
-        Host defaultHost = ((DictClient) getActivity().getApplication())
-                                                      .getDefaultHost();
+        Host defaultHost = DictClient.getDefaultHost();
         try {
             for (int i = 0; i < selected.size(); i++) {
                 int pos = selected.keyAt(i);
