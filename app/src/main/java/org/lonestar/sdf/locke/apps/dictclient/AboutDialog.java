@@ -77,8 +77,7 @@ class AboutDialog extends AppCompatDialogFragment {
     }
 
     private String replaceVersion(AppCompatActivity activity, String html) {
-        DictClient app = (DictClient) activity.getApplication();
-        String version = app.getVersionString();
+        String version = DictClient.getVersionString();
         return html.replaceAll("@VERSION@", version);
     }
 }

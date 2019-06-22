@@ -26,9 +26,8 @@ public class DictClient extends Application {
     @SuppressLint("StaticFieldLeak")
     private static Context sContext;  // Refers to 'this'
     private static Host sCurrentHost;
-
-    private HostCache mCache;
-    private OnHostChangeListener mOnHostChangeListener;
+    private static HostCache mCache;
+    private static OnHostChangeListener mOnHostChangeListener;
 
     private final OnSharedPreferenceChangeListener mPreferenceChangeListener =
       createOnSharedPreferenceChangeListener();
@@ -48,8 +47,8 @@ public class DictClient extends Application {
           );
     }
 
-    public void setOnHostChangeListener(OnHostChangeListener listener) {
-        mOnHostChangeListener = listener;
+    public static Context getContext() {
+        return sContext;
     }
 
     public static Host getDefaultHost() {
@@ -63,7 +62,15 @@ public class DictClient extends Application {
         return (Host) DatabaseManager.find(Host.class, hostId);
     }
 
-    public void setCurrentHost(Host host) {
+    public static Host getCurrentHost() {
+        return sCurrentHost;
+    }
+
+    public static void setOnHostChangeListener(OnHostChangeListener listener) {
+        mOnHostChangeListener = listener;
+    }
+
+    public static void setCurrentHost(Host host) {
         /* Ensure new host is not the same as the old one. */
         if (sCurrentHost != null && sCurrentHost.getId().equals(host.getId()))
           return;
@@ -72,8 +79,14 @@ public class DictClient extends Application {
           mOnHostChangeListener.onHostChange();
     }
 
-    public static Host getCurrentHost() {
-        return sCurrentHost;
+    public static String getVersionString() {
+        try {
+            PackageInfo pInfo = sContext.getPackageManager()
+              .getPackageInfo(sContext.getPackageName(), 0);
+            return pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setCurrentHostById(int hostId) {
@@ -84,22 +97,7 @@ public class DictClient extends Application {
         }
     }
 
-    public String getVersionString() {
-        try {
-            PackageInfo pInfo = getPackageManager()
-              .getPackageInfo(getPackageName(), 0);
-            return pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String buildClientString() {
-        String name = getString(R.string.app_name);
-        return name + " " + getVersionString();
-    }
-
-    private Host findCachedHost(int hostId, Host defaultHost) {
+    private static Host findCachedHost(int hostId, Host defaultHost) {
         Host host = mCache.getHostById(hostId);
         if (host == null) {
             if (defaultHost == null)
@@ -110,8 +108,9 @@ public class DictClient extends Application {
         return host;
     }
 
-    public static Context getContext() {
-        return sContext;
+    private String buildClientString() {
+        String name = getString(R.string.app_name);
+        return name + " " + getVersionString();
     }
 
     private OnSharedPreferenceChangeListener

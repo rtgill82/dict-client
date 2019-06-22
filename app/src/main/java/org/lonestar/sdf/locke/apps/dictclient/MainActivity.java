@@ -75,8 +75,7 @@ public class MainActivity extends AppCompatActivity {
         mSearchButton = findViewById(R.id.search_button);
         mSearchButton.setEnabled(false);
 
-        DictClient app = (DictClient) getApplication();
-        app.setOnHostChangeListener(
+        DictClient.setOnHostChangeListener(
           new DictClient.OnHostChangeListener() {
               @Override
               public void onHostChange() {
