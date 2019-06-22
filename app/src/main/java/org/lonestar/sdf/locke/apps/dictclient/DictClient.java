@@ -30,7 +30,6 @@ public class DictClient extends Application {
     private HostCache mCache;
     private OnHostChangeListener mOnHostChangeListener;
 
-    @SuppressWarnings("FieldCanBeLocal")
     private final OnSharedPreferenceChangeListener mPreferenceChangeListener =
       createOnSharedPreferenceChangeListener();
 
