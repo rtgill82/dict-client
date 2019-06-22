@@ -20,7 +20,7 @@ class CustomListPreference extends ListPreference {
     private CharSequence[] mEntries;
     private CharSequence[] mEntryValues;
 
-    public CustomListPreference(Context context, AttributeSet attrs) {
+    CustomListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         mInflater = LayoutInflater.from(context);
         setAlertDialogStyle(context);
@@ -54,7 +54,7 @@ class CustomListPreference extends ListPreference {
         }
     }
 
-    protected CharSequence styleText(int position, CharSequence entry) {
+    CharSequence styleText(int position, CharSequence entry) {
         return entry;
     }
 
