@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        DictClient app = (DictClient) getApplication();
         mHost = DictClient.getCurrentHost();
         SharedPreferences preferences =
           PreferenceManager.getDefaultSharedPreferences(this);

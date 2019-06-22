@@ -43,7 +43,6 @@ class WordSpan extends ClickableSpan {
         }
 
         if (activity != null) {
-            DictClient app = (DictClient) activity.getApplication();
             Host host = DictClient.getCurrentHost();
             new ClientTask(activity,
                            ClientTask.DEFINE(host, mWord, mDictionary),
