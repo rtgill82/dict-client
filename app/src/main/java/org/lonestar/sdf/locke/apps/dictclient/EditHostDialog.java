@@ -27,7 +27,7 @@ import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 
 import java.sql.SQLException;
 
-public class EditHostDialog extends AppCompatDialogFragment {
+class EditHostDialog extends AppCompatDialogFragment {
     private Host mHost;
     private ManageHostsListFragment mFragment;
     private EditText mEditHostName;

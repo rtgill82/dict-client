@@ -18,8 +18,8 @@ class Results {
         this(null, null, null, "");
     }
 
-    public Results(String word, Dictionary dictionary,
-                   Strategy strategy, CharSequence text) {
+    Results(String word, Dictionary dictionary,
+            Strategy strategy, CharSequence text) {
         mWord = word;
         mDictionary = dictionary;
         mStrategy = strategy;

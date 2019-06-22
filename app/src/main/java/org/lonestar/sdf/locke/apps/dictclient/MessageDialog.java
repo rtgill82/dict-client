@@ -15,7 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-public class MessageDialog extends AppCompatDialogFragment {
+class MessageDialog extends AppCompatDialogFragment {
     private static final String TITLE = "title";
     private static final String MESSAGE = "message";
 

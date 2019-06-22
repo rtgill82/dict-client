@@ -10,7 +10,7 @@ package org.lonestar.sdf.locke.apps.dictclient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ErrorDialog extends MessageDialog {
+class ErrorDialog extends MessageDialog {
     public static void show(AppCompatActivity activity, String message) {
         ErrorDialog.show(
             activity,
