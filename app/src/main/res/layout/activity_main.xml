@@ -27,6 +27,7 @@
         android:importantForAutofill="no"
         tools:ignore="UnusedAttribute">
 
+        <!--suppress AndroidElementNotAllowed -->
         <requestFocus />
     </org.lonestar.sdf.locke.apps.dictclient.SearchText>
 
