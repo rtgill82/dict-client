@@ -47,12 +47,14 @@ public class ResultsView extends AppCompatTextView {
     private DisplayOption mDisplayOption = DisplayOption.SCROLL;
     private MovementMethod mLinkMethod = LinkMovementMethod.getInstance();
 
+    @SuppressWarnings("FieldCanBeLocal")
+    private OnSharedPreferenceChangeListener mPrefListener;
+
     private Results mResults;
     private SharedPreferences mPrefs;
     private float mDefaultTextSize;
     private GestureDetector mGestureDetector;
     private ScaleGestureDetector mScaleGestureDetector;
-    private OnSharedPreferenceChangeListener mPrefListener;
 
     public ResultsView(Context context, AttributeSet attrs) {
         super(context, attrs);
