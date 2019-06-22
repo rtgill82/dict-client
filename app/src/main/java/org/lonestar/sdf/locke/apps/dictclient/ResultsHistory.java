@@ -221,7 +221,7 @@ class ResultsHistory extends ArrayList<Results> {
      *
      */
     private void clearToEnd() {
-        for (int i = this.size() - 1; i > mCurrentPos; i--)
-          super.remove(i);
+        if (mCurrentPos >= 0)
+          subList(mCurrentPos + 1, size()).clear();
     }
 }
