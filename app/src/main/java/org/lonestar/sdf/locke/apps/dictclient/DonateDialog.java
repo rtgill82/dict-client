@@ -105,8 +105,7 @@ public class DonateDialog extends AppCompatDialogFragment {
     }
 
     private boolean showPassButton() {
-        return (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-               || (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP)
+        return (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP)
                || (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1);
     }
 
