@@ -17,8 +17,8 @@
     the <b><i>Search</i></b> icon on the keyboard to look up the word. By
     default all dictionaries on the currently selected host will be searched.
     Specific dictionaries may be searched by selecting one from the dictionary
-    pull-down menu just below the <b><i>Enter a word</i></b> search field. The
-    <b><i>i</i></b> icon next to the dictionary pull-down menu will display
+    spinner just below the <b><i>Enter a word</i></b> search field. The
+    <b><i>i</i></b> icon next to the dictionary spinner menu will display
     information about the currently selected dictionary, if one is selected.
 
     <h3>Definitions</h3>
@@ -35,6 +35,14 @@
     &nbsp;&nbsp;n 1: a facility where trees and shrubs are cultivated for
     exhibition [syn: <font color='blue'><u>arboretum</u></font>,
     <font color='blue'><u>botanical garden</u></font>]
+
+    <p>There are a few display options available to change the way definition
+    text is displayed. You can find more information about them under the
+    <i>Result Display Options</i> setting. The default is to scale the text
+    to fit the width of the display. When either of the other two options
+    (<i>Line Wrap</i> or <i>Scroll</i>) are selected, then you may scale the
+    text manually using a pinch-zoom gesture. Double tapping the definition
+    display will return the text to it's default size.
 
     <h3>History Navigation</h3>
     <p>When multiple words are searched for or are navigated to by touching
@@ -123,30 +131,36 @@
     <p>Other than the navigation buttons, the following options are available
     via the menu.
 
-    <p><i>Select Host</i> - Temporarily select another DICT host without
+    <p><b>Select Host</b> - Temporarily select another DICT host without
     changing the default. May appear as a bookmark icon on devices with wide
     screens.
 
-    <p><i>Refresh Dictionaries</i> - Force retrieval of the available
+    <p><b>Refresh Dictionaries</b> - Force retrieval of the available
     dictionaries from the currently selected host. Usually dictionaries will
     only be retrieved when the dictionary cache timeout has been exceeded.
 
-    <p><i>Settings</i> - Application settings.
+    <p><b>Settings</b> - Application settings.
 
-    <p><i>Help</i> - Display this help documentation.
+    <p><b>Help</b> - Display this help documentation.
 
-    <p><i>About</i> - About the application and donation button.
+    <p><b>About</b> - About the application and donation button.
 
     <h2>Settings</h2>
     <h3>General</h3>
 
-    <p><i>Default Host</i> - Set the default DICT host to use for searches.
+    <p><b>Default Host</b> - Set the default DICT host to use for searches.
 
-    <p><i>Word Wrap</i> - Word wrap definition results when displaying them
-    rather than attempting to scale them to fit. This may be necessary if the
-    results contain any abnormally long lines. Defaults to <i>false</i>.
+    <p><b>Result Display Options</b> - Set how definition results are
+    displayed. There are currently three options. <i><b>Fit Width</b></i>
+    scales text to fit the width of the display. <i><b>Line Wrap</b></i> wraps
+    long lines at the edge of the display. <i><b>Scroll</b></i> enables the
+    horizontal scroll bar to allow full scrolling.
 
-    <p><i>Dictionary Cache Timeout</i> - How often available dictionaries will
+    <p><b>Default Font Size</b> - The default font size to use for the results
+    display. This only has an effect when the <i><b>Line Wrap</b></i> or
+    <i><b>Scroll</b></i> display options are used. Defaults to 14sp.
+
+    <p><b>Dictionary Cache Timeout</b> - How often available dictionaries will
     be retrieved from the current DICT host. Defaults to 7 days.
 
     <h3>Manage Hosts</h3>
@@ -157,12 +171,12 @@
     <p>The <i>plus</i> icon will open a dialog allowing you to add a new host.
     The fields are as follows:
 
-    <p><i>Host Name</i> - The domain name address of the host. (<i>required</i>)
+    <p><b>Host Name</b> - The domain name address of the host. (<i>required</i>)
 
-    <p><i>Port</i> - The port number of the host (default: 2628,
+    <p><b>Port</b> - The port number of the host (default: 2628,
     <i>required</i>)
 
-    <p><i>Description</i> - A short description of the host, the kinds of
+    <p><b>Description</b> - A short description of the host, the kinds of
     dictionaries it provides, etc.
 
     <p>Touch and hold a host to bring up the edit dialog. The edit dialog
