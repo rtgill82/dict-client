@@ -50,7 +50,7 @@ class AboutDialog extends AppCompatDialogFragment {
         int pad = (int) resources.getDimension(R.dimen.default_margins);
         TextView textView = new TextView(activity);
         textView.setPadding(pad, pad, pad, pad);
-        textView.setText(Html.fromHtml(replaceVersion(activity, html)));
+        textView.setText(Html.fromHtml(replaceVersion(html)));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(activity.getString(R.string.title_about))
@@ -76,7 +76,7 @@ class AboutDialog extends AppCompatDialogFragment {
         button.setLayoutParams(layoutParams);
     }
 
-    private String replaceVersion(AppCompatActivity activity, String html) {
+    private String replaceVersion(String html) {
         String version = DictClient.getVersionString();
         return html.replaceAll("@VERSION@", version);
     }
