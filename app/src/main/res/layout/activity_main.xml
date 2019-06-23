@@ -78,6 +78,7 @@
 
     <org.lonestar.sdf.locke.apps.dictclient.ResultsView
         android:id="@+id/results_view"
+        android:contentDescription="@string/text_view_results"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/dictionary_info_button"

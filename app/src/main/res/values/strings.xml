@@ -16,6 +16,7 @@
     <string name="button_dictionary_information">Dictionary Information</string>
     <string name="button_donate">Donate</string>
     <string name="button_search">Search</string>
+    <string name="text_view_results">Search Results</string>
 
     <!-- MainActivity result strings -->
     <string name="result_definitions">No definitions found.</string>
