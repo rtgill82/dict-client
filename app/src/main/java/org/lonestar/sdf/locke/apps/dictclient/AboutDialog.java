@@ -25,7 +25,8 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import java.io.IOException;
 import java.io.InputStream;
 
-class AboutDialog extends AppCompatDialogFragment {
+@SuppressWarnings("WeakerAccess")
+public class AboutDialog extends AppCompatDialogFragment {
     public static void show(AppCompatActivity activity) {
         new AboutDialog().show(activity.getSupportFragmentManager(),
                                activity.getString(R.string.title_about));
