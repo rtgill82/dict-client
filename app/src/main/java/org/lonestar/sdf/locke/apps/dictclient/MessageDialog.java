@@ -8,26 +8,25 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDialogFragment;
 
-class MessageDialog extends AppCompatDialogFragment {
+public class MessageDialog extends DialogFragment {
     private static final String TITLE = "title";
     private static final String MESSAGE = "message";
 
-    public static void show(AppCompatActivity activity, String title,
-                            String message) {
+    public static void show(Activity activity, String title, String message) {
         Bundle args = new Bundle();
         args.putString(TITLE, title);
         args.putString(MESSAGE, message);
         MessageDialog dialog = new MessageDialog();
         dialog.setArguments(args);
         dialog.show(
-            activity.getSupportFragmentManager(),
+            activity.getFragmentManager(),
             MessageDialog.class.getSimpleName()
         );
     }

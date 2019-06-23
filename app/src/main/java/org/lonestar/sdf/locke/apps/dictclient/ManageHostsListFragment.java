@@ -24,7 +24,6 @@ import android.widget.CheckedTextView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -180,7 +179,7 @@ public class ManageHostsListFragment extends ListFragment {
         final Host host = getHostAtPosition(pos);
         //noinspection ConstantConditions
         if (!host.isUserDefined())
-          ErrorDialog.show((AppCompatActivity) getActivity(),
+          ErrorDialog.show(getActivity(),
                            getString(R.string.error_host_readonly));
         else
           EditHostDialog.show(this, host);

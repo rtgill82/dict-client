@@ -13,6 +13,7 @@ package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -20,14 +21,12 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDialogFragment;
 
 import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 
 import java.sql.SQLException;
 
-class EditHostDialog extends AppCompatDialogFragment {
+public class EditHostDialog extends DialogFragment {
     private Host mHost;
     private ManageHostsListFragment mFragment;
     private EditText mEditHostName;
@@ -39,12 +38,10 @@ class EditHostDialog extends AppCompatDialogFragment {
     }
 
     public static void show(ManageHostsListFragment fragment, Host host) {
-        AppCompatActivity activity =
-          (AppCompatActivity) fragment.getActivity();
         EditHostDialog dialog = new EditHostDialog();
         dialog.setDictionaryHost(host);
         dialog.setManageHostsListFragment(fragment);
-        dialog.show(activity.getSupportFragmentManager(),
+        dialog.show(fragment.getActivity().getFragmentManager(),
                     fragment.getString(R.string.dialog_edit_tag));
     }
 
@@ -72,8 +69,6 @@ class EditHostDialog extends AppCompatDialogFragment {
           .setPositiveButton(getString(R.string.button_save),
             new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    AppCompatActivity activity =
-                      (AppCompatActivity) getActivity();
                     if (mHost == null) mHost = new Host();
                     String portText = mEditPort.getText().toString();
                     if (portText.trim().length() > 0) {
@@ -82,7 +77,7 @@ class EditHostDialog extends AppCompatDialogFragment {
 
                     String hostText = mEditHostName.getText().toString();
                     if (hostText.trim().length() == 0) {
-                        ErrorDialog.show(activity,
+                        ErrorDialog.show(getActivity(),
                           getString(R.string.error_host_name_required));
                         return;
                     }
@@ -95,7 +90,7 @@ class EditHostDialog extends AppCompatDialogFragment {
                     try {
                         mHost.create();
                     } catch (SQLException e) {
-                        ErrorDialog.show(activity, e.getMessage());
+                        ErrorDialog.show(getActivity(), e.getMessage());
                     }
                     mFragment.refreshHostList();
                 }
