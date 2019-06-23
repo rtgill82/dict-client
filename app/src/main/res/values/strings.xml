@@ -68,7 +68,6 @@
     <string name="dialog_donate_1">$1</string>
     <string name="dialog_donate_2">$3</string>
     <string name="dialog_donate_3">$5</string>
-    <string name="dialog_donate_pass">No Thanks</string>
 
     <!-- Donation response message strings -->
     <string name="dialog_title_thank_you">Thank You</string>

@@ -10,12 +10,8 @@ package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +55,6 @@ public class DonateDialog extends AppCompatDialogFragment {
         setupDonationButton(view, R.id.button_donate1, DONATION1);
         setupDonationButton(view, R.id.button_donate2, DONATION2);
         setupDonationButton(view, R.id.button_donate3, DONATION3);
-        setupPassButton(view);
         return view;
     }
 
@@ -79,34 +74,6 @@ public class DonateDialog extends AppCompatDialogFragment {
                           .makeDonation(sku, mCallbacks);
                   }
           });
-    }
-
-    private void setupPassButton(ViewGroup viewGroup) {
-        View button = viewGroup.findViewById(R.id.button_pass);
-        if (showPassButton()) {
-            final Context context = getActivity();
-            button.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View view) {
-                        SharedPreferences.Editor editor =
-                          PreferenceManager
-                            .getDefaultSharedPreferences(context)
-                            .edit();
-                        editor.putBoolean(
-                            getString(R.string.pref_key_donated),
-                            true
-                        );
-                        editor.apply();
-                        dismiss();
-                    }
-                });
-            button.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private boolean showPassButton() {
-        return (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP)
-               || (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1);
     }
 
     private class DonationFlowListenerImpl implements DonationFlowListener {
