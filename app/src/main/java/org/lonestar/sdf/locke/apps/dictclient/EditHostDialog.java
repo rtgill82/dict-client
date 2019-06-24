@@ -16,11 +16,10 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-
-import androidx.appcompat.app.AlertDialog;
 
 import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 

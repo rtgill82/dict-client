@@ -15,6 +15,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.TextPaint;
@@ -28,8 +29,6 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener;
-
-import androidx.appcompat.widget.AppCompatTextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;

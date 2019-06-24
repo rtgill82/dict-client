@@ -1,12 +1,11 @@
 package org.lonestar.sdf.locke.apps.dictclient;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
-
-import androidx.appcompat.widget.AppCompatEditText;
 
 class SearchText extends AppCompatEditText {
     private boolean mDoubleTap = false;
