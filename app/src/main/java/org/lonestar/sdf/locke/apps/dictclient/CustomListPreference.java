@@ -10,30 +10,25 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 
 class CustomListPreference extends ListPreference {
-    private final LayoutInflater mInflater;
-    private final int mItemStyle;
     private final int mPad;
-
-    private CharSequence[] mEntries;
-    private CharSequence[] mEntryValues;
 
     CustomListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mInflater = LayoutInflater.from(context);
-        mItemStyle = getAlertDialogStyle(context);
         Resources resources = context.getResources();
         mPad = (int) resources.getDimension(R.dimen.default_margins);
     }
 
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
-        mEntries = getEntries();
-        mEntryValues = getEntryValues();
-        builder.setAdapter(new Adapter(), null);
+        int itemStyle = getAlertDialogStyle(getContext());
+        builder.setAdapter(
+            new Adapter(this.getContext(), itemStyle, getEntries()),
+            null
+        );
         super.onPrepareDialogBuilder(builder);
     }
 
@@ -62,29 +57,22 @@ class CustomListPreference extends ListPreference {
         return entry;
     }
 
-    private class Adapter extends BaseAdapter {
-        public int getCount() {
-            if (mEntries != null)
-              return mEntries.length;
-            return 0;
+    private class Adapter extends ArrayAdapter<CharSequence> {
+        public Adapter(Context context, int resource, CharSequence[] objects) {
+            super(context, resource, objects);
         }
 
-        public Object getItem(int position) {
-            return mEntryValues[position];
+        @Override
+        public boolean hasStableIds() {
+            return true;
         }
 
-        public long getItemId(int position) {
-            return position;
-        }
-
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            CheckedTextView view = (CheckedTextView) convertView;
-            if (view ==  null) {
-                view = (CheckedTextView)
-                  mInflater.inflate(mItemStyle, parent, false);
-                view.setText(styleText(position, mEntries[position]));
-                view.setPadding(mPad, mPad, mPad, mPad);
-            }
+            CheckedTextView view = (CheckedTextView)
+              super.getView(position, convertView, parent);
+            view.setText(styleText(position, getItem(position)));
+            view.setPadding(mPad, mPad, mPad, mPad);
             return view;
         }
     }
