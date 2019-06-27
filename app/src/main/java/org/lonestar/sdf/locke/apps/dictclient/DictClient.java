@@ -32,10 +32,14 @@ public class DictClient extends Application {
     private final OnSharedPreferenceChangeListener mPreferenceChangeListener =
       createOnSharedPreferenceChangeListener();
 
+    public DictClient() {
+        super();
+        sContext = this;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        sContext = this;
         DatabaseManager.initialize(getApplicationContext());
         JDictClient.setClientString(buildClientString());
         mCache = new HostCache();
