@@ -99,7 +99,9 @@ public class ManageHostsListFragment extends ListFragment {
             new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int pos, long id) {
-                    mToggles.set(pos, ((CheckedTextView) view).isChecked());
+                    CheckedTextView textView = view.findViewById(R.id.host);
+                    textView.toggle();
+                    mToggles.set(pos, textView.isChecked());
                     getActivity().invalidateOptionsMenu();
                 }
             }

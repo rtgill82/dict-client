@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.lonestar.sdf.locke.apps.dictclient.CompatCheckedTextView
-      xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:padding="@dimen/default_margins"
-    android:gravity="center_vertical"
-    android:checkMark="?android:attr/listChoiceIndicatorMultiple" />
+    android:orientation="vertical">
+
+    <org.lonestar.sdf.locke.apps.dictclient.CompatCheckedTextView
+        android:id="@+id/host"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="?android:attr/textColorSecondary" />
+
+</LinearLayout>

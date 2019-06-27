@@ -37,6 +37,11 @@ class HostCursor extends CursorWrapper {
         return name;
     }
 
+    public String getDescription() {
+        Cursor cursor = getWrappedCursor();
+        return cursor.getString(cursor.getColumnIndexOrThrow("description"));
+    }
+
     public boolean isReadonly() {
         Cursor cursor = getWrappedCursor();
         return (cursor.getInt(cursor.getColumnIndexOrThrow("readonly")) != 0);
