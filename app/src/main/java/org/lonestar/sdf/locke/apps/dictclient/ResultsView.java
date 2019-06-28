@@ -299,6 +299,7 @@ public class ResultsView extends AppCompatTextView {
                     mDisplayOption = DisplayOption.valueOf(
                         preferences.getString(prefKey, value)
                     );
+                    restoreTextSize();
                     refresh();
                 }
 
