@@ -22,12 +22,14 @@
         android:title="@string/pref_title_font_size"
         android:defaultValue="@string/pref_value_font_size"
         android:singleLine="true"
-        android:numeric="integer" />
+        android:numeric="integer"
+        android:selectAllOnFocus="true" />
 
     <EditTextPreference
         android:key="@string/pref_key_cache_time"
         android:title="@string/pref_title_cache_time"
         android:defaultValue="@string/pref_value_cache_time"
         android:singleLine="true"
-        android:numeric="integer" />
+        android:numeric="integer"
+        android:selectAllOnFocus="true" />
 </PreferenceScreen>
