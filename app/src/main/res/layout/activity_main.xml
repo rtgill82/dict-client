@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context=".MainActivity" >
 
-    <EditText
+    <org.lonestar.sdf.locke.apps.dictclient.SearchText
         android:id="@+id/search_text"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -23,10 +23,13 @@
         android:imeOptions="actionSearch"
         android:inputType="text|textAutoCorrect|textAutoComplete"
         android:textSize="20sp"
-        android:maxLines="@integer/search_text_max_lines" >
+        android:maxLines="@integer/search_text_max_lines"
+        android:importantForAutofill="no"
+        tools:ignore="UnusedAttribute">
 
+        <!--suppress AndroidElementNotAllowed -->
         <requestFocus />
-    </EditText>
+    </org.lonestar.sdf.locke.apps.dictclient.SearchText>
 
     <Spinner
         android:id="@+id/strategy_spinner"
@@ -58,7 +61,8 @@
         android:layout_toStartOf="@+id/search_button"
         android:layout_below="@+id/search_text"
         android:onClick="getDictionaryInfo"
-        app:srcCompat="@drawable/outline_info" />
+        app:srcCompat="@drawable/outline_info_black_24"
+        app:tint="@color/icon_disabled_tint" />
 
     <ImageButton
         android:id="@+id/search_button"
@@ -69,21 +73,15 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/search_text"
         android:onClick="lookupWord"
-        app:srcCompat="@drawable/baseline_search" />
+        app:srcCompat="@drawable/baseline_search_black_24"
+        app:tint="@color/icon_disabled_tint" />
 
-    <org.lonestar.sdf.locke.apps.dictclient.ResultView
-        android:id="@+id/result_view"
+    <org.lonestar.sdf.locke.apps.dictclient.ResultsView
+        android:id="@+id/results_view"
+        android:contentDescription="@string/text_view_results"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/dictionary_info_button"
-        android:fillViewport="true"
-        android:scrollbars="vertical">
-
-        <org.lonestar.sdf.locke.apps.dictclient.ResultTextView
-            android:id="@+id/result_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:freezesText="true" />
-
-    </org.lonestar.sdf.locke.apps.dictclient.ResultView>
+        android:scrollbars="horizontal|vertical"
+        android:freezesText="true" />
 </RelativeLayout>

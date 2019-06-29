@@ -8,11 +8,9 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -39,16 +37,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 if (preference instanceof ListPreference) {
                     // For list preferences, look up the correct display value
                     // in the preference's 'entries' list.
-                    ListPreference listPreference = (ListPreference)
-                      preference;
-                    int index = listPreference.findIndexOfValue(stringValue);
+                    ListPreference listPref = (ListPreference) preference;
+                    int index = listPref.findIndexOfValue(stringValue);
 
                     // Set the summary to reflect the new value.
                     preference.setSummary(
                         index >= 0
-                            ? listPreference.getEntries()[index]
-                            : null);
-
+                            ? listPref.getEntries()[index]
+                            : listPref.getEntry());
+                } else if (preference.getKey()
+                    .equals(context.getString(R.string.pref_key_font_size))) {
+                    //  Display sp as the unit for font_size preference.
+                    preference.setSummary(stringValue + "sp");
                 } else if (preference.getKey()
                     .equals(context.getString(R.string.pref_key_cache_time))) {
                     // Display days as the unit for the cache_time preference.
@@ -106,7 +106,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * {@inheritDoc}
      */
     @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(List<Header> target) {
         loadHeadersFromResource(R.xml.pref_headers, target);
     }
@@ -125,16 +124,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * This fragment shows general preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
-            bindDefaultHostPreferences();
             bindPreferenceSummaryToValue(
                 findPreference(getString(R.string.pref_key_default_host))
+            );
+            bindPreferenceSummaryToValue(
+                findPreference(getString(R.string.pref_key_display_option))
+            );
+            bindPreferenceSummaryToValue(
+                findPreference(getString(R.string.pref_key_font_size))
             );
             bindPreferenceSummaryToValue(
                 findPreference(getString(R.string.pref_key_cache_time))
@@ -150,29 +153,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
             return super.onOptionsItemSelected(item);
-        }
-
-        private void bindDefaultHostPreferences() {
-            final ListPreference defaultHostPreference = (ListPreference)
-              findPreference(getString(R.string.pref_key_default_host));
-            HostCursor cursor = (HostCursor)
-              DatabaseManager.find(Host.class, "hidden", false);
-            CharSequence[] entries = new CharSequence[cursor.getCount()];
-            CharSequence[] entryValues = new CharSequence[cursor.getCount()];
-
-            int i = 0;
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                entries[i] = cursor.getHostName();
-                entryValues[i] = Integer.toString(cursor.getId());
-                i = i + 1;
-                cursor.moveToNext();
-            }
-            Host defaultHost = ((DictClient) getActivity().getApplication())
-                                                          .getDefaultHost();
-            defaultHostPreference.setEntries(entries);
-            defaultHostPreference.setEntryValues(entryValues);
-            defaultHostPreference.setValue(defaultHost.getId().toString());
         }
     }
 }

@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
@@ -25,6 +24,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.io.InputStream;
 
+@SuppressWarnings("WeakerAccess")
 public class AboutDialog extends DialogFragment {
     public static void show(Activity activity) {
         new AboutDialog().show(activity.getFragmentManager(),
@@ -47,10 +47,10 @@ public class AboutDialog extends DialogFragment {
             throw new RuntimeException(e);
         }
 
-        TextView textView = (TextView) View.inflate(activity,
-                                                    R.layout.dialog_about,
-                                                    null);
-        textView.setText(Html.fromHtml(replaceVersion(activity, html)));
+        int pad = (int) resources.getDimension(R.dimen.default_margins);
+        TextView textView = new TextView(activity);
+        textView.setPadding(pad, pad, pad, pad);
+        textView.setText(Html.fromHtml(replaceVersion(html)));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(activity.getString(R.string.title_about))
@@ -74,9 +74,8 @@ public class AboutDialog extends DialogFragment {
         button.setLayoutParams(layoutParams);
     }
 
-    private String replaceVersion(Activity activity, String html) {
-        DictClient app = (DictClient) activity.getApplication();
-        String version = app.getVersionString();
+    private String replaceVersion(String html) {
+        String version = DictClient.getVersionString();
         return html.replaceAll("@VERSION@", version);
     }
 }

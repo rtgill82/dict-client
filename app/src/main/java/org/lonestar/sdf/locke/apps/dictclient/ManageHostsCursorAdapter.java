@@ -11,7 +11,6 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
-import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -31,20 +30,13 @@ class ManageHostsCursorAdapter extends HostCursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        HostCursor hostCursor = (HostCursor) cursor;
-        CompatCheckedTextView textView = (CompatCheckedTextView)
-          View.inflate(context, R.layout.list_item_host, null);
-        CheckMarkHolder holder = new CheckMarkHolder();
-        holder.checkMark = textView.getCheckMarkDrawable();
-        textView.setTag(holder);
-        return setupItemView(textView, hostCursor);
+        View view = super.newView(context, cursor, parent);
+        return setupItemView(view, cursor);
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        CompatCheckedTextView textView = (CompatCheckedTextView) view;
-        HostCursor hostCursor = (HostCursor) cursor;
-        setupItemView(textView, hostCursor);
+        setupItemView(view, cursor);
     }
 
     @Override
@@ -53,20 +45,16 @@ class ManageHostsCursorAdapter extends HostCursorAdapter {
         return !hostCursor.isReadonly();
     }
 
-    private CompatCheckedTextView setupItemView(CompatCheckedTextView view,
-                                                HostCursor cursor) {
+    private View setupItemView(View view, Cursor cursor) {
+        Drawable checkMark = null;
+        HostCursor hostCursor = (HostCursor) cursor;
         CheckMarkHolder holder = (CheckMarkHolder) view.getTag();
-        view.setText(Html.fromHtml(buildItemText(cursor)));
-        view.setCheckMarkDrawable(holder.checkMark);
-        view.setChecked(false);
-        view.setChecked(mToggles.get(cursor.getPosition()));
-        if (cursor.isReadonly()) {
-            view.setCheckMarkDrawable(null);
-        }
-        return view;
-    }
+        boolean checked = mToggles.get(hostCursor.getPosition());
 
-    private class CheckMarkHolder {
-        Drawable checkMark;
+        if (holder != null && !hostCursor.isReadonly())
+          checkMark = holder.checkMark;
+
+        bindItemText(view, hostCursor, checkMark, checked);
+        return view;
     }
 }

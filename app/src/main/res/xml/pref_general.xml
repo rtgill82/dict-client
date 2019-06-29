@@ -1,19 +1,35 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListPreference
+<!--suppress AndroidElementNotAllowed -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <org.lonestar.sdf.locke.apps.dictclient.DefaultHostListPreference
         android:key="@string/pref_key_default_host"
         android:title="@string/pref_title_default_host"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
 
-    <CheckBoxPreference
-        android:key="@string/pref_key_word_wrap"
-        android:title="@string/pref_title_word_wrap"
-        android:defaultValue="@bool/pref_value_word_wrap" />
+    <org.lonestar.sdf.locke.apps.dictclient.DisplayOptionListPreference
+        android:key="@string/pref_key_display_option"
+        android:title="@string/pref_title_display_option"
+        android:entries="@array/pref_entries_display_options"
+        android:entryValues="@array/pref_entry_values_display_options"
+        app:entryDescriptions="@array/pref_entry_descriptions_display_options"
+        android:defaultValue="@string/pref_display_option_fit_width"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null" />
+
+    <EditTextPreference
+        android:key="@string/pref_key_font_size"
+        android:title="@string/pref_title_font_size"
+        android:defaultValue="@string/pref_value_font_size"
+        android:singleLine="true"
+        android:numeric="integer"
+        android:selectAllOnFocus="true" />
 
     <EditTextPreference
         android:key="@string/pref_key_cache_time"
         android:title="@string/pref_title_cache_time"
         android:defaultValue="@string/pref_value_cache_time"
         android:singleLine="true"
-        android:numeric="integer" />
+        android:numeric="integer"
+        android:selectAllOnFocus="true" />
 </PreferenceScreen>

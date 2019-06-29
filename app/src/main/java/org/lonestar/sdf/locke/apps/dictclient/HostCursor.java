@@ -32,9 +32,14 @@ class HostCursor extends CursorWrapper {
         int port = cursor.getInt(cursor.getColumnIndexOrThrow("port"));
         String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
         if (port != JDictClient.DEFAULT_PORT) {
-            name = name + ":" + Integer.toString(port);
+            name = name + ":" + port;
         }
         return name;
+    }
+
+    public String getDescription() {
+        Cursor cursor = getWrappedCursor();
+        return cursor.getString(cursor.getColumnIndexOrThrow("description"));
     }
 
     public boolean isReadonly() {

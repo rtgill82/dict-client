@@ -99,7 +99,9 @@ public class ManageHostsListFragment extends ListFragment {
             new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int pos, long id) {
-                    mToggles.set(pos, ((CheckedTextView) view).isChecked());
+                    CheckedTextView textView = view.findViewById(R.id.host);
+                    textView.toggle();
+                    mToggles.set(pos, textView.isChecked());
                     getActivity().invalidateOptionsMenu();
                 }
             }
@@ -148,8 +150,7 @@ public class ManageHostsListFragment extends ListFragment {
 
     private void deleteSelectedHosts() {
         SparseBooleanArray selected = getListView().getCheckedItemPositions();
-        Host defaultHost = ((DictClient) getActivity().getApplication())
-                                                      .getDefaultHost();
+        Host defaultHost = DictClient.getDefaultHost();
         try {
             for (int i = 0; i < selected.size(); i++) {
                 int pos = selected.keyAt(i);

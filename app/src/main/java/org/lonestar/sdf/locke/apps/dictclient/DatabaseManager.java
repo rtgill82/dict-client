@@ -50,7 +50,6 @@ class DatabaseManager extends OrmLiteSqliteOpenHelper {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void onCreate(SQLiteDatabase db, ConnectionSource cs) {
         try {
             TableUtils.createTable(cs, Host.class);

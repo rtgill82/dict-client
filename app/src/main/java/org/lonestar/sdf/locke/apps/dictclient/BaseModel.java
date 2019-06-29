@@ -23,7 +23,7 @@ class BaseModel extends BaseDaoEnabled {
 
     BaseModel() {
         try {
-            setDao(DatabaseManager.getInstance().getDao(this.getClass()));
+            setDao(DatabaseManager.getInstance().getDao(getClass()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_entries_display_options">
+        <item>Fit Width</item>
+        <item>Line Wrap</item>
+        <item>Scroll</item>
+    </string-array>
+
+    <string-array name="pref_entry_values_display_options">
+        <item>FIT_WIDTH</item>
+        <item>LINE_WRAP</item>
+        <item>SCROLL</item>
+    </string-array>
+
+    <string-array name="pref_entry_descriptions_display_options">
+        <item>Scale results to fit screen width.</item>
+        <item>Wrap lines at right edge of screen.</item>
+        <item>Enable horizontal scrolling.</item>
+    </string-array>
+</resources>

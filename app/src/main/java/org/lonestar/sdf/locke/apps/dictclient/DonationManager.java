@@ -8,6 +8,7 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -232,6 +233,7 @@ class DonationManager implements PurchasesUpdatedListener {
     private void startServiceConnection(final Runnable runnable) {
         mBillingClient.startConnection(
             new BillingClientStateListener() {
+                @SuppressLint("SwitchIntDef")
                 @Override
                 public void onBillingSetupFinished(@BillingResponse int code) {
                   switch (code) {

@@ -12,7 +12,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.1.4'
+    classpath 'com.android.tools.build:gradle:3.4.1'
   }
 }
 
@@ -34,7 +34,7 @@ allprojects {
   task tags {
     exec {
       executable 'ctags'
-      args '--tag-relative', '-R', "-f $rootDir/.git/tags", "$rootDir"
+      args '--tag-relative=yes', '-R', "-f $rootDir/.git/tags", "$rootDir"
     }
   }
 }

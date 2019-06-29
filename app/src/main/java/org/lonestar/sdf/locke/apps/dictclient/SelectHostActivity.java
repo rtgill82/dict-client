@@ -30,8 +30,7 @@ public class SelectHostActivity extends AppCompatActivity {
                 HostCursor cursor = (HostCursor)
                   parent.getItemAtPosition(position);
                 Host host = cursor.getHost();
-                DictClient app = (DictClient) getApplication();
-                app.setCurrentHost(host);
+                DictClient.setCurrentHost(host);
                 finish();
             }
         });
