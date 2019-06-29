@@ -68,6 +68,7 @@ public class ResultsView extends AppCompatTextView {
         mGestureDetector = createGestureDetector();
         mScaleGestureDetector = createScaleGestureDetector();
         mPrefListener = createPreferenceChangeListener(context);
+        mPrefs.registerOnSharedPreferenceChangeListener(mPrefListener);
     }
 
     public void setResults(Results results) {
@@ -313,7 +314,6 @@ public class ResultsView extends AppCompatTextView {
                 }
             }};
 
-        mPrefs.registerOnSharedPreferenceChangeListener(listener);
         return listener;
     }
 }
