@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application android:name=".DictClient"
                  android:allowBackup="true"
@@ -29,6 +28,5 @@
         <activity android:name=".SettingsActivity"
                   android:label="@string/title_activity_settings" />
         <activity android:name=".HelpActivity" />
-        <service android:name=".DonateNotificationService" />
     </application>
 </manifest>

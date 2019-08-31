@@ -21,8 +21,6 @@ import android.preference.PreferenceManager;
 import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
 
 public class DictClient extends Application {
-    public static final String CHANNEL = "dict-client";
-
     @SuppressLint("StaticFieldLeak")
     private static Context sContext;  // Refers to 'this'
     private static Host sCurrentHost;

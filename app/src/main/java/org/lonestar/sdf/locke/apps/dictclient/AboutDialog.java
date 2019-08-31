@@ -54,13 +54,7 @@ public class AboutDialog extends DialogFragment {
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(activity.getString(R.string.title_about))
-               .setView(textView)
-               .setNeutralButton(getString(R.string.button_donate),
-                 new DialogInterface.OnClickListener() {
-                     public void onClick(DialogInterface dialog, int which) {
-                         DonateDialog.show(getActivity());
-                     }
-                 });
+               .setView(textView);
         return builder.create();
     }
 

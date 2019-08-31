@@ -35,9 +35,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 
-import static org.lonestar.sdf.locke.apps.dictclient.DonateNotificationService.DONATE_ACTION;
-import static org.lonestar.sdf.locke.apps.dictclient.DonateNotificationService.DONATE_SEEN;
-
 public class MainActivity extends AppCompatActivity {
     private static final String SELECTED_DICTIONARY = "SELECTED_DICTIONARY";
     private static final String SELECTED_STRATEGY = "SELECTED_STRATEGY";
@@ -87,19 +84,6 @@ public class MainActivity extends AppCompatActivity {
             mSelectedDictionary =
               savedInstanceState.getInt(SELECTED_DICTIONARY);
             mSelectedStrategy = savedInstanceState.getInt(SELECTED_STRATEGY);
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Intent intent = getIntent();
-        if (intent.getBooleanExtra(DONATE_ACTION, false)) {
-            intent.putExtra(DONATE_ACTION, false);
-            intent.putExtra(DONATE_SEEN, true);
-            DonateDialog.show(this);
-        } else if (!intent.getBooleanExtra(DONATE_SEEN, false)) {
-            DonateNotificationService.start(getApplicationContext());
         }
     }
 
