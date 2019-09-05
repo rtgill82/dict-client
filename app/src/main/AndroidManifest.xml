@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
     package="org.lonestar.sdf.locke.apps.dictclient"
-    android:versionCode="75"
-    android:versionName="1.2.1"
+    android:versionCode="76"
+    android:versionName="1.2.2"
     tools:ignore="GoogleAppIndexingWarning">
 
     <uses-permission android:name="android.permission.INTERNET" />
