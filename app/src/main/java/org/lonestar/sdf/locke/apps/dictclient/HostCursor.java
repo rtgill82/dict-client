@@ -11,7 +11,7 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
+import com.github.xelkarin.libs.jdictclient.JDictClient;
 
 class HostCursor extends CursorWrapper {
     public HostCursor(Cursor cursor) {

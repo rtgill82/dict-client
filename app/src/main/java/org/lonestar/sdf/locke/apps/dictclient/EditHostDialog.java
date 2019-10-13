@@ -21,7 +21,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
+import com.github.xelkarin.libs.jdictclient.JDictClient;
 
 import java.sql.SQLException;
 

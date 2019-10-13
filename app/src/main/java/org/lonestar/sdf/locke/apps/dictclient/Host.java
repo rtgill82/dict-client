@@ -19,7 +19,7 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.table.DatabaseTable;
 
-import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
+import com.github.xelkarin.libs.jdictclient.JDictClient;
 
 import java.sql.SQLException;
 import java.util.Calendar;

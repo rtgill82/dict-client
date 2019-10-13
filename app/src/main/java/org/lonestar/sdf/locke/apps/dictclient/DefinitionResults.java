@@ -12,7 +12,7 @@ import android.content.Context;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 
-import org.lonestar.sdf.locke.libs.jdictclient.Definition;
+import com.github.xelkarin.libs.jdictclient.Definition;
 
 import java.util.List;
 

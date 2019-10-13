@@ -11,7 +11,7 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 
-import org.lonestar.sdf.locke.libs.jdictclient.Definition;
+import com.github.xelkarin.libs.jdictclient.Definition;
 
 final class DefinitionParser {
     public static CharSequence parse(Definition definition) {

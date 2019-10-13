@@ -18,7 +18,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
-import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
+import com.github.xelkarin.libs.jdictclient.JDictClient;
 
 public class DictClient extends Application {
     @SuppressLint("StaticFieldLeak")

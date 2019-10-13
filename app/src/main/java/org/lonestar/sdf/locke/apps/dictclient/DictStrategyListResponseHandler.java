@@ -8,10 +8,10 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
-import org.lonestar.sdf.locke.libs.jdictclient.Database;
-import org.lonestar.sdf.locke.libs.jdictclient.Response;
-import org.lonestar.sdf.locke.libs.jdictclient.ResponseHandler;
-import org.lonestar.sdf.locke.libs.jdictclient.Strategy;
+import com.github.xelkarin.libs.jdictclient.Database;
+import com.github.xelkarin.libs.jdictclient.Response;
+import com.github.xelkarin.libs.jdictclient.ResponseHandler;
+import com.github.xelkarin.libs.jdictclient.Strategy;
 
 import java.util.ArrayList;
 import java.util.List;

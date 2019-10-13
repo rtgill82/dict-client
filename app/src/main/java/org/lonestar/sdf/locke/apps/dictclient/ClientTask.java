@@ -11,10 +11,10 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
-import org.lonestar.sdf.locke.libs.jdictclient.Command;
-import org.lonestar.sdf.locke.libs.jdictclient.Definition;
-import org.lonestar.sdf.locke.libs.jdictclient.JDictClient;
-import org.lonestar.sdf.locke.libs.jdictclient.Match;
+import com.github.xelkarin.libs.jdictclient.Command;
+import com.github.xelkarin.libs.jdictclient.Definition;
+import com.github.xelkarin.libs.jdictclient.JDictClient;
+import com.github.xelkarin.libs.jdictclient.Match;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
