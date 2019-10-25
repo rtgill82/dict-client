@@ -31,10 +31,14 @@ allprojects {
     maven { url 'https://jitpack.io' }
   }
 
-  task tags {
-    exec {
-      executable 'ctags'
-      args '--tag-relative=yes', '-R', "-f $rootDir/.git/tags", "$rootDir"
+  task tags(overwrite: true) {
+    try {
+      exec {
+        executable 'ctags'
+        args '--tag-relative=yes', '-R', "-f $rootDir/.git/tags", "$rootDir"
+      }
+    } catch (all) {
+      println("ctags command not avaliable")
     }
   }
 }
