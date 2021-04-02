@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2019 Robert Gill <rtgill82@gmail.com>
  * All rights reserved.
  *
  * This file is a part of DICT Client.
@@ -12,7 +12,7 @@ import android.content.Context;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 
-import com.github.xelkarin.libs.jdictclient.Match;
+import com.github.rtgill82.libs.jdictclient.Match;
 
 import java.util.ArrayList;
 import java.util.Collection;

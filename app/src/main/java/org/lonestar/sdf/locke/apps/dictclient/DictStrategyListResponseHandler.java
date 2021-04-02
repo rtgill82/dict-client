@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2018 Robert Gill <rtgill82@gmail.com>
  * All rights reserved.
  *
  * This file is a part of DICT Client.
@@ -8,10 +8,10 @@
 
 package org.lonestar.sdf.locke.apps.dictclient;
 
-import com.github.xelkarin.libs.jdictclient.Database;
-import com.github.xelkarin.libs.jdictclient.Response;
-import com.github.xelkarin.libs.jdictclient.ResponseHandler;
-import com.github.xelkarin.libs.jdictclient.Strategy;
+import com.github.rtgill82.libs.jdictclient.Database;
+import com.github.rtgill82.libs.jdictclient.Response;
+import com.github.rtgill82.libs.jdictclient.ResponseHandler;
+import com.github.rtgill82.libs.jdictclient.Strategy;
 
 import java.util.ArrayList;
 import java.util.List;

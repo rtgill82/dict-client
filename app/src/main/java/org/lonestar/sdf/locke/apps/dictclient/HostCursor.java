@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <rtgill82@gmail.com>
  * All rights reserved.
  *
  * This file is a part of DICT Client.
@@ -11,7 +11,7 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import com.github.xelkarin.libs.jdictclient.JDictClient;
+import com.github.rtgill82.libs.jdictclient.JDictClient;
 
 class HostCursor extends CursorWrapper {
     public HostCursor(Cursor cursor) {

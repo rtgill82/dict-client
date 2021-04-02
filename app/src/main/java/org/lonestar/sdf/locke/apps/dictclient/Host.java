@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <rtgill82@gmail.com>
  * All rights reserved.
  *
  * This file is a part of DICT Client.
@@ -19,7 +19,7 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.table.DatabaseTable;
 
-import com.github.xelkarin.libs.jdictclient.JDictClient;
+import com.github.rtgill82.libs.jdictclient.JDictClient;
 
 import java.sql.SQLException;
 import java.util.Calendar;

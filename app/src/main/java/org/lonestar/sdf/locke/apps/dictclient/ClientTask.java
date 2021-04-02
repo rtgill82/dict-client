@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <rtgill82@gmail.com>
  * All rights reserved.
  *
  * This file is a part of DICT Client.
@@ -11,10 +11,10 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
-import com.github.xelkarin.libs.jdictclient.Command;
-import com.github.xelkarin.libs.jdictclient.Definition;
-import com.github.xelkarin.libs.jdictclient.JDictClient;
-import com.github.xelkarin.libs.jdictclient.Match;
+import com.github.rtgill82.libs.jdictclient.Command;
+import com.github.rtgill82.libs.jdictclient.Definition;
+import com.github.rtgill82.libs.jdictclient.JDictClient;
+import com.github.rtgill82.libs.jdictclient.Match;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;

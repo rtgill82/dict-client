@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <rtgill82@gmail.com>
  * All rights reserved.
  *
  * This file is a part of DICT Client.
@@ -11,7 +11,7 @@ package org.lonestar.sdf.locke.apps.dictclient;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 
-import com.github.xelkarin.libs.jdictclient.Definition;
+import com.github.rtgill82.libs.jdictclient.Definition;
 
 final class DefinitionParser {
     public static CharSequence parse(Definition definition) {

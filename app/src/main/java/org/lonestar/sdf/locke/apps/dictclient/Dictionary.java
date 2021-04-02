@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <rtgill82@gmail.com>
  * All rights reserved.
  *
  * This file is a part of DICT Client.
@@ -29,7 +29,7 @@ class Dictionary extends BaseModel {
 
     public Dictionary(
         Host host,
-        com.github.xelkarin.libs.jdictclient.Database database
+        com.github.rtgill82.libs.jdictclient.Database database
     ) {
         this.host = host;
         this.name = database.getName();

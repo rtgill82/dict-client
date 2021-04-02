@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2018 Robert Gill <rtgill82@gmail.com>
  * All rights reserved.
  *
  * This file is a part of DICT Client.
@@ -28,7 +28,7 @@ class Strategy extends BaseModel {
     }
 
     public Strategy(Host host,
-                    com.github.xelkarin.libs.jdictclient.Strategy strategy) {
+                    com.github.rtgill82.libs.jdictclient.Strategy strategy) {
         this.host = host;
         this.name = strategy.getName();
         this.description = strategy.getDescription();

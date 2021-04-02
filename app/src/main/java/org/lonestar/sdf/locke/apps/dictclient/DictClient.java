@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <rtgill82@gmail.com>
  * All rights reserved.
  *
  * This file is a part of DICT Client.
@@ -18,7 +18,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
-import com.github.xelkarin.libs.jdictclient.JDictClient;
+import com.github.rtgill82.libs.jdictclient.JDictClient;
 
 public class DictClient extends Application {
     @SuppressLint("StaticFieldLeak")

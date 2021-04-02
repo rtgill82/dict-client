@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2017 Robert Gill <rtgill82@gmail.com>
  * All rights reserved.
  *
  * This file is a part of DICT Client.
@@ -21,7 +21,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import com.github.xelkarin.libs.jdictclient.JDictClient;
+import com.github.rtgill82.libs.jdictclient.JDictClient;
 
 import java.sql.SQLException;
 

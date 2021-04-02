@@ -36,9 +36,9 @@
 -keep class com.j256.ormlite.field.DataType { *; }
 -keep class * extends org.lonestar.sdf.locke.apps.dictclient.BaseModel { *; }
 -keep class org.lonestar.sdf.locke.apps.dictclient.DatabaseRevision { *; }
--keeppackagenames com.github.xelkarin.libs.jdictclient
+-keeppackagenames com.github.rtgill82.libs.jdictclient
 
--keepclassmembers class * extends com.github.xelkarin.libs.jdictclient.Element {
+-keepclassmembers class * extends com.github.rtgill82.libs.jdictclient.Element {
   public <init>(java.lang.String, java.lang.String);
 }
 
